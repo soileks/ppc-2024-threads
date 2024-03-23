@@ -2,6 +2,7 @@
 #include "omp/korablev_n_montecarlo/include/ops_omp.hpp"
 
 #include <omp.h>
+
 #include <cmath>
 #include <thread>
 

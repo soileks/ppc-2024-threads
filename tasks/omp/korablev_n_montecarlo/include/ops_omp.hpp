@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "omp/korablev_n_montecarlo/include/my_funcs.hpp"
 #include "core/task/include/task.hpp"
+#include "omp/korablev_n_montecarlo/include/my_funcs.hpp"
 
 class KorablevOMPMonteCarlo : public ppc::core::Task {
  public:
