@@ -65,18 +65,7 @@ bool KriseevMTaskOmp::ConvexHullTask::validation() {
   if (taskData->inputs_count[0] < 3) {
     return false;
   }
-  /*auto *pointsX = reinterpret_cast<double *>(taskData->inputs.at(0));
-  auto *pointsY = reinterpret_cast<double *>(taskData->inputs.at(1));
-  for (uint32_t i = 0; i < points.size(); ++i) {
-    if (pointsX[i] == std::numeric_limits<double>::quiet_NaN() ||
-        pointsY[i] == std::numeric_limits<double>::quiet_NaN() ||
-        pointsX[i] == std::numeric_limits<double>::infinity() ||
-        pointsX[i] == -std::numeric_limits<double>::infinity() ||
-        pointsY[i] == std::numeric_limits<double>::infinity() ||
-        pointsY[i] == -std::numeric_limits<double>::infinity()) {
-      return false;
-    }
-  }*/
+  
   return true;
 }
 
@@ -85,23 +74,7 @@ bool KriseevMTaskOmp::ConvexHullTask::run() {
   auto originIt =
       std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
   auto origin = *originIt;
-  /*  std::sort(points.begin(), points.end(), [origin](auto &a, auto &b) -> bool {
-      double angleA = angle(origin, a);
-      double angleB = angle(origin, b);
-      if (angleA < angleB) {
-        return true;
-      }
-      if (angleA > angleB) {
-        return false;
-      }
-      double dxA = a.first - origin.first;
-      double dyA = a.second - origin.second;
-      double dxB = b.first - origin.first;
-      double dyB = b.second - origin.second;
-      // The further point must be first
-      // so the others will be ignored
-      return dxA * dxA + dyA * dyA > dxB * dxB + dyB * dyB;
-    }); */
+  
   #pragma omp parallel
   for (size_t phase = 0; phase < points.size(); phase++) {
     if ((phase & 1) == 0) {
