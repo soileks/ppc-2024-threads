@@ -19,8 +19,8 @@ TEST(ionova_e_sparse_matr_multi_crs_complex, test_pipeline_run) {
   }
   std::vector<Complex> rhs_in(q * r);
   for (size_t i = 0; i < q; ++i) {
-    for (size_t j = 0; j < r; ++j) {
-      if (j % 3 == 0) rhs_in[i * r + j] = {1.0, -1.0};
+    for (size_t k = 0; k < r; ++k) {
+      if (k % 3 == 0) rhs_in[i * r + k] = {1.0, -1.0};
     }
   }
   std::vector<Complex> out(p * r);
