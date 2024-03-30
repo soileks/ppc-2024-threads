@@ -65,7 +65,7 @@ bool KriseevMTaskOmp::ConvexHullTask::validation() {
   if (taskData->inputs_count[0] < 3) {
     return false;
   }
-  
+
   return true;
 }
 
@@ -74,18 +74,18 @@ bool KriseevMTaskOmp::ConvexHullTask::run() {
   auto originIt =
       std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
   auto origin = *originIt;
-  
-  #pragma omp parallel
+
+#pragma omp parallel
   for (size_t phase = 0; phase < points.size(); phase++) {
     if ((phase & 1) == 0) {
-      #pragma omp for
+#pragma omp for
       for (size_t i = 1; i < points.size(); i += 2) {
         if (compareForSort(origin, points[i], points[i - 1])) {
           std::iter_swap(points.begin() + i, points.begin() + i - 1);
         }
       }
     } else {
-      #pragma omp for
+#pragma omp for
       for (size_t i = 1; i < points.size() - 1; i += 2) {
         if (compareForSort(origin, points[i + 1], points[i])) {
           std::iter_swap(points.begin() + i, points.begin() + i + 1);
