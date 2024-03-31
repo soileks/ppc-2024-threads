@@ -31,8 +31,8 @@ bool RadixSortSequentialTask::run() {
 
       size_t cur = 0;
 
-      for (int j = 0; j < sizeof(double) * 256; j++) {
-        for (int k = 0; k < ordered[j].size(); k++) {
+      for (size_t j = 0; j < sizeof(double) * 256; j++) {
+        for (size_t k = 0; k < ordered[j].size(); k++) {
           input_[cur] = ordered[j][k];
           cur++;
         }
@@ -40,7 +40,7 @@ bool RadixSortSequentialTask::run() {
       }
     }
     
-  } catch (std::exception e) {
+  } catch (std::exception& e) {
     return false;
   }
 
