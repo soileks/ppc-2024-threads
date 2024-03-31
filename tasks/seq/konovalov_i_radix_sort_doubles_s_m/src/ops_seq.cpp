@@ -39,7 +39,6 @@ bool RadixSortSequentialTask::run() {
         ordered[j].clear();
       }
     }
-    
   } catch (std::exception& e) {
     return false;
   }

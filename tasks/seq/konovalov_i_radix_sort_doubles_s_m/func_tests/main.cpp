@@ -3,12 +3,10 @@
 
 #include <random>
 #include <vector>
-#include <iostream>
 
 #include "seq/konovalov_i_radix_sort_doubles_s_m/include/ops_seq.hpp"
 
 TEST(konovalov_i_double_radix_sort_seq, one_value_test) {
-
   // Create data
   std::vector<double> in = {0.0};
   std::vector<double> out = {0.0};
@@ -101,7 +99,7 @@ TEST(konovalov_i_double_radix_sort_seq, random_order_test) {
   }
   std::sort(out.begin(), out.end());
 
-  std::vector<double*> res(1);
+  std::vector<double *> res(1);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();

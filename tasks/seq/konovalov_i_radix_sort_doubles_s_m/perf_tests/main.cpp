@@ -21,7 +21,7 @@ TEST(konovalov_i_double_radix_sort_seq, test_pipeline_run) {
     out[i] = a;
   }
   std::sort(out.begin(), out.end());
-  std::vector<double*> res(1);
+  std::vector<double *> res(1);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -58,7 +58,6 @@ TEST(konovalov_i_double_radix_sort_seq, test_pipeline_run) {
   }
   SUCCEED();
 }
-
 
 TEST(konovalov_i_double_radix_sort_seq, test_task_run) {
   const size_t size = 1e+5;
@@ -103,7 +102,7 @@ TEST(konovalov_i_double_radix_sort_seq, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  
+
   for (int i = 0; i < size; i++) {
     if (out[i] != res[0][i]) {
       FAIL();
@@ -111,4 +110,3 @@ TEST(konovalov_i_double_radix_sort_seq, test_task_run) {
   }
   SUCCEED();
 }
-
