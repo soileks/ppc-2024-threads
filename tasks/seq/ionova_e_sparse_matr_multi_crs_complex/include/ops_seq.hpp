@@ -33,7 +33,5 @@ class SparseMatrixComplexMultiSequential : public ppc::core::Task {
   std::vector<Complex> values3{};
   std::vector<int> rowPtr3{};
   std::vector<int> colPtr3{};
-  int numRows3{};
-  int numCols3{};
   Complex* result{};
 };
