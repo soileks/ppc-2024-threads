@@ -51,7 +51,7 @@ TEST(konovalov_i_double_radix_sort_seq, test_pipeline_run) {
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 
-  for (int i = 0; i < size; i++) {
+  for (size_t i = 0; i < size; i++) {
     if (out[i] != res[0][i]) {
       FAIL();
     }
@@ -103,7 +103,7 @@ TEST(konovalov_i_double_radix_sort_seq, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 
-  for (int i = 0; i < size; i++) {
+  for (size_t i = 0; i < size; i++) {
     if (out[i] != res[0][i]) {
       FAIL();
     }
