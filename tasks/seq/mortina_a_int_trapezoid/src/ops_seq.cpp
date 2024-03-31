@@ -36,12 +36,12 @@ double trapezoidal_integral(double a1, double b1, double a2, double b2, int n1, 
 bool TestTaskSequentialMortinaIntegralTrapezoid::pre_processing() {
   internal_order_test();
   // Init value for input and output
-  a1 = reinterpret_cast<double*>(taskData->inputs[0])[0];
-  b1 = reinterpret_cast<double*>(taskData->inputs[0])[1];
-  a2 = reinterpret_cast<double*>(taskData->inputs[0])[2];
-  b2 = reinterpret_cast<double*>(taskData->inputs[0])[3];
-  n1 = reinterpret_cast<int*>(taskData->inputs[1])[0];
-  n2 = reinterpret_cast<int*>(taskData->inputs[1])[1];
+  a1 = reinterpret_cast<double *>(taskData->inputs[0])[0];
+  b1 = reinterpret_cast<double *>(taskData->inputs[0])[1];
+  a2 = reinterpret_cast<double *>(taskData->inputs[0])[2];
+  b2 = reinterpret_cast<double *>(taskData->inputs[0])[3];
+  n1 = reinterpret_cast<int *>(taskData->inputs[1])[0];
+  n2 = reinterpret_cast<int *>(taskData->inputs[1])[1];
 
   return true;
 }
@@ -61,6 +61,6 @@ bool TestTaskSequentialMortinaIntegralTrapezoid::run() {
 
 bool TestTaskSequentialMortinaIntegralTrapezoid::post_processing() {
   internal_order_test();
-  reinterpret_cast<double*>(taskData->outputs[0])[0] = res;
+  reinterpret_cast<double *>(taskData->outputs[0])[0] = res;
   return true;
 }

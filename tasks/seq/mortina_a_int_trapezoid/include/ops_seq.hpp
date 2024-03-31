@@ -25,4 +25,4 @@ class TestTaskSequentialMortinaIntegralTrapezoid : public ppc::core::Task {
 };
 
 double trapezoidal_integral(double a1, double b1, double a2, double b2, int n1, int n2,
-                            std::function<double(double, double)> fun);
+                            const std::function<double(double, double)> &fun);
