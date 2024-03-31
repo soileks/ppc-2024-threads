@@ -44,7 +44,6 @@ bool RadixSortSequentialTask::run() {
     return false;
   }
 
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
