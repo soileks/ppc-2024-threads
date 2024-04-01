@@ -1,4 +1,6 @@
-// Copyright 2023 Nesterov Alexander
+// Copyright 2023 Nesterov Alexander && 2024 Kiselev Igor
+#ifndef OPS_SEQ_HPP_INCLUDED
+#define OPS_SEQ_HPP_INCLUDED
 #pragma once
 
 #include <string>
@@ -17,3 +19,4 @@ class TestTaskSequential : public ppc::core::Task {
  private:
   int input_{}, res{};
 };
+#endif  // OPS_SEQ_HPP_INCLUDED
