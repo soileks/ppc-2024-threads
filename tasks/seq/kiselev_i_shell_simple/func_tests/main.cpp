@@ -27,7 +27,7 @@ TEST(kiselev_i_shell_simple_seq, check_5_size) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(res.data(), out.data());
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
@@ -55,7 +55,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(res.data(), out.data());
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_sorted) {
@@ -83,7 +83,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_sorted) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(res.data(), out.data());
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
@@ -112,7 +112,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(res.data(), out.data());
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
@@ -142,7 +142,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(res.data(), out.data());
 }
 
 TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
