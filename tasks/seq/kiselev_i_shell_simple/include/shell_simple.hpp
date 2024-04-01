@@ -1,4 +1,6 @@
 // Copyright 2024 Kiselev Igor
+#ifndef SHELL_SIMPLE_HPP_INCLUDED
+#define SHELL_SIMPLE_HPP_INCLUDED
 #pragma once
 
 #include <string>
@@ -18,3 +20,4 @@ class TestTaskSequential : public ppc::core::Task {
   std::vector<int> arr;
   int *res, *input_;
 };
+#endif  // SHELL_SIMPLE_HPP_INCLUDED
