@@ -25,7 +25,7 @@ bool TestTaskSequential::validation() {
     int size = taskData->inputs_count[0];
     int outSize = taskData->outputs_count[0];
     arr = std::vector<int>(0, size);
-    return size > 0 && size != outSize;
+    return size > 0 && size == outSize;
   } catch (char* ex) {
     (void)ex;
     return false;
