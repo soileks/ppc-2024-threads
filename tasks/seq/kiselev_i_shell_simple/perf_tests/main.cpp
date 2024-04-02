@@ -8,7 +8,7 @@
 
 // pipeline_run
 
-TEST(seq_kiselev_i_shell_simple_perf_test, test_pipeline_run) {
+TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   const int count = 100;
 
   // Create data
@@ -53,7 +53,7 @@ TEST(seq_kiselev_i_shell_simple_perf_test, test_pipeline_run) {
 
 // task_run
 
-TEST(seq_kiselev_i_shell_simple_perf_test, test_task_run) {
+TEST(kiselev_i_shell_simple_seq, test_task_run) {
   const int count = 100;
 
   // Create data
