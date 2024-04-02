@@ -15,7 +15,8 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   std::vector<int> in(0, count);
   std::vector<int> out(0, count);
   std::vector<int> res(0, count);
-  std::vector<int> cnt = {1, count};
+  // std::vector<int> cnt = {1, count};
+  int cnt = 1;
   for (int i = 0; i < count; i++) {
     in[i] = count - 1 - i;
     res[i] = i;
@@ -60,7 +61,8 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
   std::vector<int> in(0, count);
   std::vector<int> out(0, count);
   std::vector<int> res(0, count);
-  std::vector<int> cnt = {1, count};
+  // std::vector<int> cnt = {1, count};
+  int cnt = 1;
   for (int i = 0; i < count; i++) {
     in[i] = count - 1 - i;
     res[i] = i;

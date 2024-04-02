@@ -8,8 +8,8 @@ using namespace std::chrono_literals;
 bool TestTaskSequential::pre_processing() {
   try {
     internal_order_test();
-    input_ = reinterpret_cast<int*>(taskData->inputs[0]);
-    int size = taskData->inputs_count[1];
+    input_ = reinterpret_cast<int*>(taskData->inputs[1]);
+    int size = *(taskData->inputs[0]);
     arr = std::vector<int>(0, size);
     for (int i = 0; i < size; i++) {
       arr[i] = input_[i];
