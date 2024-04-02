@@ -14,7 +14,7 @@ TEST(kiselev_i_shell_simple_seq, check_5_size) {
   std::vector<int> out(0, count);
   std::vector<int> res = {0, 1, 2, 4, 6};
   // std::vector<int> cnt = {1, count};
-  int cnt = 1;
+  int cnt = count;
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
@@ -39,7 +39,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
   std::vector<int> out(0, count);
   std::vector<int> res(0, count);
   // std::vector<int> cnt = {1, count};
-  int cnt = 1;
+  int cnt = count;
   for (int i = 0; i < count; i++) {
     in[i] = count - 1 - i;
     res[i] = i;
@@ -68,14 +68,14 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_sorted) {
   std::vector<int> out(0, count);
   std::vector<int> res(0, count);
   // std::vector<int> cnt = {1, count};
-  int cnt = 1;
+  int cnt = count;
   for (int i = 0; i < count; i++) {
     in[i] = i;
     res[i] = i;
   }
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(count, in.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataSeq->inputs_count.emplace_back(cnt);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(cnt);
@@ -98,14 +98,14 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
   std::vector<int> out(0, count);
   std::vector<int> res(0, count);
   // std::vector<int> cnt = {1, count};
-  int cnt = 1;
+  int cnt = count;
   for (int i = 0; i < count; i++) {
     in[i] = count - 1 - i + bias;
     res[i] = i + bias;
   }
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(count, in.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataSeq->inputs_count.emplace_back(cnt);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(cnt);
@@ -127,7 +127,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
   std::vector<int> out(0, count);
   std::vector<int> res(0, count);
   // std::vector<int> cnt = {1, count};
-  int cnt = 1;
+  int cnt = count;
   for (int i = 0; i < count; i++) {
     int a = std::rand() % 100;
     in[i] = a;
@@ -136,7 +136,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
   sort(res.begin(), res.end());
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(count, in.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataSeq->inputs_count.emplace_back(cnt);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(cnt);
@@ -158,7 +158,7 @@ TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
   int *in = *input;
   int out[count][count] = {{0, 0}, {0, 0}};
   // std::vector<int> cnt = {2, count, count};
-  int cnt = 2;
+  int cnt = -2;
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in));
