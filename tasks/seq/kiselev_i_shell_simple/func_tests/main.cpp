@@ -164,8 +164,3 @@ TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
   TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), false);
 }
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
