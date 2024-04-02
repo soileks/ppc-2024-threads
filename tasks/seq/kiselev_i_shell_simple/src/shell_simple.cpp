@@ -9,7 +9,7 @@ bool TestTaskSequential::pre_processing() {
   try {
     internal_order_test();
     input_ = reinterpret_cast<int*>(taskData->inputs[0]);
-    for (int i = 0; i < arr.size(); i++) {
+    for (unsigned long i = 0; i < arr.size(); i++) {
       arr[i] = input_[i];
     }
     return true;
