@@ -64,7 +64,7 @@ bool TestTaskSequential::post_processing() {
     size_t n = arr.size();
     for (size_t i = 0; i < n; i++) {
       res[i] = arr[i];
-      reinterpret_cast<int*>(taskData->outputs[0])[i] = res[i];
+      reinterpret_cast<int*>(taskData->outputs[i])[0] = res[i];
     }
     return true;
   } catch (char* ex) {
