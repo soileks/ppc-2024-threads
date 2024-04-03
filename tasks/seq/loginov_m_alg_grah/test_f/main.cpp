@@ -35,8 +35,8 @@ TEST(loginov_m_alg_grah_seq, Test2) {
                                Point(-0.6, -0.3), Point(1.8, 0.5),  Point(-1.4, -0.7), Point(-0.9, 1.1),
                                Point(-1.2, 1.9),  Point(0.4, 2.2),  Point(1.7, -0.1)};
   std::vector<Point> result = {Point(-1.9, 0.4), Point(-1.4, -0.7), Point(-0.5, -1.2), Point(0.4, -1.2), Point(1.2, -0.8),
-                            Point(1.7, -0.1), Point(1.8, 0.5),   Point(1.6, 1.3),   Point(1.1, 1.9),  Point(0.4, 2.2),
-                            Point(-0.5, 2.2), Point(-1.2, 1.9),  Point(-1.8, 1.42)};
+                               Point(1.7, -0.1), Point(1.8, 0.5),   Point(1.6, 1.3),   Point(1.1, 1.9),  Point(0.4, 2.2),
+                               Point(-0.5, 2.2), Point(-1.2, 1.9),  Point(-1.8, 1.42)};
   std::vector<Point> mch(result.size());
 
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
