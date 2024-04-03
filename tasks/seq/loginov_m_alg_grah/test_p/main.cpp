@@ -9,13 +9,13 @@
 using namespace std::chrono_literals;
 
 TEST(loginov_m_alg_grah_seq, test_pipeline_run) {
-  std::vector<Point> points = {Point(-0.6, 2.4),  Point(1.4, 1.1),  Point(0.1, -0.8),  Point(0.3, 1.6),
-                               Point(-1.8, 1.42), Point(-0.2, 0.4), Point(-0.5, -1.2), Point(1.1, -0.7),
-                               Point(0.8, 0.5),   Point(1.1, 1.9),  Point(0.4, -1.2),  Point(-1.9, 0.4),
+  std::vector<Point> points = {Point(-0.5, 2.2),  Point(1.6, 1.3),  Point(0.3, -0.6),  Point(0.1, 1.3),
+                               Point(-1.8, 1.42), Point(-0.3, 0.6), Point(-0.5, -1.2), Point(1.2, -0.8),
+                               Point(0.7, 0.4),   Point(1.1, 1.9),  Point(0.4, -1.2),  Point(-1.9, 0.4),
                                Point(-0.6, -0.3), Point(1.8, 0.5),  Point(-1.4, -0.7), Point(-0.9, 1.1),
-                               Point(-1.2, 1.9),  Point(0.6, 2.4),  Point(1.7, -0.1)};
-  std::vector<Point> res = {Point(-1.7, 0.6), Point(-1.6, -0.9), Point(-0.7, -1.4), Point(0.6, -1.1), Point(1.2, -0.8),
-                            Point(1.7, -0.1), Point(1.5, 0.4),   Point(1.6, 1.3),   Point(1.1, 1.9),  Point(0.4, 2.2),
+                               Point(-1.2, 1.9),  Point(0.4, 2.2),  Point(1.7, -0.1)};
+  std::vector<Point> res = {Point(-1.9, 0.4), Point(-1.4, -0.7), Point(-0.5, -1.2), Point(0.4, -1.2), Point(1.2, -0.8),
+                            Point(1.7, -0.1), Point(1.8, 0.5),   Point(1.6, 1.3),   Point(1.1, 1.9),  Point(0.4, 2.2),
                             Point(-0.5, 2.2), Point(-1.2, 1.9),  Point(-1.8, 1.42)};
   std::vector<Point> mch(res.size());
 
@@ -50,12 +50,12 @@ TEST(loginov_m_alg_grah_seq, test_pipeline_run) {
 
 TEST(loginov_m_alg_grah_seq, test_task_run) {
   std::vector<Point> points = {Point(-0.5, 2.2),  Point(1.6, 1.3),  Point(0.3, -0.6),  Point(0.1, 1.3),
-                               Point(-1.6, 1.43), Point(-0.3, 0.6), Point(-0.5, -1.2), Point(1.2, -0.8),
+                               Point(-1.8, 1.42), Point(-0.3, 0.6), Point(-0.5, -1.2), Point(1.2, -0.8),
                                Point(0.7, 0.4),   Point(1.1, 1.9),  Point(0.4, -1.2),  Point(-1.9, 0.4),
-                               Point(-0.6, -0.5), Point(1.8, 0.5),  Point(-1.4, -0.7), Point(-0.9, 1.1),
+                               Point(-0.6, -0.3), Point(1.8, 0.5),  Point(-1.4, -0.7), Point(-0.9, 1.1),
                                Point(-1.2, 1.9),  Point(0.4, 2.2),  Point(1.7, -0.1)};
-  std::vector<Point> res = {Point(-1.9, 0.4), Point(-1.4, -0.7), Point(-0.7, -1.2), Point(0.4, -1.2), Point(1.2, -0.8),
-                            Point(1.7, -0.1), Point(1.4, 0.6),   Point(1.8, 1.5),   Point(1.1, 1.9),  Point(0.4, 2.2),
+  std::vector<Point> res = {Point(-1.9, 0.4), Point(-1.4, -0.7), Point(-0.5, -1.2), Point(0.4, -1.2), Point(1.2, -0.8),
+                            Point(1.7, -0.1), Point(1.8, 0.5),   Point(1.6, 1.3),   Point(1.1, 1.9),  Point(0.4, 2.2),
                             Point(-0.5, 2.2), Point(-1.2, 1.9),  Point(-1.8, 1.42)};
   std::vector<Point> mch(res.size());
 
