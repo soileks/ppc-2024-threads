@@ -28,7 +28,7 @@ TEST(loginov_m_alg_grah_seq, Test1) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, Test2) {
+TEST(loginov_m_alg_grah_seq, Test2) {
   std::vector<Point> points = {Point(-0.3, 2.4),  Point(1.7, 1.4),  Point(0.4, -0.5),  Point(0.2, 1.5),
                                Point(-1.6, 1.4), Point(-0.2, 0.7), Point(-0.3, -1.3), Point(1.1, -0.9),
                                Point(0.7, 0.43),   Point(1.1, 1.6),  Point(0.4, -1.2),  Point(-1.9, 0.4),
