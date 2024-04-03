@@ -9,12 +9,12 @@ struct Point {
 
   Point();
   Point(double X, double Y);
-  Point(const Point& p2);
+  Point(const Point& p1);
 
-  Point& operator=(const Point& p2);
-  bool operator==(const Point& p2) const;
+  Point& operator=(const Point& p1);
+  bool operator==(const Point& p1) const;
 
   double Distance(const Point& p) const;
-  void Replace(Point& p2);
+  void Replace(Point& p1);
   int Compare(const Point& pivot, const Point& P) const;
 };

@@ -11,30 +11,30 @@ Point::Point(double X, double Y) {
   y = Y;
 }
 
-Point::Point(const Point& p2) {
-  x = p2.x;
-  y = p2.y;
+Point::Point(const Point& p1) {
+  x = p1.x;
+  y = p1.y;
 }
 
-Point& Point::operator=(const Point& p2) {
-  if (this == &p2) return *this;
-  x = p2.x;
-  y = p2.y;
+Point& Point::operator=(const Point& p1) {
+  if (this == &p1) return *this;
+  x = p1.x;
+  y = p1.y;
   return *this;
 }
 
-bool Point::operator==(const Point& p2) const {
+bool Point::operator==(const Point& p1) const {
   bool res = false;
-  if (x == p2.x && y == p2.y) res = true;
+  if (x == p1.x && y == p1.y) res = true;
   return res;
 }
 
 double Point::Distance(const Point& p) const { return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y)); }
 
-void Point::Replace(Point& p2) {
+void Point::Replace(Point& p1) {
   Point tmp = (*this);
-  (*this) = p2;
-  p2 = tmp;
+  (*this) = p1;
+  p1 = tmp;
 }
 
 int Point::Compare(const Point& pivot, const Point& P) const {

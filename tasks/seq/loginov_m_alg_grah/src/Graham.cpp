@@ -1,7 +1,7 @@
 // Copyright 2024 Loginov Maxim
 #include "seq/loginov_m_alg_grah/inc/Graham.hpp"
 
-void QuickSort(std::vector<Point>& pointArr, int left, int right) {
+void QuickSort(std::vector<Point>& pArr, int left, int right) {
   if (left > right) return;
 
   int piv = 0;
@@ -14,33 +14,33 @@ void QuickSort(std::vector<Point>& pointArr, int left, int right) {
   else
     piv = std::trunc(arrSize / 2) + left;
 
-  Point pivot = pointArr[piv];
+  Point pivot = pArr[piv];
 
   while (L <= R) {
-    while (!(pointArr[0].Compare(pivot, pointArr[L]) >= 0)) ++L;
+    while (!(pArr[0].Compare(pivot, pArr[L]) >= 0)) ++L;
 
-    while (!(pointArr[0].Compare(pivot, pointArr[R]) <= 0)) --R;
+    while (!(pArr[0].Compare(pivot, pArr[R]) <= 0)) --R;
 
     if (L <= R) {
-      pointArr[L].Replace(pointArr[R]);
+      pArr[L].Replace(pArr[R]);
       ++L;
       --R;
     }
   }
 
-  QuickSort(pointArr, left, R);
-  QuickSort(pointArr, L, right);
+  QuickSort(pArr, left, R);
+  QuickSort(pArr, L, right);
 }
 
-Point MinPoint(const std::vector<Point>& pointArr) {
-  double minX = pointArr[0].x;
+Point MinPoint(const std::vector<Point>& pArr) {
+  double minX = pArr[0].x;
   double minY = 0;
   std::stack<int> S;
   S.push(0);
-  int pArrSize = pointArr.size();
+  int pArrSize = pArr.size();
 
   for (int i = 1; i < pArrSize; ++i) {
-    double Xi = pointArr[i].x;
+    double Xi = pArr[i].x;
     if (Xi < minX) {
       minX = Xi;
       while (!S.empty()) S.pop();
@@ -50,10 +50,10 @@ Point MinPoint(const std::vector<Point>& pointArr) {
     }
   }
 
-  minY = pointArr[S.top()].y;
+  minY = pArr[S.top()].y;
   S.pop();
   while (!S.empty()) {
-    double Yi = pointArr[S.top()].y;
+    double Yi = pArr[S.top()].y;
     if (Yi < minY) minY = Yi;
     S.pop();
   }
@@ -61,11 +61,11 @@ Point MinPoint(const std::vector<Point>& pointArr) {
   return Point(minX, minY);
 }
 
-int PointPosition(const Point& p, const std::vector<Point>& pointArr) {
+int PointPosition(const Point& p, const std::vector<Point>& pArr) {
   int pp = 0;
-  int pArrSize = pointArr.size();
+  int pArrSize = pArr.size();
   for (int i = 0; i < pArrSize; ++i) {
-    if (pointArr[i].x == p.x && pointArr[i].y == p.y) {
+    if (pArr[i].x == p.x && pArr[i].y == p.y) {
       pp = i;
       break;
     }
@@ -73,37 +73,37 @@ int PointPosition(const Point& p, const std::vector<Point>& pointArr) {
   return pp;
 }
 
-std::vector<Point> MinConvexHull(std::vector<Point> pointArr) {
-  if (pointArr.size() < 3) return pointArr;
+std::vector<Point> MinConvexHull(std::vector<Point> pArr) {
+  if (pArr.size() < 3) return pArr;
 
   std::vector<Point> mch;
   int ind1 = 0;
   int ind2 = 1;
-  int arrSize = pointArr.size();
+  int arrSize = pArr.size();
 
-  while (pointArr[ind1] == pointArr[ind2]) {
+  while (pArr[ind1] == pArr[ind2]) {
     ++ind2;
     if (ind2 == arrSize) break;
   }
 
-  mch.push_back(pointArr[ind1]);
+  mch.push_back(pArr[ind1]);
   if (ind2 != arrSize) {
-    mch.push_back(pointArr[ind2]);
+    mch.push_back(pArr[ind2]);
 
-    arrSize = pointArr.size();
+    arrSize = pArr.size();
     int val = 0;
     int mchSize = 0;
 
     for (int i = ind2 + 1; i < arrSize; ++i) {
       mchSize = mch.size();
-      val = mch[mchSize - 2].Compare(mch[mchSize - 1], pointArr[i]);
+      val = mch[mchSize - 2].Compare(mch[mchSize - 1], pArr[i]);
 
       if ((val == -1) || (val == 2)) {
         mch.erase(mch.end() - 1);
-        if (mch.size() < 2) mch.push_back(pointArr[i]);
+        if (mch.size() < 2) mch.push_back(pArr[i]);
         --i;
       } else if (val == 1) {
-        mch.push_back(pointArr[i]);
+        mch.push_back(pArr[i]);
       }
     }
   }
