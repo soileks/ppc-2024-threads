@@ -8,7 +8,7 @@
 
 using namespace std::chrono_literals;
 
-TEST(savotina_v_grahams_alg_seq, test_pipeline_run) {
+TEST(loginov_m_alg_grah_seq, test_pipeline_run) {
   std::vector<Point> points = {Point(-0.5, 2.2),  Point(1.6, 1.3),  Point(0.3, -0.6),  Point(0.1, 1.3),
                                Point(-1.8, 1.42), Point(-0.3, 0.6), Point(-0.5, -1.2), Point(1.2, -0.8),
                                Point(0.7, 0.4),   Point(1.1, 1.9),  Point(0.4, -1.2),  Point(-1.9, 0.4),
@@ -48,7 +48,7 @@ TEST(savotina_v_grahams_alg_seq, test_pipeline_run) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, test_task_run) {
+TEST(loginov_m_alg_grah_seq, test_task_run) {
   std::vector<Point> points = {Point(-0.5, 2.2),  Point(1.6, 1.3),  Point(0.3, -0.6),  Point(0.1, 1.3),
                                Point(-1.8, 1.42), Point(-0.3, 0.6), Point(-0.5, -1.2), Point(1.2, -0.8),
                                Point(0.7, 0.4),   Point(1.1, 1.9),  Point(0.4, -1.2),  Point(-1.9, 0.4),

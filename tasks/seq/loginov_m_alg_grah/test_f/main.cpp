@@ -3,9 +3,7 @@
 
 #include "seq/loginov_m_alg_grah/inc/Graham.hpp"
 
-
-TEST(savotina_v_grahams_alg_seq, Test1) {
-
+TEST(loginov_m_alg_grah_seq, Test1) {
   std::vector<Point> points = {Point(-8, 4), Point(-4, 6),  Point(-12, 2),  Point(-6, -2),  Point(-10, -4),
                                Point(-4, 2), Point(-6, 6),  Point(-8, 8),   Point(-10, 6),  Point(-8, 2),
                                Point(-6, 2), Point(-10, 0), Point(-14, -2), Point(-16, -4), Point(-14, -4)};
@@ -58,7 +56,7 @@ TEST(savotina_v_grahams_alg_seq, Test2) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, Test3) {
+TEST(loginov_m_alg_grah_seq, Test3) {
   std::vector<Point> points = {Point(-1.4, 2.2), Point(2.2, 2.2), Point(-0.6, 2.2), Point(-2.3, 2.2),
                                Point(2.7, 2.2),  Point(0.6, 2.2), Point(1.7, 2.2),  Point(-3.4, 2.2),
                                Point(5.3, 2.2),  Point(4.4, 2.2), Point(3.4, 2.2)};
@@ -82,7 +80,7 @@ TEST(savotina_v_grahams_alg_seq, Test3) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, Test4) {
+TEST(loginov_m_alg_grah_seq, Test4) {
   std::vector<Point> points = {Point(3.5, 4.7)};
   std::vector<Point> res = {Point(3.5, 4.7)};
   std::vector<Point> mch(res.size());
@@ -104,7 +102,7 @@ TEST(savotina_v_grahams_alg_seq, Test4) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, Test5) {
+TEST(loginov_m_alg_grah_seq, Test5) {
   std::vector<Point> points = {Point(2.4, -2.9), Point(-1.8, 4.2)};
   std::vector<Point> res = {Point(-1.8, 4.2), Point(2.4, -2.9)};
   std::vector<Point> mch(res.size());
@@ -126,7 +124,7 @@ TEST(savotina_v_grahams_alg_seq, Test5) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, Test6) {
+TEST(loginov_m_alg_grah_seq, Test6) {
   std::vector<Point> points = {};
   std::vector<Point> res = {};
   std::vector<Point> mch(res.size());
@@ -148,7 +146,7 @@ TEST(savotina_v_grahams_alg_seq, Test6) {
   }
 }
 
-TEST(savotina_v_grahams_alg_seq, Test7) {
+TEST(loginov_m_alg_grah_seq, Test7) {
   std::vector<Point> points = {Point(4.4, 1.7), Point(4.4, 1.7), Point(4.4, 1.7), Point(4.4, 1.7), Point(4.4, 1.7),
                                Point(4.4, 1.7), Point(4.4, 1.7), Point(4.4, 1.7), Point(4.4, 1.7), Point(4.4, 1.7)};
   std::vector<Point> res = {Point(4.4, 1.7)};

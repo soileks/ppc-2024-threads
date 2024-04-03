@@ -1,8 +1,8 @@
 // Copyright 2024 Loginov Maxim
 #pragma once
 
-#include <vector>
 #include <stack>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 #include "point.hpp"

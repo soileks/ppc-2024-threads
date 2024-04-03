@@ -9,7 +9,6 @@ void QuickSort(std::vector<Point>& pointArr, int left, int right) {
   int L = left;
   int R = right;
 
-
   if ((arrSize % 2) == 0)
     piv = (arrSize / 2 - 1) + left;
   else
@@ -40,7 +39,6 @@ Point MinPoint(const std::vector<Point>& pointArr) {
   S.push(0);
   int pArrSize = pointArr.size();
 
-
   for (int i = 1; i < pArrSize; ++i) {
     double Xi = pointArr[i].x;
     if (Xi < minX) {
@@ -51,7 +49,6 @@ Point MinPoint(const std::vector<Point>& pointArr) {
       S.push(i);
     }
   }
-
 
   minY = pointArr[S.top()].y;
   S.pop();
@@ -101,13 +98,11 @@ std::vector<Point> MinConvexHull(std::vector<Point> pointArr) {
       mchSize = mch.size();
       val = mch[mchSize - 2].Compare(mch[mchSize - 1], pointArr[i]);
 
-      if ((val == -1) || (val == 2))
-      {
+      if ((val == -1) || (val == 2)) {
         mch.erase(mch.end() - 1);
         if (mch.size() < 2) mch.push_back(pointArr[i]);
         --i;
-      } else if (val == 1)
-      {
+      } else if (val == 1) {
         mch.push_back(pointArr[i]);
       }
     }
