@@ -1,4 +1,4 @@
-// Copyright 2024 Nesterov Alexander
+// Copyright 2024 Ivlev Alexander
 #include "seq/ivlev_a_convex_hull/include/ops_seq.hpp"
 
 #include <thread>
