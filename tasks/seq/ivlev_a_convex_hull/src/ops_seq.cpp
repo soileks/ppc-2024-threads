@@ -41,7 +41,7 @@ bool ConvexHullSequential::post_processing() {
 }
 
 std::vector<std::pair<size_t, size_t>> ConvexHullSequential::ToComponents(const std::vector<int>& image_,
- std::pair<size_t, size_t> size_) {
+                                                                          std::pair<size_t, size_t> size_) {
   std::vector<std::pair<size_t, size_t>> res;
 
   for (size_t i = 0; i < image_.size(), i++) {
@@ -54,7 +54,7 @@ std::vector<std::pair<size_t, size_t>> ConvexHullSequential::ToComponents(const 
 }
 
 std::vector<int> ConvexHullSequential::ToImage(const std::vector<std::pair<size_t, size_t>>& component_,
- std::pair<size_t, size_t> size_) {
+                                               std::pair<size_t, size_t> size_) {
   size_t height = size_.first;
   size_t width = size_.second;
   std::vector<int> res(height * width, 0);
