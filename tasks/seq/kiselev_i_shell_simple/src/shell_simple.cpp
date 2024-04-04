@@ -9,6 +9,8 @@ bool TestTaskSequential::pre_processing() {
   try {
     internal_order_test();
     input_ = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
+    size_t size = taskData->inputs_count[0];
+    arr.resize(size);
     for (unsigned long i = 0; i < arr.size(); i++) {
       arr[i] = input_[i];
     }
@@ -22,9 +24,7 @@ bool TestTaskSequential::pre_processing() {
 bool TestTaskSequential::validation() {
   try {
     internal_order_test();
-    size_t size = taskData->inputs_count[0];
-    arr.resize(size);
-    return taskData->inputs_count[0] > 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
+    return taskData->inputs_count[0] != 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
   } catch (char* ex) {
     (void)ex;
     return false;
