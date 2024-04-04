@@ -79,8 +79,3 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_task_run_) {
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(count, out[0]);
 }
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
