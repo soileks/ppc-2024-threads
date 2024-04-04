@@ -12,9 +12,9 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   const int count = 100;
 
   // Create data
-  std::vector<int> in(0, count);
-  std::vector<int> out(0, count);
-  std::vector<int> res(0, count);
+  std::vector<int> in(count, 0);
+  std::vector<int> out(count, 0);
+  std::vector<int> res(count, 0);
   // std::vector<int> cnt = {1, count};
   int cnt = count;
   for (int i = 0; i < count; i++) {
@@ -24,9 +24,9 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(cnt);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
   taskDataSeq->outputs_count.emplace_back(cnt);
 
   // Create Task
@@ -58,9 +58,9 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
   const int count = 100;
 
   // Create data
-  std::vector<int> in(0, count);
-  std::vector<int> out(0, count);
-  std::vector<int> res(0, count);
+  std::vector<int> in(count, 0);
+  std::vector<int> out(count, 0);
+  std::vector<int> res(count, 0);
   // std::vector<int> cnt = {1, count};
   int cnt = count;
   for (int i = 0; i < count; i++) {
@@ -70,9 +70,9 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(cnt);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
   taskDataSeq->outputs_count.emplace_back(cnt);
 
   // Create Task

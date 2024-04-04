@@ -18,6 +18,6 @@ class TestTaskSequential : public ppc::core::Task {
 
  private:
   std::vector<int> arr;
-  int *res, *input_;
+  std::vector<int> res, input_;
 };
 #endif  // SHELL_SIMPLE_HPP_INCLUDED

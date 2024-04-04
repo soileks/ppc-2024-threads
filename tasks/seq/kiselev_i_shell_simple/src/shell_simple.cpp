@@ -8,7 +8,7 @@ using namespace std::chrono_literals;
 bool TestTaskSequential::pre_processing() {
   try {
     internal_order_test();
-    input_ = reinterpret_cast<int*>(taskData->inputs[0]);
+    input_ = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
     for (unsigned long i = 0; i < arr.size(); i++) {
       arr[i] = input_[i];
     }
@@ -60,6 +60,7 @@ bool TestTaskSequential::run() {
 
 bool TestTaskSequential::post_processing() {
   try {
+    res = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
     internal_order_test();
     size_t n = arr.size();
     for (size_t i = 0; i < n; i++) {
