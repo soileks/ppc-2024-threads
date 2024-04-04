@@ -25,9 +25,9 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
-  taskDataSeq->inputs_count.emplace_back(cnt);
+  taskDataSeq->inputs_count.emplace_back(in.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
-  taskDataSeq->outputs_count.emplace_back(cnt);
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
   auto testTaskSequential = std::make_shared<TestTaskSequential>(taskDataSeq);
@@ -71,9 +71,9 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
-  taskDataSeq->inputs_count.emplace_back(cnt);
+  taskDataSeq->inputs_count.emplace_back(in.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
-  taskDataSeq->outputs_count.emplace_back(cnt);
+  taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
   auto testTaskSequential = std::make_shared<TestTaskSequential>(taskDataSeq);
