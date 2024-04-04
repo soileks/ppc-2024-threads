@@ -9,7 +9,6 @@ bool ConvexHullSequential::pre_processing() {
   internal_order_test();
   try {
     auto* input_ = reinterpret_cast<std::pair<size_t, size_t>*>(taskData->inputs[0]);
-    size_t n = taskData->inputs_count[0];
     components.resize(taskData->inputs_count[0]);
     components[0].assign(input_, input_ + 1);
     images.resize(taskData->inputs_count[0]);
@@ -38,7 +37,7 @@ bool ConvexHullSequential::run() {
 
 bool ConvexHullSequential::post_processing() {
   internal_order_test();
-  reinterpret_cast<int*>(taskData->outputs[0])[0] = results[0];
+  reinterpret_cast<std::pair<size_t, size_t>*>(taskData->outputs[0])[0] = results[0];
   return true;
 }
 
