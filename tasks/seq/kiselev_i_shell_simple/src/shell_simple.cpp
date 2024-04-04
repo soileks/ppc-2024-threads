@@ -23,7 +23,7 @@ bool TestTaskSequential::validation() {
   try {
     internal_order_test();
     size_t size = taskData->inputs_count[0];
-    arr = std::vector<int>(size, 0);
+    arr.resize(size);
     return taskData->inputs_count[0] > 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
   } catch (char* ex) {
     (void)ex;
