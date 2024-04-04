@@ -8,9 +8,11 @@ using namespace std::chrono_literals;
 bool ConvexHullSequential::pre_processing() {
   internal_order_test();
   try {
-    components = reinterpret_cast<std::pair<size_t, size_t>>(taskData->inputs[0]);
-    image.resize(taskData->inputs_count[0]);
-    results = reinterpret_cast<std::pair<size_t, size_t>>(taskData->outputs[0]);
+    auto* input_ = reinterpret_cast<std::pair<size_t, size_t>*>(taskData->inputs[0]);
+    size_t n = taskData->inputs_count[0];
+    components.resize(taskData->inputs_count[0]);
+    components[0].assign(input_, input_ + 1);
+    images.resize(taskData->inputs_count[0]);
   } catch (...) {
     return false;
   }
@@ -26,8 +28,8 @@ bool ConvexHullSequential::validation() {
 bool ConvexHullSequential::run() {
   internal_order_test();
   try {
-    image[0] = ToImage(components[0], (2, 2));
-    results[0] = ToComponents(image[0], (2, 2));
+    images[0] = ToImage(components[0], std::pair<size_t, size_t>(2, 2));
+    results[0] = ToComponents(images[0], std::pair<size_t, size_t>(2, 2));
   } catch (...) {
     return false;
   }
@@ -44,7 +46,7 @@ std::vector<std::pair<size_t, size_t>> ConvexHullSequential::ToComponents(const 
                                                                           std::pair<size_t, size_t> size_) {
   std::vector<std::pair<size_t, size_t>> res;
 
-  for (size_t i = 0; i < image_.size(), i++) {
+  for (size_t i = 0; i < image_.size(); i++) {
     if (image_[i] == 1) {
       res.emplace_back(i / size_.second, i % size_.second);
     }
@@ -60,7 +62,7 @@ std::vector<int> ConvexHullSequential::ToImage(const std::vector<std::pair<size_
   std::vector<int> res(height * width, 0);
 
   for (const std::pair<size_t, size_t>& point : component_) {
-    image[point.first * width + point.second] = 1;
+    res[point.first * width + point.second] = 1;
   }
 
   return res;
