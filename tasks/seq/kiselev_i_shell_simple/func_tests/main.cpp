@@ -164,4 +164,4 @@ TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
   // Create Task
   TestTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), false);
- }
+}
