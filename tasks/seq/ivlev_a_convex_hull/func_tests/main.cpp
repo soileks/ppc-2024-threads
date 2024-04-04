@@ -5,12 +5,11 @@
 
 #include "seq/ivlev_a_convex_hull/include/ops_seq.hpp"
 
-TEST(ivlev_a_convex_hull_sequential, Test_run) {
-  const int count = 10;
-
+TEST(ivlev_a_convex_hull_sequential, one_component) {
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -25,15 +24,14 @@ TEST(ivlev_a_convex_hull_sequential, Test_run) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }
 
 TEST(ivlev_a_convex_hull_sequential, Test_run1) {
-  const int count = 20;
-
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -48,15 +46,14 @@ TEST(ivlev_a_convex_hull_sequential, Test_run1) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }
 
 TEST(ivlev_a_convex_hull_sequential, Test_run2) {
-  const int count = 50;
-
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -71,15 +68,14 @@ TEST(ivlev_a_convex_hull_sequential, Test_run2) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }
 
 TEST(ivlev_a_convex_hull_sequential, Test_run3) {
-  const int count = 70;
-
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -94,15 +90,14 @@ TEST(ivlev_a_convex_hull_sequential, Test_run3) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }
 
 TEST(ivlev_a_convex_hull_sequential, Test_run5) {
-  const int count = 100;
-
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -117,5 +112,5 @@ TEST(ivlev_a_convex_hull_sequential, Test_run5) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }

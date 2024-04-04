@@ -7,11 +7,10 @@
 #include "seq/ivlev_a_convex_hull/include/ops_seq.hpp"
 
 TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
-  const int count = 100;
-
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -40,15 +39,14 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }
 
 TEST(sequential_ivlev_a_convex_hull_perf_test, test_task_run_) {
-  const int count = 100;
-
   // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -77,5 +75,5 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_task_run_) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count, out[0]);
+  ASSERT_EQ(res, out);
 }
