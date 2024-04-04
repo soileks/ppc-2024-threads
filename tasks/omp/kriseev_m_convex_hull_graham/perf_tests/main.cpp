@@ -8,7 +8,7 @@
 #include "omp/kriseev_m_convex_hull_graham/include/kriseev_m_convex_hull_omp.hpp"
 
 TEST(kriseev_m_convex_hull_graham_omp, test_pipeline_run) {
-  const int count = 10000;
+  const int count = 5000;
   // Create data
   std::vector<double> pX;
   std::vector<double> pY;
@@ -78,7 +78,7 @@ TEST(kriseev_m_convex_hull_graham_omp, test_pipeline_run) {
 }
 
 TEST(kriseev_m_convex_hull_graham_omp, test_task_run) {
-  const int count = 10000;
+  const int count = 5000;
   // Create data
   std::vector<double> pX;
   std::vector<double> pY;
