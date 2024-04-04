@@ -14,12 +14,12 @@ TEST(veselov_i_systems_grad_method_seq, test_pipeline) {
   std::vector<double> res(rows);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(matrix.size());
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(vec.size());
 
   auto testTaskSeq = std::make_shared<SystemsGradMethodSeq>(taskDataSeq);
@@ -48,12 +48,12 @@ TEST(veselov_i_systems_grad_method_seq, test_task_run) {
   std::vector<double> res(rows);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(matrix.size());
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(vec.size());
 
   auto testTaskSeq = std::make_shared<SystemsGradMethodSeq>(taskDataSeq);

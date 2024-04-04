@@ -16,12 +16,12 @@ TEST(veslov_i_systems_grad_method_seq, Test_some_matrix) {
   std::vector<double> excepted_res = {-0.3333333, 1.6666666};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(rows * rows);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(vec.size());
 
   SystemsGradMethodSeq systemsGradMethodSeq(taskDataSeq);
@@ -42,12 +42,12 @@ TEST(veslov_i_systems_grad_method_seq, Test_unit_matrix) {
   std::vector<double> excepted_res = {1, 2, 3, 4};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(rows * rows);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(vec.size());
 
   SystemsGradMethodSeq systemsGradMethodSeq(taskDataSeq);
@@ -68,12 +68,12 @@ TEST(veslov_i_systems_grad_method_seq, Test_random_10) {
   std::vector<double> res(rows, 0.0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(matrix.size());
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(res.size());
 
   SystemsGradMethodSeq systemsGradMethodSeq(taskDataSeq);
@@ -92,12 +92,12 @@ TEST(veslov_i_systems_grad_method_seq, Test_random_5) {
   std::vector<double> res(rows);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(matrix.size());
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(res.size());
 
   SystemsGradMethodSeq systemsGradMethodSeq(taskDataSeq);
@@ -117,12 +117,12 @@ TEST(veslov_i_systems_grad_method_seq, Test_triple_diag_matrix) {
   std::vector<double> excepted_res = {4, 7, 8, 6};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(matrix.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(matrix.data()));
   taskDataSeq->inputs_count.emplace_back(matrix.size());
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<u_int8_t *>(vec.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&rows));
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<u_int8_t *>(res.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(vec.size());
 
   SystemsGradMethodSeq systemsGradMethodSeq(taskDataSeq);
