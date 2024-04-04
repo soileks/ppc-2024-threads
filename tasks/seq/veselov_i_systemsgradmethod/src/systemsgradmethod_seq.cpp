@@ -34,8 +34,6 @@ bool SystemsGradMethodSeq::validation() {
          taskData->inputs_count[1] == taskData->outputs_count[0];
 }
 
-double tol = 1e-6;
-
 bool SystemsGradMethodSeq::run() {
   try {
     internal_order_test();
@@ -55,37 +53,37 @@ bool SystemsGradMethodSeq::post_processing() {
   return true;
 }
 
-bool checkSolution(const std::vector<double> &A, const std::vector<double> &b, const std::vector<double> &x,
+bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb, const std::vector<double> &xx,
                    double tol) {
-  int n = b.size();
+  int n = bb.size();
   std::vector<double> Ax(n, 0.0);
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
-      Ax[i] += A[i * n + j] * x[j];
+      Ax[i] += Aa[i * n + j] * xx[j];
     }
   }
   for (int i = 0; i < n; ++i) {
-    if (std::abs(Ax[i] - b[i]) > tol) {
+    if (std::abs(Ax[i] - bb[i]) > tol) {
       return false;
     }
   }
   return true;
 }
 
-double SystemsGradMethodSeq::dotProduct(const std::vector<double> &a, const std::vector<double> &b) {
+double SystemsGradMethodSeq::dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double result = 0.0;
-  for (size_t i = 0; i < a.size(); ++i) {
-    result += a[i] * b[i];
+  for (size_t i = 0; i < aa.size(); ++i) {
+    result += aa[i] * bb[i];
   }
   return result;
 }
 
-std::vector<double> SystemsGradMethodSeq::matrixVectorProduct(const std::vector<double> &A,
-                                                              const std::vector<double> &x, int n) {
+std::vector<double> SystemsGradMethodSeq::matrixVectorProduct(const std::vector<double> &Aa,
+                                                              const std::vector<double> &xx, int n) {
   std::vector<double> result(n, 0.0);
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
-      result[i] += A[i * n + j] * x[j];
+      result[i] += Aa[i * n + j] * xx[j];
     }
   }
   return result;
@@ -116,15 +114,15 @@ std::vector<double> genRandomMatrix(int size, int maxVal) {
   return matrix;
 }
 
-std::vector<double> SystemsGradMethodSeq::SLEgradSolver(const std::vector<double> &A, const std::vector<double> &b,
+std::vector<double> SystemsGradMethodSeq::SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb,
                                                         int n, double tol) {
   std::vector<double> res(n, 0.0);
-  std::vector<double> r = b;
+  std::vector<double> r = bb;
   std::vector<double> p = r;
-  std::vector<double> r_old = b;
+  std::vector<double> r_old = bb;
 
   while (true) {
-    std::vector<double> Ap = matrixVectorProduct(A, p, n);
+    std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
     double alpha = dotProduct(r, r) / dotProduct(Ap, p);
     for (size_t i = 0; i < res.size(); ++i) {
       res[i] += alpha * p[i];
