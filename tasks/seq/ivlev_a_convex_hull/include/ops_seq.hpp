@@ -20,6 +20,7 @@ class ConvexHullSequential : public ppc::core::Task {
   std::vector<std::vector<int>> images;
   std::vector<std::vector<std::pair<size_t, size_t>>> results;
 
-  static std::vector<std::pair<size_t, size_t>> ToComponents(const std::vector<int>& image_, std::pair<size_t, size_t> size_);
+  static std::vector<std::pair<size_t, size_t>> ToComponents(const std::vector<int>& image_,
+   std::pair<size_t, size_t> size_);
   std::vector<int> ToImage(const std::vector<std::pair<size_t, size_t>>& component_, std::pair<size_t, size_t> size_);
 };
