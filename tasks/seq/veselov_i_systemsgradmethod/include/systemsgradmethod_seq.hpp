@@ -15,9 +15,8 @@ class SystemsGradMethodSeq : public ppc::core::Task {
                                     double tol = 1e-6);
   double dotProduct(const std::vector<double> &a, const std::vector<double> &b);
   std::vector<double> matrixVectorProduct(const std::vector<double> &A, const std::vector<double> &x, int n);
-  void normalize(std::vector<double> &A);
 
-public:
+ public:
   explicit SystemsGradMethodSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;

@@ -55,18 +55,6 @@ bool SystemsGradMethodSeq::post_processing() {
   return true;
 }
 
-void SystemsGradMethodSeq::normalize(std::vector<double> &matrix) {
-  double max_val = matrix[0];
-  for (size_t i = 1; i < rows * rows; ++i) {
-    if (matrix[i] > max_val) {
-      max_val = matrix[i];
-    }
-  }
-  for (size_t i = 0; i < rows * rows; ++i) {
-    matrix[i] /= max_val;
-  }
-}
-
 bool checkSolution(const std::vector<double> &A, const std::vector<double> &b, const std::vector<double> &x,
                    double tol) {
   int n = b.size();
