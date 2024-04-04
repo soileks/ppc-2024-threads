@@ -119,8 +119,3 @@ TEST(ivlev_a_convex_hull_sequential, Test_run5) {
   testTaskSequential.post_processing();
   ASSERT_EQ(count, out[0]);
 }
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
