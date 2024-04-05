@@ -28,7 +28,7 @@ TEST(ivlev_a_convex_hull_sequential, one_component) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(ivlev_a_convex_hull_sequential, two_component) {
@@ -54,7 +54,7 @@ TEST(ivlev_a_convex_hull_sequential, two_component) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(ivlev_a_convex_hull_sequential, three_component) {
@@ -80,7 +80,7 @@ TEST(ivlev_a_convex_hull_sequential, three_component) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(ivlev_a_convex_hull_sequential, one_big_compnent) {
@@ -107,7 +107,7 @@ TEST(ivlev_a_convex_hull_sequential, one_big_compnent) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(ivlev_a_convex_hull_sequential, one_small_one_big) {
@@ -136,5 +136,5 @@ TEST(ivlev_a_convex_hull_sequential, one_small_one_big) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }

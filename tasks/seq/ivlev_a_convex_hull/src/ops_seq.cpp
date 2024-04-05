@@ -37,7 +37,7 @@ bool ConvexHullSequential::validation() {
   internal_order_test();
   try {
     if (taskData->inputs_count.size() <= 1) return false;
-    if (taskData->outputs_count.size() <= 0) return false;
+    if (taskData->outputs_count.empty()) return false;
     if (taskData->inputs_count[0] < 1) return false;
     for (size_t i = 0; i < taskData->inputs_count[0]; i++) {
       if (taskData->inputs[i] == nullptr) return false;
@@ -130,9 +130,9 @@ std::vector<std::pair<size_t, size_t>> ConvexHullSequential::Convex_Hull(
     if (component_[i].second < component_[left].second) left = i;
 
   std::vector<std::pair<size_t, size_t>> res = {};
-  size_t p = left, q;
+  size_t p = left;
   do {
-    q = (p + 1) % n;
+    size_t q = (p + 1) % n;
     for (size_t i = 0; i < n; i++) {
       if (rotation(component_[p], component_[i], component_[q]) == 2 ||
           (rotation(component_[p], component_[i], component_[q]) == 0 && i > p && i != q)) {
