@@ -11,6 +11,52 @@
 
 using namespace std::chrono_literals;
 
+double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
+  double result = 0.0;
+  for (size_t i = 0; i < aa.size(); ++i) {
+    result += aa[i] * bb[i];
+  }
+  return result;
+}
+
+std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n) {
+  std::vector<double> result(n, 0.0);
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < n; ++j) {
+      result[i] += Aa[i * n + j] * xx[j];
+    }
+  }
+  return result;
+}
+
+std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb, int n,
+                                  double tol = 1e-6) {
+  std::vector<double> res(n, 0.0);
+  std::vector<double> r = bb;
+  std::vector<double> p = r;
+  std::vector<double> r_old = bb;
+
+  while (true) {
+    std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
+    double alpha = dotProduct(r, r) / dotProduct(Ap, p);
+    for (size_t i = 0; i < res.size(); ++i) {
+      res[i] += alpha * p[i];
+    }
+    for (size_t i = 0; i < r.size(); ++i) {
+      r[i] = r_old[i] - alpha * Ap[i];
+    }
+    if (sqrt(dotProduct(r, r)) < tol) {
+      break;
+    }
+    double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
+    for (size_t i = 0; i < p.size(); ++i) {
+      p[i] = r[i] + beta * p[i];
+    }
+    r_old = r;
+  }
+  return res;
+}
+
 bool SystemsGradMethodSeq::pre_processing() {
   try {
     internal_order_test();
@@ -70,24 +116,6 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
   return true;
 }
 
-double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
-  double result = 0.0;
-  for (size_t i = 0; i < aa.size(); ++i) {
-    result += aa[i] * bb[i];
-  }
-  return result;
-}
-
-std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n) {
-  std::vector<double> result(n, 0.0);
-  for (int i = 0; i < n; ++i) {
-    for (int j = 0; j < n; ++j) {
-      result[i] += Aa[i * n + j] * xx[j];
-    }
-  }
-  return result;
-}
-
 std::vector<double> genRandomVector(int size, int maxVal) {
   std::vector<double> res(size);
   std::mt19937 gen(4140);
@@ -111,32 +139,4 @@ std::vector<double> genRandomMatrix(int size, int maxVal) {
     }
   }
   return matrix;
-}
-
-std::vector<double> SystemsGradMethodSeq::SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb,
-                                                        int n, double tol) {
-  std::vector<double> res(n, 0.0);
-  std::vector<double> r = bb;
-  std::vector<double> p = r;
-  std::vector<double> r_old = bb;
-
-  while (true) {
-    std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
-    double alpha = dotProduct(r, r) / dotProduct(Ap, p);
-    for (size_t i = 0; i < res.size(); ++i) {
-      res[i] += alpha * p[i];
-    }
-    for (size_t i = 0; i < r.size(); ++i) {
-      r[i] = r_old[i] - alpha * Ap[i];
-    }
-    if (sqrt(dotProduct(r, r)) < tol) {
-      break;
-    }
-    double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
-    for (size_t i = 0; i < p.size(); ++i) {
-      p[i] = r[i] + beta * p[i];
-    }
-    r_old = r;
-  }
-  return res;
 }

@@ -11,9 +11,6 @@ class SystemsGradMethodSeq : public ppc::core::Task {
   std::vector<double> x;
   int rows;
 
-  std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb, int n,
-                                    double tol = 1e-6);
-
  public:
   explicit SystemsGradMethodSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
