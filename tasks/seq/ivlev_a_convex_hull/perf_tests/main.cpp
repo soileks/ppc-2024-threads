@@ -23,8 +23,8 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
   in[0].emplace_back(100000, 99999);
   in[0].emplace_back(100000, 100000);
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
-  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {2, 0}, {2, 4},
-  {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {
+      {{0, 0}, {0, 1}, {2, 0}, {2, 4}, {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -77,8 +77,8 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_task_run_) {
   in[0].emplace_back(100000, 99999);
   in[0].emplace_back(100000, 100000);
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
-  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {2, 0}, {2, 4},
-  {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {
+      {{0, 0}, {0, 1}, {2, 0}, {2, 4}, {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();

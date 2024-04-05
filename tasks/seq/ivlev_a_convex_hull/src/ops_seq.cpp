@@ -57,9 +57,9 @@ bool ConvexHullSequential::validation() {
 bool ConvexHullSequential::run() {
   internal_order_test();
   try {
-    for (size_t i = 0; i <taskData->inputs_count[0]; i++) {
-      //images[i] = ToImage(components[i], sizes[i]);
-      //results[i] = ToComponents(images[i], sizes[i]);
+    for (size_t i = 0; i < taskData->inputs_count[0]; i++) {
+      // images[i] = ToImage(components[i], sizes[i]);
+      // results[i] = ToComponents(images[i], sizes[i]);
       results[i] = Convex_Hull(components[i]);
     }
   } catch (...) {
@@ -73,7 +73,7 @@ bool ConvexHullSequential::post_processing() {
   internal_order_test();
   try {
     size_t n = taskData->inputs_count[0];
-    auto* outputs_ = reinterpret_cast<std::vector<std::pair<size_t, size_t>> *>(taskData->outputs[0]);
+    auto* outputs_ = reinterpret_cast<std::vector<std::pair<size_t, size_t>>*>(taskData->outputs[0]);
     for (size_t i = 0; i < n; i++) {
       std::sort(results[i].begin(), results[i].end());
       outputs_[i].clear();
@@ -102,7 +102,7 @@ std::vector<std::pair<size_t, size_t>> ConvexHullSequential::ToComponents(const 
 }
 
 std::vector<size_t> ConvexHullSequential::ToImage(const std::vector<std::pair<size_t, size_t>>& component_,
-                                               std::pair<size_t, size_t> size_) {
+                                                  std::pair<size_t, size_t> size_) {
   size_t height = size_.first;
   size_t width = size_.second;
   std::vector<size_t> res(height * width, 0);
@@ -114,39 +114,34 @@ std::vector<size_t> ConvexHullSequential::ToImage(const std::vector<std::pair<si
   return res;
 }
 
-size_t rotation(const std::pair<int, int>& a, const std::pair<int, int>& b, const std::pair<int, int>& c)
-{
-    int tmp = (b.first - a.first) * (c.second - b.second) - (b.second - a.second) * (c.first - b.first);
-    if (tmp == 0) return 0;
-    return ((tmp > 0) ? 1 : 2);
+size_t rotation(const std::pair<int, int>& a, const std::pair<int, int>& b, const std::pair<int, int>& c) {
+  int tmp = (b.first - a.first) * (c.second - b.second) - (b.second - a.second) * (c.first - b.first);
+  if (tmp == 0) return 0;
+  return ((tmp > 0) ? 1 : 2);
 }
 
-std::vector<std::pair<size_t, size_t>> ConvexHullSequential::Convex_Hull(const std::vector<std::pair<size_t, size_t>>& component_)
-{
-    size_t n = component_.size();
-    if (n < 3) return component_;
+std::vector<std::pair<size_t, size_t>> ConvexHullSequential::Convex_Hull(
+    const std::vector<std::pair<size_t, size_t>>& component_) {
+  size_t n = component_.size();
+  if (n < 3) return component_;
 
-    size_t left = 0;
-    for (size_t i = 1; i < n; i++)
-        if (component_[i].second < component_[left].second)
-            left = i;
+  size_t left = 0;
+  for (size_t i = 1; i < n; i++)
+    if (component_[i].second < component_[left].second) left = i;
 
-    std::vector<std::pair<size_t, size_t>> res = {};
-    size_t p = left, q;
-    do
-    {
-        q = (p + 1) % n;
-        for (size_t i = 0; i < n; i++)
-        {
-          if (rotation(component_[p], component_[i], component_[q]) == 2 || 
+  std::vector<std::pair<size_t, size_t>> res = {};
+  size_t p = left, q;
+  do {
+    q = (p + 1) % n;
+    for (size_t i = 0; i < n; i++) {
+      if (rotation(component_[p], component_[i], component_[q]) == 2 ||
           (rotation(component_[p], component_[i], component_[q]) == 0 && i > p && i != q)) {
-            q = i;
-          }
-        }
-        res.push_back(component_[q]);
-        p = q;
+        q = i;
+      }
     }
-    while (p != left);
+    res.push_back(component_[q]);
+    p = q;
+  } while (p != left);
 
-    return res;
+  return res;
 }

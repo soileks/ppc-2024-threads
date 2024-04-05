@@ -85,8 +85,8 @@ TEST(ivlev_a_convex_hull_sequential, three_component) {
 
 TEST(ivlev_a_convex_hull_sequential, one_big_compnent) {
   // Create data
-  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{{0, 2}, {1, 1}, {1, 3}, {2, 0}, {2, 2}, {2, 4}, {3, 1},
-    {3, 3}, {4, 2}}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {
+      {{0, 2}, {1, 1}, {1, 3}, {2, 0}, {2, 2}, {2, 4}, {3, 1}, {3, 3}, {4, 2}}};
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 2}, {2, 0}, {2, 4}, {4, 2}}};
 
@@ -112,11 +112,12 @@ TEST(ivlev_a_convex_hull_sequential, one_big_compnent) {
 
 TEST(ivlev_a_convex_hull_sequential, one_small_one_big) {
   // Create data
-  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{{0, 0}, {0, 1}, {1, 0}, {1, 1}},
-   {{0, 0}, {0, 1}, {0, 2}, {1, 1}, {1, 3}, {2, 0}, {2, 2}, {3, 0}, {3, 2}, {3, 3}}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {
+      {{0, 0}, {0, 1}, {1, 0}, {1, 1}},
+      {{0, 0}, {0, 1}, {0, 2}, {1, 1}, {1, 3}, {2, 0}, {2, 2}, {3, 0}, {3, 2}, {3, 3}}};
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {1, 0}, {1, 1}},
-   {{0, 0}, {0, 2}, {1, 3}, {3, 0}, {3, 3}}};;
+                                                             {{0, 0}, {0, 2}, {1, 3}, {3, 0}, {3, 3}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
