@@ -78,8 +78,7 @@ double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) 
   return result;
 }
 
-std::vector<double> matrixVectorProduct(const std::vector<double> &Aa,
-                                        const std::vector<double> &xx, int n) {
+std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n) {
   std::vector<double> result(n, 0.0);
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
