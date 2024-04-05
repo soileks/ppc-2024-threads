@@ -11,7 +11,7 @@ bool ConvexHullSequential::pre_processing() {
     size_t n = taskData->inputs_count[0];
     components.resize(n);
     for (size_t i = 0; i < n; i++) {
-      auto* input_ = reinterpret_cast<std::pair<size_t, size_t> *>(taskData->inputs[i]);
+      auto* input_ = reinterpret_cast<std::pair<size_t, size_t>*>(taskData->inputs[i]);
       size_t tmp_size = taskData->inputs_count[i + 1];
       components[i].assign(input_, input_ + tmp_size);
       size_t m_w = 0;
