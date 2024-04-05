@@ -35,20 +35,14 @@ bool KorablevOMPMonteCarlo::run() {
     double h1 = (Int1[1] - Int1[0]) / N;
     double h2 = (Int2[1] - Int2[0]) / N;
 
-    int i;
-    int j;
     double tmp_res = .0;
 #pragma omp parallel for reduction(+ : tmp_res)
-    for (j = 0; j < N; ++j) {
+    for (int j = 0; j < N; ++j) {
       double y = Int2[0] + h2 * (double)j;
-      double tmp_sum = .0;
-#pragma omp parallel for reduction(+ : tmp_sum)
-      for (i = 0; i < N; ++i) {
-        tmp_sum += function(Int1[0] + h1 * (double)i, y);
+      for (int i = 0; i < N; ++i) {
+        tmp_res += function(Int1[0] + h1 * (double)i, y);
       }
-      tmp_res += tmp_sum;
     }
-
     res = tmp_res * h1 * h2;
   } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
