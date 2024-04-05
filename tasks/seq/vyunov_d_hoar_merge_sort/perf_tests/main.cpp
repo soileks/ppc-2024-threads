@@ -1,9 +1,11 @@
 // Copyright 2024 Vyunov Danila
 #include <gtest/gtest.h>
+
 #include <algorithm>
 #include <vector>
-#include "core/perf/include/perf.hpp"
+
 #include "./seq/vyunov_d_hoar_merge_sort/include/hoar_merge.h"
+#include "core/perf/include/perf.hpp"
 
 TEST(vyunov_d_hoare_sort_seq, test_pipeline_run) {
   std::vector<int> inputArray = Getvec(2000);

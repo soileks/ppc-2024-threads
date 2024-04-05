@@ -1,10 +1,11 @@
-//Copyright 2024 Vyunov Danila
+// Copyright 2024 Vyunov Danila
 #include "./seq/vyunov_d_hoar_merge_sort/include/hoar_merge.h"
-#include <vector>
-#include <iostream>
+
 #include <algorithm>
-#include <thread>
+#include <iostream>
 #include <random>
+#include <thread>
+#include <vector>
 
 using namespace std::chrono_literals;
 
@@ -66,8 +67,8 @@ std::vector<int> Getvec(int n) {
   return vec;
 }
 
-void HoarSort(std::vector<int>* arr, int first, int last) {
-  std::vector<int>& s = *arr;
+void HoarSort(std::vector<int> *arr, int first, int last) {
+  std::vector<int> &s = *arr;
   if (s.size() == 0) throw "Empty vector";
   int left = first;
   int right = last;

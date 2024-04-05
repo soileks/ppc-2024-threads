@@ -1,7 +1,9 @@
 // Copyright 2024 Vyunov Danila
 #include <gtest/gtest.h>
+
 #include <algorithm>
 #include <vector>
+
 #include "../include/hoar_merge.h"
 
 TEST(vyunov_d_hoare_sort_seq, Const_Array) {

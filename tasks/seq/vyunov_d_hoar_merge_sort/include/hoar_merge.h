@@ -1,6 +1,7 @@
 // Copyright 2024 Vyunov Danila
 #include <algorithm>
 #include <vector>
+
 #include "core/task/include/task.hpp"
 
 class HoareSortSimpleSeq : public ppc::core::Task {
