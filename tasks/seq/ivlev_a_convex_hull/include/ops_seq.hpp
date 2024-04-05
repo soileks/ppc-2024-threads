@@ -1,6 +1,7 @@
 // Copyright 2024 Ivlev Alexander
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -17,10 +18,10 @@ class ConvexHullSequential : public ppc::core::Task {
  private:
   std::vector<std::pair<size_t, size_t>> sizes;
   std::vector<std::vector<std::pair<size_t, size_t>>> components;
-  std::vector<std::vector<int>> images;
+  std::vector<std::vector<size_t>> images;
   std::vector<std::vector<std::pair<size_t, size_t>>> results;
 
-  static std::vector<std::pair<size_t, size_t>> ToComponents(const std::vector<int>& image_,
-                                                             std::pair<size_t, size_t> size_);
-  std::vector<int> ToImage(const std::vector<std::pair<size_t, size_t>>& component_, std::pair<size_t, size_t> size_);
+  std::vector<std::pair<size_t, size_t>> ToComponents(const std::vector<size_t>& image_, std::pair<size_t, size_t> size_);
+  std::vector<size_t> ToImage(const std::vector<std::pair<size_t, size_t>>& component_, std::pair<size_t, size_t> size_);
+  std::vector<std::pair<size_t, size_t>> Convex_Hull(const std::vector<std::pair<size_t, size_t>>& points);
 };

@@ -8,19 +8,37 @@
 
 TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
   // Create data
-  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
-  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
-  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{}};
+  in[0].emplace_back(0, 0);
+  in[0].emplace_back(0, 1);
+  in[0].emplace_back(1, 1);
+  for (size_t i = 2; i < 99999; i++) {
+    in[0].emplace_back(i, i - 2);
+    in[0].emplace_back(i, i - 1);
+    in[0].emplace_back(i, i);
+    in[0].emplace_back(i, i + 1);
+    in[0].emplace_back(i, i + 2);
+  }
+  in[0].emplace_back(99999, 99999);
+  in[0].emplace_back(100000, 99999);
+  in[0].emplace_back(100000, 100000);
+  std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {2, 0}, {2, 4},
+  {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  out.resize(in.size());
   taskDataSeq->outputs_count.emplace_back(out.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  for (size_t i = 0; i < in.size(); i++) {
+    taskDataSeq->inputs_count.emplace_back(in[i].size());
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
+  }
 
   // Create Task
-  auto testTaskSequential = std::make_shared<TestTaskSequential>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<ConvexHullSequential>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -44,19 +62,37 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
 
 TEST(sequential_ivlev_a_convex_hull_perf_test, test_task_run_) {
   // Create data
-  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{(0, 0), (1, 1)}};
-  std::vector<std::vector<std::pair<size_t, size_t>>> out{{}};
-  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{(0, 0), (1, 1)}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{}};
+  in[0].emplace_back(0, 0);
+  in[0].emplace_back(0, 1);
+  in[0].emplace_back(1, 1);
+  for (size_t i = 2; i < 99999; i++) {
+    in[0].emplace_back(i, i - 2);
+    in[0].emplace_back(i, i - 1);
+    in[0].emplace_back(i, i);
+    in[0].emplace_back(i, i + 1);
+    in[0].emplace_back(i, i + 2);
+  }
+  in[0].emplace_back(99999, 99999);
+  in[0].emplace_back(100000, 99999);
+  in[0].emplace_back(100000, 100000);
+  std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
+  std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {2, 0}, {2, 4},
+  {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  out.resize(in.size());
   taskDataSeq->outputs_count.emplace_back(out.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  for (size_t i = 0; i < in.size(); i++) {
+    taskDataSeq->inputs_count.emplace_back(in[i].size());
+    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
+  }
 
   // Create Task
-  auto testTaskSequential = std::make_shared<TestTaskSequential>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<ConvexHullSequential>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
