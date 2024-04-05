@@ -13,8 +13,6 @@ class SystemsGradMethodSeq : public ppc::core::Task {
 
   std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb, int n,
                                     double tol = 1e-6);
-  double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb);
-  std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n);
 
  public:
   explicit SystemsGradMethodSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}

@@ -70,7 +70,7 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
   return true;
 }
 
-double SystemsGradMethodSeq::dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
+double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double result = 0.0;
   for (size_t i = 0; i < aa.size(); ++i) {
     result += aa[i] * bb[i];
@@ -78,8 +78,8 @@ double SystemsGradMethodSeq::dotProduct(const std::vector<double> &aa, const std
   return result;
 }
 
-std::vector<double> SystemsGradMethodSeq::matrixVectorProduct(const std::vector<double> &Aa,
-                                                              const std::vector<double> &xx, int n) {
+std::vector<double> matrixVectorProduct(const std::vector<double> &Aa,
+                                        const std::vector<double> &xx, int n) {
   std::vector<double> result(n, 0.0);
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
