@@ -1,5 +1,6 @@
 // Copyright 2024 Troitskiy Alexander
 #include <gtest/gtest.h>
+
 #include <cmath>
 #include <vector>
 
