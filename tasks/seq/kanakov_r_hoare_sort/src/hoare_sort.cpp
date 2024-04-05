@@ -73,7 +73,6 @@ std::vector<int> generateRandomVector(int size, int min, int max) {
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<int> distrib(min, max);
-  for (int i = 0; i < size; ++i)
-    res[i] = distrib(gen);
+  for (int i = 0; i < size; ++i) res[i] = distrib(gen);
   return res;
 }
