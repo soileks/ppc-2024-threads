@@ -67,12 +67,12 @@ std::vector<int> Getvec(int n) {
   return vec;
 }
 
-void HoarSort(std::vector<int> *arr, int first, int last) {
+void HoarSort(std::vector<int> *arr, int l, int r) {
   std::vector<int> &s = *arr;
-  if (s.size() == 0) throw "Empty vector";
-  int left = first;
-  int right = last;
-  int middle = s[(first + last) / 2];
+  if (s.empty()) throw "Empty vector";
+  int left = l;
+  int right = r;
+  int middle = s[(l + r) / 2];
 
   do {
     while (s[left] < middle) left++;
@@ -87,6 +87,6 @@ void HoarSort(std::vector<int> *arr, int first, int last) {
     }
   } while (left <= right);
 
-  if (left < last) HoarSort(&s, left, last);
-  if (first < right) HoarSort(&s, first, right);
+  if (left < r) HoarSort(&s, left, r);
+  if (l < right) HoarSort(&s, l, right);
 }
