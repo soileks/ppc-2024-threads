@@ -8,9 +8,12 @@ using namespace std::chrono_literals;
 bool ConvexHullSequential::pre_processing() {
   internal_order_test();
   try {
-    auto* input_ = reinterpret_cast<std::pair<size_t, size_t>*>(taskData->inputs[0]);
-    components.resize(taskData->inputs_count[0]);
-    components[0].assign(input_, input_ + 1);
+    auto* input_ = reinterpret_cast<std::vector<std::pair<size_t, size_t>>*>(taskData->inputs[0]);
+    size_t n = taskData->inputs_count[0];
+    components.resize(n);
+    for (size_t i = 0; i < n; i++) {
+      components[i].assign(input_, input_ + taskData->inputs_count[i+1]);
+    }
     images.resize(taskData->inputs_count[0]);
   } catch (...) {
     return false;
@@ -37,7 +40,7 @@ bool ConvexHullSequential::run() {
 
 bool ConvexHullSequential::post_processing() {
   internal_order_test();
-  reinterpret_cast<std::pair<size_t, size_t>*>(taskData->outputs[0])[0] = results[0];
+  reinterpret_cast<std::vector<std::pair<size_t, size_t>>*>(taskData->outputs) = results;
   return true;
 }
 
