@@ -1,0 +1,75 @@
+// Copyright 2024 Ryabkov Vladislav
+#include <gtest/gtest.h>
+
+#include <chrono>
+#include <cstring>
+#include <thread>
+#include <vector>
+
+#include "core/perf/include/perf.hpp"
+#include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
+
+std::shared_ptr<ppc::core::TaskData> createTaskData(const std::vector<int>& vect) {
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+
+  std::vector<uint8_t> tempBuffer(vect.size() * sizeof(int));
+  std::memcpy(tempBuffer.data(), vect.data(), tempBuffer.size());
+
+  taskDataSeq->inputs.emplace_back(tempBuffer.data());
+  taskDataSeq->inputs_count.emplace_back(vect.size() * sizeof(int));
+
+  taskDataSeq->outputs.emplace_back(tempBuffer.data());
+  taskDataSeq->outputs_count.emplace_back(vect.size() * sizeof(int));
+
+  return taskDataSeq;
+}
+
+TEST(ryabkov_v_vec_test_perf, test_pipeline) {
+  std::vector<int> vect = GetRandomVector(1000);
+  std::vector<int> result(vect.size(), 0);
+
+  auto taskDataSeq = createTaskData(vect);
+
+  auto testTaskSequential = std::make_shared<SeqBatcher>(taskDataSeq);
+
+  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
+  perfAttr->num_running = 10;
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
+
+  auto perfResults = std::make_shared<ppc::core::PerfResults>();
+
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  perfAnalyzer->pipeline_run(perfAttr, perfResults);
+  ppc::core::Perf::print_perf_statistic(perfResults);
+  ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
+}
+
+TEST(ryabkov_v_vec_test_perf, test_task_run) {
+  std::vector<int> vect = GetRandomVector(1000);
+  std::vector<int> result(vect.size(), 0);
+
+  auto taskDataSeq = createTaskData(vect);
+
+  auto testTaskSequential = std::make_shared<SeqBatcher>(taskDataSeq);
+
+  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
+  perfAttr->num_running = 10;
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
+
+  auto perfResults = std::make_shared<ppc::core::PerfResults>();
+
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  perfAnalyzer->task_run(perfAttr, perfResults);
+  ppc::core::Perf::print_perf_statistic(perfResults);
+  ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
+}
