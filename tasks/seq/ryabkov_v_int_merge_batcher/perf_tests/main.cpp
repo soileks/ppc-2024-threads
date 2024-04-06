@@ -2,33 +2,21 @@
 #include <gtest/gtest.h>
 
 #include <chrono>
-#include <cstring>
 #include <thread>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
-std::shared_ptr<ppc::core::TaskData> createTaskData(const std::vector<int>& vect) {
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-
-  std::vector<uint8_t> tempBuffer(vect.size() * sizeof(int));
-  std::memcpy(tempBuffer.data(), vect.data(), tempBuffer.size());
-
-  taskDataSeq->inputs.emplace_back(tempBuffer.data());
-  taskDataSeq->inputs_count.emplace_back(vect.size() * sizeof(int));
-
-  taskDataSeq->outputs.emplace_back(tempBuffer.data());
-  taskDataSeq->outputs_count.emplace_back(vect.size() * sizeof(int));
-
-  return taskDataSeq;
-}
-
 TEST(ryabkov_v_vec_test_perf, test_pipeline) {
-  std::vector<int> vect = GetRandomVector(1000);
+  std::vector<int> vect = GetRandVector(1000);
   std::vector<int> result(vect.size(), 0);
 
-  auto taskDataSeq = createTaskData(vect);
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vect.data()));
+  taskDataSeq->inputs_count.emplace_back(vect.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
+  taskDataSeq->outputs_count.emplace_back(result.size());
 
   auto testTaskSequential = std::make_shared<SeqBatcher>(taskDataSeq);
 
@@ -50,10 +38,14 @@ TEST(ryabkov_v_vec_test_perf, test_pipeline) {
 }
 
 TEST(ryabkov_v_vec_test_perf, test_task_run) {
-  std::vector<int> vect = GetRandomVector(1000);
+  std::vector<int> vect = GetRandVector(1000);
   std::vector<int> result(vect.size(), 0);
 
-  auto taskDataSeq = createTaskData(vect);
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vect.data()));
+  taskDataSeq->inputs_count.emplace_back(vect.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
+  taskDataSeq->outputs_count.emplace_back(result.size());
 
   auto testTaskSequential = std::make_shared<SeqBatcher>(taskDataSeq);
 
