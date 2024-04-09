@@ -21,11 +21,11 @@ TEST(kiselev_i_shell_simple_seq, check_5_size) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
+  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
+  ASSERT_EQ(kiselevTaskSequential.validation(), true);
+  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
+  ASSERT_EQ(kiselevTaskSequential.run(), true);
+  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
   ASSERT_EQ(res, out);
 }
 
@@ -48,11 +48,11 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
+  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
+  ASSERT_EQ(kiselevTaskSequential.validation(), true);
+  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
+  ASSERT_EQ(kiselevTaskSequential.run(), true);
+  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
   ASSERT_EQ(res, out);
 }
 
@@ -75,11 +75,11 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_sorted) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
+  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
+  ASSERT_EQ(kiselevTaskSequential.validation(), true);
+  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
+  ASSERT_EQ(kiselevTaskSequential.run(), true);
+  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
   ASSERT_EQ(res, out);
 }
 
@@ -103,11 +103,11 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
+  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
+  ASSERT_EQ(kiselevTaskSequential.validation(), true);
+  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
+  ASSERT_EQ(kiselevTaskSequential.run(), true);
+  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
   ASSERT_EQ(res, out);
 }
 
@@ -132,11 +132,11 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
+  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
+  ASSERT_EQ(kiselevTaskSequential.validation(), true);
+  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
+  ASSERT_EQ(kiselevTaskSequential.run(), true);
+  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
   ASSERT_EQ(res, out);
 }
 
@@ -155,6 +155,6 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
 //  taskDataSeq->outputs_count.emplace_back(out.size());
 
 // Create Task
-//  TestTaskSequential testTaskSequential(taskDataSeq);
-//  ASSERT_EQ(testTaskSequential.validation(), false);
+//  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
+//  ASSERT_EQ(kiselevTaskSequential.validation(), false);
 // }

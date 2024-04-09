@@ -28,7 +28,7 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskSequential = std::make_shared<TestTaskSequential>(taskDataSeq);
+  auto kiselevTaskSequential = std::make_shared<KiselevTaskSequential>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -44,7 +44,7 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(kiselevTaskSequential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(res, out);
@@ -72,7 +72,7 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskSequential = std::make_shared<TestTaskSequential>(taskDataSeq);
+  auto kiselevTaskSequential = std::make_shared<KiselevTaskSequential>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -88,7 +88,7 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(kiselevTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(res, out);

@@ -5,7 +5,7 @@
 
 using namespace std::chrono_literals;
 
-bool TestTaskSequential::pre_processing() {
+bool KiselevTaskSequential::pre_processing() {
   try {
     internal_order_test();
     input_ = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
@@ -21,7 +21,7 @@ bool TestTaskSequential::pre_processing() {
   }
 }
 
-bool TestTaskSequential::validation() {
+bool KiselevTaskSequential::validation() {
   // try {
   //   internal_order_test();
   //   return taskData->inputs_count[0] != 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
@@ -32,7 +32,7 @@ bool TestTaskSequential::validation() {
   return true;
 }
 
-bool TestTaskSequential::run() {
+bool KiselevTaskSequential::run() {
   try {
     internal_order_test();
     int n = arr.size();
@@ -58,7 +58,7 @@ bool TestTaskSequential::run() {
   }
 }
 
-bool TestTaskSequential::post_processing() {
+bool KiselevTaskSequential::post_processing() {
   try {
     res = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
     internal_order_test();

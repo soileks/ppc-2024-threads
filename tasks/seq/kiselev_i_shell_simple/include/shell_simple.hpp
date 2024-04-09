@@ -8,9 +8,9 @@
 
 #include "core/task/include/task.hpp"
 
-class TestTaskSequential : public ppc::core::Task {
+class KiselevTaskSequential : public ppc::core::Task {
  public:
-  explicit TestTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit KiselevTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
