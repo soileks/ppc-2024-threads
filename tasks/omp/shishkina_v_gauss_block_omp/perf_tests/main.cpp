@@ -36,8 +36,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_pipeline_run) {
               int row = x + m - kernelSize / 2;
               int col = y + n - kernelSize / 2;
               if (row >= 0 && row < height && col >= 0 && col < width) {
-                sum += input[row * width + col] *
-                       gaussianKernel[m * kernelSize + n];
+                sum += input[row * width + col] * gaussianKernel[m * kernelSize + n];
               }
             }
           }
@@ -48,8 +47,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_pipeline_run) {
     }
   }
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   taskDataSeq->inputs_count.emplace_back(in2.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
@@ -68,9 +66,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_pipeline_run) {
   const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
     auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                        current_time_point - t0)
-                        .count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
     return static_cast<double>(duration) * 1e-9;
   };
 
@@ -113,8 +109,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_task_run) {
               int row = x + m - kernelSize / 2;
               int col = y + n - kernelSize / 2;
               if (row >= 0 && row < height && col >= 0 && col < width) {
-                sum += input[row * width + col] *
-                       gaussianKernel[m * kernelSize + n];
+                sum += input[row * width + col] * gaussianKernel[m * kernelSize + n];
               }
             }
           }
@@ -126,14 +121,12 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_task_run) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(tmp_sec.data()));
   taskDataSeq->inputs_count.emplace_back(tmp_sec.size());
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in_.data()));
   taskDataSeq->inputs_count.emplace_back(in_.size());
-  taskDataSeq->inputs.emplace_back(
-      reinterpret_cast<uint8_t *>(tmp_third.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(tmp_third.data()));
   taskDataSeq->inputs_count.emplace_back(tmp_third.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
@@ -147,9 +140,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_task_run) {
   const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
     auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                        current_time_point - t0)
-                        .count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
     return static_cast<double>(duration) * 1e-9;
   };
 

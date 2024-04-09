@@ -60,8 +60,7 @@ bool LinearFilteringGauss::run() {
               if (row >= 0 && row < height && col >= 0 && col < width) {
 #pragma omp critical
                 {
-                  sum +=
-                      getPixel(row, col) * gaussianKernel[m * kernelSize + n];
+                  sum += getPixel(row, col) * gaussianKernel[m * kernelSize + n];
                 }
               }
             }

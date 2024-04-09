@@ -11,8 +11,7 @@ std::vector<int> getPicture(int n, int m, uint8_t min, uint8_t max);
 
 class LinearFilteringGauss : public ppc::core::Task {
  public:
-  explicit LinearFilteringGauss(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit LinearFilteringGauss(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
