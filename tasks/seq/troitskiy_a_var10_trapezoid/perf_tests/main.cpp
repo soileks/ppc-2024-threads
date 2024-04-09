@@ -13,8 +13,8 @@ TEST(sequential_troitskiy_a_int_trapezoid, test_pipeline_run) {
   double a2 = 1.0;
   double b2 = 2.0;
 
-  int n1 = 300;
-  int n2 = 300;
+  int n1 = 600;
+  int n2 = 600;
 
   double res = 1.039;
 
@@ -63,8 +63,8 @@ TEST(sequential_troitskiy_a_int_trapezoid, test_task_run) {
   double a2 = 1.0;
   double b2 = 2.0;
 
-  int n1 = 300;
-  int n2 = 300;
+  int n1 = 600;
+  int n2 = 600;
 
   double res = 1.039;
 
