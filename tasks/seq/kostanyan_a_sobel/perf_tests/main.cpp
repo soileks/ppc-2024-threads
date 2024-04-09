@@ -8,8 +8,8 @@
 #include "seq/kostanyan_a_sobel/src/ops_seq.cpp"
 
 TEST(Sequential_kostanyan_sobel_perf_test, test_pipeline_run) {
-  const int n = 100;
-  const int m = 100;
+  const int n = 1000;
+  const int m = 1000;
   const uint8_t min = 0;
   const uint8_t max = 255;
 
@@ -62,8 +62,8 @@ TEST(Sequential_kostanyan_sobel_perf_test, test_pipeline_run) {
 }
 
 TEST(Sequential_kostanyan_sobel_perf_test, test_task_run) {
-  const int n = 100;
-  const int m = 100;
+  const int n = 5000;
+  const int m = 5000;
   const uint8_t min = 0;
   const uint8_t max = 255;
 

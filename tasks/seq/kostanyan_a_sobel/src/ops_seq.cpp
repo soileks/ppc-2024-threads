@@ -54,7 +54,6 @@ bool EdgeDetectionSequential::run() {
       res[i * m + j] = sqrt(gx * gx + gy * gy);
     }
   }
-  std::this_thread::sleep_for(30ms);
   return true;
 }
 
