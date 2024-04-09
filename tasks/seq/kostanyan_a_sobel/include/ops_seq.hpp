@@ -7,11 +7,11 @@
 
 #include "core/task/include/task.hpp"
 
-std::vector<uint8_t> getRandomPicture(int n, int m, uint8_t min, uint8_t max);
+std::vector<uint8_t> kostanyan_getRandomPicture(int n, int m, uint8_t min, uint8_t max);
 
-class EdgeDetectionSequential : public ppc::core::Task {
+class kostanyan_EdgeDetectionSequential : public ppc::core::Task {
  public:
-  explicit EdgeDetectionSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit kostanyan_EdgeDetectionSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

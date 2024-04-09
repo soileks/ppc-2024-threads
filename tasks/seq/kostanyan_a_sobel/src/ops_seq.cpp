@@ -6,7 +6,7 @@
 
 using namespace std::chrono_literals;
 
-std::vector<uint8_t> getRandomPicture(int n, int m, uint8_t min, uint8_t max) {
+std::vector<uint8_t> kostanyan_getRandomPicture(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
   std::random_device dev;
   std::mt19937 gen(dev());
@@ -18,12 +18,12 @@ std::vector<uint8_t> getRandomPicture(int n, int m, uint8_t min, uint8_t max) {
   return pict;
 }
 
-bool EdgeDetectionSequential::validation() {
+bool kostanyan_EdgeDetectionSequential::validation() {
   internal_order_test();
   return taskData->inputs_count[1] == taskData->outputs_count[0];
 }
 
-bool EdgeDetectionSequential::pre_processing() {
+bool kostanyan_EdgeDetectionSequential::pre_processing() {
   internal_order_test();
   n = reinterpret_cast<int *>(taskData->inputs[0])[0];
   m = reinterpret_cast<int *>(taskData->inputs[0])[1];
@@ -34,7 +34,7 @@ bool EdgeDetectionSequential::pre_processing() {
   return true;
 }
 
-bool EdgeDetectionSequential::run() {
+bool kostanyan_EdgeDetectionSequential::run() {
   internal_order_test();
   int size = n * m;
   if (size == 0) {
@@ -57,7 +57,7 @@ bool EdgeDetectionSequential::run() {
   return true;
 }
 
-bool EdgeDetectionSequential::post_processing() {
+bool kostanyan_EdgeDetectionSequential::post_processing() {
   internal_order_test();
   for (int i = 0; i < n * m; i++) {
     reinterpret_cast<uint8_t *>(taskData->outputs[0])[i] = res[i];

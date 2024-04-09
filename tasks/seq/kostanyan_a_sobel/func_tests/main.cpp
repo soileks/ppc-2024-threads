@@ -16,7 +16,7 @@ TEST(kostanyan_a_sobel_seq, Test_EdgeDetection) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out(n * m, 0);
 
   // Create TaskData
@@ -29,11 +29,11 @@ TEST(kostanyan_a_sobel_seq, Test_EdgeDetection) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  EdgeDetectionSequential edgeDetectionSequential(taskDataSeq);
-  ASSERT_EQ(edgeDetectionSequential.validation(), true);
-  edgeDetectionSequential.pre_processing();
-  edgeDetectionSequential.run();
-  edgeDetectionSequential.post_processing();
+  kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
+  kostanyan_EdgeDetectionSequential.pre_processing();
+  kostanyan_EdgeDetectionSequential.run();
+  kostanyan_EdgeDetectionSequential.post_processing();
 
   // Check result
   for (int i = 1; i < n - 1; i++) {
@@ -69,10 +69,10 @@ TEST(kostanyan_a_sobel_seq, Test_Empty_Image) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  EdgeDetectionSequential edgeDetectionSequential(taskDataSeq);
-  ASSERT_EQ(edgeDetectionSequential.validation(), true);
-  edgeDetectionSequential.pre_processing();
-  ASSERT_EQ(edgeDetectionSequential.run(), false);
+  kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
+  kostanyan_EdgeDetectionSequential.pre_processing();
+  ASSERT_EQ(kostanyan_EdgeDetectionSequential.run(), false);
 }
 
 TEST(kostanyan_a_sobel_seq, Test_Single_Pixel_Image) {
@@ -85,7 +85,7 @@ TEST(kostanyan_a_sobel_seq, Test_Single_Pixel_Image) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out(n * m, 0);
 
   // Create TaskData
@@ -98,11 +98,11 @@ TEST(kostanyan_a_sobel_seq, Test_Single_Pixel_Image) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  EdgeDetectionSequential edgeDetectionSequential(taskDataSeq);
-  ASSERT_EQ(edgeDetectionSequential.validation(), true);
-  edgeDetectionSequential.pre_processing();
-  edgeDetectionSequential.run();
-  edgeDetectionSequential.post_processing();
+  kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
+  kostanyan_EdgeDetectionSequential.pre_processing();
+  kostanyan_EdgeDetectionSequential.run();
+  kostanyan_EdgeDetectionSequential.post_processing();
   ASSERT_EQ(pict[0], out[0]);
 }
 
@@ -128,11 +128,11 @@ TEST(kostanyan_a_sobel_seq, Test_All_White_Image) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  EdgeDetectionSequential edgeDetectionSequential(taskDataSeq);
-  ASSERT_EQ(edgeDetectionSequential.validation(), true);
-  edgeDetectionSequential.pre_processing();
-  edgeDetectionSequential.run();
-  edgeDetectionSequential.post_processing();
+  kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
+  kostanyan_EdgeDetectionSequential.pre_processing();
+  kostanyan_EdgeDetectionSequential.run();
+  kostanyan_EdgeDetectionSequential.post_processing();
 
   for (int i = 1; i < n - 1; i++) {
     for (int j = 1; j < m - 1; j++) {
@@ -151,7 +151,7 @@ TEST(kostanyan_a_sobel_seq, Test_Large_Image) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out(n * m, 0);
 
   // Create TaskData
@@ -164,11 +164,11 @@ TEST(kostanyan_a_sobel_seq, Test_Large_Image) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  EdgeDetectionSequential edgeDetectionSequential(taskDataSeq);
-  ASSERT_EQ(edgeDetectionSequential.validation(), true);
-  edgeDetectionSequential.pre_processing();
-  edgeDetectionSequential.run();
-  edgeDetectionSequential.post_processing();
+  kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
+  kostanyan_EdgeDetectionSequential.pre_processing();
+  kostanyan_EdgeDetectionSequential.run();
+  kostanyan_EdgeDetectionSequential.post_processing();
 
   for (int i = 1; i < n - 1; i++) {
     for (int j = 1; j < m - 1; j++) {
