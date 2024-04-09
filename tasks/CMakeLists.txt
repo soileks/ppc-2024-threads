@@ -121,12 +121,7 @@ foreach(TASK_TYPE ${LIST_OF_TASKS})
     endif (USE_PERF_TESTS)
 
     set(LIST_OF_EXEC_TESTS "")
-    set(LIB_SOURCE_FILES ""
-            omp/korablev_n_montecarlo/include/ops_seq.hpp
-            omp/korablev_n_montecarlo/src/ops_seq.cpp
-            omp/korablev_n_montecarlo/include/my_funcs.hpp
-            omp/korablev_n_montecarlo/src/my_funcs.cpp
-    )
+    set(LIB_SOURCE_FILES "")
     set(SRC_RES "")
     set(FUNC_TESTS_SOURCE_FILES "")
     set(PERF_TESTS_SOURCE_FILES "")
