@@ -55,7 +55,6 @@ bool Sequentialtrapezoid::validation() {
 bool Sequentialtrapezoid::run() {
   internal_order_test();
   res = trapezoidal_integral(a1, b1, a2, b2, n1, n2, fun);
-  std::this_thread::sleep_for(30ms);
   return true;
 }
 
