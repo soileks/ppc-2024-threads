@@ -58,14 +58,14 @@ bool LinearFilteringGauss::run() {
               int row = x + m - kernelSize / 2;
               int col = y + n - kernelSize / 2;
               if (row >= 0 && row < height && col >= 0 && col < width) {
-              #pragma omp critical
+#pragma omp critical
                 { sum += getPixel(row, col) * gaussianKernel[m * kernelSize + n]; }
               }
             }
           }
           sum = std::min(sum, 255);
-          #pragma omp critical
-            { setPixel(x, y, sum); }
+#pragma omp critical
+          { setPixel(x, y, sum); }
         }
       }
     }
