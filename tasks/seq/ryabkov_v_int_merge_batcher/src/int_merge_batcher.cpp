@@ -116,7 +116,6 @@ bool SeqBatcher::run() {
   internal_order_test();
 
   result = bat_sort(a1, a2);
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
