@@ -7,7 +7,7 @@
 
 #include "omp/shishkina_v_gauss_block_omp/include/ops_omp.hpp"
 
-TEST(shishkina_v_gauss_block_omp, test1) {
+TEST(shishkina_v_gauss_block_omp, test1_omp) {
   int n = 3;
   int m = 3;
 
@@ -45,7 +45,7 @@ TEST(shishkina_v_gauss_block_omp, test1) {
   }
 }
 
-TEST(shishkina_v_gauss_block_omp, test2) {
+TEST(shishkina_v_gauss_block_omp, test2_omp) {
   int n = 3;
   int m = 3;
 
@@ -83,7 +83,7 @@ TEST(shishkina_v_gauss_block_omp, test2) {
   }
 }
 
-TEST(shishkina_v_gauss_block_omp, test3) {
+TEST(shishkina_v_gauss_block_omp, test3_omp) {
   int n = 4;
   int m = 4;
 
@@ -121,7 +121,7 @@ TEST(shishkina_v_gauss_block_omp, test3) {
   }
 }
 
-TEST(shishkina_v_gauss_block_omp, test4) {
+TEST(shishkina_v_gauss_block_omp, test4_omp) {
   int n = 5;
   int m = 5;
 
@@ -160,7 +160,7 @@ TEST(shishkina_v_gauss_block_omp, test4) {
   }
 }
 
-TEST(shishkina_v_gauss_block_omp, test5) {
+TEST(shishkina_v_gauss_block_omp, test5_omp) {
   int n = 3;
   int m = 5;
 
