@@ -1,8 +1,6 @@
 // Copyright 2024 Kuznetsov Artem
 #include "omp/kuznetsov_a_cannon_matr_mult/include/ops_omp.hpp"
 
-#include <thread>
-
 using namespace std::chrono_literals;
 
 namespace KuznetsovArtyomOmp {
@@ -36,16 +34,27 @@ std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, cons
   return matrRes;
 }
 
-std::vector<double> multMatrSquare(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
-                                   size_t size) {
+std::vector<double> CannonMatrixMultOmp(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
+                                        int size, int block) {
   if (!validateMatrix(matrOne.size(), matrTwo.size())) throw std::invalid_argument{"invalid matrixs"};
 
-  std::vector<double> matrRes;
-  matrRes.resize(size * size, 0.0);
+  if (block > size) throw std::invalid_argument{"Wrong size block"};
 
-  for (size_t i = 0; i < size; ++i)
-    for (size_t j = 0; j < size; ++j)
-      for (size_t k = 0; k < size; ++k) matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
+  int jbMin = 0;
+  int kbMin = 0;
+  std::vector<double> matrRes(size * size, 0.0);
+
+  for (int jb = 0; jb < size; jb += block) {
+    for (int kb = 0; kb < size; kb += block) {
+      jbMin = std::min(jb + block, size);
+      kbMin = std::min(kb + block, size);
+
+#pragma omp parallel for
+      for (int i = 0; i < size; ++i)
+        for (int k = kb; k < kbMin; ++k)
+          for (int j = jb; j < jbMin; ++j) matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
+    }
+  }
 
   return matrRes;
 }
@@ -93,7 +102,7 @@ bool KuznetsovCannonMatrMultOmp::run() {
   internal_order_test();
 
   try {
-    mMatrRes = CannonMatrixMultSeq(mMatrOne, mMatrTwo, mSize, mBlock);
+    mMatrRes = CannonMatrixMultOmp(mMatrOne, mMatrTwo, mSize, mBlock);
   } catch (const std::exception& ex) {
     std::cerr << ex.what() << '\n';
     return false;

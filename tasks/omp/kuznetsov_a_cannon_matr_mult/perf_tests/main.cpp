@@ -1,4 +1,4 @@
-// Copyright 2023 Nesterov Alexander
+// Copyright 2024 Kuznetsov Artem
 #include <gtest/gtest.h>
 
 #include <vector>
@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/kuznetsov_a_cannon_matr_mult/include/ops_omp.hpp"
 
-TEST(Kuznetsov_a_cannon_matr_mult_seq_perf_tests, test_900x900) {
+TEST(Kuznetsov_a_cannon_matr_mult_omp_perf_tests, test_900x900) {
   // Create data
   size_t size = 900;
   size_t block = 450;
@@ -19,46 +19,41 @@ TEST(Kuznetsov_a_cannon_matr_mult_seq_perf_tests, test_900x900) {
   std::vector<double> outputMatr(size * size, 0.0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  auto taskDataOmp = std::make_shared<ppc::core::TaskData>();
 
   // Add matrOne
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrOne.data()));
-  taskDataSeq->inputs_count.emplace_back(inputMatrOne.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrOne.data()));
+  taskDataOmp->inputs_count.emplace_back(inputMatrOne.size());
 
   // Add matrTwo
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
-  taskDataSeq->inputs_count.emplace_back(inputMatrTwo.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
+  taskDataOmp->inputs_count.emplace_back(inputMatrTwo.size());
 
   // Add size
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&size));
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(&size));
 
   // Add block
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&block));
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(&block));
 
   // Add out matr
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputMatr.data()));
-  taskDataSeq->outputs_count.emplace_back(outputMatr.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputMatr.data()));
+  taskDataOmp->outputs_count.emplace_back(outputMatr.size());
 
-  auto resSeq = KuznetsovArtyomOmp::multMatrSquare(inputMatrOne, inputMatrTwo, size);
+  auto resSeq = KuznetsovArtyomOmp::CannonMatrixMultSeq(inputMatrOne, inputMatrTwo, size, block);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<KuznetsovArtyomOmp::KuznetsovCannonMatrMultOmp>(taskDataSeq);
+  auto testTaskOmp = std::make_shared<KuznetsovArtyomOmp::KuznetsovCannonMatrMultOmp>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOmp);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 
@@ -69,7 +64,7 @@ TEST(Kuznetsov_a_cannon_matr_mult_seq_perf_tests, test_900x900) {
   }
 }
 
-TEST(Kuznetsov_a_cannon_matr_mult_seq_perf_tests, test_800x800) {
+TEST(Kuznetsov_a_cannon_matr_mult_omp_perf_tests, test_800x800) {
   // Create data
   size_t size = 800;
   size_t block = 400;
@@ -82,46 +77,41 @@ TEST(Kuznetsov_a_cannon_matr_mult_seq_perf_tests, test_800x800) {
   std::vector<double> outputMatr(size * size, 0.0);
 
   // Create TaskData
-  auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  auto taskDataOmp = std::make_shared<ppc::core::TaskData>();
 
   // Add matrOne
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrOne.data()));
-  taskDataSeq->inputs_count.emplace_back(inputMatrOne.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrOne.data()));
+  taskDataOmp->inputs_count.emplace_back(inputMatrOne.size());
 
   // Add matrTwo
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
-  taskDataSeq->inputs_count.emplace_back(inputMatrTwo.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
+  taskDataOmp->inputs_count.emplace_back(inputMatrTwo.size());
 
   // Add size
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&size));
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(&size));
 
   // Add block
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&block));
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(&block));
 
   // Add out matr
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputMatr.data()));
-  taskDataSeq->outputs_count.emplace_back(outputMatr.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputMatr.data()));
+  taskDataOmp->outputs_count.emplace_back(outputMatr.size());
 
-  auto resSeq = KuznetsovArtyomOmp::multMatrSquare(inputMatrOne, inputMatrTwo, size);
+  auto resSeq = KuznetsovArtyomOmp::CannonMatrixMultSeq(inputMatrOne, inputMatrTwo, size, block);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<KuznetsovArtyomOmp::KuznetsovCannonMatrMultOmp>(taskDataSeq);
+  auto testTaskOmp = std::make_shared<KuznetsovArtyomOmp::KuznetsovCannonMatrMultOmp>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOmp);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 

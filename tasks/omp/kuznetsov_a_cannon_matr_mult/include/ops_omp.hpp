@@ -1,6 +1,8 @@
 // Copyright 2024 Kuznetsov Artem
 #pragma once
 
+#include <omp.h>
+
 #include <cmath>
 #include <random>
 #include <string>
@@ -13,10 +15,11 @@ bool isEqual(double valueOne, double valueTwo, double eps = 0.01);
 
 bool validateMatrix(size_t sizeOne, size_t sizeTwo);
 
-std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
+std::vector<double> CannonMatrixMultSeq(const std::vector<double> &matrOne, const std::vector<double> &matrTwo,
                                         int size, int block);
 
-std::vector<double> multMatrSquare(const std::vector<double>& matrOne, const std::vector<double>& matrTwo, size_t size);
+std::vector<double> CannonMatrixMultOmp(const std::vector<double> &matrOne, const std::vector<double> &matrTwo,
+                                        int size, int block);
 
 std::vector<double> getRandomSquareMatrix(size_t size, double minVal, double maxVal);
 
