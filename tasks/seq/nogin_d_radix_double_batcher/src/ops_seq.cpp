@@ -1,6 +1,8 @@
 // Copyright 2024 Nogin Denis
 #include "seq/nogin_d_radix_double_batcher/include/ops_seq.hpp"
 
+namespace NoginDenisSeq {
+
 constexpr int sizeDouble = sizeof(double);
 
 bool RadixSortDoubleBatcherSequential::pre_processing() {
@@ -107,3 +109,4 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
 
   return vec;
 }
+} // namespace NoginDenisSeq
