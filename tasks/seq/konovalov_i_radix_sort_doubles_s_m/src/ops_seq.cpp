@@ -43,8 +43,6 @@ bool RadixSortSequentialTask::run() {
     std::cerr << "error: " << e.what() << std::endl;
     return false;
   }
-
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
