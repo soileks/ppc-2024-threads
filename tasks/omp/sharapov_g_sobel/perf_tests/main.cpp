@@ -1,6 +1,6 @@
 // Copyright 2024 Sharapov Georgiy
 
-enum { SIZE = 2310 };
+enum { IMG_SIZE = 2310 };
 
 #include <gtest/gtest.h>
 #include <omp.h>
@@ -11,7 +11,7 @@ enum { SIZE = 2310 };
 #include "omp/sharapov_g_sobel/include/ssobel_omp.hpp"
 
 TEST(sharapov_g_sobel_omp, test_pipeline_run) {
-  int sideLen = SIZE;
+  int sideLen = IMG_SIZE;
   std::vector<SSobelOmp::RGB> ColoredImage = SSobelOmp::generateColorImage(sideLen, sideLen, 1984);
   std::vector<SSobelOmp::GrayScale> EdgeImage(ColoredImage.size());
 
@@ -50,7 +50,7 @@ TEST(sharapov_g_sobel_omp, test_pipeline_run) {
 }
 
 TEST(sharapov_g_sobel_omp, test_task_run) {
-  int sideLen = SIZE;
+  int sideLen = IMG_SIZE;
   std::vector<SSobelOmp::RGB> ColoredImage = SSobelOmp::generateColorImage(sideLen, sideLen, 1984);
   std::vector<SSobelOmp::GrayScale> EdgeImage(ColoredImage.size());
 
