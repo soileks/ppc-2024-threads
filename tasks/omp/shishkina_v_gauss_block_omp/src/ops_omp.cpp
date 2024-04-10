@@ -5,7 +5,6 @@
 #include <random>
 #include <thread>
 
-using namespace std::chrono_literals;
 
 std::vector<int> getPicture(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
@@ -59,7 +58,7 @@ bool LinearFilteringGauss::run() {
               int col = y + n - kernelSize / 2;
               if (row >= 0 && row < height && col >= 0 && col < width) {
 #pragma omp critical
-                { sum += getPixel(row, col) * gaussianKernel[m * kernelSize + n]; }
+                { sum += getPixel(row, col) * gaussianKernel[m * kernelSize + n];}
               }
             }
           }
