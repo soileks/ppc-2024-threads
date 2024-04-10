@@ -22,8 +22,8 @@ std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, cons
 
   for (int jb = 0; jb < size; jb += block) {
     for (int kb = 0; kb < size; kb += block) {
-      jbMin = std::min(jb + block, size);
-      kbMin = std::min(kb + block, size);
+      jbMin = size < jb + block ? size : jb + block;
+      kbMin = size < kb + block ? size : kb + block;
 
       for (int i = 0; i < size; ++i)
         for (int k = kb; k < kbMin; ++k)
@@ -46,8 +46,8 @@ std::vector<double> CannonMatrixMultTbb(const std::vector<double>& matrOne, cons
 
   for (int jb = 0; jb < size; jb += block) {
     for (int kb = 0; kb < size; kb += block) {
-      jbMin = std::min(jb + block, size);
-      kbMin = std::min(kb + block, size);
+      jbMin = size < jb + block ? size : jb + block;
+      kbMin = size < kb + block ? size : kb + block;
 
       tbb::parallel_for(0, size, 1, [&](int i) {
         for (int k = kb; k < kbMin; ++k) {
