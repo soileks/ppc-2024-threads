@@ -7,6 +7,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace mortina_a_integral_seq {
+
 class TestTaskSequentialMortinaIntegralTrapezoid : public ppc::core::Task {
  public:
   explicit TestTaskSequentialMortinaIntegralTrapezoid(std::shared_ptr<ppc::core::TaskData> taskData_,
@@ -26,3 +28,4 @@ class TestTaskSequentialMortinaIntegralTrapezoid : public ppc::core::Task {
 
 double trapezoidal_integral(double a1, double b1, double a2, double b2, int n1, int n2,
                             const std::function<double(double, double)> &fun);
+}  // namespace mortina_a_integral_seq

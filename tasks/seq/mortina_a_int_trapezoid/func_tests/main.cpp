@@ -34,7 +34,7 @@ TEST(Sequential_motrina_a_int_trapezoid, Test_1) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_y_quadro);
+  mortina_a_integral_seq::TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_y_quadro);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -70,7 +70,7 @@ TEST(Sequential_motrina_a_int_trapezoid, Test_2) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, sin_cos);
+  mortina_a_integral_seq::TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, sin_cos);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -106,7 +106,7 @@ TEST(Sequential_motrina_a_int_trapezoid, Test_3) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_mul_y);
+  mortina_a_integral_seq::TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_mul_y);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -143,7 +143,7 @@ TEST(Sequential_motrina_a_int_trapezoid, Test_4) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_mult_sinY);
+  mortina_a_integral_seq::TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_mult_sinY);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -179,7 +179,7 @@ TEST(Sequential_motrina_a_int_trapezoid, Test_5) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_del_y);
+  mortina_a_integral_seq::TestTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_del_y);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
