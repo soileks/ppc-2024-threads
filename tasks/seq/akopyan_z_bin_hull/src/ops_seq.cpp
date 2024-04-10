@@ -28,7 +28,7 @@ bool task::TestTaskSequential::pre_processing() {
 
 bool task::TestTaskSequential::run() {
   internal_order_test();
-  for (auto component : label_components()) {
+  for (const auto& component : label_components()) {
     for (auto p : graham(component)) {
       // std::cout << p.x << "," << p.y << " ";
       out_hull.emplace_back(p.x);
@@ -53,7 +53,7 @@ std::vector<std::vector<task::pnt>> task::TestTaskSequential::label_components()
     for (int j = 0; j < width; ++j) {
       if (bin_image[i * width + j] == 1) {
         std::vector<task::pnt> comp;
-        comp.push_back({j, i});
+        comp.emplace_back(j, i);
         bin_image[i * width + j] = visited;
 
         std::stack<task::pnt> st;
@@ -69,9 +69,9 @@ std::vector<std::vector<task::pnt>> task::TestTaskSequential::label_components()
               int nx = x + dx;
               int ny = y + dy;
               if (0 <= nx && nx < width && 0 <= ny && ny < height && bin_image[ny * width + nx] == 1) {
-                comp.push_back({nx, ny});
+                comp.emplace_back(nx, ny);
                 bin_image[ny * width + nx] = visited;
-                st.push({nx, ny});
+                st.emplace(nx, ny);
               }
             }
           }

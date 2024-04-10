@@ -12,7 +12,7 @@ namespace akopyan_z_bin_hull {
 struct pnt {
   int x{};
   int y{};
-  pnt() : x(0), y(0) {}
+  pnt() = default;
   pnt(int x_, int y_) : x(x_), y(y_) {}
 };
 
@@ -33,6 +33,6 @@ class TestTaskSequential : public ppc::core::Task {
   int height{};
 
   std::vector<std::vector<pnt>> label_components();
-  std::vector<pnt> graham(std::vector<pnt> points);
+  static std::vector<pnt> graham(std::vector<pnt> points);
 };
 }  // namespace akopyan_z_bin_hull
