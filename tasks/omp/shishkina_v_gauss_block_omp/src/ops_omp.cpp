@@ -5,7 +5,7 @@
 #include <random>
 #include <thread>
 
-std::vector<int> getPicture(int n, int m, uint8_t min, uint8_t max) {
+std::vector<int> getPicture1(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
   std::random_device dev;
   std::mt19937 gen(dev());

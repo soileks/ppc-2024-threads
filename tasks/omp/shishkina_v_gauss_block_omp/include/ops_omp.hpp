@@ -7,7 +7,7 @@
 
 #include "core/task/include/task.hpp"
 
-std::vector<int> getPicture(int n, int m, uint8_t min, uint8_t max);
+std::vector<int> getPicture1(int n, int m, uint8_t min, uint8_t max);
 
 class LinearFilteringGauss : public ppc::core::Task {
  public:

@@ -14,7 +14,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_pipeline_run) {
   int max = 180;
 
   // Create data
-  std::vector<int> in = getPicture(height, width, min, max);
+  std::vector<int> in = getPicture1(height, width, min, max);
 
   std::vector<int> in2 = {height, width};
   std::vector<int> in3 = {min, max};
@@ -88,7 +88,7 @@ TEST(openmp_shishkina_v_gauss_block_omp_perf_test, test_task_run) {
   int max = 180;
 
   // Create data
-  std::vector<int> in_ = getPicture(height, width, min, max);
+  std::vector<int> in_ = getPicture1(height, width, min, max);
 
   std::vector<int> tmp_sec = {height, width};
   std::vector<int> tmp_third = {min, max};
