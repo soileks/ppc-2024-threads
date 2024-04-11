@@ -1,7 +1,7 @@
 // Copyright 2024 Mamaeva Olga
 #include "seq/mamaeva_o_jarvis/include/ops_seq.hpp"
 
-#define M_PI 3.14159265358979323846
+#define M_PI_VALUE 3.14159265358979323846
 
 #include <algorithm>
 #include <iostream>
@@ -14,7 +14,7 @@ void jarvis::prepare_points(jarvis::r* points, int n, jarvis::r* hull, int h, do
   std::mt19937 g(seed);
   std::uniform_real_distribution gen(-r, r);
   int i = 0;
-  double phi = 2 * M_PI / h;
+  double phi = 2 * M_PI_VALUE / h;
   for (i = 0; i < n; i++) {
     points[i] = {gen(g), gen(g)};
   }

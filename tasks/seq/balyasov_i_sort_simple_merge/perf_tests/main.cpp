@@ -7,7 +7,7 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/balyasov_i_sort_simple_merge/include/ops_seq.hpp"
 
-std::vector<int> getRandomVector(int size) {
+std::vector<int> getRandomVectorBalyasov(int size) {
   std::vector<int> randVector(size);
   std::random_device dev;
   std::mt19937 gen(dev());
@@ -21,7 +21,7 @@ TEST(balyasov_i_sort_simple_merge, test_pipeline_run) {
   const int count = 300000;
 
   // Create data
-  std::vector<int> in = getRandomVector(count);
+  std::vector<int> in = getRandomVectorBalyasov(count);
   std::vector<int> answer = in;
   std::vector<int> out(count);
 
@@ -63,7 +63,7 @@ TEST(balyasov_i_sort_simple_merge, test_task_run) {
   const int count = 300000;
 
   // Create data
-  std::vector<int> in = getRandomVector(count);
+  std::vector<int> in = getRandomVectorBalyasov(count);
   std::vector<int> answer = in;
   std::vector<int> out(count);
 

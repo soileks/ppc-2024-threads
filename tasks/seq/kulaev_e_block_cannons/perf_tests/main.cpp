@@ -29,7 +29,7 @@ TEST(sequential_kulaev_e_block_cannons_perf_test, test_pipeline_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   auto testTaskSequential = std::make_shared<TestTaskSequentialKulaevCannon>(taskDataSeq);
@@ -80,7 +80,7 @@ TEST(sequential_kulaev_e_block_cannons_perf_test, test_task_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   auto testTaskSequential = std::make_shared<TestTaskSequentialKulaevCannon>(taskDataSeq);

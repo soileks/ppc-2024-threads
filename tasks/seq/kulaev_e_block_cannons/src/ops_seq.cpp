@@ -6,8 +6,8 @@
 #include <random>
 #include <vector>
 
-std::vector<double> cannonMatrixMultiplication(const std::vector<double>& A, const std::vector<double>& B, int n,
-                                               int m) {
+std::vector<double> cannonMatrixMultiplication1(const std::vector<double>& A, const std::vector<double>& B, int n,
+                                                int m) {
   int blockSize = std::min(n, m);
 
   std::vector<double> C(n * m, 0.0);
@@ -38,7 +38,7 @@ std::vector<double> cannonMatrixMultiplication(const std::vector<double>& A, con
   return C;
 }
 
-std::vector<double> multiplyMatrix(const std::vector<double>& A, const std::vector<double>& B, int rows_A, int col_B) {
+std::vector<double> multiplyMatrix1(const std::vector<double>& A, const std::vector<double>& B, int rows_A, int col_B) {
   int col_A = rows_A;
   std::vector<double> C(rows_A * col_B, 0.0);
 
@@ -88,7 +88,7 @@ bool TestTaskSequentialKulaevCannon::validation() {
 
 bool TestTaskSequentialKulaevCannon::run() {
   internal_order_test();
-  result = cannonMatrixMultiplication(A, B, n, m);
+  result = cannonMatrixMultiplication1(A, B, n, m);
   return true;
 }
 

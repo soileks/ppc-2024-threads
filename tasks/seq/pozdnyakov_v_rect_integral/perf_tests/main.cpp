@@ -8,7 +8,7 @@
 
 TEST(pozdnyakov_v_rect_integral_seq, test_pipeline_run) {
   double res = 217.0907;
-  Func f = fxexpy;
+  Func f = pozdnyakov_fxexpy;
   uint64_t n = 5000;
 
   std::vector<double> in = {0, 5, 1, 3};
@@ -46,7 +46,7 @@ TEST(pozdnyakov_v_rect_integral_seq, test_pipeline_run) {
 
 TEST(pozdnyakov_v_rect_integral_seq, test_task_run) {
   double res = 217.0907;
-  Func f = fxexpy;
+  Func f = pozdnyakov_fxexpy;
   uint64_t n = 5000;
 
   std::vector<double> in = {0, 5, 1, 3};

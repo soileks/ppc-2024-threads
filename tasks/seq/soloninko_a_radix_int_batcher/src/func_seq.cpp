@@ -3,7 +3,7 @@
 #include "seq/soloninko_a_radix_int_batcher/include/ops_seq.hpp"
 using namespace std::chrono_literals;
 
-void fill_missing(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t i, size_t j, size_t k) {
+void sol_fill_missing(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t i, size_t j, size_t k) {
   if (j >= p1.size()) {
     for (size_t l = k; l < p2.size(); l += 2) {
       res[i] = p2[l];
@@ -17,7 +17,7 @@ void fill_missing(std::vector<int> &res, std::vector<int> p1, std::vector<int> p
   }
 }
 
-void fill_res(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t &i, size_t &j, size_t &k) {
+void sol_fill_res(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t &i, size_t &j, size_t &k) {
   for (i = 0; (j < p1.size()) && (k < p2.size()); i++) {
     if (p1[j] <= p2[k]) {
       res[i] = p1[j];
@@ -29,7 +29,7 @@ void fill_res(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, s
   }
 }
 
-std::vector<int> merge(std::vector<int> vec1, std::vector<int> vec2) {
+std::vector<int> sol_merge(std::vector<int> vec1, std::vector<int> vec2) {
   std::vector<int> res(vec1.size() + vec2.size());
   size_t i = 0;
   size_t j = 0;
@@ -49,38 +49,38 @@ std::vector<int> merge(std::vector<int> vec1, std::vector<int> vec2) {
   return res;
 }
 
-std::vector<int> even(const std::vector<int> &p1, const std::vector<int> &p2) {
+std::vector<int> soll_even(const std::vector<int> &p1, const std::vector<int> &p2) {
   std::vector<int> res(p1.size() / 2 + p2.size() / 2 + p1.size() % 2 + p2.size() % 2);
   size_t i = 0;
   size_t i1 = 0;
   size_t i2 = 0;
 
-  fill_res(res, p1, p2, i, i1, i2);
+  sol_fill_res(res, p1, p2, i, i1, i2);
 
-  fill_missing(res, p1, p2, i, i1, i2);
+  sol_fill_missing(res, p1, p2, i, i1, i2);
 
   return res;
 }
 
-std::vector<int> odd(const std::vector<int> &p1, const std::vector<int> &p2) {
+std::vector<int> sol_odd(const std::vector<int> &p1, const std::vector<int> &p2) {
   std::vector<int> res(p1.size() / 2 + p2.size() / 2);
   size_t i = 0;
   size_t i1 = 1;
   size_t i2 = 1;
 
-  fill_res(res, p1, p2, i, i1, i2);
+  sol_fill_res(res, p1, p2, i, i1, i2);
 
-  fill_missing(res, p1, p2, i, i1, i2);
+  sol_fill_missing(res, p1, p2, i, i1, i2);
 
   return res;
 }
 
-std::vector<int> batcher_sort(const std::vector<int> &p1, const std::vector<int> &p2) {
-  std::vector<int> even_vec = even(p1, p2);
+std::vector<int> sol_batcher_sort(const std::vector<int> &p1, const std::vector<int> &p2) {
+  std::vector<int> even_vec = soll_even(p1, p2);
 
-  std::vector<int> odd_vec = odd(p1, p2);
+  std::vector<int> odd_vec = sol_odd(p1, p2);
 
-  std::vector<int> res = merge(even_vec, odd_vec);
+  std::vector<int> res = sol_merge(even_vec, odd_vec);
 
   return res;
 }
@@ -119,8 +119,7 @@ bool TaskSequentialBatcherSoloninko::validation() {
 bool TaskSequentialBatcherSoloninko::run() {
   internal_order_test();
 
-  res = batcher_sort(p1, p2);
-  std::this_thread::sleep_for(20ms);
+  res = sol_batcher_sort(p1, p2);
   return true;
 }
 

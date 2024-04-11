@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <limits>
 
-double angle(const KriseevMTaskSeq::Point &origin, const KriseevMTaskSeq::Point &point) {
+double angle1(const KriseevMTaskSeq::Point &origin, const KriseevMTaskSeq::Point &point) {
   double dx = point.first - origin.first;
   double dy = point.second - origin.second;
   if (dx == 0.0 && dy == 0.0) {
@@ -15,10 +15,10 @@ double angle(const KriseevMTaskSeq::Point &origin, const KriseevMTaskSeq::Point 
   return (dy >= 0) ? (dx >= 0 ? dy / (dx + dy) : 1 - dx / (-dx + dy))
                    : (dx < 0 ? 2 - dy / (-dx - dy) : 3 + dx / (dx - dy));
 }
-bool compareForSort(const KriseevMTaskSeq::Point &origin, const KriseevMTaskSeq::Point &a,
-                    const KriseevMTaskSeq::Point &b) {
-  double angleA = angle(origin, a);
-  double angleB = angle(origin, b);
+bool compareForSort1(const KriseevMTaskSeq::Point &origin, const KriseevMTaskSeq::Point &a,
+                     const KriseevMTaskSeq::Point &b) {
+  double angleA = angle1(origin, a);
+  double angleB = angle1(origin, b);
   if (angleA < angleB) {
     return true;
   }
@@ -77,13 +77,13 @@ bool KriseevMTaskSeq::ConvexHullTask::run() {
   for (size_t phase = 0; phase < points.size(); phase++) {
     if ((phase & 1) == 0) {
       for (size_t i = 1; i < points.size(); i += 2) {
-        if (compareForSort(origin, points[i], points[i - 1])) {
+        if (compareForSort1(origin, points[i], points[i - 1])) {
           std::iter_swap(points.begin() + i, points.begin() + i - 1);
         }
       }
     } else {
       for (size_t i = 1; i < points.size() - 1; i += 2) {
-        if (compareForSort(origin, points[i + 1], points[i])) {
+        if (compareForSort1(origin, points[i + 1], points[i])) {
           std::iter_swap(points.begin() + i, points.begin() + i + 1);
         }
       }
