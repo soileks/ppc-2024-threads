@@ -1,13 +1,9 @@
 // Copyright 2024 Lapin Dmitriy
 #include <gtest/gtest.h>
-
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "seq/lapin_d_image_filter_block/include/ops_seq.hpp"
-
-const double PI = 3.14159265358979323846;
-
 
 TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   // Create TaskData
