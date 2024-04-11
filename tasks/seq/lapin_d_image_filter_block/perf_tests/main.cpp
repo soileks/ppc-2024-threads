@@ -13,13 +13,11 @@ TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   for (int i = 0; i < height; i++) {
     in[i].resize(width);
   }
-
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-     in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
-  
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
     out[i].resize(width);
@@ -60,13 +58,11 @@ TEST(lapin_d_image_filter_block, test_task_run_run4000x4000) {
   for (int i = 0; i < height; i++) {
     in[i].resize(width);
   }
-
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
       in[i][j] = rand() % 256;
     }
   }
-  
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
     out[i].resize(width);
