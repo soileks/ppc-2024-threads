@@ -17,7 +17,7 @@ TEST(kiselev_i_shell_simple_seq, check_5_size) {
   hoareSortSequential->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArray.data()));
   hoareSortSequential->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortSimpleSeq kiselevTaskSequential(hoareSortSequential);
+  KiselevTaskSequential kiselevTaskSequential(hoareSortSequential);
   ASSERT_TRUE(kiselevTaskSequential.validation());
   kiselevTaskSequential.pre_processing();
   kiselevTaskSequential.run();
