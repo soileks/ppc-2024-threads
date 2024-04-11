@@ -26,7 +26,10 @@ TEST(alexseev_d_hoare_sort_w_batcher_merge_seq, Random_Constatnt_Array) {
 }
 
 TEST(alexseev_d_hoare_sort_w_batcher_merge_seq, Random_Array_Even) {
-  std::vector<int> inputArray = {373, -119, -730, -699, 680, 538, 462, -844, 530, -266, 734, 257, -482, 670, 387, -618, 705, 808, 120, 634, -294, -617, 733, 109, 10, -631, -780, 719, -156, -155, 945, -743, 552, -654, -774, -133, -331, -508, -827, 64, -239, 792, 693, 383, -963, 954, -503, 932, -499, 885};
+  std::vector<int> inputArray = {373,  -119, -730, -699, 680, 538,  462, -844, 530,  -266, 734,  257,  -482,
+                                 670,  387,  -618, 705,  808, 120,  634, -294, -617, 733,  109,  10,   -631,
+                                 -780, 719,  -156, -155, 945, -743, 552, -654, -774, -133, -331, -508, -827,
+                                 64,   -239, 792,  693,  383, -963, 954, -503, 932,  -499, 885};
   std::vector<int> sortedInputArray = inputArray;
   std::sort(sortedInputArray.begin(), sortedInputArray.end());
   std::vector<int> outputArray(inputArray.size());
@@ -47,7 +50,10 @@ TEST(alexseev_d_hoare_sort_w_batcher_merge_seq, Random_Array_Even) {
 }
 
 TEST(alexseev_d_hoare_sort_w_batcher_merge_seq, Random_Array_Odd) {
-  std::vector<int> inputArray = {405, -937, 839, 122, -42, 777, 406, -205, 520, 824, -384, 463, 738, -887, -444, 676, -180, -933, -44, 663, -58, 829, 873, 267, 740, -297, 516, -61, -306, 494, 615, 571, -460, 742, 142, 738, -46, -263, 10, 946, -332, 232, 101, -773, -626, 124, -936, -42, -740, -698, -896};
+  std::vector<int> inputArray = {405,  -937, 839,  122,  -42,  777,  406,  -205, 520, 824,  -384, 463,  738,
+                                 -887, -444, 676,  -180, -933, -44,  663,  -58,  829, 873,  267,  740,  -297,
+                                 516,  -61,  -306, 494,  615,  571,  -460, 742,  142, 738,  -46,  -263, 10,
+                                 946,  -332, 232,  101,  -773, -626, 124,  -936, -42, -740, -698, -896};
   std::vector<int> sortedInputArray = inputArray;
   std::sort(sortedInputArray.begin(), sortedInputArray.end());
   std::vector<int> outputArray(inputArray.size());
