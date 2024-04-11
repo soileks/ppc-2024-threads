@@ -10,7 +10,7 @@
 using namespace std::chrono_literals;
 
 // Sequential implementation of sorting
-bool HoareSortWBatcherMergeSequential::pre_processing() {
+bool alexseev_omp::HoareSortWBatcherMergeSequential::pre_processing() {
   try {
     internal_order_test();
     array.clear();
@@ -24,7 +24,7 @@ bool HoareSortWBatcherMergeSequential::pre_processing() {
   return true;
 }
 
-bool HoareSortWBatcherMergeSequential::validation() {
+bool alexseev_omp::HoareSortWBatcherMergeSequential::validation() {
   try {
     internal_order_test();
   } catch (...) {
@@ -33,7 +33,7 @@ bool HoareSortWBatcherMergeSequential::validation() {
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool HoareSortWBatcherMergeSequential::run() {
+bool alexseev_omp::HoareSortWBatcherMergeSequential::run() {
   try {
     internal_order_test();
     HoareSortWBatcherMergeSeq(array, 0, array.size() - 1);
@@ -43,7 +43,7 @@ bool HoareSortWBatcherMergeSequential::run() {
   return true;
 }
 
-bool HoareSortWBatcherMergeSequential::post_processing() {
+bool alexseev_omp::HoareSortWBatcherMergeSequential::post_processing() {
   try {
     internal_order_test();
     for (size_t i = 0; i < array.size(); ++i) {
@@ -56,7 +56,8 @@ bool HoareSortWBatcherMergeSequential::post_processing() {
   return true;
 }
 
-void HoareSortWBatcherMergeSequential::HoareSortWBatcherMergeSeq(std::vector<int> &arr, size_t l, size_t r) {
+void alexseev_omp::HoareSortWBatcherMergeSequential::HoareSortWBatcherMergeSeq(std::vector<int> &arr, size_t l,
+                                                                               size_t r) {
   if (arr.size() <= 1) return;
   int n = r - l + 1;
   for (int p = 1; p < n; p += p)
@@ -67,7 +68,7 @@ void HoareSortWBatcherMergeSequential::HoareSortWBatcherMergeSeq(std::vector<int
 }
 
 // OMP implementation of sorting
-bool HoareSortWBatcherMergeOMP::pre_processing() {
+bool alexseev_omp::HoareSortWBatcherMergeOMP::pre_processing() {
   try {
     internal_order_test();
     array.clear();
@@ -81,7 +82,7 @@ bool HoareSortWBatcherMergeOMP::pre_processing() {
   return true;
 }
 
-bool HoareSortWBatcherMergeOMP::validation() {
+bool alexseev_omp::HoareSortWBatcherMergeOMP::validation() {
   try {
     internal_order_test();
   } catch (...) {
@@ -90,7 +91,7 @@ bool HoareSortWBatcherMergeOMP::validation() {
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool HoareSortWBatcherMergeOMP::run() {
+bool alexseev_omp::HoareSortWBatcherMergeOMP::run() {
   try {
     internal_order_test();
     HoareSortWBatcherMergeParallel(array, 0, array.size() - 1);
@@ -100,7 +101,7 @@ bool HoareSortWBatcherMergeOMP::run() {
   return true;
 }
 
-bool HoareSortWBatcherMergeOMP::post_processing() {
+bool alexseev_omp::HoareSortWBatcherMergeOMP::post_processing() {
   try {
     internal_order_test();
     if (array.size() != taskData->outputs_count[0]) {
@@ -116,7 +117,8 @@ bool HoareSortWBatcherMergeOMP::post_processing() {
   return true;
 }
 
-void HoareSortWBatcherMergeOMP::HoareSortWBatcherMergeParallel(std::vector<int> &arr, size_t l, size_t r) {
+void alexseev_omp::HoareSortWBatcherMergeOMP::HoareSortWBatcherMergeParallel(std::vector<int> &arr, size_t l,
+                                                                             size_t r) {
   if (arr.size() <= 1) return;
   int n = r - l + 1;
 
@@ -131,6 +133,6 @@ void HoareSortWBatcherMergeOMP::HoareSortWBatcherMergeParallel(std::vector<int> 
 }
 
 // Additional functions
-void CompExch(int &a, int &b) {
+void alexseev_omp::CompExch(int &a, int &b) {
   if (a > b) std::swap(a, b);
 }

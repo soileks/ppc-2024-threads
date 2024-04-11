@@ -6,6 +6,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace alexseev_omp {
 class HoareSortWBatcherMergeSequential : public ppc::core::Task {
  public:
   explicit HoareSortWBatcherMergeSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
@@ -34,3 +35,4 @@ class HoareSortWBatcherMergeOMP : public ppc::core::Task {
 };
 
 void CompExch(int &a, int &b);
+}  // namespace alexseev_omp

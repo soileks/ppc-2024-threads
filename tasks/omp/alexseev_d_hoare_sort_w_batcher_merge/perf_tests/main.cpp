@@ -8,6 +8,8 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/alexseev_d_hoare_sort_w_batcher_merge/include/hoare_sort_w_batcher_merge_omp.hpp"
 
+using namespace alexseev_omp;
+
 TEST(alexseev_d_hoare_sort_w_batcher_merge_omp, test_pipeline_run) {
   std::vector<int> inputArray = {
       705,  19,   -652, 990,  -207, 601,  967,  -254,  362,   -412, -515, 798,   -206, 342,  650,   255,  -367, -171,

@@ -6,6 +6,8 @@
 
 #include "omp/alexseev_d_hoare_sort_w_batcher_merge/include/hoare_sort_w_batcher_merge_omp.hpp"
 
+using namespace alexseev_omp;
+
 TEST(alexseev_d_hoare_sort_w_batcher_merge_omp, Random_Constatnt_Array) {
   std::vector<int> inputArray = {3, 5, 4, 6, 9, 2, 8, 1, 7, 0};
 
