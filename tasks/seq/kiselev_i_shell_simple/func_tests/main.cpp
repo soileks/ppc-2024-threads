@@ -7,26 +7,22 @@
 #include "seq/kiselev_i_shell_simple/include/shell_simple.hpp"
 
 TEST(kiselev_i_shell_simple_seq, check_5_size) {
-  const int count = 5;
+  std::vector<int> inputArray = {3, 5, 6, 4, 1, 2, 0, 9, 8, 7};
+  std::vector<int> outputArray(inputArray.size());
+  std::vector<int> expectedArray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-  // Create data
-  std::vector<int> in = {2, 6, 4, 1, 0};
-  std::vector<int> out(count, 0);
-  std::vector<int> res = {0, 1, 2, 4, 6};
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortSequential = std::make_shared<ppc::core::TaskData>();
+  hoareSortSequential->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortSequential->inputs_count.emplace_back(inputArray.size());
+  hoareSortSequential->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArray.data()));
+  hoareSortSequential->outputs_count.emplace_back(inputArray.size());
 
-  // Create Task
-  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
-  ASSERT_EQ(kiselevTaskSequential.validation(), true);
-  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
-  ASSERT_EQ(kiselevTaskSequential.run(), true);
-  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  HoareSortSimpleSeq kiselevTaskSequential(hoareSortSequential);
+  ASSERT_TRUE(kiselevTaskSequential.validation());
+  kiselevTaskSequential.pre_processing();
+  kiselevTaskSequential.run();
+  kiselevTaskSequential.post_processing();
+  ASSERT_EQ(expectedArray, outputArray);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
