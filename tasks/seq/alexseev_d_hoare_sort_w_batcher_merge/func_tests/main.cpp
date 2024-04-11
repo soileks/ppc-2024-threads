@@ -6,6 +6,8 @@
 
 #include "seq/alexseev_d_hoare_sort_w_batcher_merge/include/hoare_sort_w_batcher_merge_seq.hpp"
 
+using namespace alexseev_seq;
+
 TEST(alexseev_d_hoare_sort_w_batcher_merge_seq, Random_Constatnt_Array) {
   std::vector<int> inputArray = {3, 5, 4, 6, 9, 2, 8, 1, 7, 0};
   std::vector<int> outputArray(inputArray.size());

@@ -6,6 +6,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace alexseev_seq {
 class HoareSortWBatcherMergeSequential : public ppc::core::Task {
  public:
   explicit HoareSortWBatcherMergeSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
@@ -20,3 +21,4 @@ class HoareSortWBatcherMergeSequential : public ppc::core::Task {
  private:
   std::vector<int> array{};
 };
+}  // namespace alexseev_seq

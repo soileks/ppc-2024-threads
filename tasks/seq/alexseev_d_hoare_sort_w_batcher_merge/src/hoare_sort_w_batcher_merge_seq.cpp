@@ -7,7 +7,7 @@
 
 using namespace std::chrono_literals;
 
-bool HoareSortWBatcherMergeSequential::pre_processing() {
+bool alexseev_seq::HoareSortWBatcherMergeSequential::pre_processing() {
   try {
     internal_order_test();
     array.clear();
@@ -21,7 +21,7 @@ bool HoareSortWBatcherMergeSequential::pre_processing() {
   return true;
 }
 
-bool HoareSortWBatcherMergeSequential::validation() {
+bool alexseev_seq::HoareSortWBatcherMergeSequential::validation() {
   try {
     internal_order_test();
   } catch (...) {
@@ -30,7 +30,7 @@ bool HoareSortWBatcherMergeSequential::validation() {
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool HoareSortWBatcherMergeSequential::run() {
+bool alexseev_seq::HoareSortWBatcherMergeSequential::run() {
   try {
     internal_order_test();
     HoareSortWBatcherMergeSeq(array, 0, array.size() - 1);
@@ -40,7 +40,7 @@ bool HoareSortWBatcherMergeSequential::run() {
   return true;
 }
 
-bool HoareSortWBatcherMergeSequential::post_processing() {
+bool alexseev_seq::HoareSortWBatcherMergeSequential::post_processing() {
   try {
     internal_order_test();
     for (size_t i = 0; i < array.size(); ++i) {
@@ -53,7 +53,8 @@ bool HoareSortWBatcherMergeSequential::post_processing() {
   return true;
 }
 
-void HoareSortWBatcherMergeSequential::HoareSortWBatcherMergeSeq(std::vector<int> &arr, size_t l, size_t r) {
+void alexseev_seq::HoareSortWBatcherMergeSequential::HoareSortWBatcherMergeSeq(std::vector<int> &arr, size_t l,
+                                                                               size_t r) {
   if (arr.size() <= 1) return;
   int n = r - l + 1;
   for (int p = 1; p < n; p += p)
@@ -63,6 +64,6 @@ void HoareSortWBatcherMergeSequential::HoareSortWBatcherMergeSeq(std::vector<int
           if ((j + i) / (p + p) == (j + i + k) / (p + p)) CompExch(arr[l + j + i], arr[l + j + i + k]);
 }
 
-void HoareSortWBatcherMergeSequential::CompExch(int &a, int &b) {
+void alexseev_seq::HoareSortWBatcherMergeSequential::CompExch(int &a, int &b) {
   if (a > b) std::swap(a, b);
 }
