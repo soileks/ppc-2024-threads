@@ -23,8 +23,8 @@ std::vector<std::vector<double>> create2DFilter(int n, double sigma) {
   int middle = n / 2;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
-      double x = double(j - middle);
-      double y = double(i - middle);
+      auto x = double(j - middle);
+      auto y = double(i - middle);
       filter[i][j] = coeff * exp(-(x * x + y * y) / (2.0 * sigma * sigma));
     }
   }
