@@ -11,7 +11,7 @@ bool KiselevTaskSequential::pre_processing() {
     size_t size = taskData->inputs_count[0];
     arr = std::vector<int>(0);
     for (unsigned long i = 0; i < size; i++) {
-      arr.push_back(reinterpret_cast<int*>(taskData->inputs[0])[i]);
+      arr.emplace_back(reinterpret_cast<int*>(taskData->inputs[0])[i]);
     }
     return true;
   } catch (char* ex) {

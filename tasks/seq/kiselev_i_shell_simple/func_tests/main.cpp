@@ -17,7 +17,6 @@ TEST(kiselev_i_shell_simple_seq, check_8_size) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&rez));
   taskDataSeq->outputs_count.emplace_back(arr.size());
 
-
   KiselevTaskSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
