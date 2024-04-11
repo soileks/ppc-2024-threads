@@ -11,18 +11,18 @@ TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   int width = 4000;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+     in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
@@ -54,22 +54,22 @@ TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
 
 TEST(lapin_d_image_filter_block, test_task_run_run4000x4000) {
   // Create TaskData
-    int height = 4000;
+  int height = 4000;
   int width = 4000;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));

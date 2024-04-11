@@ -14,18 +14,18 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_6x8) {
   int width = 8;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
 
   // Create TaskData
@@ -50,18 +50,18 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_12x30) {
   int width = 30;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
 
   // Create TaskData
@@ -85,18 +85,18 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_30x90) {
   int width = 90;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
 
   // Create TaskData
@@ -120,18 +120,18 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_40x50) {
   int width = 50;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
 
   // Create TaskData
@@ -155,18 +155,18 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_60x70) {
   int width = 70;
   std::vector<std::vector<int>> in(height);
   for (int i = 0; i < height; i++) {
-     in[i].resize(width);
+    in[i].resize(width);
   }
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-        in[i][j] = rand() % 256;
+      in[i][j] = rand() % 256;
     }
   }
   
   std::vector<std::vector<int>> out(height);
   for (int i = 0; i < height; i++) {
-     out[i].resize(width);
+    out[i].resize(width);
   }
 
   // Create TaskData
