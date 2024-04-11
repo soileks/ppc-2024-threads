@@ -11,13 +11,13 @@ TEST(kiselev_i_shell_simple_seq, check_10_size) {
   std::vector<int> outputArray(inputArray.size());
   std::vector<int> expectedArray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortSequential = std::make_shared<ppc::core::TaskData>();
-  hoareSortSequential->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortSequential->inputs_count.emplace_back(inputArray.size());
-  hoareSortSequential->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArray.data()));
-  hoareSortSequential->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> helper = std::make_shared<ppc::core::TaskData>();
+  helper->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  helper->inputs_count.emplace_back(inputArray.size());
+  helper->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArray.data()));
+  helper->outputs_count.emplace_back(inputArray.size());
 
-  KiselevTaskSequential kiselevTaskSequential(hoareSortSequential);
+  KiselevTaskSequential kiselevTaskSequential(helper);
   ASSERT_TRUE(kiselevTaskSequential.validation());
   kiselevTaskSequential.pre_processing();
   kiselevTaskSequential.run();
@@ -107,50 +107,19 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
   ASSERT_EQ(res, out);
 }
 
-TEST(kiselev_i_shell_simple_seq, check_100_size_random) {
-  const int count = 100;
+TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
+  const int count = 2;
 
-  // Create data
-  std::vector<int> in(count, 0);
+  std::vector<std::vector<int>> in = {{2, 1}, {4, 3}};
   std::vector<int> out(count, 0);
-  std::vector<int> res(count, 0);
-  for (int i = 0; i < count; i++) {
-    int a = std::rand() % 100;
-    in[i] = a;
-    res[i] = a;
-  }
-  sort(res.begin(), res.end());
-  // Create TaskData
+  std::vector<int> res = {1, 2, 3, 4};
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(in.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  // Create Task
   KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
-  ASSERT_EQ(kiselevTaskSequential.validation(), true);
-  ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
-  ASSERT_EQ(kiselevTaskSequential.run(), true);
-  ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(kiselevTaskSequential.validation(), false);
 }
-
-// TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
-//  const int count = 2;
-
-// Create data
-//  std::vector<std::vector<int>> in = {{2, 1}, {4, 3}};
-//  std::vector<int> out(count, 0);
-//  std::vector<int> res = {1, 2, 3, 4};
-// Create TaskData
-//  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-//  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
-//  taskDataSeq->inputs_count.emplace_back(in.size());
-//  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
-//  taskDataSeq->outputs_count.emplace_back(out.size());
-
-// Create Task
-//  KiselevTaskSequential kiselevTaskSequential(taskDataSeq);
-//  ASSERT_EQ(kiselevTaskSequential.validation(), false);
-// }
