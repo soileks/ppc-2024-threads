@@ -6,23 +6,24 @@
 
 #include "seq/kiselev_i_shell_simple/include/shell_simple.hpp"
 
-TEST(kiselev_i_shell_simple_seq, check_10_size) {
-  std::vector<int> inputArray = {3, 5, 6, 4, 1, 2, 0, 9, 8, 7};
-  std::vector<int> outputArray(inputArray.size());
-  std::vector<int> expectedArray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+TEST(kiselev_i_shell_simple_seq, check_8_size) {
+  std::vector<int> arr = {5, 3, 8, 6, 2, 7, 1, 4};
+  std::vector<int> rez(arr.size(), 0);
+  std::vector<int> expected = {1, 2, 3, 4, 5, 6, 7, 8};
 
-  std::shared_ptr<ppc::core::TaskData> helper = std::make_shared<ppc::core::TaskData>();
-  helper->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  helper->inputs_count.emplace_back(inputArray.size());
-  helper->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArray.data()));
-  helper->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&arr));
+  taskDataSeq->inputs_count.emplace_back(arr.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&rez));
+  taskDataSeq->outputs_count.emplace_back(arr.size());
 
-  KiselevTaskSequential kiselevTaskSequential(helper);
-  ASSERT_TRUE(kiselevTaskSequential.validation());
-  kiselevTaskSequential.pre_processing();
-  kiselevTaskSequential.run();
-  kiselevTaskSequential.post_processing();
-  ASSERT_EQ(expectedArray, outputArray);
+
+  KiselevTaskSequential testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
+  ASSERT_EQ(rez, expected);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
