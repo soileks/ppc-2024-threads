@@ -107,4 +107,3 @@ TEST(sequential_mortina_a_int_trapezoid, test_task_run) {
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_NEAR(res, out[0], 0.02);
 }
-
