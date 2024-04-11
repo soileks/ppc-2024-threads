@@ -1,5 +1,6 @@
 // Copyright 2024 Lapin Dmitriy
 #include <gtest/gtest.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
