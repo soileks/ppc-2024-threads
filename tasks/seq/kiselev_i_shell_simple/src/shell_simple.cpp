@@ -22,14 +22,13 @@ bool KiselevTaskSequential::pre_processing() {
 }
 
 bool KiselevTaskSequential::validation() {
-  // try {
-  //   internal_order_test();
-  //   return taskData->inputs_count[0] != 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
-  // } catch (char* ex) {
-  //   (void)ex;
-  //   return false;
-  // }
-  return true;
+   try {
+     internal_order_test();
+     return taskData->inputs_count[0] != 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
+   } catch (char* ex) {
+     (void)ex;
+     return false;
+   }
 }
 
 bool KiselevTaskSequential::run() {

@@ -6,7 +6,7 @@
 
 #include "seq/kiselev_i_shell_simple/include/shell_simple.hpp"
 
-TEST(kiselev_i_shell_simple_seq, check_5_size) {
+TEST(kiselev_i_shell_simple_seq, check_10_size) {
   std::vector<int> inputArray = {3, 5, 6, 4, 1, 2, 0, 9, 8, 7};
   std::vector<int> outputArray(inputArray.size());
   std::vector<int> expectedArray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
