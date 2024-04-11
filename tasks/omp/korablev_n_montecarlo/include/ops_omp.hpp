@@ -16,7 +16,7 @@ class KorablevOMPMonteCarlo : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  func function{};
+  korablev_func function{};
   double Int1[2]{}, Int2[2]{};
 
   int N{};

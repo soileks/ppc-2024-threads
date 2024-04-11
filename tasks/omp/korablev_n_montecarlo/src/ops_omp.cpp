@@ -15,7 +15,7 @@ bool KorablevOMPMonteCarlo::pre_processing() {
   Int1[1] = reinterpret_cast<double*>(taskData->inputs[0])[1];
   Int2[0] = reinterpret_cast<double*>(taskData->inputs[1])[0];
   Int2[1] = reinterpret_cast<double*>(taskData->inputs[1])[1];
-  function = reinterpret_cast<func>(taskData->inputs[2]);
+  function = reinterpret_cast<korablev_func>(taskData->inputs[2]);
 
   N = 1000;
   res = 0.0;
