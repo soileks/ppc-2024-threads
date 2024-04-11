@@ -63,4 +63,4 @@ bool TestTaskSequentialMortinaIntegralTrapezoid::post_processing() {
   return true;
 }
 
-}  // namespace mortina_a_integral_seq
+}  // namespace mortina_a_integral_seq 
