@@ -10,10 +10,10 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-
+namespace ryabkov_batcher {
 class SeqBatcher : public ppc::core::Task {
  public:
-  explicit SeqBatcher(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit SeqBatcher(std::shared_ptr<ppc::core::TaskData> taskData) : Task(std::move(taskData)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -24,12 +24,15 @@ class SeqBatcher : public ppc::core::Task {
 };
 
 inline std::vector<int> GetRandomVector(int size) {
-  std::random_device rand;
-  std::uniform_int_distribution<int> unif(0, 1000000);
   std::vector<int> vect(size);
-  for (int i = 0; i < size; i++) {
-    vect[i] = unif(rand);
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<int> dis(0, 1000);
+
+  for (int i = 0; i < size; ++i) {
+    vect[i] = dis(gen);
   }
 
   return vect;
 }
+}  // namespace ryabkov_batcher

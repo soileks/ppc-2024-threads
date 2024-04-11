@@ -1,4 +1,5 @@
 // Copyright 2024 Ryabkov Vladislav
+
 #include <gtest/gtest.h>
 
 #include <chrono>
@@ -8,8 +9,8 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
-TEST(ryabkov_v_vec_test_perf, test_pipeline) {
-  std::vector<int> vect = GetRandomVector(1000000);
+TEST(ryabkov_v_bat_sort_seq, test_pipeline_run) {
+  std::vector<int> vect = ryabkov_batcher::GetRandomVector(1000000);
   std::vector<int> result(vect.size(), 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -18,7 +19,7 @@ TEST(ryabkov_v_vec_test_perf, test_pipeline) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataSeq->outputs_count.emplace_back(result.size());
 
-  auto testTaskSequential = std::make_shared<SeqBatcher>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<ryabkov_batcher::SeqBatcher>(taskDataSeq);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
@@ -37,8 +38,8 @@ TEST(ryabkov_v_vec_test_perf, test_pipeline) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(ryabkov_v_vec_test_perf, test_task_run) {
-  std::vector<int> vect = GetRandomVector(1000000);
+TEST(ryabkov_v_bat_sort_seq, test_task_run) {
+  std::vector<int> vect = ryabkov_batcher::GetRandomVector(1000000);
   std::vector<int> result(vect.size(), 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -47,7 +48,7 @@ TEST(ryabkov_v_vec_test_perf, test_task_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataSeq->outputs_count.emplace_back(result.size());
 
-  auto testTaskSequential = std::make_shared<SeqBatcher>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<ryabkov_batcher::SeqBatcher>(taskDataSeq);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
