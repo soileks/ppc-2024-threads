@@ -1,8 +1,8 @@
 // Copyright 2024 Lapin Dmitriy
 #include "seq/lapin_d_image_filter_block/include/ops_seq.hpp"
+#include <cmath>
 #include <iostream>
 #include <vector>
-#include <cmath>
 
 int Clamp(int value, int min, int max) {
   if (value < min) {

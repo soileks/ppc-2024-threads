@@ -1,8 +1,8 @@
 // Copyright 2024 Lapin Dmitriy
 #pragma once
+#include <vector>
 
 #include "core/task/include/task.hpp"
-#include <vector>
 
 class BlockFilterSeq : public ppc::core::Task {
  public:
