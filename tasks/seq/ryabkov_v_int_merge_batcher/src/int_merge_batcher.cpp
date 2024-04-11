@@ -29,7 +29,8 @@ void radix_sort(std::vector<int>& arr) {
 
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
-  std::size_t i = 0, j = 0;
+  std::size_t i = 0;
+  std::size_t j = 0;
 
   for (std::size_t k = 0; k < merged.size(); ++k) {
     if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
@@ -45,8 +46,9 @@ std::vector<int> BatchSort(std::vector<int>& a1, std::vector<int>& a2) {
   std::vector<int> merged = batch_merge(a1, a2);
 
   for (size_t bit = 0; bit < sizeof(int) * 8; bit++) {
-    for (size_t i = 0; i < merged.size() / 2; i++) {
-      if ((i % 2 == 0 && (merged[2 * i] >> bit) & 1) || (i % 2 != 0 && (merged[2 * i + 1] >> bit) & 1)) {
+    for (std::size_t i = 0; i < merged.size() / 2; i++) {
+      if (((i % 2 == 0) && ((merged[2 * i] >> bit) & 1) != 0) ||
+          ((i % 2 != 0) && ((merged[2 * i + 1] >> bit) & 1) != 0)) {
         std::swap(merged[2 * i], merged[2 * i + 1]);
       }
     }
