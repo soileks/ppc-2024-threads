@@ -61,5 +61,6 @@ bool TestTaskSequentialMortinaIntegralTrapezoid::post_processing() {
   internal_order_test();
   reinterpret_cast<double *>(taskData->outputs[0])[0] = res;
   return true;
-} 
+  
+}
 }  // namespace mortina_a_integral_seq
