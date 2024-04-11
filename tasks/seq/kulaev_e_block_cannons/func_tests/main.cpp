@@ -28,7 +28,7 @@ TEST(Kulaev_e_block_cannons_seq, Multiplication_3x3) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   TestTaskSequentialKulaevCannon testTaskSequential(taskDataSeq);
@@ -65,7 +65,7 @@ TEST(Kulaev_e_block_cannons_seq, Multiplication_2x2) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   TestTaskSequentialKulaevCannon testTaskSequential(taskDataSeq);
@@ -102,7 +102,7 @@ TEST(Kulaev_e_block_cannons_seq, Multiplication_5x5) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   TestTaskSequentialKulaevCannon testTaskSequential(taskDataSeq);
@@ -139,7 +139,7 @@ TEST(Kulaev_e_block_cannons_seq, Multiplication_0x0) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   TestTaskSequentialKulaevCannon testTaskSequential(taskDataSeq);
@@ -176,7 +176,7 @@ TEST(Kulaev_e_block_cannons_seq, Multiplication_100x100) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  std::vector<double> res = multiplyMatrix(in_A, in_B, n, m);
+  std::vector<double> res = multiplyMatrix1(in_A, in_B, n, m);
 
   // Create Task
   TestTaskSequentialKulaevCannon testTaskSequential(taskDataSeq);

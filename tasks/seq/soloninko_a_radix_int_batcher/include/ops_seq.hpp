@@ -23,7 +23,7 @@ class TaskSequentialBatcherSoloninko : public ppc::core::Task {
   std::vector<int> in_vec, res, p1, p2;
 };
 
-inline std::vector<int> GetRandVector(int size) {
+inline std::vector<int> sol_GetRandVector(int size) {
   std::random_device rd;
   std::uniform_int_distribution<int> unif(0, 1000000);
   std::vector<int> vec(size);

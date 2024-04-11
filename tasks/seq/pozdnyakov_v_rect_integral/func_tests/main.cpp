@@ -7,7 +7,7 @@
 
 TEST(pozdnyakov_v_rect_integral_seq, Test_x_sub_y_1) {
   double res = 0.0;
-  Func f = flin;
+  Func f = pozdnyakov_flin;
   uint64_t n = 100;
 
   std::vector<double> in = {0, 3, 0, 3};
@@ -34,7 +34,7 @@ TEST(pozdnyakov_v_rect_integral_seq, Test_x_sub_y_1) {
 
 TEST(pozdnyakov_v_rect_integral_seq, Test_x_sub_y_2) {
   double res = -357.0;
-  Func f = flin;
+  Func f = pozdnyakov_flin;
   uint64_t n = 100;
 
   std::vector<double> in = {-5, 2, 4, 10};
@@ -61,7 +61,7 @@ TEST(pozdnyakov_v_rect_integral_seq, Test_x_sub_y_2) {
 
 TEST(pozdnyakov_v_rect_integral_seq, Test_x_mul_y) {
   double res = 18.0;
-  Func f = fxy;
+  Func f = pozdnyakov_fxy;
   uint64_t n = 100;
 
   std::vector<double> in = {0, 3, 1, 3};
@@ -88,7 +88,7 @@ TEST(pozdnyakov_v_rect_integral_seq, Test_x_mul_y) {
 
 TEST(pozdnyakov_v_rect_integral_seq, Test_y_sin_x) {
   double res = 2.295;
-  Func f = fysinx;
+  Func f = pozdnyakov_fysinx;
   uint64_t n = 100;
 
   std::vector<double> in = {-2, 3, 1, 3};
@@ -115,7 +115,7 @@ TEST(pozdnyakov_v_rect_integral_seq, Test_y_sin_x) {
 
 TEST(pozdnyakov_v_rect_integral_seq, Test_x_exp_y) {
   double res = 217.0907;
-  Func f = fxexpy;
+  Func f = pozdnyakov_fxexpy;
   uint64_t n = 1000;
 
   std::vector<double> in = {0, 5, 1, 3};

@@ -68,8 +68,8 @@ void splitMatrix(const std::vector<double>& mSplit, std::vector<double>& a11, st
   }
 }
 
-std::vector<double> mergeMatrix(std::vector<double> a11, std::vector<double> a12, std::vector<double> a21,
-                                std::vector<double> a22) {
+std::vector<double> mergeMatrix1(std::vector<double> a11, std::vector<double> a12, std::vector<double> a21,
+                                 std::vector<double> a22) {
   int n = a11.size();
   std::vector<double> res(4 * n, 0.0);
   n = std::sqrt(n);
@@ -140,7 +140,7 @@ std::vector<double> StrassenMatMul(const std::vector<double>& a, const std::vect
   std::vector<double> c12 = summation(p3, p5);
   std::vector<double> c21 = summation(p2, p4);
   std::vector<double> c22 = summation(subtraction(p1, p2), summation(p3, p6));
-  return mergeMatrix(c11, c12, c21, c22);
+  return mergeMatrix1(c11, c12, c21, c22);
 }
 
 bool MatMulStrassenSec::pre_processing() {

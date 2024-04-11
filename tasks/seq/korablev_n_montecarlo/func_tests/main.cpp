@@ -8,7 +8,7 @@
 
 TEST(korablev_n_monte_carlo_seq, Test_lin_fun) {
   double res = 8;
-  func f = flin;
+  func f = korablev_flin;
 
   // Create data
   std::vector<double> in1 = {0, 2};
@@ -38,7 +38,7 @@ TEST(korablev_n_monte_carlo_seq, Test_lin_fun) {
 
 TEST(korablev_n_monte_carlo_seq, Test_sum_of_sin) {
   double res = 5.67369;
-  func f = fsinxPsiny;
+  func f = korablev_fsinxPsiny;
 
   // Create data
   std::vector<double> in1 = {-1, 2};
@@ -68,7 +68,7 @@ TEST(korablev_n_monte_carlo_seq, Test_sum_of_sin) {
 
 TEST(korablev_n_monte_carlo_seq, Test_sum_of_cos) {
   double res = 6.22943;
-  func f = fcosxPcosy;
+  func f = korablev_fcosxPcosy;
 
   // Create data
   std::vector<double> in1 = {-1, 2};
@@ -98,7 +98,7 @@ TEST(korablev_n_monte_carlo_seq, Test_sum_of_cos) {
 
 TEST(korablev_n_monte_carlo_seq, Test_x_mult_y) {
   double res = 2.25;
-  func f = fxy;
+  func f = korablev_fxy;
 
   // Create data
   std::vector<double> in1 = {0, 1};
@@ -128,7 +128,7 @@ TEST(korablev_n_monte_carlo_seq, Test_x_mult_y) {
 
 TEST(korablev_n_monte_carlo_seq, Test_x_mult_y_mult_y) {
   double res = 1.5;
-  func f = fxyy;
+  func f = korablev_fxyy;
 
   // Create data
   std::vector<double> in1 = {0, 3};

@@ -10,7 +10,7 @@
 
 TEST(soloninko_a_Test_Vec_perf_test, test_pipeline_run) {
   // Create data
-  std::vector<int> vec = GetRandVector(1000);
+  std::vector<int> vec = sol_GetRandVector(900000);
   std::vector<int> res(vec.size(), 0);
 
   // Create TaskData
@@ -45,7 +45,7 @@ TEST(soloninko_a_Test_Vec_perf_test, test_pipeline_run) {
 
 TEST(soloninko_a_Test_Vec_perf_test, test_task_run) {
   // Create data
-  std::vector<int> vec = GetRandVector(1000);
+  std::vector<int> vec = sol_GetRandVector(1100000);
   std::vector<int> res(vec.size(), 0);
 
   // Create TaskData

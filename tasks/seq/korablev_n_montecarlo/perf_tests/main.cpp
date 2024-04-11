@@ -9,7 +9,7 @@
 
 TEST(sequential_korablev_nikita_perf_test, test_pipeline_run) {
   double res = 8;
-  func f = flin;
+  func f = korablev_flin;
 
   // Create data
   std::vector<double> in1 = {0, 2};
@@ -53,7 +53,7 @@ TEST(sequential_korablev_nikita_perf_test, test_pipeline_run) {
 
 TEST(sequential_korablev_nikita_perf_test, test_task_run) {
   double res = 8;
-  func f = flin;
+  func f = korablev_flin;
 
   // Create data
   std::vector<double> in1 = {0, 2};

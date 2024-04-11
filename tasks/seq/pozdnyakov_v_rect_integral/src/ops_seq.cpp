@@ -1,10 +1,10 @@
 // Copyright 2024 Pozdnyakov Vasya
 #include "seq/pozdnyakov_v_rect_integral/include/ops_seq.hpp"
 
-double flin(double x, double y) { return x - y; }
-double fxy(double x, double y) { return x * y; }
-double fysinx(double x, double y) { return y * std::sin(x); }
-double fxexpy(double x, double y) { return x * std::exp(y); }
+double pozdnyakov_flin(double x, double y) { return x - y; }
+double pozdnyakov_fxy(double x, double y) { return x * y; }
+double pozdnyakov_fysinx(double x, double y) { return y * std::sin(x); }
+double pozdnyakov_fxexpy(double x, double y) { return x * std::exp(y); }
 
 bool PozdnyakovTaskSequential::pre_processing() {
   internal_order_test();

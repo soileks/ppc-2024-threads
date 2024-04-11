@@ -10,10 +10,10 @@
 
 using Func = double (*)(double, double);
 
-double flin(double x, double y);
-double fxy(double x, double y);
-double fysinx(double x, double y);
-double fxexpy(double x, double y);
+double pozdnyakov_flin(double x, double y);
+double pozdnyakov_fxy(double x, double y);
+double pozdnyakov_fysinx(double x, double y);
+double pozdnyakov_fxexpy(double x, double y);
 
 class PozdnyakovTaskSequential : public ppc::core::Task {
  public:
