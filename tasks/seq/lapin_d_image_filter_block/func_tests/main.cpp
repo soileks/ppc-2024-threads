@@ -29,8 +29,7 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_6x8) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -65,8 +64,7 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_12x30) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -101,8 +99,7 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_30x90) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -137,8 +134,7 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_40x50) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -173,8 +169,7 @@ TEST(lapin_d_image_filter_block, Test_Lapin_test_60x70) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);

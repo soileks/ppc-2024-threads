@@ -34,10 +34,8 @@ bool BlockFilterSeq::pre_processing() {
   internal_order_test();
   height = taskData->inputs_count[0];
   width = taskData->inputs_count[1];
-  mas_in =
-      reinterpret_cast<std::vector<std::vector<int>> *>(taskData->inputs[0]);
-  mas_out =
-      reinterpret_cast<std::vector<std::vector<int>> *>(taskData->outputs[0]);
+  mas_in = reinterpret_cast<std::vector<std::vector<int>> *>(taskData->inputs[0]);
+  mas_out = reinterpret_cast<std::vector<std::vector<int>> *>(taskData->outputs[0]);
   return true;
 }
 
