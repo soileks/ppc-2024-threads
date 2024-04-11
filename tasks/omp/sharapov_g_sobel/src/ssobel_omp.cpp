@@ -1,4 +1,4 @@
-// Copyright 2024 Sharapov Georgiy
+// Copyright 2024 Sharapov Georgy
 
 #include "omp/sharapov_g_sobel/include/ssobel_omp.hpp"
 
