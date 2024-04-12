@@ -8,7 +8,7 @@
 
 #include "core/task/include/task.hpp"
 
-class ConstructingCSonvexHullSeq : public ppc::core::Task {
+class ConstructingConvexHullSeq : public ppc::core::Task {
  public:
   explicit ConstructingConvexHullSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
@@ -29,4 +29,4 @@ class ConstructingCSonvexHullSeq : public ppc::core::Task {
 
 struct Point {
   uint32_t x, y;
-}
+};

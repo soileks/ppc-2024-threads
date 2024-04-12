@@ -11,8 +11,8 @@ bool ConstructingConvexHullSeq::pre_processing() {
   h = reinterpret_cast<int*>(taskData->inputs_count[0])[0];
   w = reinterpret_cast<int*>(taskData->inputs_count[0])[1];
   img.resize(h);
-  for (size_t i = 0; i < h; ++i) {
-    for (size_t j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<int*>(taskData->inputs[0])[i * w + j]);
+  for (int i = 0; i < h; ++i) {
+    for (int j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<int*>(taskData->inputs[0])[i * w + j]);
   }
   return true;
 }
@@ -25,7 +25,7 @@ bool ConstructingConvexHullSeq::validation() {
 bool ConstructingConvexHullSeq::run() {
   internal_order_test();
   marking—omponent();
-  for (size_t i = 0; i < numComponents; ++i) {
+  for (int i = 0; i < numComponents; ++i) {
     convexHull(i + 2);
   }
   return true;
@@ -45,8 +45,8 @@ int orientation(Point p, Point q, Point r) {
 void ConstructingConvexHullSeq::convexHull(int label) {
   std::vector<Point> points;
 
-  for (uint32_t i = 0; i < h; ++i) {
-    for (uint32_t j = 0; j < w; ++j) {
+  for (int i = 0; i < h; ++i) {
+    for (int j = 0; j < w; ++j) {
       if (img[i][j] == label) {
         points.push_back({j, i});
       }
@@ -58,7 +58,7 @@ void ConstructingConvexHullSeq::convexHull(int label) {
   int minX = points[0].x;
   int minIndex = 0;
 
-  for (size_t i = 1; i < n; ++i) {
+  for (int i = 1; i < n; ++i) {
     int currX = points[i].x;
     if ((currX < minX) || (currX == minX && points[i].y < points[minIndex].y)) {
       minX = currX;
@@ -68,7 +68,7 @@ void ConstructingConvexHullSeq::convexHull(int label) {
 
   std::swap(points[0], points[minIndex]);
 
-  for (size_t i = 1; i < n; ++i) {
+  for (int i = 1; i < n; ++i) {
     int j = i;
     while (j > 1 && orientation(points[0], points[j - 1], points[j]) < 0) {
       std::swap(points[j], points[j - 1]);
@@ -81,7 +81,7 @@ void ConstructingConvexHullSeq::convexHull(int label) {
   hullPoints.emplace_back(points[0]);
   hullPoints.emplace_back(points[1]);
 
-  for (size_t i = 2; i < n; ++i) {
+  for (int i = 2; i < n; ++i) {
     while (hullPoints.size() > 1 &&
            orientation(hullPoints[hullPoints.size() - 2], hullPoints[hullPoints.size() - 1], points[i]) < 0) {
       hullPoints.pop_back();
@@ -92,14 +92,14 @@ void ConstructingConvexHullSeq::convexHull(int label) {
 
   int size = hullPoints.size();
 
-  for (size_t i = 0; i < size; ++i) {
+  for (int i = 0; i < size; ++i) {
     hull.emplace_back(hullPoints[i].y);
     hull.emplace_back(hullPoints[i].x);
   }
   hull.emplace_back(-1);
 }
 
-void ConstructingConvexHullSeq::marking—omponent() {
+void ConstructingConvexHullSeq::markingComponent() {
   int label = 2;
 
   for (size_t i = 0; i < h; ++i) {
