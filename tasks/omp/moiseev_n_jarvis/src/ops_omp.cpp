@@ -1,5 +1,6 @@
 // Copyright 2024 Moiseev Nikita
 #include "omp/moiseev_n_jarvis/include/ops_omp.hpp"
+
 #include <omp.h>
 
 #include <algorithm>
@@ -21,14 +22,12 @@ std::vector<Point> Jarvis_Moiseev(const std::vector<Point>& Points) {
     Point nextPoint = Points[0];
     for (const auto& point : Points) {
       if (point == prevPoint) continue;
-      double crossProduct =
-          (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x)
-          - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
-      if (crossProduct > 0 || (crossProduct == 0 &&
-          ((point.x - prevPoint.x) * (point.x - prevPoint.x) +
-              (point.y - prevPoint.y) * (point.y - prevPoint.y)) >
-          ((nextPoint.x - prevPoint.x) * (nextPoint.x - prevPoint.x) +
-              (nextPoint.y - prevPoint.y) * (nextPoint.y - prevPoint.y)))) {
+      double crossProduct = 
+          (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
+      if (crossProduct > 0 || (crossProduct == 0 && ((point.x - prevPoint.x) * (point.x - prevPoint.x) +
+                                                    (point.y - prevPoint.y) * (point.y - prevPoint.y)) >
+                                             ((nextPoint.x - prevPoint.x) * (nextPoint.x - prevPoint.x) +
+                                             (nextPoint.y - prevPoint.y) * (nextPoint.y - prevPoint.y)))) {
         nextPoint = point;
       }
     }
@@ -45,7 +44,7 @@ std::vector<Point> Jarvis_omp_Moiseev(const std::vector<Point>& Points, int num_
   std::vector<Point> result;
   omp_set_num_threads(num_threads);
 
-  #pragma omp parallel
+#pragma omp parallel
   {
     int threadNum = omp_get_thread_num();
     int localSize;
@@ -62,7 +61,7 @@ std::vector<Point> Jarvis_omp_Moiseev(const std::vector<Point>& Points, int num_
                          Points.begin() + (localSize * (threadNum + 1)) + remains);
     }
     std::vector<Point> localRes = Jarvis_Moiseev(localVector);
-    #pragma omp critical
+#pragma omp critical
     { result.insert(result.end(), localRes.begin(), localRes.end()); }
   }
   return Jarvis_Moiseev(result);
