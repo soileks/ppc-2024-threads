@@ -12,9 +12,9 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
 
   // Create data
   std::vector<int> out(200);
-  std::vector<int> b = {1, 1, 0, 0, 0, 0, 0};
-  std::vector<int> a = {0, 0, 0, 0, 0, 0, 0};
-  std::vector<std::vector<int>> in(h);
+  std::vector<int8_t> b = {1, 1, 0, 0, 0, 0, 0};
+  std::vector<int8_t> a = {0, 0, 0, 0, 0, 0, 0};
+  std::vector<std::vector<int8_t>> in(h);
   in.emplace_back(b);
   in.emplace_back(b);
   for (int i = 2; i < h; i++) {
@@ -59,8 +59,8 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
 
   // Create data
   std::vector<int> out(200);
-  std::vector<int> b = {1, 1, 0, 0, 0, 0, 0};
-  std::vector<std::vector<int>> in(h);
+  std::vector<int8_t> b = {1, 1, 0, 0, 0, 0, 0};
+  std::vector<std::vector<int8_t>> in(h);
   for (int i = 0; i < h; i++) {
     in.emplace_back(b);
   }

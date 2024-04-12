@@ -12,7 +12,7 @@ bool ConstructingConvexHullSeq::pre_processing() {
   w = reinterpret_cast<int*>(taskData->inputs_count[0])[1];
   img.resize(h);
   for (int i = 0; i < h; ++i) {
-    for (int j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<int*>(taskData->inputs[0])[i * w + j]);
+    for (int j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<int8_t*>(taskData->inputs[0])[i * w + j]);
   }
   return true;
 }
@@ -47,7 +47,7 @@ void ConstructingConvexHullSeq::convexHull(int label) {
 
   for (int i = 0; i < h; ++i) {
     for (int j = 0; j < w; ++j) {
-      if (img[i][j] == label) {
+      if (imgMark[i][j] == label) {
         points.push_back({j, i});
       }
     }
@@ -101,10 +101,15 @@ void ConstructingConvexHullSeq::convexHull(int label) {
 
 void ConstructingConvexHullSeq::markingComponent() {
   int label = 2;
+  for (int i = 0; i < h; ++i) {
+    for (int j = 0; j < w; ++j) {
+      imgMark[i][j] = img[i][j];
+    }
+  }
 
   for (int i = 0; i < h; ++i) {
     for (int j = 0; j < w; ++j) {
-      if (img[i][j] == 1) {
+      if (imgMark[i][j] == 1) {
         numComponents += 1;
         std::stack<std::pair<int, int>> stack;
 
@@ -115,8 +120,8 @@ void ConstructingConvexHullSeq::markingComponent() {
           int y = stack.top().second;
           stack.pop();
 
-          if (x >= 0 && y >= 0 && x < w && y < h && img[x][y] == 1) {
-            img[x][y] = label;
+          if (x >= 0 && y >= 0 && x < w && y < h && imgMark[x][y] == 1) {
+            imgMark[x][y] = label;
 
             stack.emplace(x - 1, y);
             stack.emplace(x - 1, y - 1);

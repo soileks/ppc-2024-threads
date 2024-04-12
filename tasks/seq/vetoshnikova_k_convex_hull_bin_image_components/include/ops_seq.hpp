@@ -20,7 +20,8 @@ class ConstructingConvexHullSeq : public ppc::core::Task {
   int h{};
   int w{};
   int numComponents;
-  std::vector<std::vector<int>> img = {};
+  std::vector<std::vector<int8_t>> img = {};
+  std::vector<std::vector<int>> imgMark = {};
   std::vector<int> hull = {};
 
   void markingComponent();
