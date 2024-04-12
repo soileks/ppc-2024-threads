@@ -28,4 +28,4 @@ class Sequentialtrapezoid : public ppc::core::Task {
 
 double trapezoidal_integral(double a1, double b1, double a2, double b2, int n1, int n2,
                             const std::function<double(double, double)> &fun);
-}
+}  // namespace troitskiy_a_integral_trap

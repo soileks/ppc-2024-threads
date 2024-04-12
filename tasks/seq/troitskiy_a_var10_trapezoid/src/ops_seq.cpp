@@ -66,4 +66,4 @@ bool Sequentialtrapezoid::post_processing() {
   return true;
 }
 
-}
+}  // namespace troitskiy_a_integral_trap
