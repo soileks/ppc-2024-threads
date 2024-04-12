@@ -62,7 +62,6 @@ TEST(veslov_i_systems_grad_method_seq, Test_unit_matrix) {
 
 TEST(veslov_i_systems_grad_method_seq, Test_random_10) {
   int rows = 10;
-
   std::vector<double> matrix = genRandomMatrix(rows, 10);
   std::vector<double> vec = genRandomVector(rows, 10);
   std::vector<double> res(rows, 0.0);
@@ -86,7 +85,6 @@ TEST(veslov_i_systems_grad_method_seq, Test_random_10) {
 
 TEST(veslov_i_systems_grad_method_seq, Test_random_5) {
   int rows = 5;
-
   std::vector<double> matrix = genRandomMatrix(rows, 10);
   std::vector<double> vec = genRandomVector(rows, 10);
   std::vector<double> res(rows);
@@ -110,7 +108,6 @@ TEST(veslov_i_systems_grad_method_seq, Test_random_5) {
 
 TEST(veslov_i_systems_grad_method_seq, Test_triple_diag_matrix) {
   int rows = 4;
-
   std::vector<double> matrix = {2, -1, 0, 0, -1, 2, -1, 0, 0, -1, 2, -1, 0, 0, -1, 2};
   std::vector<double> vec = {1, 2, 3, 4};
   std::vector<double> res(rows);
