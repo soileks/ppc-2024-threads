@@ -7,8 +7,8 @@
 #include "seq/vetoshnikova_k_convex_hull_bin_image_components/include/ops_seq.hpp"
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
-  uint32_t w = 7;
-  uint32_t h = 10000;
+  int w = 7;
+  int h = 10000;
 
   // Create data
   std::vector<int> out(200);
@@ -26,7 +26,7 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<int*>(out.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
 
   // Create Task
   auto testTaskSequential = std::make_shared<ConstructingConvexHullSeq>(taskDataSeq);
@@ -54,8 +54,8 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
 }
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
-  uint32_t w = 7;
-  uint32_t h = 10000;
+  int w = 7;
+  int h = 10000;
 
   // Create data
   std::vector<int> out(200);
@@ -70,7 +70,7 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
   taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<int*>(out.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
 
   // Create Task
   auto testTaskSequential = std::make_shared<ConstructingConvexHullSeq>(taskDataSeq);
