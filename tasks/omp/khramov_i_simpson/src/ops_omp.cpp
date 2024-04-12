@@ -37,7 +37,7 @@ double khramov_omp::simpson_parallel(function func, int a1, int a2, int b1, int 
   double h1 = static_cast<double>(b1 - a1) / numSteps;
   double h2 = static_cast<double>(b2 - a2) / numSteps;
 
-#pragma omp parallel for reduction(+: res)
+#pragma omp parallel for reduction(+ : res)
   for (int i = 0; i < numSteps; i++) {
     double Xi0 = a2 + i * h2;
     double Xi1 = a2 + (i + 1) * h2;
