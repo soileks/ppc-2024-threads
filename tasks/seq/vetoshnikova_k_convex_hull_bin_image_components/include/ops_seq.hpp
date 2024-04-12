@@ -28,5 +28,5 @@ class ConstructingConvexHullSeq : public ppc::core::Task {
 };
 
 struct Point {
-  uint32_t x, y;
+  int x, y;
 };

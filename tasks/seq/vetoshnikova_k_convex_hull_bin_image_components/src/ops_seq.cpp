@@ -24,7 +24,7 @@ bool ConstructingConvexHullSeq::validation() {
 
 bool ConstructingConvexHullSeq::run() {
   internal_order_test();
-  marking—omponent();
+  markingComponent();
   for (int i = 0; i < numComponents; ++i) {
     convexHull(i + 2);
   }
@@ -102,8 +102,8 @@ void ConstructingConvexHullSeq::convexHull(int label) {
 void ConstructingConvexHullSeq::markingComponent() {
   int label = 2;
 
-  for (size_t i = 0; i < h; ++i) {
-    for (size_t j = 0; j < w; ++j) {
+  for (int i = 0; i < h; ++i) {
+    for (int j = 0; j < w; ++j) {
       if (img[i][j] == 1) {
         numComponents += 1;
         std::stack<std::pair<int, int>> stack;
