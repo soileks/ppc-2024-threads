@@ -32,7 +32,7 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes) {
 
   // Create Task
   SavchukCRSMatMultOMPSequential savchukCRSMatMultOMPSequential(taskDataSeq);
-  ASSERT_EQ(savchukCRSMatMultOMPSequential.validation());
+  ASSERT_EQ(savchukCRSMatMultOMPSequential.validation(), true);
 
   // Create data
   std::vector<double> in3(n1 * m1);
@@ -54,7 +54,7 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes) {
   taskDataParallel->outputs_count.emplace_back(m2);
   // Create Task
   SavchukCRSMatMultOMPParallel savchukCRSMatMultOMPParallel(taskDataParallel);
-  ASSERT_EQ(savchukCRSMatMultOMPParallel.validation());
+  ASSERT_EQ(savchukCRSMatMultOMPParallel.validation(), true);
 }
 
 TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
@@ -84,7 +84,7 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
 
   // Create Task
   SavchukCRSMatMultOMPSequential savchukCRSMatMultOMPSequential(taskDataSeq);
-  ASSERT_FALSE(savchukCRSMatMultOMPSequential.validation(), true);
+  ASSERT_FALSE(savchukCRSMatMultOMPSequential.validation());
 
   // Create data
   std::vector<double> in3(n1 * m1);
@@ -106,7 +106,7 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
   taskDataParallel->outputs_count.emplace_back(m2);
   // Create Task
   SavchukCRSMatMultOMPParallel savchukCRSMatMultOMPParallel(taskDataParallel);
-  ASSERT_FALSE(savchukCRSMatMultOMPParallel.validation(), true);
+  ASSERT_FALSE(savchukCRSMatMultOMPParallel.validation());
 }
 
 TEST(savchuk_a_crs_matmult_omp, test_multy_correct) {
