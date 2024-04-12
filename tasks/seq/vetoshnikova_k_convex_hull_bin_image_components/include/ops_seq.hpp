@@ -8,7 +8,7 @@
 
 #include "core/task/include/task.hpp"
 
-class ConstructingConvexHullSeq : public ppc::core::Task {
+class ConstructingCSonvexHullSeq : public ppc::core::Task {
  public:
   explicit ConstructingConvexHullSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
@@ -23,7 +23,7 @@ class ConstructingConvexHullSeq : public ppc::core::Task {
   std::vector<std::vector<int>> img = {};
   std::vector<int> hull = {};
 
-  void marking—omponent();
+  void markingComponent();
   void convexHull(int label);
 };
 
