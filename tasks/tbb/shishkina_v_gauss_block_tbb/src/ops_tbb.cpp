@@ -1,11 +1,11 @@
 // Copyright 2024 Shishkina Valeriya
 #include "tbb/shishkina_v_gauss_block_tbb/include/ops_tbb.hpp"
 
+#include <tbb/tbb.h>
+
 #include <cmath>
 #include <random>
 #include <thread>
-
-#include <tbb/tbb.h>
 
 std::vector<int> getPicture2(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
