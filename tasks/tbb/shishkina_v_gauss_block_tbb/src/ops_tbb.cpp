@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <random>
-#include <algorithm>
 #include <thread>
 #include <tbb/tbb.h>
 

@@ -1,7 +1,6 @@
 // Copyright 2023 Shishkina Valeriya
 #pragma once
 
-#include <algorithm>
 #include <cmath>
 #include <string>
 #include <vector>
