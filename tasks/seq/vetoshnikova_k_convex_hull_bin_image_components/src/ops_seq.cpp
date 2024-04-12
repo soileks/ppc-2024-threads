@@ -12,7 +12,7 @@ bool ConstructingConvexHullSeq::pre_processing() {
   w = reinterpret_cast<int*>(taskData->inputs_count[0])[1];
   img.resize(h);
   for (int i = 0; i < h; ++i) {
-    for (int j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<int8_t*>(taskData->inputs[0])[i * w + j]);
+    for (int j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<uint8_t*>(taskData->inputs[0])[i * w + j]);
   }
   return true;
 }
