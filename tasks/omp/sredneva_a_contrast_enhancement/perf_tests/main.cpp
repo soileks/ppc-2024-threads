@@ -36,7 +36,7 @@ TEST(sredneva_a_contrast_enhancement_omp, test_pipeline_run) {
   taskDataSeq->inputs_count.emplace_back(in3.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
-  
+
   // Create Task
   auto testTaskOMP = std::make_shared<ContrastEnhancement_OMP_Parallel>(taskDataSeq);
 

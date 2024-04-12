@@ -3,9 +3,9 @@
 
 #include <omp.h>
 
-#include <vector>
 #include <random>
 #include <thread>
+#include <vector>
 
 using namespace std::chrono_literals;
 
