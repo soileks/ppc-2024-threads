@@ -8,15 +8,14 @@
 TEST(vetoshnikova_k_hull_bin_image_seq, Test1) {
   // Create data
   std::vector<int> out(50);
-  std::vector<std::vector<uint8_t>> in({{0, 0, 0, 0, 0, 0, 0},
-                                        {0, 1, 1, 0, 0, 0, 0},
-                                        {0, 1, 1, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0}});
+  std::vector<std::vector<uint8_t>> in({{0, 0, 0, 0, 0, 0},
+                                        {0, 1, 1, 0, 0, 0},
+                                        {0, 1, 1, 0, 0, 0},
+                                        {0, 0, 0, 0, 0, 0},
+                                        {0, 0, 0, 0, 0, 0},
+                                        {0, 0, 0, 0, 0, 0}});
 
-  std::vector<int> hullTrue = {3, 1, 5, 3, 3, 5, -1};
+  std::vector<int> hullTrue = {1, 1, 1, 2, 2, 2, 2, 1, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -38,15 +37,10 @@ TEST(vetoshnikova_k_hull_bin_image_seq, Test1) {
 TEST(vetoshnikova_k_hull_bin_image_seq, Test2) {
   // Create data
   std::vector<int> out(50);
-  std::vector<std::vector<uint8_t>> in({{0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 1, 1, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0}});
+  std::vector<std::vector<uint8_t>> in(
+      {{0, 0, 0, 0, 0}, {0, 0, 1, 0, 0}, {0, 1, 1, 1, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 0, 0}});
 
-  std::vector<int> hullTrue = {3, 1, 5, 3, 3, 5, -1};
+  std::vector<int> hullTrue = {2, 1, 1, 2, 2, 3, 3, 2, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -68,15 +62,14 @@ TEST(vetoshnikova_k_hull_bin_image_seq, Test2) {
 TEST(vetoshnikova_k_hull_bin_image_seq, Test3) {
   // Create data
   std::vector<int> out(50);
-  std::vector<std::vector<uint8_t>> in({{0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 1, 1, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0}});
+  std::vector<std::vector<uint8_t>> in({{0, 0, 1, 0, 0, 0},
+                                        {0, 1, 1, 1, 0, 0},
+                                        {0, 0, 0, 0, 0, 0},
+                                        {0, 0, 0, 1, 0, 0},
+                                        {0, 0, 0, 1, 1, 0},
+                                        {0, 0, 0, 0, 0, 0}});
 
-  std::vector<int> hullTrue = {3, 1, 5, 3, 3, 5, -1};
+  std::vector<int> hullTrue = {1, 1, 0, 2, 1, 3, -1, 3, 3, 4, 4, 4, 3, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -97,15 +90,10 @@ TEST(vetoshnikova_k_hull_bin_image_seq, Test3) {
 TEST(vetoshnikova_k_hull_bin_image_seq, Test4) {
   // Create data
   std::vector<int> out(50);
-  std::vector<std::vector<uint8_t>> in({{0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 1, 1, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0}});
+  std::vector<std::vector<uint8_t>> in(
+      {{0, 0, 0, 0, 0, 0}, {0, 1, 1, 1, 0, 0}, {0, 1, 1, 1, 0, 0}, {0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0}});
 
-  std::vector<int> hullTrue = {3, 1, 5, 3, 3, 5, -1};
+  std::vector<int> hullTrue = {1, 1, 1, 2, 1, 3, 2, 3, 3, 2, 2, 1, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -129,13 +117,13 @@ TEST(vetoshnikova_k_hull_bin_image_seq, Test5) {
   std::vector<int> out(50);
   std::vector<std::vector<uint8_t>> in({{0, 0, 0, 0, 0, 0, 0},
                                         {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 1, 1, 0},
-                                        {0, 0, 0, 0, 1, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0},
-                                        {0, 0, 0, 0, 0, 0, 0}});
+                                        {0, 0, 0, 1, 0, 0, 0},
+                                        {0, 0, 1, 1, 1, 1, 0},
+                                        {0, 0, 0, 1, 1, 0, 0},
+                                        {1, 1, 0, 0, 0, 0, 0},
+                                        {1, 1, 0, 0, 0, 0, 0}});
 
-  std::vector<int> hullTrue = {3, 1, 5, 3, 3, 5, -1};
+  std::vector<int> hullTrue = {3, 2, 2, 3, 3, 5, 4, 4, 4, 3, -1, 5, 0, 5, 1, 6, 1, 6, 0, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
