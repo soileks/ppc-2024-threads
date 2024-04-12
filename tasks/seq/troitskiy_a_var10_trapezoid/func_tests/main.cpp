@@ -6,6 +6,8 @@
 
 #include "seq/troitskiy_a_var10_trapezoid/include/ops_seq.hpp"
 
+using namespace troitskiy_a_integral_trap;
+
 TEST(Sequential_troitskiy_a_int_trapezoid, Test_1) {
   double a1 = 0.0;
   double b1 = 2.0;

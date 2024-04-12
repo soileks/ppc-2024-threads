@@ -7,6 +7,8 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/troitskiy_a_var10_trapezoid/include/ops_seq.hpp"
 
+using namespace troitskiy_a_integral_trap;
+
 TEST(sequential_troitskiy_a_int_trapezoid, test_pipeline_run) {
   double a1 = 1.0;
   double b1 = 2.0;

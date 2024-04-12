@@ -8,6 +8,8 @@
 
 using namespace std::chrono_literals;
 
+namespace troitskiy_a_integral_trap {
+
 double trapezoidal_integral(double a1, double b1, double a2, double b2, int n1, int n2,
                             const std::function<double(double, double)> &f) {
   double h1 = (b1 - a1) / n1;
@@ -62,4 +64,6 @@ bool Sequentialtrapezoid::post_processing() {
   internal_order_test();
   reinterpret_cast<double *>(taskData->outputs[0])[0] = res;
   return true;
+}
+
 }
