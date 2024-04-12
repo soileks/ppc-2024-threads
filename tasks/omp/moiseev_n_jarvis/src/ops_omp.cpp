@@ -24,10 +24,11 @@ std::vector<Point> Jarvis_Moiseev(const std::vector<Point>& Points) {
       if (point == prevPoint) continue;
       double crossProduct =
           (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
-      if (crossProduct > 0 || (crossProduct == 0 && ((point.x - prevPoint.x) * (point.x - prevPoint.x) +
-+                                                      (point.y - prevPoint.y) * (point.y - prevPoint.y)) >
-+                                                         ((nextPoint.x - prevPoint.x) * (nextPoint.x - prevPoint.x) +
-+                                                          (nextPoint.y - prevPoint.y) * (nextPoint.y - prevPoint.y)))) {
+      if (crossProduct > 0 ||
+          (crossProduct == 0 &&
+              ((point.x - prevPoint.x) * (point.x - prevPoint.x) + +(point.y - prevPoint.y) * (point.y - prevPoint.y)) >
+                  +((nextPoint.x - prevPoint.x) * (nextPoint.x - prevPoint.x) +
+                    +(nextPoint.y - prevPoint.y) * (nextPoint.y - prevPoint.y)))) {
         nextPoint = point;
       }
     }
