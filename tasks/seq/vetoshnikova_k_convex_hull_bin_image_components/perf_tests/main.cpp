@@ -7,7 +7,6 @@
 #include "seq/vetoshnikova_k_convex_hull_bin_image_components/include/ops_seq.hpp"
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
-  int w = 7;
   int h = 10000;
 
   // Create data
@@ -54,7 +53,6 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
 }
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
-  int w = 7;
   int h = 10000;
 
   // Create data
