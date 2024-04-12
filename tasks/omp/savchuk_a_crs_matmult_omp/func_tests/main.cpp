@@ -7,9 +7,9 @@
 
 TEST(savchuk_a_crs_matmult_omp, test_sizes) {
   size_t n1 = 4;
-  size_t m1 = 5;
-  size_t n2 = 3;
-  size_t m2 = 4;
+  size_t m1 = 6;
+  size_t n2 = 6;
+  size_t m2 = 2;
 
   // Create data
   std::vector<double> in1(n1 * m1);
@@ -32,7 +32,7 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes) {
 
   // Create Task
   SavchukCRSMatMultOMPSequential savchukCRSMatMultOMPSequential(taskDataSeq);
-  ASSERT_FALSE(savchukCRSMatMultOMPSequential.validation());
+  ASSERT_EQ(savchukCRSMatMultOMPSequential.validation());
 
   // Create data
   std::vector<double> in3(n1 * m1);
@@ -54,14 +54,14 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes) {
   taskDataParallel->outputs_count.emplace_back(m2);
   // Create Task
   SavchukCRSMatMultOMPParallel savchukCRSMatMultOMPParallel(taskDataParallel);
-  ASSERT_FALSE(savchukCRSMatMultOMPParallel.validation());
+  ASSERT_EQ(savchukCRSMatMultOMPParallel.validation());
 }
 
 TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
-  size_t n1 = 4;
-  size_t m1 = 4;
+  size_t n1 = 2;
+  size_t m1 = 3;
   size_t n2 = 4;
-  size_t m2 = 4;
+  size_t m2 = 5;
 
   // Create data
   std::vector<double> in1(n1 * m1);
@@ -84,7 +84,7 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
 
   // Create Task
   SavchukCRSMatMultOMPSequential savchukCRSMatMultOMPSequential(taskDataSeq);
-  ASSERT_EQ(savchukCRSMatMultOMPSequential.validation(), true);
+  ASSERT_FALSE(savchukCRSMatMultOMPSequential.validation(), true);
 
   // Create data
   std::vector<double> in3(n1 * m1);
@@ -106,20 +106,19 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
   taskDataParallel->outputs_count.emplace_back(m2);
   // Create Task
   SavchukCRSMatMultOMPParallel savchukCRSMatMultOMPParallel(taskDataParallel);
-  ASSERT_EQ(savchukCRSMatMultOMPParallel.validation(), true);
+  ASSERT_FALSE(savchukCRSMatMultOMPParallel.validation(), true);
 }
 
 TEST(savchuk_a_crs_matmult_omp, test_multy_correct) {
-  size_t n1 = 4;
-  size_t m1 = 4;
-  size_t n2 = 4;
-  size_t m2 = 4;
-
+  size_t n1 = 3;
+  size_t m1 = 3;
+  size_t n2 = 3;
+  size_t m2 = 3;
   // Create data
-  std::vector<double> in1{5, 0, 0, 0, 0, 0, 5, 0, 0, 1, 0, 0, 8, 0, 6, 0};
-  std::vector<double> in2{5, 0, 0, 8, 0, 0, 1, 0, 0, 5, 0, 6, 0, 0, 0, 0};
+  std::vector<double> in1{4, 0, 0, 0, 0, 1, 0, 2, 0};
+  std::vector<double> in2{9, 1, 0, 0, 0, 7, 3, 0, 0};
   std::vector<double> out(n1 * m2);
-  std::vector<double> test{25, 0, 0, 40, 0, 25, 0, 30, 0, 0, 1, 0, 40, 30, 0, 100};
+  std::vector<double> test{36, 4, 0, 3, 0, 0, 0, 0, 14};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -150,10 +149,10 @@ TEST(savchuk_a_crs_matmult_omp, test_multy_correct) {
 
   ASSERT_EQ(k, n1 * m2);
   // Create data
-  std::vector<double> in3{5, 0, 0, 0, 0, 0, 5, 0, 0, 1, 0, 0, 8, 0, 6, 0};
-  std::vector<double> in4{5, 0, 0, 8, 0, 0, 1, 0, 0, 5, 0, 6, 0, 0, 0, 0};
+  std::vector<double> in3{4, 0, 0, 0, 0, 1, 0, 2, 0};
+  std::vector<double> in4{9, 1, 0, 0, 0, 7, 3, 0, 0};
   std::vector<double> out2(n1 * m2);
-  std::vector<double> test2{25, 0, 0, 40, 0, 25, 0, 30, 0, 0, 1, 0, 40, 30, 0, 100};
+  std::vector<double> test2{36, 4, 0, 3, 0, 0, 0, 0, 14};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
@@ -186,16 +185,16 @@ TEST(savchuk_a_crs_matmult_omp, test_multy_correct) {
 }
 
 TEST(savchuk_a_crs_matmult_omp, inverse_matrix) {
-  size_t n1 = 4;
-  size_t m1 = 4;
-  size_t n2 = 4;
-  size_t m2 = 4;
+  size_t n1 = 3;
+  size_t m1 = 3;
+  size_t n2 = 3;
+  size_t m2 = 3;
 
   // Create data
-  std::vector<double> in1{0, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 1, 0, 0, 0};
-  std::vector<double> in2{0, 0, 0, 1, 0.2, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 1, 0};
+  std::vector<double> in1{4, 0, 0, 0, 2, 1, 0, 2, 0};
+  std::vector<double> in2{0.25, 0, 0, 0, 0, 0.5, 0, 1, -1};
   std::vector<double> out(n1 * m2);
-  std::vector<double> identity{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+  std::vector<double> identity{1, 0, 0, 0, 1, 0, 0, 0, 1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -226,10 +225,10 @@ TEST(savchuk_a_crs_matmult_omp, inverse_matrix) {
 
   ASSERT_EQ(k, n1 * m2);
   // Create data
-  std::vector<double> in3{0, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 1, 0, 0, 0};
-  std::vector<double> in4{0, 0, 0, 1, 0.2, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 1, 0};
+  std::vector<double> in3{4, 0, 0, 0, 2, 1, 0, 2, 0};
+  std::vector<double> in4{0.25, 0, 0, 0, 0, 0.5, 0, 1, -1};
   std::vector<double> out2(n1 * m2);
-  std::vector<double> identity2{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+  std::vector<double> identity2{1, 0, 0, 0, 1, 0, 0, 0, 1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
@@ -267,7 +266,7 @@ TEST(savchuk_a_crs_matmult_omp, zero_matrix) {
   size_t n2 = 3;
   size_t m2 = 3;
   // Create data
-  std::vector<double> in1{1, -2, 1, 2, 1, -1, 3, 2, -2};
+  std::vector<double> in1{0, 2, 0, 0, 0, 6, 0, 2, 0};
 
   std::vector<double> in2(n2 * m2, 0);
 
@@ -302,7 +301,7 @@ TEST(savchuk_a_crs_matmult_omp, zero_matrix) {
 
   ASSERT_EQ(k, n1 * m2);
   // Create data
-  std::vector<double> in3{1, -2, 1, 2, 1, -1, 3, 2, -2};
+  std::vector<double> in3{0, 2, 0, 0, 0, 6, 0, 2, 0};
   ;
   std::vector<double> in4(n2 * m2, 0);
   std::vector<double> out2(n1 * m2);
