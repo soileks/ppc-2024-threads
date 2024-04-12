@@ -4,6 +4,7 @@
 #include <cmath>
 #include <random>
 #include <thread>
+
 #include <tbb/tbb.h>
 
 std::vector<int> getPicture2(int n, int m, uint8_t min, uint8_t max) {
