@@ -7,7 +7,7 @@
 #include "seq/veselov_i_systemsgradmethod/include/systemsgradmethod_seq.hpp"
 
 TEST(veselov_i_systems_grad_method_seq, test_pipeline) {
-  int rows = 100;
+  int rows = 200;
 
   std::vector<double> matrix = genRandomMatrix(rows, 10);
   std::vector<double> vec = genRandomVector(rows, 10);

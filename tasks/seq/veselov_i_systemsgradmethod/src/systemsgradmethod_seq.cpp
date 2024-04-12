@@ -84,7 +84,6 @@ bool SystemsGradMethodSeq::run() {
   try {
     internal_order_test();
     x = SLEgradSolver(A, b, rows);
-    std::this_thread::sleep_for(30ms);
   } catch (...) {
     return false;
   }
