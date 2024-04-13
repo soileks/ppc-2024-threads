@@ -36,7 +36,8 @@ TEST(smirnova_d_complex_matrix_crs_omp, test_square_matrix_by_itself) {
   B_Par.col_indexes = {0, 1, 3, 0, 1, 2, 3, 4, 0, 2, 3, 1, 4};
   B_Par.non_zero_values = {1, -1, -3, -2, 5, 4, 6, 4, -4, 2, 7, 8, -5};
 
-  crs_matrix Result_Seq, Result_Par;
+  crs_matrix Result_Seq;
+  crs_matrix Result_Par;
 
   crs_matrix Expected;
   Expected.n_rows = 5;
@@ -119,7 +120,8 @@ TEST(smirnova_d_complex_matrix_crs_omp, test_square_matrix) {
   B_Par.col_indexes = {0, 1, 0, 2, 3, 0, 2};
   B_Par.non_zero_values = {5, 3, 7, 6, 8, 3, 2};
 
-  crs_matrix Result_Seq, Result_Par;
+  crs_matrix Result_Seq;
+  crs_matrix Result_Par;
 
   crs_matrix Expected;
   Expected.n_rows = 4;
@@ -202,7 +204,8 @@ TEST(smirnova_d_complex_matrix_crs_omp, test_non_square_matrix) {
   B_Par.col_indexes = {0, 2, 1, 1};
   B_Par.non_zero_values = {4, 7, 6, 8};
 
-  crs_matrix Result_Seq, Result_Par;
+  crs_matrix Result_Seq;
+  crs_matrix Result_Par;
 
   crs_matrix Expected;
   Expected.n_rows = 2;
@@ -287,7 +290,9 @@ TEST(smirnova_d_complex_matrix_crs_omp, test_inverse_matrix) {
   B_Par.non_zero_values = {1,           {-1, 1}, {1.5, 0.5},   {0.5, -0.5}, {-0.5, 0.5},
                            {0.5, -0.5}, {1, -1}, {-1.5, -1.5}, {-0.5, 0.5}};
 
-  crs_matrix Result_Seq, Result_Par;
+  crs_matrix Result_Seq;
+  crs_matrix Result_Par;
+
   crs_matrix Expected;
   Expected.n_rows = 4;
   Expected.n_cols = 4;
@@ -369,7 +374,8 @@ TEST(smirnova_d_complex_matrix_crs_omp, test_complex_matrix) {
   B_Par.col_indexes = {0, 3, 2, 1, 3, 2, 4};
   B_Par.non_zero_values = {{1, 1}, {4, 1}, {1, 2}, {3, 0}, {7, 7}, {2, 1}, {3, 2}};
 
-  crs_matrix Result_Seq, Result_Par;
+  crs_matrix Result_Seq;
+  crs_matrix Result_Par;
 
   crs_matrix Expected;
   Expected.n_rows = 5;
@@ -452,7 +458,8 @@ TEST(smirnova_d_complex_matrix_crs_omp, test_complex_matrix_diagonal) {
   B_Par.col_indexes = {2, 1, 0};
   B_Par.non_zero_values = {{3, 0}, {7, 7}, {2, 1}};
 
-  crs_matrix Result_Seq, Result_Par;
+  crs_matrix Result_Seq;
+  crs_matrix Result_Par;
 
   crs_matrix Expected;
   Expected.n_rows = 3;
