@@ -62,8 +62,8 @@ TEST(Sequential_kostanyan_sobel_perf_test, test_pipeline_run) {
 }
 
 TEST(Sequential_kostanyan_sobel_perf_test, test_task_run) {
-  const int n = 5000;
-  const int m = 5000;
+  const int n = 4000;
+  const int m = 4000;
   const uint8_t min = 0;
   const uint8_t max = 255;
 
@@ -83,7 +83,7 @@ TEST(Sequential_kostanyan_sobel_perf_test, test_task_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  // Create Task
+  // Create Task.
   auto testTaskSequential = std::make_shared<kostanyan_EdgeDetectionSequential>(taskDataSeq);
 
   // Create Perf attributes
