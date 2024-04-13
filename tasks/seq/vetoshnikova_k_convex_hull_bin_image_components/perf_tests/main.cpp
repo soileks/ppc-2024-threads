@@ -8,23 +8,21 @@
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
   int h = 10000;
-
+  int w = 7;
   // Create data
   std::vector<int> out(200);
-  std::vector<uint8_t> b = {1, 1, 0, 0, 0, 0, 0};
-  std::vector<uint8_t> a = {0, 0, 0, 0, 0, 0, 0};
-  std::vector<std::vector<uint8_t>> in(h);
-  in.emplace_back(b);
-  in.emplace_back(b);
-  for (int i = 2; i < h; i++) {
-    in.emplace_back(a);
-  }
+  std::vector<uint8_t> in(h * w, 0);
+  in[0] = 1;
+  in[1] = 1;
+  in[7] = 1;
+  in[8] = 1;
   std::vector<int> hullTrue = {0, 0, 0, 1, 1, 1, 1, 0, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->inputs_count.emplace_back(h);
+  taskDataSeq->inputs_count.emplace_back(w);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
 
   // Create Task
@@ -54,23 +52,21 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
   int h = 10000;
-
+  int w = 7;
   // Create data
   std::vector<int> out(200);
-  std::vector<uint8_t> b = {1, 1, 0, 0, 0, 0, 0};
-  std::vector<uint8_t> a = {0, 0, 0, 0, 0, 0, 0};
-  std::vector<std::vector<uint8_t>> in(h);
-  in.emplace_back(b);
-  in.emplace_back(b);
-  for (int i = 2; i < h; i++) {
-    in.emplace_back(a);
-  }
+  std::vector<uint8_t> in(h * w, 0);
+  in[0] = 1;
+  in[1] = 1;
+  in[7] = 1;
+  in[8] = 1;
   std::vector<int> hullTrue = {0, 0, 0, 1, 1, 1, 1, 0, -1};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
+  taskDataSeq->inputs_count.emplace_back(h);
+  taskDataSeq->inputs_count.emplace_back(w);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
 
   // Create Task

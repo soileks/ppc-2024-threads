@@ -8,12 +8,16 @@ using namespace std::chrono_literals;
 bool ConstructingConvexHullSeq::pre_processing() {
   internal_order_test();
 
-  h = reinterpret_cast<int*>(taskData->inputs_count[0])[0];
-  w = reinterpret_cast<int*>(taskData->inputs_count[0])[1];
+  h = taskData->inputs_count[0];
+  w = taskData->inputs_count[1];
   img.resize(h);
+  imgMark.resize(h);
   for (int i = 0; i < h; ++i) {
     for (int j = 0; j < w; ++j) img[i].push_back(reinterpret_cast<uint8_t*>(taskData->inputs[0])[i * w + j]);
+
+    imgMark[i].resize(w, 0);
   }
+  numComponents = 0;
   return true;
 }
 
@@ -103,7 +107,7 @@ void ConstructingConvexHullSeq::markingComponent() {
   int label = 2;
   for (int i = 0; i < h; ++i) {
     for (int j = 0; j < w; ++j) {
-      imgMark[i][j] = img[i][j];
+      if (img[i][j] == 1) imgMark[i][j] = 1;
     }
   }
 
