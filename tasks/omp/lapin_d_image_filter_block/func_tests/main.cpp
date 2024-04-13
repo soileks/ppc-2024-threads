@@ -42,10 +42,9 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
   
-  // Create data
-  std::vector<std::vector<int>> out2(height);
+  std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
-    out2[i].resize(width);
+    out_2[i].resize(width);
   }
   
   // Create TaskData
@@ -61,7 +60,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   blockFilterOMPTaskParallel.pre_processing();
   blockFilterOMPTaskParallel.run();
   blockFilterOMPTaskParallel.post_processing();
-  ASSERT_EQ(out[0][0], out2[0][0]);
+  ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
 TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
@@ -98,10 +97,9 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
   
-  // Create data
-  std::vector<std::vector<int>> out2(height);
+  std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
-    out2[i].resize(width);
+    out_2[i].resize(width);
   }
   
   // Create TaskData
@@ -117,7 +115,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   blockFilterOMPTaskParallel.pre_processing();
   blockFilterOMPTaskParallel.run();
   blockFilterOMPTaskParallel.post_processing();
-  ASSERT_EQ(out[0][0], out2[0][0]);
+  ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
 TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
@@ -154,10 +152,9 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
   
-  // Create data
-  std::vector<std::vector<int>> out2(height);
+  std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
-    out2[i].resize(width);
+    out_2[i].resize(width);
   }
   
   // Create TaskData
@@ -173,7 +170,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   blockFilterOMPTaskParallel.pre_processing();
   blockFilterOMPTaskParallel.run();
   blockFilterOMPTaskParallel.post_processing();
-  ASSERT_EQ(out[0][0], out2[0][0]);
+  ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
 TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
@@ -210,10 +207,9 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
   
-  // Create data
-  std::vector<std::vector<int>> out2(height);
+  std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
-    out2[i].resize(width);
+    out_2[i].resize(width);
   }
   
   // Create TaskData
@@ -229,7 +225,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   blockFilterOMPTaskParallel.pre_processing();
   blockFilterOMPTaskParallel.run();
   blockFilterOMPTaskParallel.post_processing();
-  ASSERT_EQ(out[0][0], out2[0][0]);
+  ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
 TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
@@ -266,10 +262,9 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
   
-  // Create data
-  std::vector<std::vector<int>> out2(height);
+  std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
-    out2[i].resize(width);
+    out_2[i].resize(width);
   }
   
   // Create TaskData
@@ -285,5 +280,5 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   blockFilterOMPTaskParallel.pre_processing();
   blockFilterOMPTaskParallel.run();
   blockFilterOMPTaskParallel.post_processing();
-  ASSERT_EQ(out[0][0], out2[0][0]);
+  ASSERT_EQ(out[0][0], out_2[0][0]);
 }
