@@ -6,7 +6,7 @@
 
 TEST(nogin_d_radix_double_batcher_seq, test_pipeline_run) {
   // Create data
-  std::vector<double> array = NoginDenisSeq::randomVector(1000000, -1000000, 1000000);
+  std::vector<double> array = NoginDenisSeq::randomVector(1500000, -1000000, 1000000);
   std::vector<double> out(array.size());
 
   // Create TaskData
@@ -46,7 +46,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_pipeline_run) {
 
 TEST(nogin_d_radix_double_batcher_seq, test_task_run) {
   // Create data
-  std::vector<double> array = NoginDenisSeq::randomVector(1000000, -1000000, 1000000);
+  std::vector<double> array = NoginDenisSeq::randomVector(1500000, -1000000, 1000000);
   std::vector<double> out(array.size());
 
   // Create TaskData
