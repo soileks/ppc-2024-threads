@@ -43,7 +43,7 @@ bool pozdnyakov_omp::PozdnyakovTaskOMP::run() {
       }
     }
     res += local_res * x_i * y_i;
-  } catch (const std::exception e) {
+  } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
     return false;
   }
@@ -86,8 +86,8 @@ bool pozdnyakov_omp::PozdnyakovTaskSequential::run() {
   try {
     double x_i = std::abs(x2 - x1) / n;
     double y_i = std::abs(y2 - y1) / n;
-    for (uint64_t i = 0; i < n; i++) {
-      for (uint64_t j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
         res += f(x1 + i * x_i, y1 + j * y_i);
       }
     }
