@@ -49,7 +49,7 @@ bool FilterGaussHorizontalSequentialUlyanov::validation() {
          taskData->inputs_count[1] != 0 && taskData->outputs_count[0] != 0 && taskData->outputs_count[1] != 0;
 }
 
-Pixel calcPixelUlyanov(std::vector<Pixel> image, int height, int i, int j, std::vector<float> kernel) {
+Pixel calcPixelUlyanov(std::vector<Pixel>& image, int height, int i, int j, std::vector<float>& kernel) {
   Pixel resPixel = Pixel();
   float R = 0.0;
   float G = 0.0;
@@ -79,7 +79,7 @@ bool FilterGaussHorizontalSequentialUlyanov::run() {
       }
     }
   }
-  std::this_thread::sleep_for(20ms);
+  // std::this_thread::sleep_for(20ms);
   return true;
 }
 
