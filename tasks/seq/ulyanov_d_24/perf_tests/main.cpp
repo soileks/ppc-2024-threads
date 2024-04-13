@@ -27,7 +27,7 @@ TEST(sequential_ulyanov_perf_test, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<FilterGaussHorizontalSequential>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<FilterGaussHorizontalSequentialUlyanov>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -69,7 +69,7 @@ TEST(sequential_ulyanov_perf_test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<FilterGaussHorizontalSequential>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<FilterGaussHorizontalSequentialUlyanov>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

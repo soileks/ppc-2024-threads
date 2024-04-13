@@ -19,9 +19,9 @@ class Pixel {
   uint8_t b;
 };
 
-class FilterGaussHorizontalSequential : public ppc::core::Task {
+class FilterGaussHorizontalSequentialUlyanov : public ppc::core::Task {
  public:
-  explicit FilterGaussHorizontalSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
+  explicit FilterGaussHorizontalSequentialUlyanov(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;

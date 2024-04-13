@@ -32,7 +32,7 @@ TEST(Sequential, test_ulyanov_1) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  FilterGaussHorizontalSequential TaskSequential(taskDataSeq);
+  FilterGaussHorizontalSequentialUlyanov TaskSequential(taskDataSeq);
   ASSERT_EQ(TaskSequential.validation(), true);
   TaskSequential.pre_processing();
   TaskSequential.run();
@@ -72,7 +72,7 @@ TEST(Sequential, test_ulyanov_2) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  FilterGaussHorizontalSequential TaskSequential(taskDataSeq);
+  FilterGaussHorizontalSequentialUlyanov TaskSequential(taskDataSeq);
   ASSERT_EQ(TaskSequential.validation(), true);
   TaskSequential.pre_processing();
   TaskSequential.run();
@@ -108,7 +108,7 @@ TEST(Sequential, test_ulyanov_3) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  FilterGaussHorizontalSequential TaskSequential(taskDataSeq);
+  FilterGaussHorizontalSequentialUlyanov TaskSequential(taskDataSeq);
   ASSERT_EQ(TaskSequential.validation(), true);
   TaskSequential.pre_processing();
   TaskSequential.run();
@@ -146,7 +146,7 @@ TEST(Sequential, test_ulyanov_4) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  FilterGaussHorizontalSequential TaskSequential(taskDataSeq);
+  FilterGaussHorizontalSequentialUlyanov TaskSequential(taskDataSeq);
   ASSERT_EQ(TaskSequential.validation(), true);
   TaskSequential.pre_processing();
   TaskSequential.run();
@@ -185,7 +185,7 @@ TEST(Sequential, test_ulyanov_5) {
   taskDataSeq->outputs_count.emplace_back(width);
 
   // Create Task
-  FilterGaussHorizontalSequential TaskSequential(taskDataSeq);
+  FilterGaussHorizontalSequentialUlyanov TaskSequential(taskDataSeq);
   ASSERT_EQ(TaskSequential.validation(), true);
   TaskSequential.pre_processing();
   TaskSequential.run();

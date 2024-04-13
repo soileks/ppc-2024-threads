@@ -6,7 +6,7 @@
 
 using namespace std::chrono_literals;
 
-std::vector<float>& createKernel(std::vector<float>& kernel, float sigma) {
+std::vector<float>& createKernelUlyanov(std::vector<float>& kernel, float sigma) {
   float norm = 0.0;
   for (int i = -1; i < 2; i++) {
     for (int j = -1; j < 2; j++) {
@@ -20,7 +20,7 @@ std::vector<float>& createKernel(std::vector<float>& kernel, float sigma) {
   return kernel;
 }
 
-bool FilterGaussHorizontalSequential::pre_processing() {
+bool FilterGaussHorizontalSequentialUlyanov::pre_processing() {
   internal_order_test();
 
   height = taskData->inputs_count[0];
@@ -32,7 +32,7 @@ bool FilterGaussHorizontalSequential::pre_processing() {
   resultImage = std::vector<Pixel>(height * width);
 
   kernel = std::vector<float>(9);
-  kernel = createKernel(kernel, 2.0);
+  kernel = createKernelUlyanov(kernel, 2.0);
 
   for (int i = 0; i < height * width * 3; i += 3) {
     inputImage[i / 3].r = static_cast<uint8_t>(data[i]);
@@ -43,14 +43,14 @@ bool FilterGaussHorizontalSequential::pre_processing() {
   return true;
 }
 
-bool FilterGaussHorizontalSequential::validation() {
+bool FilterGaussHorizontalSequentialUlyanov::validation() {
   internal_order_test();
 
   return taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr && taskData->inputs_count[0] != 0 &&
          taskData->inputs_count[1] != 0 && taskData->outputs_count[0] != 0 && taskData->outputs_count[1] != 0;
 }
 
-Pixel calcPixel(std::vector<Pixel> image, int height, int i, int j, std::vector<float> kernel) {
+Pixel calcPixelUlyanov(std::vector<Pixel> image, int height, int i, int j, std::vector<float> kernel) {
   Pixel resPixel = Pixel();
   float R = 0.0;
   float G = 0.0;
@@ -69,22 +69,22 @@ Pixel calcPixel(std::vector<Pixel> image, int height, int i, int j, std::vector<
   return resPixel;
 }
 
-bool FilterGaussHorizontalSequential::run() {
+bool FilterGaussHorizontalSequentialUlyanov::run() {
   internal_order_test();
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
       if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
         resultImage[i * height + j] = inputImage[i * height + j];
       } else {
-        resultImage[i * height + j] = calcPixel(inputImage, height, i, j, kernel);
+        resultImage[i * height + j] = calcPixelUlyanov(inputImage, height, i, j, kernel);
       }
     }
   }
-  std::this_thread::sleep_for(20ms);
+  // std::this_thread::sleep_for(20ms);
   return true;
 }
 
-bool FilterGaussHorizontalSequential::post_processing() {
+bool FilterGaussHorizontalSequentialUlyanov::post_processing() {
   internal_order_test();
 
   for (int i = 0; i < height * width * 3; i += 3) {
