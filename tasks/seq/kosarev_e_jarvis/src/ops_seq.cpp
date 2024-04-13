@@ -25,6 +25,7 @@ Point generateRandomPoint(int minX, int maxX, int minY, int maxY) {
 
 std::vector<Point> generateRandomPoints(int numPoints, int minX, int maxX, int minY, int maxY) {
   std::vector<Point> points;
+  points.reserve(numPoints);
   for (int i = 0; i < numPoints; ++i) {
     points.push_back(generateRandomPoint(minX, maxX, minY, maxY));
   }
