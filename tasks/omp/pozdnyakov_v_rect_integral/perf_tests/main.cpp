@@ -1,6 +1,7 @@
 // Copyright 2024 Pozdnyakov Vasya
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
@@ -11,7 +12,7 @@ using namespace pozdnyakov_omp;
 TEST(pozdnyakov_v_rect_integral_omp, test_pipeline_run) {
   double res = 217.0907;
   Func f = pozdnyakov_fxexpy;
-  uint64_t n = 5000;
+  int n = 5000;
 
   std::vector<double> in = {0, 5, 1, 3};
   std::vector<double> out(1, 0);
@@ -43,7 +44,7 @@ TEST(pozdnyakov_v_rect_integral_omp, test_pipeline_run) {
 TEST(pozdnyakov_v_rect_integral_omp, test_task_run) {
   double res = 217.0907;
   Func f = pozdnyakov_fxexpy;
-  uint64_t n = 5000;
+  int n = 5000;
 
   std::vector<double> in = {0, 5, 1, 3};
   std::vector<double> out(1, 0);

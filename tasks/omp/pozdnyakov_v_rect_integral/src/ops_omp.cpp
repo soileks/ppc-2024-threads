@@ -17,7 +17,7 @@ bool pozdnyakov_omp::PozdnyakovTaskOMP::pre_processing() {
     x1 = tmp[0], x2 = tmp[1], y1 = tmp[2], y2 = tmp[3];
     res = 0.0;
     f = reinterpret_cast<Func>(taskData->inputs[1]);
-    n = reinterpret_cast<uint64_t*>(taskData->inputs[2])[0];
+    n = reinterpret_cast<int*>(taskData->inputs[2])[0];
   } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
     return false;
@@ -43,7 +43,7 @@ bool pozdnyakov_omp::PozdnyakovTaskOMP::run() {
       }
     }
     res += local_res * x_i * y_i;
-  } catch(std::exception e) {
+  } catch (const std::exception e) {
     std::cout << e.what() << std::endl;
     return false;
   }
@@ -68,7 +68,7 @@ bool pozdnyakov_omp::PozdnyakovTaskSequential::pre_processing() {
     x1 = tmp[0], x2 = tmp[1], y1 = tmp[2], y2 = tmp[3];
     res = 0.0;
     f = reinterpret_cast<Func>(taskData->inputs[1]);
-    n = reinterpret_cast<uint64_t*>(taskData->inputs[2])[0];
+    n = reinterpret_cast<int*>(taskData->inputs[2])[0];
   } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
     return false;

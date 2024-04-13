@@ -1,6 +1,7 @@
 // Copyright 2024 Pozdnyakov Vasya
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <vector>
 
 #include "omp/pozdnyakov_v_rect_integral/include/ops_omp.hpp"
@@ -9,7 +10,7 @@ using namespace pozdnyakov_omp;
 
 TEST(pozdnyakov_v_rect_integral_omp, Test_x_sub_y_1) {
   Func f = pozdnyakov_flin;
-  uint64_t n = 100;
+  int n = 100;
 
   std::vector<double> in = {0, 3, 0, 3};
   std::vector<double> out_seq(1, 0);
@@ -52,7 +53,7 @@ TEST(pozdnyakov_v_rect_integral_omp, Test_x_sub_y_1) {
 
 TEST(pozdnyakov_v_rect_integral_omp, Test_x_sub_y_2) {
   Func f = pozdnyakov_flin;
-  uint64_t n = 100;
+  int n = 100;
 
   std::vector<double> in = {-5, 2, 4, 10};
   std::vector<double> out_seq(1, 0);
@@ -95,7 +96,7 @@ TEST(pozdnyakov_v_rect_integral_omp, Test_x_sub_y_2) {
 
 TEST(pozdnyakov_v_rect_integral_omp, Test_x_mul_y) {
   Func f = pozdnyakov_fxy;
-  uint64_t n = 100;
+  int n = 100;
 
   std::vector<double> in = {0, 3, 1, 3};
   std::vector<double> out_seq(1, 0);
@@ -138,7 +139,7 @@ TEST(pozdnyakov_v_rect_integral_omp, Test_x_mul_y) {
 
 TEST(pozdnyakov_v_rect_integral_omp, Test_y_sin_x) {
   Func f = pozdnyakov_fysinx;
-  uint64_t n = 100;
+  int n = 100;
 
   std::vector<double> in = {-2, 3, 1, 3};
   std::vector<double> out_seq(1, 0);
@@ -181,7 +182,7 @@ TEST(pozdnyakov_v_rect_integral_omp, Test_y_sin_x) {
 
 TEST(pozdnyakov_v_rect_integral_omp, Test_x_exp_y) {
   Func f = pozdnyakov_fxexpy;
-  uint64_t n = 1000;
+  int n = 1000;
 
   std::vector<double> in = {0, 5, 1, 3};
   std::vector<double> out_seq(1, 0);
