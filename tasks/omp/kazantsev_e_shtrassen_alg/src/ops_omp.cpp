@@ -130,21 +130,21 @@ std::vector<double> StrassenMatMul(const std::vector<double>& a, const std::vect
 
   std::vector<double> p1, p2, p3, p4, p5, p6, p7;
 
-  #pragma omp parallel sections shared(p1, p2, p3, p4, p5, p6, p7)
+#pragma omp parallel sections shared(p1, p2, p3, p4, p5, p6, p7)
   {
-    #pragma omp section
+#pragma omp section
     p1 = StrassenMatMul(summation(a11, a22), summation(b11, b22), size);
-    #pragma omp section
+#pragma omp section
     p2 = StrassenMatMul(summation(a21, a22), b11, size);
-    #pragma omp section
+#pragma omp section
     p3 = StrassenMatMul(a11, subtraction(b12, b22), size);
-    #pragma omp section
+#pragma omp section
     p4 = StrassenMatMul(a22, subtraction(b21, b11), size);
-    #pragma omp section
+#pragma omp section
     p5 = StrassenMatMul(summation(a11, a12), b22, size);
-    #pragma omp section
+#pragma omp section
     p6 = StrassenMatMul(subtraction(a21, a11), summation(b11, b12), size);
-    #pragma omp section
+#pragma omp section
     p7 = StrassenMatMul(subtraction(a12, a22), summation(b21, b22), size);
   }
 
