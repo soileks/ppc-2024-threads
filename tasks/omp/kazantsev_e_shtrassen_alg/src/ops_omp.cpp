@@ -1,6 +1,8 @@
 // Copyright 2024 Kazantsev Evgeny
 #include "omp/kazantsev_e_shtrassen_alg/include/ops_omp.hpp"
+
 #include <omp.h>
+
 #include <algorithm>
 #include <cmath>
 #include <thread>
