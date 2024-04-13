@@ -3,16 +3,32 @@
 
 #include <algorithm>
 #include <cmath>
+#include <random>
 #include <stack>
-#include <thread>
 #include <vector>
 
-using namespace std::chrono_literals;
+namespace Kosarev_e_JarvisHull {
 
 int orientation(const Point& p, const Point& q, const Point& r) {
   int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
   if (val == 0) return 0;    // collinear
   return (val > 0) ? 1 : 2;  // clock or counterclock
+}
+
+Point generateRandomPoint(int minX, int maxX, int minY, int maxY) {
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
+  std::uniform_int_distribution<int> disX(minX, maxX);
+  std::uniform_int_distribution<int> disY(minY, maxY);
+  return {disX(gen), disY(gen)};
+}
+
+std::vector<Point> generateRandomPoints(int numPoints, int minX, int maxX, int minY, int maxY) {
+  std::vector<Point> points;
+  for (int i = 0; i < numPoints; ++i) {
+    points.push_back(generateRandomPoint(minX, maxX, minY, maxY));
+  }
+  return points;
 }
 
 double distance(const Point& p1, const Point& p2) {
@@ -55,7 +71,7 @@ bool TestTaskSequentialKosarevJarvisHull::pre_processing() {
   points = std::vector<Point>(taskData->inputs_count[0]);
 
   auto* tmp_ptr_A = reinterpret_cast<Point*>(taskData->inputs[0]);
-  for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
+  for (size_t i = 0; i < taskData->inputs_count[0]; i++) {
     points[i] = tmp_ptr_A[i];
   }
   return true;
@@ -70,7 +86,6 @@ bool TestTaskSequentialKosarevJarvisHull::validation() {
 bool TestTaskSequentialKosarevJarvisHull::run() {
   internal_order_test();
   pointsHull = JarvisAlgo(points);
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
@@ -79,3 +94,5 @@ bool TestTaskSequentialKosarevJarvisHull::post_processing() {
   std::copy(pointsHull.begin(), pointsHull.end(), reinterpret_cast<Point*>(taskData->outputs[0]));
   return true;
 }
+
+}  // namespace Kosarev_e_JarvisHull

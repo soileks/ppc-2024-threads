@@ -9,6 +9,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace Kosarev_e_JarvisHull {
+
 struct Point {
   int x, y;
 
@@ -29,8 +31,14 @@ class TestTaskSequentialKosarevJarvisHull : public ppc::core::Task {
   std::vector<Point> pointsHull;
 };
 
+Point generateRandomPoint(int minX, int maxX, int minY, int maxY);
+
+std::vector<Point> generateRandomPoints(int numPoints, int minX, int maxX, int minY, int maxY);
+
 int orientation(const Point& p, const Point& q, const Point& r);
 
 double distance(const Point& p1, const Point& p2);
 
 std::vector<Point> JarvisAlgo(const std::vector<Point>& arrPoints);
+
+}  // namespace Kosarev_e_JarvisHull
