@@ -51,7 +51,7 @@ std::vector<Point> JarvisAlgo(const std::vector<Point>& arrPoints) {
 
   while (true) {
     Point nextPoint = arrPoints[0];
-    for (auto& point : arrPoints) {
+    for (const auto& point : arrPoints) {
       if (point == prevPoint) continue;
       int orient = orientation(prevPoint, nextPoint, point);
       if (orient == 2 || (orient == 0 && distance(prevPoint, point) > distance(prevPoint, nextPoint))) {
