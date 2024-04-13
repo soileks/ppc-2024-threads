@@ -77,13 +77,13 @@ bool ContrastEnhancement_TBB_Parallel::validation() {
   return taskData->inputs_count[1] == taskData->outputs_count[0];
 }
 
-bool ContrastEnhancement_TBB_Parallel::run() {  
+bool ContrastEnhancement_TBB_Parallel::run() {
   internal_order_test();
   int size = n * m;
   if ((size == 0) || (min == max)) {
     return false;
   }
-  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0, size), [&](const oneapi::tbb::blocked_range<int>& r) {
+  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0, size), [&](const oneapi::tbb::blocked_range<int> &r) {
     for (int i = r.begin(); i < r.end(); i++) {
       res[i] = (input_[i] - min) * 255 / (max - min);
     }

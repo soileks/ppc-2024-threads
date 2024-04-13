@@ -224,7 +224,7 @@ TEST(sredneva_a_contrast_enhancement_tbb, test_5) {
 
   // Create data
   std::vector<uint8_t> par_out(n * m);
-  
+
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
