@@ -1,5 +1,6 @@
 // Copyright 2024 Smirnova Daria
 #include "omp/smirnova_d_complex_matrix_crs/include/ops_omp.hpp"
+
 #include <omp.h>
 
 #include <algorithm>

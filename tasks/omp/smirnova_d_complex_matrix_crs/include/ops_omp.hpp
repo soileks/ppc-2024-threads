@@ -43,6 +43,6 @@ class TestComplexMatrixCrsPar : public ppc::core::Task {
   crs_matrix *A_M{}, *B_M{}, *Result{};
 };
 
-  crs_matrix T(const crs_matrix& M);
-  bool is_crs(const crs_matrix& M);
+crs_matrix T(const crs_matrix& M);
+bool is_crs(const crs_matrix& M);
 }  // namespace smirnova_omp
