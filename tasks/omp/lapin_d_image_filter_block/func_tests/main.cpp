@@ -29,7 +29,8 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
+      std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -41,14 +42,15 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   blockFilterOMPTaskSequential.pre_processing();
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
-  
+
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
     out_2[i].resize(width);
   }
-  
+
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar =
+      std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
@@ -84,7 +86,8 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
+      std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -96,14 +99,15 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   blockFilterOMPTaskSequential.pre_processing();
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
-  
+
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
     out_2[i].resize(width);
   }
-  
+
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar =
+      std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
@@ -139,7 +143,8 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
+      std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -151,14 +156,15 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   blockFilterOMPTaskSequential.pre_processing();
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
-  
+
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
     out_2[i].resize(width);
   }
-  
+
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar =
+      std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
@@ -194,7 +200,8 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
+      std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -206,14 +213,15 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   blockFilterOMPTaskSequential.pre_processing();
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
-  
+
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
     out_2[i].resize(width);
   }
-  
+
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar =
+      std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
@@ -249,7 +257,8 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
+      std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataSeq->inputs_count.emplace_back(height);
   taskDataSeq->inputs_count.emplace_back(width);
@@ -261,14 +270,15 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   blockFilterOMPTaskSequential.pre_processing();
   blockFilterOMPTaskSequential.run();
   blockFilterOMPTaskSequential.post_processing();
-  
+
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
     out_2[i].resize(width);
   }
-  
+
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar =
+      std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
