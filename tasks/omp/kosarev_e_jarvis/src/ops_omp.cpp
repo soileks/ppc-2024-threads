@@ -5,15 +5,32 @@
 
 #include <algorithm>
 #include <cmath>
-#include <thread>
+#include <random>
 #include <vector>
 
-using namespace std::chrono_literals;
+namespace Kosarev_e_OMP_KosarevJarvisHull {
 
 int orientation(const Point& p, const Point& q, const Point& r) {
   int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
   if (val == 0) return 0;    // collinear
   return (val > 0) ? 1 : 2;  // clock or counterclock wise
+}
+
+Point generateRandomPoint(int minX, int maxX, int minY, int maxY) {
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
+  std::uniform_int_distribution<int> disX(minX, maxX);
+  std::uniform_int_distribution<int> disY(minY, maxY);
+  return {disX(gen), disY(gen)};
+}
+
+std::vector<Point> generateRandomPoints(int numPoints, int minX, int maxX, int minY, int maxY) {
+  std::vector<Point> points;
+  points.reserve(numPoints);
+  for (int i = 0; i < numPoints; ++i) {
+    points.push_back(generateRandomPoint(minX, maxX, minY, maxY));
+  }
+  return points;
 }
 
 double distance(const Point& p1, const Point& p2) {
@@ -34,7 +51,7 @@ std::vector<Point> JarvisAlgo(const std::vector<Point>& arrPoints) {
 
   while (true) {
     Point nextPoint = arrPoints[0];
-    for (const auto& point : arrPoints) {
+    for (auto& point : arrPoints) {
       if (point == prevPoint) continue;
       int orient = orientation(prevPoint, nextPoint, point);
       if (orient == 2 || (orient == 0 && distance(prevPoint, point) > distance(prevPoint, nextPoint))) {
@@ -101,7 +118,6 @@ bool TestTaskSequentialKosarevJarvisHull::validation() {
 bool TestTaskSequentialKosarevJarvisHull::run() {
   internal_order_test();
   pointsHull = JarvisAlgo(points);
-  std::this_thread::sleep_for(30ms);
   return true;
 }
 bool TestTaskSequentialKosarevJarvisHull::post_processing() {
@@ -131,7 +147,6 @@ bool TestOMPTaskParallelKosarevJarvisHull::validation() {
 bool TestOMPTaskParallelKosarevJarvisHull::run() {
   internal_order_test();
   pointsHull = JarvisAlgo_omp(points, 5);
-  std::this_thread::sleep_for(30ms);
   return true;
 }
 bool TestOMPTaskParallelKosarevJarvisHull::post_processing() {
@@ -139,3 +154,5 @@ bool TestOMPTaskParallelKosarevJarvisHull::post_processing() {
   std::copy(pointsHull.begin(), pointsHull.end(), reinterpret_cast<Point*>(taskData->outputs[0]));
   return true;
 }
+
+}  // namespace Kosarev_e_OMP_KosarevJarvisHull
