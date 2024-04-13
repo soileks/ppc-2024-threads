@@ -52,7 +52,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out2));
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
   BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
@@ -107,7 +107,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out2));
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
   BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
@@ -162,7 +162,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out2));
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
   BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
@@ -217,7 +217,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out2));
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
   BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
@@ -272,7 +272,7 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
   taskDataPar->inputs_count.emplace_back(height);
   taskDataPar->inputs_count.emplace_back(width);
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out2));
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
   BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
