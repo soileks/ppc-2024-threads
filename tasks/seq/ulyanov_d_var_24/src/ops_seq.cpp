@@ -6,7 +6,7 @@
 
 using namespace std::chrono_literals;
 
-std::vector<float>& createKernelUlyanov(std::vector<float>& kernel, float sigma) {
+void createKernelUlyanov(std::vector<float>& kernel, float sigma) {
   float norm = 0.0;
   for (int i = -1; i < 2; i++) {
     for (int j = -1; j < 2; j++) {
@@ -17,7 +17,6 @@ std::vector<float>& createKernelUlyanov(std::vector<float>& kernel, float sigma)
   for (int i = 0; i < 9; i++) {
     kernel[i] = kernel[i] / norm;
   }
-  return kernel;
 }
 
 bool FilterGaussHorizontalSequentialUlyanov::pre_processing() {
@@ -32,7 +31,7 @@ bool FilterGaussHorizontalSequentialUlyanov::pre_processing() {
   resultImage = std::vector<Pixel>(height * width);
 
   kernel = std::vector<float>(9);
-  kernel = createKernelUlyanov(kernel, 2.0);
+  createKernelUlyanov(kernel, 2.0);
 
   for (int i = 0; i < height * width * 3; i += 3) {
     inputImage[i / 3].r = static_cast<uint8_t>(data[i]);
@@ -80,7 +79,7 @@ bool FilterGaussHorizontalSequentialUlyanov::run() {
       }
     }
   }
-  // std::this_thread::sleep_for(20ms);
+  std::this_thread::sleep_for(20ms);
   return true;
 }
 
