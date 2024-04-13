@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/ulyanov_d_24/include/ops_seq.hpp"
+#include "seq/ulyanov_d_var_24/include/ops_seq.hpp"
 
 TEST(sequential_ulyanov_perf_test, test_pipeline_run) {
   const int height = 100;

@@ -1,5 +1,5 @@
 // Copyright 2024 Ulyanov Daniil
-#include "seq/ulyanov_d_24/include/ops_seq.hpp"
+#include "seq/ulyanov_d_var_24/include/ops_seq.hpp"
 
 #include <cmath>
 #include <thread>

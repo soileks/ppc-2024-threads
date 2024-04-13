@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "seq/ulyanov_d_24/include/ops_seq.hpp"
+#include "seq/ulyanov_d_var_24/include/ops_seq.hpp"
 
 TEST(Sequential, test_ulyanov_1) {
   int height = 5;
