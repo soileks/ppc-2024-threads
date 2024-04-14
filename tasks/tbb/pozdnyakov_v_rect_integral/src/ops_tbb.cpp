@@ -36,11 +36,10 @@ bool pozdnyakov_tbb::PozdnyakovTaskTBB::run() {
     double x_i = std::abs(x2 - x1) / n;
     double y_i = std::abs(y2 - y1) / n;
     res = tbb::parallel_reduce(
-        tbb::blocked_range<size_t>(0, n), 0.0,
-        [&](const tbb::blocked_range<size_t>& r, double local_res) {
-          size_t end = r.end();
-          for (size_t i = r.begin(); i != end; ++i) {
-            for (size_t j = 0; j < n; ++j) {
+        tbb::blocked_range<int>(0, n), 0.0,
+        [&](const tbb::blocked_range<int>& r, double local_res) {
+          for (int i = r.begin(); i != r.end(); ++i) {
+            for (int j = 0; j < n; ++j) {
               local_res += f(x1 + i * x_i, y1 + j * y_i);
             }
           }
