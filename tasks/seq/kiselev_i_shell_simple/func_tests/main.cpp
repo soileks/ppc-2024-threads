@@ -110,7 +110,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
 }
 
 TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
-  const int count = 2;
+  const int count = 4;
 
   std::vector<std::vector<int>> in = {{2, 1}, {4, 3}};
   std::vector<int> out(count, 0);

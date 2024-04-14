@@ -35,7 +35,7 @@ bool Kiselev_seq::KiselevTaskSequential::run() {
     int n = arr.size();
     int incr = n / 2;
     while (incr > 0) {
-      for (int i = incr + 1; i < n; i++) {
+      for (int i = incr; i < n; i++) {
         int j = i - incr;
         while (j > 0)
           if (arr[j] > arr[j + incr]) {
@@ -56,7 +56,6 @@ bool Kiselev_seq::KiselevTaskSequential::run() {
 
 bool Kiselev_seq::KiselevTaskSequential::post_processing() {
   try {
-    res = *reinterpret_cast<std::vector<int> *>(taskData->outputs[0]);
     internal_order_test();
     size_t n = arr.size();
     for (size_t i = 0; i < n; i++) {
