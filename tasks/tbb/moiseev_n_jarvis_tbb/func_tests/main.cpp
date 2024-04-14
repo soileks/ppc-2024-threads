@@ -67,7 +67,6 @@ TEST(Tbb_Jarvis_Moiseev, Two_Points) {
   ASSERT_EQ(resHull[1], hull[1]);
 }
 
-
 TEST(Tbb_Jarvis_Moiseev, Duplicate_Points) {
   std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}, {0, 0}, {1, 1}, {2, 2}};
   std::vector<Point> hull = {{0, 0}, {2, 2}};

@@ -54,8 +54,7 @@ std::vector<Point> tbbJarvis_Moiseev(const std::vector<Point>& points) {
         }
         return localStart;
       },
-      [](const Point& localStart, const Point& start) ->
-      Point { return localStart < start ? localStart : start; });
+      [](const Point& localStart, const Point& start) -> Point { return localStart < start ? localStart : start; });
   std::vector<Point> result;
   result.push_back(start);
   Point currentPoint = start;
@@ -69,8 +68,7 @@ std::vector<Point> tbbJarvis_Moiseev(const std::vector<Point>& points) {
     }
     currentPoint = tbb::parallel_reduce(
         tbb::blocked_range<size_t>(0, numberOfPoints), nextPoint,
-        [&currentPoint, &points](const tbb::blocked_range<size_t>& r,
-            Point localNext) -> Point {
+        [&currentPoint, &points](const tbb::blocked_range<size_t>& r,Point localNext) -> Point {
           auto begin = r.begin(), end = r.end();
           for (auto i = begin; i != end; i++) {
             int direction = (points[i].y - currentPoint.y) * (localNext.x - currentPoint.x) -
@@ -120,13 +118,12 @@ bool TestTaskTbbJarvisMoiseev::validation() {
   }
   std::vector<Point> expectedConvexHull = tbbJarvis_Moiseev(points);
   std::sort(expectedConvexHull.begin(), expectedConvexHull.end());
-  return std::unique(expectedConvexHull.begin(),
-      expectedConvexHull.end()) == expectedConvexHull.end();
+  return std::unique(expectedConvexHull.begin(), expectedConvexHull.end()) == expectedConvexHull.end();
 }
 
 bool TestTaskTbbJarvisMoiseev::run() {
   internal_order_test();
-  convexHullPoints = tbbJarvis_Moiseev(points); 
+  convexHullPoints = tbbJarvis_Moiseev(points);
   return true;
 }
 
