@@ -47,7 +47,8 @@ bool FilterGaussHorizontalSequentialUlyanov::validation() {
          taskData->inputs_count[1] != 0 && taskData->outputs_count[0] != 0 && taskData->outputs_count[1] != 0;
 }
 
-uint8_t calcColorUlyanov(std::vector<uint8_t>& image, int height, int i, int j, std::vector<float>& kernel, int numColor) {
+uint8_t calcColorUlyanov(std::vector<uint8_t>& image, int height, int i, int j, std::vector<float>& kernel,
+                         int numColor) {
   float color = 0.0;
 
   for (int l = -1; l < 2; l++) {
@@ -64,10 +65,10 @@ bool FilterGaussHorizontalSequentialUlyanov::run() {
     for (int j = 0; j < width; j++) {
       for (int l = 0; l < 3; l++) {
         if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-        resultImage[(i * height + j) * 3 + l] = inputImage[(i * height + j) * 3 + l];
-      } else {
-        resultImage[(i * height + j) * 3 + l] = calcColorUlyanov(inputImage, height, i, j, kernel, l);
-      }
+          resultImage[(i * height + j) * 3 + l] = inputImage[(i * height + j) * 3 + l];
+        } else {
+          resultImage[(i * height + j) * 3 + l] = calcColorUlyanov(inputImage, height, i, j, kernel, l);
+        }
       }
     }
   }
