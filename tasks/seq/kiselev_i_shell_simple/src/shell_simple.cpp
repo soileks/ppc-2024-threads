@@ -11,7 +11,7 @@ bool Kiselev_seq::KiselevTaskSequential::pre_processing() {
     size_t n = taskData->inputs_count[0];
     arr = std::vector<int>(n, 0);
     for (size_t i = 0; i < n; ++i) {
-      int* elem = reinterpret_cast<int*>(taskData->inputs[0] + i * sizeof(int));
+      int* elem = reinterpret_cast<int *>(taskData->inputs[0] + i * sizeof(int));
       arr[i] = *elem;
     }
   } catch (...) {
@@ -36,7 +36,7 @@ bool Kiselev_seq::KiselevTaskSequential::run() {
     int incr = n / 2;
     while (incr > 0) {
       for (int i = incr + 1; i < n; i++) {
-        int j = i - incr;
+        j = i - incr;
         while (j > 0)
           if (arr[j] > arr[j + incr]) {
             arr[j] += arr[j + incr];
@@ -56,12 +56,11 @@ bool Kiselev_seq::KiselevTaskSequential::run() {
 
 bool Kiselev_seq::KiselevTaskSequential::post_processing() {
   try {
-    res = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
+    res = *reinterpret_cast<std::vector<int> *>(taskData->outputs[0]);
     internal_order_test();
     size_t n = arr.size();
     for (size_t i = 0; i < n; i++) {
-      int *res = reinterpret_cast<int *>
-          (taskData->outputs[0] + i * sizeof(int));
+      int *res = reinterpret_cast<int *>(taskData->outputs[0] + i * sizeof(int));
       *res = arr[i];
     }
     return true;
