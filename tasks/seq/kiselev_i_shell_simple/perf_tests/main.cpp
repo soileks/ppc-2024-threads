@@ -47,7 +47,7 @@ TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(kiselevTaskSequential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 // task_run
@@ -91,5 +91,5 @@ TEST(kiselev_i_shell_simple_seq, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(kiselevTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }

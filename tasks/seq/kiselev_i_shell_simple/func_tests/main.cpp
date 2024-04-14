@@ -10,13 +10,13 @@ using namespace Kiselev_seq;
 
 TEST(kiselev_i_shell_simple_seq, check_8_size) {
   std::vector<int> arr = {5, 3, 8, 6, 2, 7, 1, 4};
-  std::vector<int> rez(arr.size(), 0);
+  std::vector<int> res(arr.size(), 0);
   std::vector<int> expected = {1, 2, 3, 4, 5, 6, 7, 8};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(arr.data()));
   taskDataSeq->inputs_count.emplace_back(arr.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(rez.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataSeq->outputs_count.emplace_back(arr.size());
 
   KiselevTaskSequential testTaskSequential(taskDataSeq);
@@ -24,7 +24,7 @@ TEST(kiselev_i_shell_simple_seq, check_8_size) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(rez, expected);
+  ASSERT_EQ(res, expected);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
@@ -51,7 +51,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
   ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
   ASSERT_EQ(kiselevTaskSequential.run(), true);
   ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_sorted) {
@@ -78,7 +78,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_sorted) {
   ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
   ASSERT_EQ(kiselevTaskSequential.run(), true);
   ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
@@ -106,7 +106,7 @@ TEST(kiselev_i_shell_simple_seq, check_100_size_bias) {
   ASSERT_EQ(kiselevTaskSequential.pre_processing(), true);
   ASSERT_EQ(kiselevTaskSequential.run(), true);
   ASSERT_EQ(kiselevTaskSequential.post_processing(), true);
-  ASSERT_EQ(res, out);
+  ASSERT_EQ(out, res);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_incorrect_input) {
