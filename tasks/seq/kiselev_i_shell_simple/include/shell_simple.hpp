@@ -18,7 +18,7 @@ class KiselevTaskSequential : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  std::vector<int> arr{};
+  std::vector<int> arr;
   std::vector<int> res, input_;
 };
 }  // namespace Kiselev_seq
