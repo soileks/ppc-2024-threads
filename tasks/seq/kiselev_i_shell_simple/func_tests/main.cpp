@@ -24,7 +24,7 @@ TEST(kiselev_i_shell_simple_seq, check_8_size) {
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
-  ASSERT_EQ(res, expected);
+  ASSERT_EQ(expected, res);
 }
 
 TEST(kiselev_i_shell_simple_seq, check_100_size_reverse) {
