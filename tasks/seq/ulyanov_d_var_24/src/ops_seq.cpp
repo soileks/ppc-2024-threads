@@ -27,16 +27,14 @@ bool FilterGaussHorizontalSequentialUlyanov::pre_processing() {
 
   uint8_t* data = taskData->inputs[0];
 
-  inputImage = std::vector<Pixel>(height * width);
-  resultImage = std::vector<Pixel>(height * width);
+  inputImage = std::vector<uint8_t>(height * width * 3);
+  resultImage = std::vector<uint8_t>(height * width * 3);
 
   kernel = std::vector<float>(9);
   createKernelUlyanov(kernel, 2.0);
 
-  for (int i = 0; i < height * width * 3; i += 3) {
-    inputImage[i / 3].r = data[i];
-    inputImage[i / 3].g = data[i + 1];
-    inputImage[i / 3].b = data[i + 2];
+  for (int i = 0; i < height * width * 3; i++) {
+    inputImage[i] = data[i];
   }
 
   return true;
@@ -49,33 +47,27 @@ bool FilterGaussHorizontalSequentialUlyanov::validation() {
          taskData->inputs_count[1] != 0 && taskData->outputs_count[0] != 0 && taskData->outputs_count[1] != 0;
 }
 
-Pixel calcPixelUlyanov(std::vector<Pixel>& image, int height, int i, int j, std::vector<float>& kernel) {
-  Pixel resPixel = Pixel();
-  float R = 0.0;
-  float G = 0.0;
-  float B = 0.0;
+uint8_t calcColorUlyanov(std::vector<uint8_t>& image, int height, int i, int j, std::vector<float>& kernel, int numColor) {
+  float color = 0.0;
 
   for (int l = -1; l < 2; l++) {
     for (int k = -1; k < 2; k++) {
-      R += image[((i + l) * height) + (j + k)].r * kernel[((l + 1) * 3) + (k + 1)];
-      G += image[((i + l) * height) + (j + k)].g * kernel[((l + 1) * 3) + (k + 1)];
-      B += image[((i + l) * height) + (j + k)].b * kernel[((l + 1) * 3) + (k + 1)];
+      color += image[(((i + l) * height) + (j + k)) * 3 + numColor] * kernel[((l + 1) * 3) + (k + 1)];
     }
   }
-  resPixel.r = static_cast<uint8_t>(R);
-  resPixel.g = static_cast<uint8_t>(G);
-  resPixel.b = static_cast<uint8_t>(B);
-  return resPixel;
+  return static_cast<uint8_t>(color);
 }
 
 bool FilterGaussHorizontalSequentialUlyanov::run() {
   internal_order_test();
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-      if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-        resultImage[i * height + j] = inputImage[i * height + j];
+      for (int l = 0; l < 3; l++) {
+        if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+        resultImage[(i * height + j) * 3 + l] = inputImage[(i * height + j) * 3 + l];
       } else {
-        resultImage[i * height + j] = calcPixelUlyanov(inputImage, height, i, j, kernel);
+        resultImage[(i * height + j) * 3 + l] = calcColorUlyanov(inputImage, height, i, j, kernel, l);
+      }
       }
     }
   }
@@ -86,10 +78,8 @@ bool FilterGaussHorizontalSequentialUlyanov::run() {
 bool FilterGaussHorizontalSequentialUlyanov::post_processing() {
   internal_order_test();
 
-  for (int i = 0; i < height * width * 3; i += 3) {
-    taskData->outputs[0][i] = resultImage[i / 3].r;
-    taskData->outputs[0][i + 1] = resultImage[i / 3].g;
-    taskData->outputs[0][i + 2] = resultImage[i / 3].b;
+  for (int i = 0; i < height * width * 3; i++) {
+    taskData->outputs[0][i] = resultImage[i];
   }
 
   return true;
