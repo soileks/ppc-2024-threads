@@ -48,7 +48,8 @@ std::vector<Point> tbbJarvis_Moiseev(const std::vector<Point>& points) {
   Point start = tbb::parallel_reduce(
       tbb::blocked_range<size_t>(1, numberOfPoints), points[0],
       [&points](const tbb::blocked_range<size_t>& r, Point localStart) -> Point {
-        auto begin = r.begin(), end = r.end();
+        auto begin = r.begin();
+        auto end = r.end();
         for (auto i = begin; i != end; i++) {
           if (points[i] < localStart) localStart = points[i];
         }
@@ -69,7 +70,8 @@ std::vector<Point> tbbJarvis_Moiseev(const std::vector<Point>& points) {
     currentPoint = tbb::parallel_reduce(
         tbb::blocked_range<size_t>(0, numberOfPoints), nextPoint,
         [&currentPoint, &points](const tbb::blocked_range<size_t>& r, Point localNext) -> Point {
-          auto begin = r.begin(), end = r.end();
+          auto begin = r.begin();
+          auto end = r.end();
           for (auto i = begin; i != end; i++) {
             int direction = (points[i].y - currentPoint.y) * (localNext.x - currentPoint.x) -
                             (points[i].x - currentPoint.x) * (localNext.y - currentPoint.y);
