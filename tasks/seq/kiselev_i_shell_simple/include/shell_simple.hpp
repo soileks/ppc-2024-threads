@@ -8,6 +8,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace Kiselev_seq {
 class KiselevTaskSequential : public ppc::core::Task {
  public:
   explicit KiselevTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -17,7 +18,8 @@ class KiselevTaskSequential : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  std::vector<int> arr;
+  std::vector<int> arr{};
   std::vector<int> res, input_;
 };
+}  // namespace Kiselev_seq
 #endif  // SHELL_SIMPLE_HPP_INCLUDED

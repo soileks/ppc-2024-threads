@@ -5,32 +5,31 @@
 
 using namespace std::chrono_literals;
 
-bool KiselevTaskSequential::pre_processing() {
+bool Kiselev_seq::KiselevTaskSequential::pre_processing() {
   try {
     internal_order_test();
-    size_t size = taskData->inputs_count[0];
-    arr = std::vector<int>(0);
-    for (unsigned long i = 0; i < size; i++) {
-      arr.emplace_back(reinterpret_cast<int*>(taskData->inputs[0])[i]);
+    arr.clear();
+    size_t n = taskData->inputs_count[0];
+    for (size_t i = 0; i < n; ++i) {
+      int* elem = reinterpret_cast<int*>(taskData->inputs[0] + i * sizeof(int));
+      arr.push_back(*elem);
     }
-    return true;
-  } catch (char* ex) {
-    (void)ex;
+  } catch (...) {
     return false;
   }
+  return true;
 }
 
-bool KiselevTaskSequential::validation() {
+bool Kiselev_seq::KiselevTaskSequential::validation() {
   try {
     internal_order_test();
     return taskData->inputs_count[0] != 0 && taskData->inputs_count[0] == taskData->outputs_count[0];
-  } catch (char* ex) {
-    (void)ex;
+  } catch (...) {
     return false;
   }
 }
 
-bool KiselevTaskSequential::run() {
+bool Kiselev_seq::KiselevTaskSequential::run() {
   try {
     internal_order_test();
     int n = arr.size();
@@ -50,13 +49,12 @@ bool KiselevTaskSequential::run() {
       incr = incr / 2;
     }
     return true;
-  } catch (char* ex) {
-    (void)ex;
+  } catch (...) {
     return false;
   }
 }
 
-bool KiselevTaskSequential::post_processing() {
+bool Kiselev_seq::KiselevTaskSequential::post_processing() {
   try {
     res = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
     internal_order_test();
@@ -66,8 +64,7 @@ bool KiselevTaskSequential::post_processing() {
       reinterpret_cast<int*>(taskData->outputs[i])[0] = res[i];
     }
     return true;
-  } catch (char* ex) {
-    (void)ex;
+  } catch (...) {
     return false;
   }
 }

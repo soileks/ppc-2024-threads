@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/kiselev_i_shell_simple/include/shell_simple.hpp"
 
-// pipeline_run
+using namespace Kiselev_seq;
 
 TEST(kiselev_i_shell_simple_seq, test_pipeline_run) {
   const int count = 100;

@@ -6,6 +6,8 @@
 
 #include "seq/kiselev_i_shell_simple/include/shell_simple.hpp"
 
+using namespace Kiselev_seq;
+
 TEST(kiselev_i_shell_simple_seq, check_8_size) {
   std::vector<int> arr = {5, 3, 8, 6, 2, 7, 1, 4};
   std::vector<int> rez(arr.size(), 0);
