@@ -19,7 +19,7 @@ class KiselevTaskSequential : public ppc::core::Task {
 
  private:
   std::vector<int> arr;
-  std::vector<int> res, input_;
+  std::vector<int> input_;
 };
 }  // namespace Kiselev_seq
 #endif  // SHELL_SIMPLE_HPP_INCLUDED
