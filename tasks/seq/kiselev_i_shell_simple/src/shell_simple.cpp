@@ -33,20 +33,13 @@ bool Kiselev_seq::KiselevTaskSequential::run() {
   try {
     internal_order_test();
     int n = arr.size();
-    int incr = n / 2;
-    while (incr > 0) {
-      for (int i = incr; i < n; i++) {
-        int j = i - incr;
-        while (j > 0)
-          if (arr[j] > arr[j + incr]) {
-            arr[j] += arr[j + incr];
-            arr[j + incr] = arr[j] - arr[j + incr];
-            arr[j] = arr[j] - arr[j + incr];
-            j = j - incr;
-          } else
-            j = 0;
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+      for (int i = gap; i < n; i += 1) {
+        int temp = arr[i];
+        int j;
+        for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) arr[j] = arr[j - gap];
+        arr[j] = temp;
       }
-      incr = incr / 2;
     }
     return true;
   } catch (...) {
