@@ -25,7 +25,7 @@ bool FilterGaussHorizontalSequentialUlyanov::pre_processing() {
   height = taskData->inputs_count[0];
   width = taskData->inputs_count[1];
 
-  int* data = reinterpret_cast<int*>(taskData->inputs[0]);
+  uint8_t* data = taskData->inputs[0];
 
   inputImage = std::vector<Pixel>(height * width);
   resultImage = std::vector<Pixel>(height * width);
@@ -34,9 +34,9 @@ bool FilterGaussHorizontalSequentialUlyanov::pre_processing() {
   createKernelUlyanov(kernel, 2.0);
 
   for (int i = 0; i < height * width * 3; i += 3) {
-    inputImage[i / 3].r = static_cast<uint8_t>(data[i]);
-    inputImage[i / 3].g = static_cast<uint8_t>(data[i + 1]);
-    inputImage[i / 3].b = static_cast<uint8_t>(data[i + 2]);
+    inputImage[i / 3].r = data[i];
+    inputImage[i / 3].g = data[i + 1];
+    inputImage[i / 3].b = data[i + 2];
   }
 
   return true;
@@ -87,9 +87,9 @@ bool FilterGaussHorizontalSequentialUlyanov::post_processing() {
   internal_order_test();
 
   for (int i = 0; i < height * width * 3; i += 3) {
-    reinterpret_cast<int*>(taskData->outputs[0])[i] = static_cast<int>(resultImage[i / 3].r);
-    reinterpret_cast<int*>(taskData->outputs[0])[i + 1] = static_cast<int>(resultImage[i / 3].g);
-    reinterpret_cast<int*>(taskData->outputs[0])[i + 2] = static_cast<int>(resultImage[i / 3].b);
+    taskData->outputs[0][i] = resultImage[i / 3].r;
+    taskData->outputs[0][i + 1] = resultImage[i / 3].g;
+    taskData->outputs[0][i + 2] = resultImage[i / 3].b;
   }
 
   return true;
