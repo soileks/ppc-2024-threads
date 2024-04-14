@@ -54,6 +54,7 @@ bool Kiselev_seq::KiselevTaskSequential::post_processing() {
     for (size_t i = 0; i < n; i++) {
       int *res = reinterpret_cast<int *>(taskData->outputs[0] + i * sizeof(int));
       *res = arr[i];
+      (void)res;
     }
     return true;
   } catch (...) {
