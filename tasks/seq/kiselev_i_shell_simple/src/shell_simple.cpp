@@ -8,11 +8,11 @@ using namespace std::chrono_literals;
 bool Kiselev_seq::KiselevTaskSequential::pre_processing() {
   try {
     internal_order_test();
-    arr.clear();
     size_t n = taskData->inputs_count[0];
+    arr = std::vector<int>(n, 0);
     for (size_t i = 0; i < n; ++i) {
       int* elem = reinterpret_cast<int*>(taskData->inputs[0] + i * sizeof(int));
-      arr.push_back(*elem);
+      arr[i] = *elem;
     }
   } catch (...) {
     return false;
@@ -60,8 +60,9 @@ bool Kiselev_seq::KiselevTaskSequential::post_processing() {
     internal_order_test();
     size_t n = arr.size();
     for (size_t i = 0; i < n; i++) {
-      res[i] = arr[i];
-      reinterpret_cast<int*>(taskData->outputs[i])[0] = res[i];
+      int *res = reinterpret_cast<int *>
+          (taskData->outputs[0] + i * sizeof(int));
+      *res = arr[i];
     }
     return true;
   } catch (...) {
