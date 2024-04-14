@@ -39,6 +39,10 @@ TEST(Sequential, test_ulyanov_1) {
   TaskSequential.post_processing();
 
   for (size_t i = 0; i < out.size(); i++) {
+    std::cout << out[i] << ", ";
+  }
+
+  for (size_t i = 0; i < out.size(); i++) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
@@ -79,6 +83,10 @@ TEST(Sequential, test_ulyanov_2) {
   TaskSequential.post_processing();
 
   for (size_t i = 0; i < out.size(); i++) {
+    std::cout << out[i] << ", ";
+  }
+
+  for (size_t i = 0; i < out.size(); i++) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
@@ -113,6 +121,10 @@ TEST(Sequential, test_ulyanov_3) {
   TaskSequential.pre_processing();
   TaskSequential.run();
   TaskSequential.post_processing();
+
+  for (size_t i = 0; i < out.size(); i++) {
+    std::cout << out[i] << ", ";
+  }
 
   for (size_t i = 0; i < out.size(); i++) {
     ASSERT_EQ(out[i], res[i]);
@@ -153,6 +165,10 @@ TEST(Sequential, test_ulyanov_4) {
   TaskSequential.post_processing();
 
   for (size_t i = 0; i < out.size(); i++) {
+    std::cout << out[i] << ", ";
+  }
+
+  for (size_t i = 0; i < out.size(); i++) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
@@ -190,6 +206,10 @@ TEST(Sequential, test_ulyanov_5) {
   TaskSequential.pre_processing();
   TaskSequential.run();
   TaskSequential.post_processing();
+
+  for (size_t i = 0; i < out.size(); i++) {
+    std::cout << out[i] << ", ";
+  }
 
   for (size_t i = 0; i < out.size(); i++) {
     ASSERT_EQ(out[i], res[i]);
