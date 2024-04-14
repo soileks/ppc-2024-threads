@@ -4,7 +4,8 @@
 
 #include "omp/kulagin_a_gauss_filter_vert/include/ops_omp.hpp"
 
-void test_case(const size_t& w, const size_t& h, const float& sigma, std::vector<uint32_t> (*generator)(const size_t&, const size_t&)) {
+void test_case(const size_t& w, const size_t& h, const float& sigma,
+               std::vector<uint32_t> (*generator)(const size_t&, const size_t&)) {
   // Create data
   std::vector<uint32_t> img = generator(w, h);
   std::vector<uint32_t> res(w * h);
@@ -14,11 +15,11 @@ void test_case(const size_t& w, const size_t& h, const float& sigma, std::vector
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(img.data()));
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(kernel.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(img.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
   taskDataSeq->inputs_count.emplace_back(w);
   taskDataSeq->inputs_count.emplace_back(h);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
   taskDataSeq->outputs_count.emplace_back(w);
   taskDataSeq->outputs_count.emplace_back(h);
 
