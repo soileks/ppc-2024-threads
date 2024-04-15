@@ -88,7 +88,7 @@ bool BlockFilterOMPTaskParallel::validation() {
 bool BlockFilterOMPTaskParallel::run() {
   internal_order_test();
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
       double result = 0;
