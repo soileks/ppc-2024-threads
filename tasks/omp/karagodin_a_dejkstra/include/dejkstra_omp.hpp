@@ -43,5 +43,4 @@ class DejkstraTaskOMP : public ppc::core::Task {
 
 std::vector<std::vector<int>> initGraphMapRandom(int16_t size);
 
-
 #endif  // TASKS_OMP_KARAGODIN_A_DEJKSTRA_INCLUDE_DEJKSTRA_OMP_HPP_
