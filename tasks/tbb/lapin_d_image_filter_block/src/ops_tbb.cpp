@@ -89,10 +89,10 @@ bool BlockFilterTBBTaskParallel::validation() {
 bool BlockFilterTBBTaskParallel::run() {
   internal_order_test();
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
-  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, height, 0, width),
-                            [&](oneapi::tbb::blocked_range2d<int> &r) {
-                              for (int i = r.cols().begin(), i_end = r.cols().end(); i < i_end; i++) {
-                                for (int j = r.rows().begin(), j_end = r.rows().end(); j < j_end; j++) {
+  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int,int>(0, height, 0, width),
+                            [&](oneapi::tbb::blocked_range2d<int,int> &r) {
+                              for (int i = r.rows().begin(), i_end = r.rows().end(); i < i_end; i++) {
+                                for (int j = r.cols().begin(), j_end = r.cols().end(); j < j_end; j++) {
                                   double result = 0;
                                   for (int l = -1; l <= 1; l++) {
                                     for (int k = -1; k <= 1; k++) {
