@@ -2,7 +2,7 @@
 #include "tbb/lapin_d_image_filter_block/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
-//#include <tbb/parallel_for.h>
+#include <tbb/parallel_for.h>
 
 #include <cmath>
 #include <iostream>
@@ -91,21 +91,21 @@ bool BlockFilterTBBTaskParallel::run() {
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
   
   oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, height, 0, width),
-    [&](oneapi::tbb::blocked_range2d<int> &r ) {
-      for(int i=r.cols().begin(), i_end=r.cols().end(); i<i_end; i++){
-        for(int j=r.rows().begin(), j_end=r.rows().end(); j<j_end; j++){
-          double result = 0;
-          for (int l = -1; l <= 1; l++) {
-            for (int k = -1; k <= 1; k++) {
-              int idX = Clamp(i + k, 0, height - 1);
-              int idY = Clamp(j + l, 0, width - 1);
-              result += (*mas_in)[idX][idY] * kernel[k + 1][l + 1];
-            }
-          }
-          (*mas_out)[i][j] = Clamp((int)result, 0, 255);
-        }
-      }
-  });
+    [&](oneapi::tbb::blocked_range2d<int> &r) {
+                              for (int i = r.cols().begin(), i_end = r.cols().end(); i < i_end; i++) {
+                                for (int j = r.rows().begin(), j_end = r.rows().end(); j < j_end; j++) {
+                                  double result = 0;
+                                  for (int l = -1; l <= 1; l++) {
+                                    for (int k = -1; k <= 1; k++) {
+                                      int idX = Clamp(i + k, 0, height - 1);
+                                      int idY = Clamp(j + l, 0, width - 1);
+                                      result += (*mas_in)[idX][idY] * kernel[k + 1][l + 1];
+                                    }
+                                  }
+                                  (*mas_out)[i][j] = Clamp((int)result, 0, 255);
+                                }
+                              }
+                            });
   
   return true;
 }
