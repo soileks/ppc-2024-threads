@@ -60,13 +60,17 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
       break;
     }
 
+#pragma omp parallel for
     for (int v = 0; v < size; ++v) {
       if (graphMap[u][v] != 0) {
         int alt = dist[u] + graphMap[u][v];
         if (alt < dist[v]) {
-          dist[v] = alt;
-          prev[v] = u;
-          pq.emplace(v, alt);
+#pragma omp critical
+          {
+            dist[v] = alt;
+            prev[v] = u;
+            pq.emplace(v, alt);
+          }
         }
       }
     }
