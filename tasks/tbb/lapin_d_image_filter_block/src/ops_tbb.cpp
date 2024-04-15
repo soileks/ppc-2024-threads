@@ -1,8 +1,8 @@
 // Copyright 2024 Lapin Dmitriy
 #include "tbb/lapin_d_image_filter_block/include/ops_tbb.hpp"
 
-#include <tbb/tbb.h>
 #include <tbb/parallel_for.h>
+#include <tbb/tbb.h>
 
 #include <cmath>
 #include <iostream>
@@ -89,7 +89,6 @@ bool BlockFilterTBBTaskParallel::validation() {
 bool BlockFilterTBBTaskParallel::run() {
   internal_order_test();
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
-  
   oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, height, 0, width),
     [&](oneapi::tbb::blocked_range2d<int> &r) {
                               for (int i = r.cols().begin(), i_end = r.cols().end(); i < i_end; i++) {
