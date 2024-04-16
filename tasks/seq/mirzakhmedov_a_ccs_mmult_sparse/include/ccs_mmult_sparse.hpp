@@ -1,7 +1,8 @@
 // Copyright 2024 Mirzakhmedov Alexander
 #include <complex>
+#include <vector>
 
-#include "core/task/include/task.hpp";
+#include "core/task/include/task.hpp"
 
 struct MatrixInCCS_Sparse {
   std::vector<std::complex<double>> val{};
@@ -13,18 +14,18 @@ struct MatrixInCCS_Sparse {
   int n_z;
 
   MatrixInCCS_Sparse(int _r_n = 0, int _c_n = 0, int _n_z = 0) {
-    c_n(_c_n);
-    r_n(_r_n);
-    n_z(_n_z);
-    row(n_z);
-    col_p(r_n + 1);
-    val(n_z);
+    c_n = _c_n;
+    r_n = _r_n;
+    n_z = _n_z;
+    row.resize(n_z);
+    col_p.resize(r_n + 1);
+    val.resize(n_z);
   }
 };
 
 class Seq_MatMultCCS : public ppc::core::Task {
  public:
-  explicit SparseMatrixMultiSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit Seq_MatMultCCS(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

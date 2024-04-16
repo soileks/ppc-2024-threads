@@ -54,7 +54,6 @@ bool Seq_MatMultCCS::run() {
   std::complex<double> m2_val;
   std::vector<std::complex<double>> cask(M3->r_n);
   for (int m2_c = 0; m2_c < M3->c_n; ++m2_c) {
-
     for (int m3_r = 0; m3_r < M3->r_n; ++m3_r) {
       cask[m3_r] = nought;
       available_el[m3_r] = 0;

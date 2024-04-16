@@ -1,7 +1,6 @@
 // Copyright 2024 Mirzakhmedov Alexander
 #include <gtest/gtest.h>
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
 #include <vector>
