@@ -227,7 +227,7 @@ TEST(karagodin_a_dejkstra_omp, test_hard_path) {
   ASSERT_EQ(resultExpected.second, result.second);
 }
 
-TEST(karagodin_a_dejkstra_seq, test_not_generating_sizes_lesser_than_2) {
+TEST(karagodin_a_dejkstra_omp, test_not_generating_sizes_lesser_than_2) {
   // Any numbers really. Checking if algorithm crashes on large data sample.
   std::vector<std::vector<int>> graphMap(2);
   ASSERT_ANY_THROW(graphMap = initGraphMapRandom(0));
