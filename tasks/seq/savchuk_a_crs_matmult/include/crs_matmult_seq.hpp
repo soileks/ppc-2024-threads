@@ -4,7 +4,7 @@
 #include <complex>
 #include <vector>
 
-typedef std::complex<double> Complex;
+using Complex = std::complex<double>;
 
 #include "core/task/include/task.hpp"
 
