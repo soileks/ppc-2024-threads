@@ -1,10 +1,10 @@
 // Copyright Andrey Karagodin 2024
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <omp/karagodin_a_dejkstra/include/dejkstra_omp.hpp>
 
 #include "core/perf/include/perf.hpp"
-#include <omp.h>
 
 TEST(karagodin_a_dejkstra_omp_perf_test, test_pipeline_run) {
   // Create data
@@ -20,10 +20,10 @@ TEST(karagodin_a_dejkstra_omp_perf_test, test_pipeline_run) {
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&graphMap));
   taskDataSeq->inputs_count.emplace_back(size);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&result));
-  
+
   // Create Task
   auto dejkstra_seq = std::make_shared<DejkstraTaskOMP>(taskDataSeq);
-  
+
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;

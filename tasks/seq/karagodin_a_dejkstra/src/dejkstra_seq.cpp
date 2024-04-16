@@ -106,7 +106,7 @@ bool DejkstraTaskSequential::pre_processing() {
 bool DejkstraTaskSequential::run() {
   try {
     internal_order_test();
-     if (size != 0 && graphMap.size() == 0) {
+    if (size != 0 && graphMap.size() == 0) {
       graphMap = initGraphMapRandom(size);
     }
     res = getDejMinPath();
