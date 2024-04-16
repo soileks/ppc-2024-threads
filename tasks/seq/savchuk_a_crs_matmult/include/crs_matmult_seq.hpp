@@ -1,22 +1,25 @@
 // Copyright 2024 Savchuk Anton
 #pragma once
 
+#include <complex>
 #include <vector>
+
+typedef std::complex<double> Complex;
 
 #include "core/task/include/task.hpp"
 
 class SavchukCRSMatMult : public ppc::core::Task {
-  std::vector<double> values1{};
+  std::vector<Complex> values1{};
   std::vector<int> rowPtr1{};
   std::vector<int> colPtr1{};
   int numRows1{};
   int numCols1{};
-  std::vector<double> values2{};
+  std::vector<Complex> values2{};
   std::vector<int> rowPtr2{};
   std::vector<int> colPtr2{};
   int numRows2{};
   int numCols2{};
-  double* result{};
+  Complex *result{};
 
  public:
   explicit SavchukCRSMatMult(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}

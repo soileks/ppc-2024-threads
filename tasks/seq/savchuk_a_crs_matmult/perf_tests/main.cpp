@@ -6,23 +6,23 @@
 
 TEST(savchuk_a_crs_matmult, test_pipeline_run) {
   // Create data
-  size_t p = 501;
-  size_t q = 500;
-  size_t r = 501;
-  std::vector<double> lhs_in(p * q);
+  size_t p = 601;
+  size_t q = 600;
+  size_t r = 601;
+  std::vector<Complex> lhs_in(p * q);
   for (size_t i = 0; i < p; ++i) {
     if (i % 4 == 0)
       for (size_t j = 0; j < q; ++j) {
-        lhs_in[i * q + j] = 1.0;
+        lhs_in[i * q + j] = Complex(1.0, 1.0);
       }
   }
-  std::vector<double> rhs_in(q * r);
+  std::vector<Complex> rhs_in(q * r);
   for (size_t i = 0; i < q; ++i) {
     for (size_t j = 0; j < r; ++j) {
-      if (j % 4 == 0) rhs_in[i * r + j] = 1.0;
+      if (j % 4 == 0) rhs_in[i * r + j] = Complex(1.0, -1.0);
     }
   }
-  std::vector<double> out(p * r);
+  std::vector<Complex> out(p * r);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -57,33 +57,36 @@ TEST(savchuk_a_crs_matmult, test_pipeline_run) {
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
     for (size_t j = 0; j < r; ++j) {
-      if (i % 4 == 0 && j % 4 == 0)
-        EXPECT_DOUBLE_EQ(out[i * r + j], q);
-      else
-        EXPECT_DOUBLE_EQ(out[i * r + j], 0.0);
+      if (i % 4 == 0 && j % 4 == 0) {
+        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 2 * q);
+        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
+      } else {
+        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 0.0);
+        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
+      }
     }
   }
 }
 
 TEST(savchuk_a_crs_matmult, test_task_run) {
   // Create data
-  size_t p = 501;
-  size_t q = 500;
-  size_t r = 501;
-  std::vector<double> lhs_in(p * q);
+  size_t p = 601;
+  size_t q = 600;
+  size_t r = 601;
+  std::vector<Complex> lhs_in(p * q);
   for (size_t i = 0; i < p; ++i) {
-    if (i % 3 == 0)
+    if (i % 4 == 0)
       for (size_t j = 0; j < q; ++j) {
-        lhs_in[i * q + j] = 1.0;
+        lhs_in[i * q + j] = Complex(1.0, 1.0);
       }
   }
-  std::vector<double> rhs_in(q * r);
+  std::vector<Complex> rhs_in(q * r);
   for (size_t i = 0; i < q; ++i) {
     for (size_t j = 0; j < r; ++j) {
-      if (j % 3 == 0) rhs_in[i * r + j] = 1.0;
+      if (j % 4 == 0) rhs_in[i * r + j] = Complex(1.0, -1.0);
     }
   }
-  std::vector<double> out(p * r);
+  std::vector<Complex> out(p * r);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -118,10 +121,13 @@ TEST(savchuk_a_crs_matmult, test_task_run) {
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
     for (size_t j = 0; j < r; ++j) {
-      if (i % 3 == 0 && j % 3 == 0)
-        EXPECT_DOUBLE_EQ(out[i * r + j], q);
-      else
-        EXPECT_DOUBLE_EQ(out[i * r + j], 0.0);
+      if (i % 4 == 0 && j % 4 == 0) {
+        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 2 * q);
+        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
+      } else {
+        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 0.0);
+        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
+      }
     }
   }
 }

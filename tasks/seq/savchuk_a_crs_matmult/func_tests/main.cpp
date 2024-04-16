@@ -5,7 +5,7 @@
 
 #include "seq/savchuk_a_crs_matmult/include/crs_matmult_seq.hpp"
 
-TEST(savchuk_a_crs_matmult, test_sizes) {
+TEST(savchuk_a_crs_matmult, test_sizes_true) {
   size_t n1 = 4;
   size_t m1 = 6;
   size_t n2 = 6;
@@ -35,7 +35,7 @@ TEST(savchuk_a_crs_matmult, test_sizes) {
   ASSERT_EQ(savchukCRSMatMult.validation(), true);
 }
 
-TEST(savchuk_a_crs_matmult, test_sizes2) {
+TEST(savchuk_a_crs_matmult, test_sizes_false) {
   size_t n1 = 2;
   size_t m1 = 3;
   size_t n2 = 4;
@@ -72,10 +72,13 @@ TEST(savchuk_a_crs_matmult, test_multy_correct) {
   size_t m2 = 3;
 
   // Create data
-  std::vector<double> in1{4, 0, 0, 0, 0, 1, 0, 2, 0};
-  std::vector<double> in2{9, 1, 0, 0, 0, 7, 3, 0, 0};
-  std::vector<double> out(n1 * m2);
-  std::vector<double> test{36, 4, 0, 3, 0, 0, 0, 0, 14};
+  std::vector<Complex> in1{Complex(3, 2), Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(1, -3),
+                           Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(-4, 1)};
+  std::vector<Complex> in2{Complex(0, 0),  Complex(2, -1), Complex(0, 0), Complex(0, 0), Complex(0, 0),
+                           Complex(-5, 2), Complex(0, 0),  Complex(2, 1), Complex(0, 0)};
+  std::vector<Complex> out(n1 * m2);
+  std::vector<Complex> test{Complex(0, 0),  Complex(8, 1), Complex(0, 0),   Complex(0, 0), Complex(0, 0),
+                            Complex(1, 17), Complex(0, 0), Complex(-9, -2), Complex(0, 0)};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -113,10 +116,13 @@ TEST(savchuk_a_crs_matmult, inverse_matrix) {
   size_t n2 = 3;
   size_t m2 = 3;
   // Create data
-  std::vector<double> in1{4, 0, 0, 0, 2, 1, 0, 2, 0};
-  std::vector<double> in2{0.25, 0, 0, 0, 0, 0.5, 0, 1, -1};
-  std::vector<double> out(n1 * m2);
-  std::vector<double> identity{1, 0, 0, 0, 1, 0, 0, 0, 1};
+  std::vector<Complex> in1{Complex(2, -1), Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0),
+                           Complex(0, 2),  Complex(0, 0), Complex(2, 1), Complex(0, 0)};
+  std::vector<Complex> in2{Complex(0.4, 0.2),  Complex(0, 0), Complex(0, 0),    Complex(0, 0), Complex(0, 0),
+                           Complex(0.4, -0.2), Complex(0, 0), Complex(0, -0.5), Complex(0, 0)};
+  std::vector<Complex> out(n1 * m2);
+  std::vector<Complex> identity{Complex(1, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(1, 0),
+                                Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(1, 0)};
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
@@ -152,11 +158,10 @@ TEST(savchuk_a_crs_matmult, zero_matrix) {
   size_t n2 = 3;
   size_t m2 = 3;
   // Create data
-  std::vector<double> in1{0, 2, 0, 0, 0, 6, 0, 2, 0};
-
-  std::vector<double> in2(n2 * m2, 0);
-
-  std::vector<double> out(n1 * m2);
+  Complex Null = Complex(0, 0);
+  std::vector<Complex> in1{(7, 1), (0, 0), (0, 0), (2, -6), (0, 5), (0, 0), (1, 0), (0, 0), (0, 0)};
+  std::vector<Complex> in2{Null, Null, Null, Null, Null, Null, Null, Null, Null};
+  std::vector<Complex> out(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -180,7 +185,7 @@ TEST(savchuk_a_crs_matmult, zero_matrix) {
   size_t m = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-    if (out[i] == 0.0) {
+    if (out[i] == Complex(0.0, 0.0)) {
       m++;
     }
   }
