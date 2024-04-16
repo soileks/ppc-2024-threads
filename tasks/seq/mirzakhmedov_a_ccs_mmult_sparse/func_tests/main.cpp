@@ -62,12 +62,12 @@ TEST(Mirzakhmedov_a_ccs_mmult_sparse, test_I) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(&M3));
 
   // Create Task
-  SpgemmCSCComplexSeq testTaskSequential(taskDataSeq);
+  Seq_MatMultCCS testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
   std::complex<double> answer(1.0, 0.0);
-  ASSERT_NEAR(std::abs(C.val[0] - answer), 0.0, 1e-6);
+  ASSERT_NEAR(std::abs(M3.val[0] - answer), 0.0, 1e-6);
 }
