@@ -121,7 +121,7 @@ TEST(Mirzakhmedov_a_ccs_mmult_sparse, test_III) {
   testTaskSequential.post_processing();
 
   l = 50;
-  for (int i = 0; i < M3.val.size(); i++) {
+  for (size_t i = 0; i < M3.val.size(); i++) {
     ASSERT_EQ(M3.val[i], std::complex<double>(3.0 * l, 4.0 * l));
     l--;
   }
@@ -191,7 +191,7 @@ TEST(Mirzakhmedov_a_ccs_mmult_sparse, test_V) {
   testTaskSequential.post_processing();
 
   std::complex<double> correct_reply(3.0, 4.0);
-  for (int i = 0; i < M3.val.size(); i++) {
+  for (size_t i = 0; i < M3.val.size(); i++) {
     ASSERT_EQ(M3.val[i], correct_reply);
   }
 }
