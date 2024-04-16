@@ -267,7 +267,8 @@ TEST(savchuk_a_crs_matmult_omp, zero_matrix) {
   size_t m2 = 3;
   // Create data
   Complex Null = Complex(0, 0);
-  std::vector<Complex> in1{(7, 1), (0, 0), (0, 0), (2, -6), (0, 5), (0, 0), (1, 0), (0, 0), (0, 0)};
+  std::vector<Complex> in1{Complex(7, 1), Complex(0, 0), Complex(0, 0), Complex(2, -6), Complex(0, 5),
+                           Complex(0, 0), Complex(1, 0), Complex(0, 0), Complex(0, 0)};
   std::vector<Complex> in2{Null, Null, Null, Null, Null, Null, Null, Null, Null};
   std::vector<Complex> out(n1 * m2);
 
