@@ -125,3 +125,4 @@ TEST(Mirzakhmedov_a_ccs_mmult_sparse, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
+5
