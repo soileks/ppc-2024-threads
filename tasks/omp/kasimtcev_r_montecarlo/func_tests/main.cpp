@@ -145,7 +145,7 @@ TEST(kasimtcev_r_monte_carlo_omp, Tested_summ_cos) {
   ASSERT_NEAR(out_seq[0], out_omp[0], ESTIMATE);
 }
 
-TEST(kasimtcev_monte_carlo_omp, Tested_x_multiply_y) {
+TEST(kasimtcev_r_monte_carlo_omp, Tested_x_multiply_y) {
   double res = 2.25;
   kasimtcev_func f = kasimtcev_fxy;
 
@@ -191,7 +191,7 @@ TEST(kasimtcev_monte_carlo_omp, Tested_x_multiply_y) {
   ASSERT_NEAR(out_seq[0], out_omp[0], ESTIMATE);
 }
 
-TEST(kasimtcev_monte_carlo_omp, Tested_x_multiply_yy) {
+TEST(kasimtcev_r_monte_carlo_omp, Tested_x_multiply_yy) {
   double res = 1.5;
   kasimtcev_func f = kasimtcev_fxyy;
 
