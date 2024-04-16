@@ -1,28 +1,38 @@
 // Copyright 2024 Savchuk Anton
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include "core/perf/include/perf.hpp"
 #include "seq/savchuk_a_crs_matmult/include/crs_matmult_seq.hpp"
 
 TEST(savchuk_a_crs_matmult, test_pipeline_run) {
   // Create data
-  size_t p = 601;
-  size_t q = 600;
-  size_t r = 601;
-  std::vector<Complex> lhs_in(p * q);
+  size_t p = 501;
+  size_t q = 500;
+  size_t r = 501;
+  std::vector<Complex> lhs_in(p * q, Complex(0, 0));
   for (size_t i = 0; i < p; ++i) {
     if (i % 4 == 0)
       for (size_t j = 0; j < q; ++j) {
         lhs_in[i * q + j] = Complex(1.0, 1.0);
       }
   }
-  std::vector<Complex> rhs_in(q * r);
+  std::vector<Complex> rhs_in(q * r, Complex(0, 0));
   for (size_t i = 0; i < q; ++i) {
     for (size_t j = 0; j < r; ++j) {
       if (j % 4 == 0) rhs_in[i * r + j] = Complex(1.0, -1.0);
     }
   }
   std::vector<Complex> out(p * r);
+
+  std::vector<Complex> res(p * r, Complex(0, 0));
+  for (size_t i = 0; i < p; ++i) {
+    for (size_t j = 0; j < r; ++j) {
+      if (i % 4 == 0 && j % 4 == 0) {
+        res[i * r + j] = Complex(2 * q, 0);
+      }
+    }
+  }
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -37,7 +47,7 @@ TEST(savchuk_a_crs_matmult, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SavchukCRSMatMult>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<SavchukCRSMatMult>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -51,42 +61,42 @@ TEST(savchuk_a_crs_matmult, test_pipeline_run) {
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
-
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSeq);
+  // Create Perf analyzer
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < p; ++i) {
-    for (size_t j = 0; j < r; ++j) {
-      if (i % 4 == 0 && j % 4 == 0) {
-        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 2 * q);
-        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
-      } else {
-        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 0.0);
-        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
-      }
-    }
+  for (size_t i = 0; i < res.size(); ++i) {
+    ASSERT_EQ(res[i], out[i]);
   }
 }
 
 TEST(savchuk_a_crs_matmult, test_task_run) {
-  // Create data
-  size_t p = 601;
-  size_t q = 600;
-  size_t r = 601;
-  std::vector<Complex> lhs_in(p * q);
+  size_t p = 501;
+  size_t q = 500;
+  size_t r = 501;
+  std::vector<Complex> lhs_in(p * q, Complex(0, 0));
   for (size_t i = 0; i < p; ++i) {
     if (i % 4 == 0)
       for (size_t j = 0; j < q; ++j) {
         lhs_in[i * q + j] = Complex(1.0, 1.0);
       }
   }
-  std::vector<Complex> rhs_in(q * r);
+  std::vector<Complex> rhs_in(q * r, Complex(0, 0));
   for (size_t i = 0; i < q; ++i) {
     for (size_t j = 0; j < r; ++j) {
       if (j % 4 == 0) rhs_in[i * r + j] = Complex(1.0, -1.0);
     }
   }
   std::vector<Complex> out(p * r);
+
+  std::vector<Complex> res(p * r, Complex(0, 0));
+  for (size_t i = 0; i < p; ++i) {
+    for (size_t j = 0; j < r; ++j) {
+      if (i % 4 == 0 && j % 4 == 0) {
+        res[i * r + j] = Complex(2 * q, 0);
+      }
+    }
+  }
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -101,7 +111,7 @@ TEST(savchuk_a_crs_matmult, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SavchukCRSMatMult>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<SavchukCRSMatMult>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -115,19 +125,11 @@ TEST(savchuk_a_crs_matmult, test_task_run) {
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
-
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSeq);
+  // Create Perf analyzer
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < p; ++i) {
-    for (size_t j = 0; j < r; ++j) {
-      if (i % 4 == 0 && j % 4 == 0) {
-        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 2 * q);
-        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
-      } else {
-        EXPECT_DOUBLE_EQ(out[i * r + j].real(), 0.0);
-        EXPECT_DOUBLE_EQ(out[i * r + j].imag(), 0.0);
-      }
-    }
+  for (size_t i = 0; i < res.size(); ++i) {
+    ASSERT_EQ(res[i], out[i]);
   }
 }
