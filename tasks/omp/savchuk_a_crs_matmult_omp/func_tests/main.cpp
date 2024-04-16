@@ -12,11 +12,11 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes) {
   size_t m2 = 2;
 
   // Create data
-  std::vector<double> in1(n1 * m1);
+  std::vector<Complex> in1(n1 * m1);
 
-  std::vector<double> in2(n2 * m2);
+  std::vector<Complex> in2(n2 * m2);
 
-  std::vector<double> out(n1 * m2);
+  std::vector<Complex> out(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -35,11 +35,11 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes) {
   ASSERT_EQ(savchukCRSMatMultOMPSequential.validation(), true);
 
   // Create data
-  std::vector<double> in3(n1 * m1);
+  std::vector<Complex> in3(n1 * m1);
 
-  std::vector<double> in4(n2 * m2);
+  std::vector<Complex> in4(n2 * m2);
 
-  std::vector<double> out2(n1 * m2);
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
@@ -64,11 +64,11 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
   size_t m2 = 5;
 
   // Create data
-  std::vector<double> in1(n1 * m1);
+  std::vector<Complex> in1(n1 * m1);
 
-  std::vector<double> in2(n2 * m2);
+  std::vector<Complex> in2(n2 * m2);
 
-  std::vector<double> out(n1 * m2);
+  std::vector<Complex> out(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -87,11 +87,11 @@ TEST(savchuk_a_crs_matmult_omp, test_sizes2) {
   ASSERT_FALSE(savchukCRSMatMultOMPSequential.validation());
 
   // Create data
-  std::vector<double> in3(n1 * m1);
+  std::vector<Complex> in3(n1 * m1);
 
-  std::vector<double> in4(n2 * m2);
+  std::vector<Complex> in4(n2 * m2);
 
-  std::vector<double> out2(n1 * m2);
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
@@ -115,10 +115,13 @@ TEST(savchuk_a_crs_matmult_omp, test_multy_correct) {
   size_t n2 = 3;
   size_t m2 = 3;
   // Create data
-  std::vector<double> in1{4, 0, 0, 0, 0, 1, 0, 2, 0};
-  std::vector<double> in2{9, 1, 0, 0, 0, 7, 3, 0, 0};
-  std::vector<double> out(n1 * m2);
-  std::vector<double> test{36, 4, 0, 3, 0, 0, 0, 0, 14};
+  std::vector<Complex> in1{Complex(3, 2), Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(1, -3),
+                           Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(-4, 1)};
+  std::vector<Complex> in2{Complex(0, 0),  Complex(2, -1), Complex(0, 0), Complex(0, 0), Complex(0, 0),
+                           Complex(-5, 2), Complex(0, 0),  Complex(2, 1), Complex(0, 0)};
+  std::vector<Complex> out(n1 * m2);
+  std::vector<Complex> test{Complex(0, 0),  Complex(8, 1), Complex(0, 0),   Complex(0, 0), Complex(0, 0),
+                            Complex(1, 17), Complex(0, 0), Complex(-9, -2), Complex(0, 0)};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -149,17 +152,14 @@ TEST(savchuk_a_crs_matmult_omp, test_multy_correct) {
 
   ASSERT_EQ(k, n1 * m2);
   // Create data
-  std::vector<double> in3{4, 0, 0, 0, 0, 1, 0, 2, 0};
-  std::vector<double> in4{9, 1, 0, 0, 0, 7, 3, 0, 0};
-  std::vector<double> out2(n1 * m2);
-  std::vector<double> test2{36, 4, 0, 3, 0, 0, 0, 0, 14};
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
-  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in3.data()));
+  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   taskDataParallel->inputs_count.emplace_back(n1);
   taskDataParallel->inputs_count.emplace_back(m1);
-  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in4.data()));
+  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   taskDataParallel->inputs_count.emplace_back(n2);
   taskDataParallel->inputs_count.emplace_back(m2);
   taskDataParallel->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -191,11 +191,13 @@ TEST(savchuk_a_crs_matmult_omp, inverse_matrix) {
   size_t m2 = 3;
 
   // Create data
-  std::vector<double> in1{4, 0, 0, 0, 2, 1, 0, 2, 0};
-  std::vector<double> in2{0.25, 0, 0, 0, 0, 0.5, 0, 1, -1};
-  std::vector<double> out(n1 * m2);
-  std::vector<double> identity{1, 0, 0, 0, 1, 0, 0, 0, 1};
-
+  std::vector<Complex> in1{Complex(2, -1), Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0),
+                           Complex(0, 2),  Complex(0, 0), Complex(2, 1), Complex(0, 0)};
+  std::vector<Complex> in2{Complex(0.4, 0.2),  Complex(0, 0), Complex(0, 0),    Complex(0, 0), Complex(0, 0),
+                           Complex(0.4, -0.2), Complex(0, 0), Complex(0, -0.5), Complex(0, 0)};
+  std::vector<Complex> out(n1 * m2);
+  std::vector<Complex> identity{Complex(1, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(1, 0),
+                                Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(1, 0)};
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
@@ -225,17 +227,15 @@ TEST(savchuk_a_crs_matmult_omp, inverse_matrix) {
 
   ASSERT_EQ(k, n1 * m2);
   // Create data
-  std::vector<double> in3{4, 0, 0, 0, 2, 1, 0, 2, 0};
-  std::vector<double> in4{0.25, 0, 0, 0, 0, 0.5, 0, 1, -1};
-  std::vector<double> out2(n1 * m2);
-  std::vector<double> identity2{1, 0, 0, 0, 1, 0, 0, 0, 1};
+
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
-  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in3.data()));
+  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   taskDataParallel->inputs_count.emplace_back(n1);
   taskDataParallel->inputs_count.emplace_back(m1);
-  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in4.data()));
+  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   taskDataParallel->inputs_count.emplace_back(n2);
   taskDataParallel->inputs_count.emplace_back(m2);
   taskDataParallel->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -252,7 +252,7 @@ TEST(savchuk_a_crs_matmult_omp, inverse_matrix) {
   size_t ch = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-    if (out[i] == identity2[i]) {
+    if (out[i] == identity[i]) {
       ch++;
     }
   }
@@ -266,11 +266,10 @@ TEST(savchuk_a_crs_matmult_omp, zero_matrix) {
   size_t n2 = 3;
   size_t m2 = 3;
   // Create data
-  std::vector<double> in1{0, 2, 0, 0, 0, 6, 0, 2, 0};
-
-  std::vector<double> in2(n2 * m2, 0);
-
-  std::vector<double> out(n1 * m2);
+  Complex Null = Complex(0, 0);
+  std::vector<Complex> in1{(7, 1), (0, 0), (0, 0), (2, -6), (0, 5), (0, 0), (1, 0), (0, 0), (0, 0)};
+  std::vector<Complex> in2{Null, Null, Null, Null, Null, Null, Null, Null, Null};
+  std::vector<Complex> out(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -294,24 +293,22 @@ TEST(savchuk_a_crs_matmult_omp, zero_matrix) {
   size_t k = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-    if (out[i] == 0.0) {
+    if (out[i] == Complex(0.0, 0.0)) {
       k++;
     }
   }
 
   ASSERT_EQ(k, n1 * m2);
   // Create data
-  std::vector<double> in3{0, 2, 0, 0, 0, 6, 0, 2, 0};
-  ;
-  std::vector<double> in4(n2 * m2, 0);
-  std::vector<double> out2(n1 * m2);
+
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
-  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in3.data()));
+  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
   taskDataParallel->inputs_count.emplace_back(n1);
   taskDataParallel->inputs_count.emplace_back(m1);
-  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in4.data()));
+  taskDataParallel->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
   taskDataParallel->inputs_count.emplace_back(n2);
   taskDataParallel->inputs_count.emplace_back(m2);
   taskDataParallel->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -328,7 +325,7 @@ TEST(savchuk_a_crs_matmult_omp, zero_matrix) {
   size_t ch = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-    if (out[i] == 0.0) {
+    if (out[i] == Complex(0.0, 0.0)) {
       ch++;
     }
   }
