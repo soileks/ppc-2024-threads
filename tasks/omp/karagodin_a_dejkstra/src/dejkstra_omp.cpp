@@ -12,7 +12,7 @@ std::vector<std::vector<int>> initGraphMapRandom(int16_t size) {
   std::uniform_int_distribution<std::default_random_engine::result_type> randNullChance(2, 5);
   std::uniform_int_distribution<std::default_random_engine::result_type> randomization(0, 42);
 
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for
   for (int16_t i = 0; i < size; i++) {
     for (int16_t j = 0; j < size; j++) {
       if (i != j) {
