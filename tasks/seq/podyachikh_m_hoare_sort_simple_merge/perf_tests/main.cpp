@@ -4,10 +4,12 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/podyachikh_m_hoare_sort_simple_merge/include/hoare_sort.hpp"
 
-const uint32_t COUNT = 5e4;
+namespace Podyachikh {
+const uint32_t COUNT = 2e6;
+}
 using namespace Podyachikh;
 
-TEST(PodyachikhMPerf, test_pipeline_run) {
+TEST(podyachikh_m_seq, test_pipeline_run) {
   HoareSort::vec_t in_vec = generate_random_vector(COUNT);
 
   // Create TaskData
@@ -15,8 +17,8 @@ TEST(PodyachikhMPerf, test_pipeline_run) {
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(&in_vec));
   taskDataSeq->inputs_count.emplace_back(1);
 
-  taskDataSeq->outputs.emplace_back(nullptr);
-  taskDataSeq->outputs_count.emplace_back(0);
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(&in_vec));
+  taskDataSeq->outputs_count.emplace_back(1);
 
   // Create Task
   auto testTaskSequential = std::make_shared<HoareSort>(taskDataSeq);
@@ -41,7 +43,7 @@ TEST(PodyachikhMPerf, test_pipeline_run) {
   ASSERT_TRUE(std::is_sorted(in_vec.begin(), in_vec.end()));
 }
 
-TEST(PodyachikhMPerf, test_task_run) {
+TEST(podyachikh_m_seq, test_task_run) {
   HoareSort::vec_t in_vec = generate_random_vector(COUNT);
 
   // Create TaskData
@@ -49,8 +51,8 @@ TEST(PodyachikhMPerf, test_task_run) {
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(&in_vec));
   taskDataSeq->inputs_count.emplace_back(1);
 
-  taskDataSeq->outputs.emplace_back(nullptr);
-  taskDataSeq->outputs_count.emplace_back(0);
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(&in_vec));
+  taskDataSeq->outputs_count.emplace_back(1);
 
   // Create Task
   auto testTaskSequential = std::make_shared<HoareSort>(taskDataSeq);

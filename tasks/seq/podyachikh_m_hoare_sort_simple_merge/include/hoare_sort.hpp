@@ -13,7 +13,7 @@ namespace Podyachikh {
 class HoareSort : public ppc::core::Task {
  public:
   using obj_ty = int64_t;
-  using compare_t = std::function<bool(const obj_ty &, const obj_ty &)>;
+  using compare_t = std::function<bool(const obj_ty&, const obj_ty&)>;
   using vec_t = std::vector<obj_ty>;
 
   explicit HoareSort(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -23,14 +23,14 @@ class HoareSort : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  vec_t *_data;
+  vec_t _data;
   compare_t _comp;
   /* TODO: Allow to use std::less_equal and same functions, which returns true if items are equal.
    * Now it creates infinity recursion. */
 
-  obj_ty *get_random_pivot(obj_ty *left, obj_ty *right);
-  std::pair<HoareSort::obj_ty *, HoareSort::obj_ty *> partition(obj_ty *left, obj_ty *right);
-  void seq_hoare_sort(obj_ty *left, obj_ty *right);
+  int get_random_pivot(int left, int right);
+  int partition(int left, int right);
+  void seq_hoare_sort(int left, int right);
 };
 
 template <typename T = HoareSort::obj_ty>

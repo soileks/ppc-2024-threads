@@ -8,7 +8,7 @@ using namespace Podyachikh;
 class PodyachikhMTestSort : public ::testing::Test {
  public:
   HoareSort testTaskSequential;
-  const uint32_t COUNT = 1357;
+  const uint32_t COUNT = 1367;
 
   PodyachikhMTestSort() : testTaskSequential{HoareSort(std::make_shared<ppc::core::TaskData>())} {}
 
@@ -23,8 +23,8 @@ class PodyachikhMTestSort : public ::testing::Test {
       taskDataSeq->inputs_count.emplace_back(1);
     }
 
-    taskDataSeq->outputs.emplace_back(nullptr);
-    taskDataSeq->outputs_count.emplace_back(0);
+    taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(in_vec));
+    taskDataSeq->outputs_count.emplace_back(1);
 
     testTaskSequential.set_data(taskDataSeq);
   }
