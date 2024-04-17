@@ -8,6 +8,8 @@
 #include "core/task/include/task.hpp"
 #include "random"
 
+namespace Podyachikh {
+
 class HoareSort : public ppc::core::Task {
  public:
   using obj_ty = int64_t;
@@ -43,3 +45,4 @@ std::vector<T> generate_random_vector(size_t size, T min_value = -1e9, T max_val
   }
   return result;
 }
+}  // namespace Podyachikh

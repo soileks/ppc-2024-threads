@@ -3,6 +3,8 @@
 
 #include "seq/podyachikh_m_hoare_sort_simple_merge/include/hoare_sort.hpp"
 
+using namespace Podyachikh;
+
 class PodyachikhMTestSort : public ::testing::Test {
  public:
   HoareSort testTaskSequential;

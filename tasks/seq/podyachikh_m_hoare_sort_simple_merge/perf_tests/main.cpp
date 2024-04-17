@@ -5,6 +5,7 @@
 #include "seq/podyachikh_m_hoare_sort_simple_merge/include/hoare_sort.hpp"
 
 const uint32_t COUNT = 5e4;
+using namespace Podyachikh;
 
 TEST(PodyachikhMPerf, test_pipeline_run) {
   HoareSort::vec_t in_vec = generate_random_vector(COUNT);

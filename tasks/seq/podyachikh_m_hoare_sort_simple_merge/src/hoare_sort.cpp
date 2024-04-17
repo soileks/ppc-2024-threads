@@ -5,6 +5,7 @@
 #include <cassert>
 
 using namespace std::chrono_literals;
+using namespace Podyachikh;
 
 bool HoareSort::pre_processing() {
   internal_order_test();
