@@ -48,8 +48,8 @@ double khramov_tbb::simpson_parallel(function func, int a1, int a2, int b1, int 
             double Xj1 = a1 + (j + 1) * h1;
 
             temp += (h1 * h2 / 36) *
-                  (simpson_formula(func, Xj0, Xj1, Xi0) + 4 * simpson_formula(func, Xj0, Xj1, (Xi0 + Xi1) / 2) +
-                    simpson_formula(func, Xj0, Xj1, Xi1));
+                    (simpson_formula(func, Xj0, Xj1, Xi0) + 4 * simpson_formula(func, Xj0, Xj1, (Xi0 + Xi1) / 2) +
+                     simpson_formula(func, Xj0, Xj1, Xi1));
           }
         }
         return temp;
