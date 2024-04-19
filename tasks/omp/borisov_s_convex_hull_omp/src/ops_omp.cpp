@@ -158,7 +158,7 @@ void ConvexHull::convexHullImage() {
       nextPoint = remainingPoints[1];
     }
 #pragma omp parallel for shared(remainingPoints, convexHull, nextPoint)
-    for (size_t i = 0; i < remainingPoints.size(); i++) {
+    for (int i = 0; i < static_cast<int>(remainingPoints.size()); i++) {
       if ((remainingPoints[i] == convexHull.back()) || (convexHull.back() == nextPoint)) {
         continue;
       }
