@@ -28,13 +28,13 @@ std::vector<double> randMatrix(int size) {
   std::mt19937 gen(rd());
   std::uniform_real_distribution<double> dis(MIN_VALUE, MAX_VALUE);
 
-  for (size_t i = 0; i < size; ++i) {
-    for (size_t j = 0; j < size; ++j) {
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
       random_matrix[i * size + j] = dis(gen);
     }
   }
-  for (size_t i = 0; i < size; ++i) {
-    for (size_t j = 0; j < i; ++j) {
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < i; ++j) {
       random_matrix[i * size + j] = random_matrix[j * size + i];
     }
   }
@@ -77,7 +77,7 @@ bool SeqSLAYGradient::validation() {
 bool SeqSLAYGradient::run() {
   internal_order_test();
 
-  int size = vector.size();
+  size_t size = vector.size();
   std::vector<double> result(size, 0.0);
   std::vector<double> residual = vector;
   std::vector<double> direction = residual;
@@ -144,7 +144,7 @@ bool SeqSLAYGradient::post_processing() {
 bool SeqSLAYGradient::check_solution(const std::vector<double>& matrixA, const std::vector<double>& vectorB,
                                      const std::vector<double>& solutionC) {
   bool solution_correct = true;
-  int size = vectorB.size();
+  size_t size = vectorB.size();
   std::vector<double> A_Sol(size, 0.0);
 
   for (size_t i = 0; i < size; ++i) {
