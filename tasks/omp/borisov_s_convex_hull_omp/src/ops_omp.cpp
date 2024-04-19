@@ -177,19 +177,19 @@ void ConvexHull::convexHullImage() {
 #pragma omp parallel private(localNewPoints, i, j) shared(convexHull)
   {
 #pragma omp for nowait
-      for (i = 0; i < height; ++i) {
-        for (j = 0; j < width; ++j) {
+    for (i = 0; i < height; ++i) {
+      for (j = 0; j < width; ++j) {
 #pragma omp critical
-          {
-            if (isInside(copy, Point(i, j))) {
-              localNewPoints.emplace_back(i, j);
-            }
+        {
+          if (isInside(copy, Point(i, j))) {
+            localNewPoints.emplace_back(i, j);
           }
         }
       }
+    }
 
 #pragma omp critical
-      convexHull.insert(convexHull.end(), localNewPoints.begin(), localNewPoints.end());
+    convexHull.insert(convexHull.end(), localNewPoints.begin(), localNewPoints.end());
   }
 
   convertToImageVector(convexHull, height, width);
