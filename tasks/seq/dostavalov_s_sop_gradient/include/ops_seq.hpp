@@ -22,7 +22,7 @@ class SeqSLAYGradient : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
   static bool check_solution(const std::vector<double>& matrixA, const std::vector<double>& vectorB,
-							 const std::vector<double>& solutionC);
+                              const std::vector<double>& solutionC);
 
  private:
   std::vector<double> matrix, vector, answer;
