@@ -6,6 +6,15 @@
 using namespace std::chrono_literals;
 
 namespace BorisovSaveliyOMP {
+Point::Point(int x, int y) {
+  this->x = x;
+  this->y = y;
+}
+
+bool Point::operator==(const Point& other) const { return (x == other.x) && (y == other.y); }
+
+bool Point::operator!=(const Point& other) const { return !(*this == other); }
+
 bool ConvexHull::pre_processing() {
   internal_order_test();
   // Init value for input and output

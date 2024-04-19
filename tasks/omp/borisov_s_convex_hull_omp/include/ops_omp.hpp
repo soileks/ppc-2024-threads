@@ -16,16 +16,13 @@ struct Point {
 
   Point() = default;
   Point(const Point&) = default;
-  Point(int x, int y) {
-    this->x = x;
-    this->y = y;
-  }
+  Point(int x, int y);
 
   Point& operator=(const Point&) = default;
 
-  bool operator==(const Point& other) const { return (x == other.x) && (y == other.y); }
+  bool operator==(const Point& other) const;
 
-  bool operator!=(const Point& other) const { return !(*this == other); }
+  bool operator!=(const Point& other) const;
 };
 
 class ConvexHull : public ppc::core::Task {
