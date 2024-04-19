@@ -109,10 +109,9 @@ std::vector<Point> ConvexHull::convertToPoints(const std::vector<uint8_t>& _imag
   return _points;
 }
 
-std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& _points, int _height,
-                                                            int _width) {
+std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& _points, int _height, int _width) {
   std::vector<int> imageVector(height * width, 0);
-  
+
 #pragma omp parallel for
   for (const Point& point : _points) {
     int index = point.x * _width + point.y;
@@ -124,7 +123,7 @@ std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& _poi
   return imageVector;
 }
 
-#pragma omp declare reduction (merge : std::vector<Point> : omp_out.insert(omp_out.end(), omp_in.begin(), omp_in.end()))
+#pragma omp declare reduction(merge : std::vector<Point> : omp_out.insert(omp_out.end(), omp_in.begin(), omp_in.end()))
 
 void ConvexHull::convexHullImage() {
   size_t psize = points.size();
@@ -135,7 +134,7 @@ void ConvexHull::convexHullImage() {
   std::vector<Point> remainingPoints(points);
   std::vector<Point> convexHull;
   size_t startIndex = 0;
-#pragma omp parallel for reduction(min:startIndex)
+#pragma omp parallel for reduction(min : startIndex)
   for (size_t i = 0; i < remainingPoints.size(); i++) {
     if (remainingPoints[startIndex].x > remainingPoints[i].x ||
         ((remainingPoints[startIndex].x == remainingPoints[i].x) &&
@@ -152,12 +151,12 @@ void ConvexHull::convexHullImage() {
     if (nextPoint == convexHull.back()) {
       nextPoint = remainingPoints[1];
     }
-    #pragma omp parallel for shared(remainingPoints, convexHull, nextPoint)
+#pragma omp parallel for shared(remainingPoints, convexHull, nextPoint)
     for (size_t i = 0; i < remainingPoints.size(); i++) {
       if ((remainingPoints[i] == convexHull.back()) || (convexHull.back() == nextPoint)) {
         continue;
       }
-      #pragma omp critical
+#pragma omp critical
       {
         if ((remainingPoints[i] == nextPoint) || pointIsToTheRight(convexHull.back(), nextPoint, remainingPoints[i])) {
           nextPoint = remainingPoints[i];
@@ -175,12 +174,12 @@ void ConvexHull::convexHullImage() {
 
   std::vector<Point> copy(convexHull.begin(), convexHull.end());
 
-  #pragma omp parallel private(localNewPoints, i, j) shared(convexHull)
+#pragma omp parallel private(localNewPoints, i, j) shared(convexHull)
   {
-      #pragma omp for nowait
+#pragma omp for nowait
       for (i = 0; i < height; ++i) {
         for (j = 0; j < width; ++j) {
-          #pragma omp critical
+#pragma omp critical
           {
             if (isInside(copy, Point(i, j))) {
               localNewPoints.emplace_back(i, j);
@@ -189,7 +188,7 @@ void ConvexHull::convexHullImage() {
         }
       }
 
-      #pragma omp critical
+#pragma omp critical
       convexHull.insert(convexHull.end(), localNewPoints.begin(), localNewPoints.end());
   }
 
