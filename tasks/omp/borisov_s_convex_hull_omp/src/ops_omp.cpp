@@ -22,7 +22,7 @@ bool ConvexHull::pre_processing() {
 bool ConvexHull::validation() {
   internal_order_test();
   // Check count elements of output
-  return taskData->inputs_count[0] >= 3 && taskData->inputs_count[1] >= 3 &&
+  return taskData->inputs_count[0] > 2 && taskData->inputs_count[1] > 2 &&
          taskData->outputs_count[0] == taskData->inputs_count[0] &&
          taskData->outputs_count[1] == taskData->inputs_count[1];
 }
@@ -95,27 +95,27 @@ bool ConvexHull::pointIsToTheRight(const Point& previous, const Point& current, 
   return crossProduct > 0;
 }
 
-std::vector<Point> ConvexHull::convertToPoints(const std::vector<uint8_t>& _image, int _height, int _width) {
-  std::vector<Point> _points;
+std::vector<Point> ConvexHull::convertToPoints(const std::vector<uint8_t>& this_image, int this_height, int this_width) {
+  std::vector<Point> this_points;
 
-  for (int i = 0; i < _height; ++i) {
-    for (int j = 0; j < _width; ++j) {
-      if (_image[i * _width + j] == 1) {
-        _points.emplace_back(i, j);
+  for (int i = 0; i < this_height; ++i) {
+    for (int j = 0; j < this_width; ++j) {
+      if (this_image[i * this_width + j] == 1) {
+        this_points.emplace_back(i, j);
       }
     }
   }
 
-  return _points;
+  return this_points;
 }
 
-std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& _points, int _height, int _width) {
+std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& this_points, int this_height, int this_width) {
   std::vector<int> imageVector(height * width, 0);
 
 #pragma omp parallel for
-  for (const Point& point : _points) {
-    int index = point.x * _width + point.y;
-    if (index < _height * _width) {
+  for (const Point& point : this_points) {
+    int index = point.x * this_width + point.y;
+    if (index < this_height * this_width) {
       image[index] = 1;
     }
   }
@@ -123,18 +123,14 @@ std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& _poi
   return imageVector;
 }
 
-#pragma omp declare reduction(merge : std::vector<Point> : omp_out.insert(omp_out.end(), omp_in.begin(), omp_in.end()))
-
 void ConvexHull::convexHullImage() {
-  size_t psize = points.size();
-  if (psize < 3) {
+  if (points.size() < 3) {
     return;
   }
 
   std::vector<Point> remainingPoints(points);
   std::vector<Point> convexHull;
   size_t startIndex = 0;
-#pragma omp parallel for reduction(min : startIndex)
   for (size_t i = 0; i < remainingPoints.size(); i++) {
     if (remainingPoints[startIndex].x > remainingPoints[i].x ||
         ((remainingPoints[startIndex].x == remainingPoints[i].x) &&
