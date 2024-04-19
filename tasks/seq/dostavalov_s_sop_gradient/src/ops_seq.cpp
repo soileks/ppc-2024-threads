@@ -3,8 +3,8 @@
 #include "seq/dostavalov_s_sop_gradient/include/ops_seq.hpp"
 
 #include <cmath>
-#include <vector>
 #include <random>
+#include <vector>
 
 namespace dostavalov_s_seq {
 std::vector<double> randVector(int size) {

@@ -2,15 +2,14 @@
 #include <gtest/gtest.h>
 
 #include <vector>
+
 #include "core/perf/include/perf.hpp"
 #include "seq/dostavalov_s_sop_gradient/include/ops_seq.hpp"
-
-
 
 namespace dostavalov_s_seq {
 const int SIZE = 300;
 
-std::shared_ptr<ppc::core::TaskData> createTaskData(std::vector<double> &matrix,std::vector<double> &vector,
+std::shared_ptr<ppc::core::TaskData> createTaskData(std::vector<double> &matrix, std::vector<double> &vector,
                                                     std::vector<double> &result) {
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
 
@@ -35,7 +34,7 @@ std::shared_ptr<ppc::core::PerfAttr> start_performance_timer() {
 
     auto current_time_point = std::chrono::high_resolution_clock::now();
 
-    auto duration = std::chrono::duration_cast <std::chrono::nanoseconds> (current_time_point - t0).count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
 
     return static_cast<double>(duration) * 1e-9;
   };
