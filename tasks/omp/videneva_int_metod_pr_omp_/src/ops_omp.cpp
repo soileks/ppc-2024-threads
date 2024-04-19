@@ -2,6 +2,7 @@
 #include "omp/videneva_int_metod_pr_omp_/include/ops_omp.hpp"
 
 #include <omp.h>
+
 #include <cmath>
 #include <iostream>
 
