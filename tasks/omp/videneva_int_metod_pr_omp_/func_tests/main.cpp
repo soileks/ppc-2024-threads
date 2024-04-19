@@ -7,6 +7,7 @@
 
 TEST(videneva_int_metod_pr_omp_func, small) {
   std::vector<double> in{0.0, 1.0, 0.0, 1.0, 1e3};
+  
   std::vector<double> out(2);         
 
   std::shared_ptr<ppc::core::TaskData> data_seq = std::make_shared<ppc::core::TaskData>();
