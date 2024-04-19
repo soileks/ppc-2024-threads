@@ -126,7 +126,6 @@ bool RadixSortTaskSTL::run() {
       t.join();
     }
 
-    std::vector<int> temp;
     for (int i = 0; i < threadNum; i++) {
       result = myMerge(&result, &VectorForSortLocal[i]);
     }
