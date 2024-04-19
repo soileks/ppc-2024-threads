@@ -5,7 +5,9 @@
 
 #include "omp/kozlov_m_simpson_integral/include/ops_omp.hpp"
 
-TEST(kozlov_m_simpson_integral_seq, Test_linear) {
+using namespace kozlov_omp;
+
+TEST(kozlov_m_simpson_integral_omp, Test_linear) {
   double res = 1.5;
   FUNC f = linear;
   uint64_t n = 100;
@@ -27,15 +29,22 @@ TEST(kozlov_m_simpson_integral_seq, Test_linear) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  KozlovTaskSequential testTaskSequential(taskDataSeq);
+  KozlovTasknOmpSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
+
+  KozlovTasknOmpParallel testTaskPar(taskDataSeq);
+  ASSERT_EQ(testTaskPar.validation(), true);
+  ASSERT_EQ(testTaskPar.pre_processing(), true);
+  ASSERT_EQ(testTaskPar.run(), true);
+  ASSERT_EQ(testTaskPar.post_processing(), true);
+  ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
 
-TEST(kozlov_m_simpson_integral_seq, Test_expxy) {
+TEST(kozlov_m_simpson_integral_omp, Test_expxy) {
   double res = 1.3179;
   FUNC f = expxy;
   uint64_t n = 100;
@@ -57,12 +66,21 @@ TEST(kozlov_m_simpson_integral_seq, Test_expxy) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  KozlovTaskSequential testTaskSequential(taskDataSeq);
+  KozlovTasknOmpSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
+
+  KozlovTasknOmpParallel testTaskPar(taskDataSeq);
+  ASSERT_EQ(testTaskPar.validation(), true);
+  ASSERT_EQ(testTaskPar.pre_processing(), true);
+  ASSERT_EQ(testTaskPar.run(), true);
+  ASSERT_EQ(testTaskPar.post_processing(), true);
+  ASSERT_LT(std::abs(res - out[0]), 0.2);
+
+
 }
 
 TEST(kozlov_m_simpson_integral_seq, Test_expy_x) {
@@ -87,11 +105,19 @@ TEST(kozlov_m_simpson_integral_seq, Test_expy_x) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  KozlovTaskSequential testTaskSequential(taskDataSeq);
+  KozlovTasknOmpSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
+  ASSERT_LT(std::abs(res - out[0]), 0.2);
+
+
+  KozlovTasknOmpParallel testTaskPar(taskDataSeq);
+  ASSERT_EQ(testTaskPar.validation(), true);
+  ASSERT_EQ(testTaskPar.pre_processing(), true);
+  ASSERT_EQ(testTaskPar.run(), true);
+  ASSERT_EQ(testTaskPar.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
 
@@ -117,11 +143,19 @@ TEST(kozlov_m_simpson_integral_seq, Test_siny) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  KozlovTaskSequential testTaskSequential(taskDataSeq);
+  KozlovTasknOmpSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
+  ASSERT_LT(std::abs(res - out[0]), 0.2);
+
+
+  KozlovTasknOmpParallel testTaskPar(taskDataSeq);
+  ASSERT_EQ(testTaskPar.validation(), true);
+  ASSERT_EQ(testTaskPar.pre_processing(), true);
+  ASSERT_EQ(testTaskPar.run(), true);
+  ASSERT_EQ(testTaskPar.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
 
@@ -147,10 +181,18 @@ TEST(kozlov_m_simpson_integral_seq, Test_xy) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  KozlovTaskSequential testTaskSequential(taskDataSeq);
+  KozlovTasknOmpSequential testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
+  ASSERT_LT(std::abs(res - out[0]), 0.2);
+
+
+  KozlovTasknOmpParallel testTaskPar(taskDataSeq);
+  ASSERT_EQ(testTaskPar.validation(), true);
+  ASSERT_EQ(testTaskPar.pre_processing(), true);
+  ASSERT_EQ(testTaskPar.run(), true);
+  ASSERT_EQ(testTaskPar.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
