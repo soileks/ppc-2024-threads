@@ -127,7 +127,7 @@ std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& _poi
 
 void ConvexHull::convexHullImage() {
   size_t psize = points.size();
-  if (psize <= 2) {
+  if (psize < 3) {
     return;
   }
 
