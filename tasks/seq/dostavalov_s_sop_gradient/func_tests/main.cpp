@@ -39,7 +39,7 @@ TEST(dostavalov_s_sop_gradient, Test_Empty) {
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
-  for (int i = 0; i < result.size(); i++) {
+  for (size_t i = 0; i < result.size(); i++) {
     ASSERT_LE(std::abs(true_result[i] - result[i]), TOLERANCE);
   }
 }
@@ -61,7 +61,7 @@ TEST(dostavalov_s_sop_gradient, Test_Drob_Size_4) {
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
-  for (int i = 0; i < result.size(); i++) {
+  for (size_t i = 0; i < result.size(); i++) {
     ASSERT_LE(std::abs(true_result[i] - result[i]), TOLERANCE);
   }
 }
@@ -83,7 +83,7 @@ TEST(dostavalov_s_sop_gradient, Test_Drob_Size_2) {
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
-  for (int i = 0; i < result.size(); i++) {
+  for (size_t i = 0; i < result.size(); i++) {
     ASSERT_LE(std::abs(true_result[i] - result[i]), TOLERANCE);
   }
 }
@@ -104,7 +104,7 @@ TEST(dostavalov_s_sop_gradient, Test_Size_4) {
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
-  for (int i = 0; i < result.size(); i++) {
+  for (size_t i = 0; i < result.size(); i++) {
     ASSERT_LE(std::abs(true_result[i] - result[i]), TOLERANCE);
   }
 }
@@ -126,7 +126,7 @@ TEST(dostavalov_s_sop_gradient, Test_Size_2) {
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
-  for (int i = 0; i < result.size(); i++) {
+  for (size_t i = 0; i < result.size(); i++) {
     ASSERT_LE(std::abs(true_result[i] - result[i]), TOLERANCE);
   }
 }

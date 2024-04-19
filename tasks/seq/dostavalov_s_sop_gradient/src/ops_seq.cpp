@@ -28,13 +28,13 @@ std::vector<double> randMatrix(int size) {
   std::mt19937 gen(rd());
   std::uniform_real_distribution<double> dis(MIN_VALUE, MAX_VALUE);
 
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
+  for (size_t i = 0; i < size; ++i) {
+    for (size_t j = 0; j < size; ++j) {
       random_matrix[i * size + j] = dis(gen);
     }
   }
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < i; ++j) {
+  for (size_t i = 0; i < size; ++i) {
+    for (size_t j = 0; j < i; ++j) {
       random_matrix[i * size + j] = random_matrix[j * size + i];
     }
   }
@@ -86,8 +86,8 @@ bool SeqSLAYGradient::run() {
   while (true) {
     std::vector<double> A_Dir(size, 0.0);
 
-    for (int i = 0; i < size; ++i) {
-      for (int j = 0; j < size; ++j) {
+    for (size_t i = 0; i < size; ++i) {
+      for (size_t j = 0; j < size; ++j) {
         A_Dir[i] += matrix[i * size + j] * direction[j];
       }
     }
@@ -95,24 +95,24 @@ bool SeqSLAYGradient::run() {
     double residual_dot_residual = 0.0;
     double A_Dir_dot_direction = 0.0;
 
-    for (int i = 0; i < size; ++i) {
+    for (size_t i = 0; i < size; ++i) {
       residual_dot_residual += residual[i] * residual[i];
       A_Dir_dot_direction += A_Dir[i] * direction[i];
     }
 
     double alpha = residual_dot_residual / A_Dir_dot_direction;
 
-    for (int i = 0; i < result.size(); ++i) {
+    for (size_t i = 0; i < result.size(); ++i) {
       result[i] += alpha * direction[i];
     }
 
-    for (int i = 0; i < residual.size(); ++i) {
+    for (size_t i = 0; i < residual.size(); ++i) {
       residual[i] = prev_residual[i] - alpha * A_Dir[i];
     }
 
     double new_residual = 0.0;
 
-    for (int i = 0; i < residual.size(); ++i) {
+    for (size_t i = 0; i < residual.size(); ++i) {
       new_residual += residual[i] * residual[i];
     }
 
@@ -135,27 +135,27 @@ bool SeqSLAYGradient::run() {
 bool SeqSLAYGradient::post_processing() {
   internal_order_test();
 
-  for (int i = 0; i < answer.size(); i++) {
+  for (size_t i = 0; i < answer.size(); i++) {
     reinterpret_cast<double*>(taskData->outputs[0])[i] = answer[i];
   }
   return true;
 }
 
-bool SeqSLAYGradient::check_solution(const std::vector<double>& matrix, const std::vector<double>& vector,
-                                     const std::vector<double>& solution) {
+bool SeqSLAYGradient::check_solution(const std::vector<double>& matrixA, const std::vector<double>& vectorB,
+                                     const std::vector<double>& solutionC) {
   bool solution_correct = true;
-  int size = vector.size();
+  int size = vectorB.size();
   std::vector<double> A_Sol(size, 0.0);
 
-  for (int i = 0; i < size; ++i) {
+  for (size_t i = 0; i < size; ++i) {
     A_Sol[i] = 0.0;
-    for (int j = 0; j < size; ++j) {
-      A_Sol[i] += matrix[i * size + j] * solution[j];
+    for (size_t j = 0; j < size; ++j) {
+      A_Sol[i] += matrixA[i * size + j] * solutionC[j];
     }
   }
 
-  for (int i = 0; i < size; ++i) {
-    if (std::abs(A_Sol[i] - vector[i]) > TOLERANCE) {
+  for (size_t i = 0; i < size; ++i) {
+    if (std::abs(A_Sol[i] - vectorB[i]) > TOLERANCE) {
       solution_correct = false;
       break;
     }
