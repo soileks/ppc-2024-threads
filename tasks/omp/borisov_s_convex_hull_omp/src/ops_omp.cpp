@@ -104,7 +104,8 @@ bool ConvexHull::pointIsToTheRight(const Point& previous, const Point& current, 
   return crossProduct > 0;
 }
 
-std::vector<Point> ConvexHull::convertToPoints(const std::vector<uint8_t>& this_image, int this_height, int this_width) {
+std::vector<Point> ConvexHull::convertToPoints(const std::vector<uint8_t>& this_image, int this_height,
+                                               int this_width) {
   std::vector<Point> this_points;
 
   for (int i = 0; i < this_height; ++i) {
@@ -118,10 +119,10 @@ std::vector<Point> ConvexHull::convertToPoints(const std::vector<uint8_t>& this_
   return this_points;
 }
 
-std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& this_points, int this_height, int this_width) {
+std::vector<int> ConvexHull::convertToImageVector(const std::vector<Point>& this_points, int this_height,
+                                                  int this_width) {
   std::vector<int> imageVector(height * width, 0);
 
-#pragma omp parallel for
   for (const Point& point : this_points) {
     int index = point.x * this_width + point.y;
     if (index < this_height * this_width) {
