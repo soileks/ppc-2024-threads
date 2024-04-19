@@ -176,7 +176,8 @@ void ConvexHull::convexHullImage() {
   } while (convexHull.back() != startingPoint);
 
   std::vector<Point> localNewPoints;
-  int i, j;
+  int i;
+  int j;
 
   std::vector<Point> copy(convexHull.begin(), convexHull.end());
 
