@@ -72,15 +72,12 @@ TEST(kozlov_m_simpson_integral_omp, Test_expxy) {
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
-
   KozlovTasknOmpParallel testTaskPar(taskDataSeq);
   ASSERT_EQ(testTaskPar.validation(), true);
   ASSERT_EQ(testTaskPar.pre_processing(), true);
   ASSERT_EQ(testTaskPar.run(), true);
   ASSERT_EQ(testTaskPar.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
-
-
 }
 
 TEST(kozlov_m_simpson_integral_seq, Test_expy_x) {
@@ -111,7 +108,6 @@ TEST(kozlov_m_simpson_integral_seq, Test_expy_x) {
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
-
 
   KozlovTasknOmpParallel testTaskPar(taskDataSeq);
   ASSERT_EQ(testTaskPar.validation(), true);
@@ -150,7 +146,6 @@ TEST(kozlov_m_simpson_integral_seq, Test_siny) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 
-
   KozlovTasknOmpParallel testTaskPar(taskDataSeq);
   ASSERT_EQ(testTaskPar.validation(), true);
   ASSERT_EQ(testTaskPar.pre_processing(), true);
@@ -187,7 +182,6 @@ TEST(kozlov_m_simpson_integral_seq, Test_xy) {
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_LT(std::abs(res - out[0]), 0.2);
-
 
   KozlovTasknOmpParallel testTaskPar(taskDataSeq);
   ASSERT_EQ(testTaskPar.validation(), true);

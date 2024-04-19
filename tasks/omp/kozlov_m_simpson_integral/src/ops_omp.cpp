@@ -1,5 +1,6 @@
 // Copyright 2024 Kozlov Mikhail
 #include "omp/kozlov_m_simpson_integral/include/ops_omp.hpp"
+
 #include <stdio.h>
 
 double kozlov_omp::xy(double x, double y) { return x * y; }
@@ -66,7 +67,6 @@ bool kozlov_omp::KozlovTasknOmpSequential::post_processing() {
   return true;
 }
 
-
 bool kozlov_omp::KozlovTasknOmpParallel::pre_processing() {
   internal_order_test();
   auto* tmp = reinterpret_cast<double*>(taskData->inputs[0]);
@@ -92,7 +92,7 @@ bool kozlov_omp::KozlovTasknOmpParallel::run() {
   double x;
   double y;
   double res_ = 0;
-  #pragma omp parallel for reduction (+ : res_)
+#pragma omp parallel for reduction(+ : res_)
   for (int i = 0; i <= n; i++) {
     if (i == 0 || i == n) {
       p = 1;
