@@ -73,8 +73,8 @@ void MultiStepSchemeOMP::RungeKuttaMethod() {
     }
 
     for (uint32_t j = 0; j < 4; ++j) {
-#pragma omp parallel for proc_bind(close)
-      for (uint32_t k = 1; k < tempSize / 2 + 1; ++k) {
+#pragma omp parallel for
+      for (int64_t k = 1; k < tempSize / 2 + 1; ++k) {
         if (k != tempSize / 2) {
           tempAns[j][k + tempSize / 2] = h * tempAns[j][k + 1];
         } else {
@@ -100,8 +100,8 @@ void MultiStepSchemeOMP::RungeKuttaMethod() {
     }
 
     std::vector<double> deltaSum(equation.size() - 3);
-#pragma omp parallel for proc_bind(close)
-    for (uint32_t j = 1; j < tempSize / 2 + 1; ++j) {
+#pragma omp parallel for
+    for (int64_t j = 1; j < tempSize / 2 + 1; ++j) {
       double sum = 0;
       for (int k = 0; k < 4; ++k) {
         if (k != 1 and k != 2) {
@@ -138,8 +138,8 @@ void MultiStepSchemeOMP::AdamsMethod() {
     uint32_t ind = _numberOfSteps - i - 1;
     tempAns[ind].resize((equation.size() - 3) * offset + 1);
     tempAns[ind][0] = res[ind][0];
-#pragma omp parallel for proc_bind(close)
-    for (int32_t j = 0; j < resSize - 1; ++j) {
+#pragma omp parallel for
+    for (int64_t j = 0; j < resSize - 1; ++j) {
       for (int16_t k = 0; k < stepCount; ++k) {
         if (k == 0) {
           tempAns[ind][j * offset + k + 1] = res[ind][j + 1];
@@ -192,10 +192,10 @@ void MultiStepSchemeOMP::AdamsMethod() {
 
     res.push_back(newStrInAns);
     auto resI0 = res[i][0];
-#pragma omp parallel proc_bind(close)
+#pragma omp parallel
     {
 #pragma omp for nowait
-      for (int32_t j = 0; j < resSize - 1; ++j) {
+      for (int64_t j = 0; j < resSize - 1; ++j) {
         if (j != resSize - 2) {
           auto x = res[i][j + 2];
           tempAns[ind][j * offset + 3] = x;
@@ -217,7 +217,7 @@ void MultiStepSchemeOMP::AdamsMethod() {
       }
 
 #pragma omp for
-      for (int32_t j = 0; j < resSize - 1; ++j) {
+      for (int64_t j = 0; j < resSize - 1; ++j) {
         for (int32_t k = 0; k < _numberOfSteps - 1; ++k) {
           tempAns[ind - k - 1][j * offset + 5 + k] =
               tempAns[ind - k][j * offset + 4 + k] - tempAns[ind - 1 - k][j * offset + 4 + k];
