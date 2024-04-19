@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/dostavalov_s_sop_gradient/include/ops_seq.hpp"
 
-namespace dostavalov_s_seq {
+using namespace dostavalov_s_seq;
 const int SIZE = 300;
 
 std::shared_ptr<ppc::core::TaskData> createTaskData(std::vector<double> &matrix, std::vector<double> &vector,
@@ -79,6 +79,4 @@ TEST(dostavalov_s_sop_gradient, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_TRUE(testTaskSequential.check_solution(matrix, vector, result));
-}
-
 }  // namespace dostavalov_s_seq

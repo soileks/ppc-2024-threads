@@ -5,7 +5,7 @@
 
 #include "seq/dostavalov_s_sop_gradient/include/ops_seq.hpp"
 
-namespace dostavalov_s_seq {
+using namespace dostavalov_s_seq;
 
 std::shared_ptr<ppc::core::TaskData> createTaskData(std::vector<double> &matrix, std::vector<double> &vector,
                                                     std::vector<double> &result) {
@@ -203,5 +203,4 @@ TEST(dostavalov_s_sop_gradient, Test_Rand_0) {
   testTaskSequential.post_processing();
 
   ASSERT_TRUE(testTaskSequential.check_solution(matrix, vector, result));
-}
 }  // namespace dostavalov_s_seq
