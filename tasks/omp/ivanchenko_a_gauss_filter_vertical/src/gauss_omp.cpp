@@ -54,9 +54,10 @@ void GaussFilterSequential::createKernel(float sigma) {
     }
   }
 }
+
 void GaussFilterSequential::applyKernel() {
-  for (uint32_t j = 0; j < height; j++) {
 #pragma omp parallel for
+  for (uint32_t j = 0; j < height; j++) {
     for (uint32_t i = 0; i < width; i++) {
       image[i * width + j] = calculateNewPixelColor(i, j);
     }
