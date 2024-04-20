@@ -3,12 +3,12 @@
 
 #include <complex>
 #include <vector>
+
 #include "core/task/include/task.hpp"
 
 namespace SavchukOMP {
 
 using Complex = std::complex<double>;
-
 
 class SavchukCRSMatMultOMPSequential : public ppc::core::Task {
  public:
