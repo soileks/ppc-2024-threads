@@ -1,8 +1,6 @@
 // Copyright 2024 Kozlov Mikhail
 #include "omp/kozlov_m_simpson_integral/include/ops_omp.hpp"
 
-#include <stdio.h>
-
 double kozlov_omp::xy(double x, double y) { return x * y; }
 double kozlov_omp::sinxy(double x, double y) { return std::sin(x * y); }
 double kozlov_omp::linear(double x, double y) { return y * 5 - x * 2; }
