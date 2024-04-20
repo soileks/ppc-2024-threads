@@ -5,6 +5,8 @@
 
 #include "tbb/savchuk_a_crs_matmult_tbb/include/crs_matmult_tbb.hpp"
 
+using namespace SavchukTbb;
+
 TEST(savchuk_a_crs_matmult_tbb, test_sizes) {
   size_t n1 = 4;
   size_t m1 = 6;
@@ -17,7 +19,6 @@ TEST(savchuk_a_crs_matmult_tbb, test_sizes) {
   std::vector<Complex> in2(n2 * m2);
 
   std::vector<Complex> out(n1 * m2);
-
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));

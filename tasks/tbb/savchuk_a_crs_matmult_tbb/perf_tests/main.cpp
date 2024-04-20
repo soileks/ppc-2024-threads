@@ -5,6 +5,8 @@
 #include "core/perf/include/perf.hpp"
 #include "tbb/savchuk_a_crs_matmult_tbb/include/crs_matmult_tbb.hpp"
 
+using namespace SavchukTbb;
+
 TEST(savchuk_a_crs_matmult_tbb, test_pipeline_run) {
   // Create data
   size_t p = 501;

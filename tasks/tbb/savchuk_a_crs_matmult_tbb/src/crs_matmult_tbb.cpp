@@ -4,6 +4,8 @@
 
 #include <tbb/tbb.h>
 
+using namespace SavchukTbb;
+
 bool SavchukCRSMatMultTBBSequential::validation() {
   internal_order_test();
 
