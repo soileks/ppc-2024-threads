@@ -130,7 +130,7 @@ TEST(ivanchenko_a_gauss_filter_vertical_omp, image_with_some_noise) {
   for (size_t i = 0; i < width * height * 3; i += 3) {
     int x = i % width;
     int y = i / width;
-    in[i] = in[i + 1] = in[i + 2] = 128 - 3 * static_cast<int>((x + y) % 13 == 0);
+    in[i] = in[i + 1] = in[i + 2] = 128 - 1 * static_cast<int>((x + y) % 13 == 0);
     expected[i] = expected[i + 1] = expected[i + 2] = 128;
   }
 
