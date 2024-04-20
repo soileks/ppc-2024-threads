@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-auto f = [](double x, double y) { return std::pow(x, 2) + y; };
+auto g = [](double x, double y) { return std::pow(x, 2) + y; };
 
 bool Videneva_opm_task::validation() {
   internal_order_test();
@@ -31,7 +31,7 @@ bool Videneva_opm_task::run() {
       double pre_result = .0;
 #pragma omp parallel for reduction(+ : pre_result)
       for (int64_t j = 0; j < number; j++) {
-        pre_result += f(xLimL + hX * (i + 0.5), yLimL + hY * (j + 0.5));
+        pre_result += g(xLimL + hX * (i + 0.5), yLimL + hY * (j + 0.5));
       }
       result_ += pre_result;
     }
