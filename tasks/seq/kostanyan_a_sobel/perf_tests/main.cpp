@@ -8,8 +8,8 @@
 #include "seq/kostanyan_a_sobel/src/ops_seq.cpp"
 
 TEST(Sequential_kostanyan_sobel_perf_test, test_pipeline_run) {
-  const int n = 1000;
-  const int m = 1000;
+  const int n = 3000;
+  const int m = 3000;
   const uint8_t min = 0;
   const uint8_t max = 255;
 
@@ -62,8 +62,8 @@ TEST(Sequential_kostanyan_sobel_perf_test, test_pipeline_run) {
 }
 
 TEST(Sequential_kostanyan_sobel_perf_test, test_task_run) {
-  const int n = 4000;
-  const int m = 4000;
+  const int n = 3000;
+  const int m = 3000;
   const uint8_t min = 0;
   const uint8_t max = 255;
 
@@ -101,7 +101,7 @@ TEST(Sequential_kostanyan_sobel_perf_test, test_task_run) {
 
   // Create Perf analyzer
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
-  perfAnalyzer->pipeline_run(perfAttr, perfResults);
+  perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (int i = 1; i < n - 1; i++) {
     for (int j = 1; j < m - 1; j++) {
