@@ -80,7 +80,7 @@ TEST(kozlov_m_simpson_integral_omp, Test_expxy) {
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
 
-TEST(kozlov_m_simpson_integral_seq, Test_expy_x) {
+TEST(kozlov_m_simpson_integral_omp, Test_expy_x) {
   double res = 0.54308;
   FUNC f = expy_x;
   uint64_t n = 100;
@@ -117,7 +117,7 @@ TEST(kozlov_m_simpson_integral_seq, Test_expy_x) {
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
 
-TEST(kozlov_m_simpson_integral_seq, Test_siny) {
+TEST(kozlov_m_simpson_integral_omp, Test_siny) {
   double res = 0.239812;
   FUNC f = sinxy;
   uint64_t n = 100;
@@ -154,7 +154,7 @@ TEST(kozlov_m_simpson_integral_seq, Test_siny) {
   ASSERT_LT(std::abs(res - out[0]), 0.2);
 }
 
-TEST(kozlov_m_simpson_integral_seq, Test_xy) {
+TEST(kozlov_m_simpson_integral_omp, Test_xy) {
   double res = 0.25;
   FUNC f = xy;
   uint64_t n = 100;
