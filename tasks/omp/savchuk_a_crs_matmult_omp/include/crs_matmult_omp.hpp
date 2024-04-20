@@ -54,4 +54,4 @@ class SavchukCRSMatMultOMPParallel : public ppc::core::Task {
   int numCols2{};
   Complex *result{};
 };
-}
+}  // namespace SavchukOMP
