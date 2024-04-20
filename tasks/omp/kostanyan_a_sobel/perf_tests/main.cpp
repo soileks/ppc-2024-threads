@@ -7,7 +7,6 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/kostanyan_a_sobel/include/ops_omp.hpp"
 
-
 TEST(parallel_kostanyan_sobel_perf_test, test_pipeline_run) {
   const int n = 3000;
   const int m = 3000;
@@ -56,7 +55,6 @@ TEST(parallel_kostanyan_sobel_perf_test, test_pipeline_run) {
     }
   }
 }
-
 
 TEST(parallel_kostanyan_sobel_perf_test, test_task_run) {
   const int n = 3000;
