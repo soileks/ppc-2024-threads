@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-+ namespace kozlov_omp {
+namespace kozlov_omp {
   using FUNC = double (*)(double, double);
 
   double xy(double x, double y);
