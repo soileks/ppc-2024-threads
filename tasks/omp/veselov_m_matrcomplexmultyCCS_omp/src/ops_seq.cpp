@@ -88,7 +88,6 @@ bool SparseMatrixComplexMultiOMPSequential::post_processing() {
   return true;
 }
 
-
 bool SparseMatrixComplexMultiOMPParallel::validation() {
   internal_order_test();
   return taskData->inputs_count[1] == taskData->inputs_count[2] &&
@@ -142,7 +141,7 @@ bool SparseMatrixComplexMultiOMPParallel::pre_processing() {
 
 bool SparseMatrixComplexMultiOMPParallel::run() {
   internal_order_test();
-  
+
 #pragma omp parallel for
   for (int j = 0; j < numCols2; j++) {
     for (int k = cols2[j]; k < cols2[j + 1]; k++) {

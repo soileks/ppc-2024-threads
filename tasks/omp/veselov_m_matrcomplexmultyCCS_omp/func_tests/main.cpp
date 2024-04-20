@@ -36,7 +36,6 @@ TEST(veselov_m_matrcomplexmultyCCS, test_sizes_true) {
   SparseMatrixComplexMultiOMPSequential sparseMatrixComplexMultiOMPSequential(taskDataSeq);
   ASSERT_EQ(sparseMatrixComplexMultiOMPSequential.validation(), true);
 
-  
   // Create data
   std::vector<Complex> in3(n1 * m1);
 
@@ -89,7 +88,6 @@ TEST(veselov_m_matrcomplexmultyCCS, test_sizes_false) {
   SparseMatrixComplexMultiOMPSequential sparseMatrixComplexMultiOMPSequential(taskDataSeq);
   ASSERT_FALSE(sparseMatrixComplexMultiOMPSequential.validation());
 
-  
   // Create data
   std::vector<Complex> in3(n1 * m1);
 
@@ -304,7 +302,7 @@ TEST(veselov_m_matrcomplexmultyCCS, zero_matrix) {
 
   ASSERT_EQ(m, n1 * m2);
 
-    std::vector<Complex> out2(n1 * m2);
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
