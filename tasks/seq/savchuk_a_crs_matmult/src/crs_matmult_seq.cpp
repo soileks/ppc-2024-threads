@@ -3,6 +3,8 @@
 
 #include <complex>
 
+using namespace Savchuk;
+
 bool SavchukCRSMatMult::validation() {
   internal_order_test();
 

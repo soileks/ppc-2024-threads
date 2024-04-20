@@ -4,9 +4,11 @@
 #include <complex>
 #include <vector>
 
-using Complex = std::complex<double>;
-
 #include "core/task/include/task.hpp"
+
+namespace Savchuk {
+
+using Complex = std::complex<double>;
 
 class SavchukCRSMatMult : public ppc::core::Task {
   std::vector<Complex> values1{};
@@ -28,3 +30,4 @@ class SavchukCRSMatMult : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 };
+}  // namespace Savchuk

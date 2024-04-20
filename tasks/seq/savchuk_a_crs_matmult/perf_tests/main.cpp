@@ -5,6 +5,8 @@
 #include "core/perf/include/perf.hpp"
 #include "seq/savchuk_a_crs_matmult/include/crs_matmult_seq.hpp"
 
+using namespace Savchuk;
+
 TEST(savchuk_a_crs_matmult, test_pipeline_run) {
   // Create data
   size_t p = 501;

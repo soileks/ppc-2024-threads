@@ -5,6 +5,8 @@
 
 #include "seq/savchuk_a_crs_matmult/include/crs_matmult_seq.hpp"
 
+using namespace Savchuk;
+
 TEST(savchuk_a_crs_matmult, test_sizes_true) {
   size_t n1 = 4;
   size_t m1 = 6;
