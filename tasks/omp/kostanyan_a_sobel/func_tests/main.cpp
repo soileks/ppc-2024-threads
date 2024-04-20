@@ -60,7 +60,6 @@ TEST(kostanyan_a_sobel_omp, Test_EdgeDetection) {
   }
 }
 
-
 TEST(kostanyan_a_sobel_omp, Test_Empty_Image) {
   const int n = 0;
   const int m = 0;
@@ -152,7 +151,6 @@ TEST(kostanyan_a_sobel_omp, Test_Single_Pixel_Image) {
   kostanyan_EdgeDetectionParallel.post_processing();
   ASSERT_EQ(pict[0], out_omp[0]);
 }
-
 
 TEST(kostanyan_a_sobel_omp, Test_All_White_Image) {
   const int n = 10;

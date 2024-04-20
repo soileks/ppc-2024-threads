@@ -47,9 +47,9 @@ bool Kostanyan_EdgeDetectionSequential::run() {
   for (int i = 1; i < n - 1; i++) {
     for (int j = 1; j < m - 1; j++) {
       int gx = -input_[(i - 1) * m + j - 1] + input_[(i - 1) * m + j + 1] - 2 * input_[i * m + j - 1] +
-              2 * input_[i * m + j + 1] - input_[(i + 1) * m + j - 1] + input_[(i + 1) * m + j + 1];
+               2 * input_[i * m + j + 1] - input_[(i + 1) * m + j - 1] + input_[(i + 1) * m + j + 1];
       int gy = input_[(i - 1) * m + j - 1] + 2 * input_[(i - 1) * m + j] + input_[(i - 1) * m + j + 1] -
-              input_[(i + 1) * m + j - 1] - 2 * input_[(i + 1) * m + j] - input_[(i + 1) * m + j + 1];
+               input_[(i + 1) * m + j - 1] - 2 * input_[(i + 1) * m + j] - input_[(i + 1) * m + j + 1];
       res[i * m + j] = sqrt(gx * gx + gy * gy);
     }
   }
@@ -63,7 +63,6 @@ bool Kostanyan_EdgeDetectionSequential::post_processing() {
   }
   return true;
 }
-
 
 bool Kostanyan_EdgeDetectionParallel::validation() {
   internal_order_test();
@@ -92,13 +91,13 @@ bool Kostanyan_EdgeDetectionParallel::run() {
     return true;
   }
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 1; i < n - 1; i++) {
     for (int j = 1; j < m - 1; j++) {
       int gx = -input_[(i - 1) * m + j - 1] + input_[(i - 1) * m + j + 1] - 2 * input_[i * m + j - 1] +
-              2 * input_[i * m + j + 1] - input_[(i + 1) * m + j - 1] + input_[(i + 1) * m + j + 1];
+               2 * input_[i * m + j + 1] - input_[(i + 1) * m + j - 1] + input_[(i + 1) * m + j + 1];
       int gy = input_[(i - 1) * m + j - 1] + 2 * input_[(i - 1) * m + j] + input_[(i - 1) * m + j + 1] -
-              input_[(i + 1) * m + j - 1] - 2 * input_[(i + 1) * m + j] - input_[(i + 1) * m + j + 1];
+               input_[(i + 1) * m + j - 1] - 2 * input_[(i + 1) * m + j] - input_[(i + 1) * m + j + 1];
       res[i * m + j] = sqrt(gx * gx + gy * gy);
     }
   }
