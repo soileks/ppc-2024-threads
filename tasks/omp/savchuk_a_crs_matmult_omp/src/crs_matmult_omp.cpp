@@ -1,6 +1,8 @@
 // Copyright 2024 Savchuk Anton
 #include "omp/savchuk_a_crs_matmult_omp/include/crs_matmult_omp.hpp"
 
+using namespace SavchukOMP;
+
 bool SavchukCRSMatMultOMPSequential::validation() {
   internal_order_test();
 

@@ -5,6 +5,8 @@
 
 #include "omp/savchuk_a_crs_matmult_omp/include/crs_matmult_omp.hpp"
 
+using namespace SavchukOMP;
+
 TEST(savchuk_a_crs_matmult_omp, test_sizes) {
   size_t n1 = 4;
   size_t m1 = 6;

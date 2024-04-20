@@ -5,6 +5,8 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/savchuk_a_crs_matmult_omp/include/crs_matmult_omp.hpp"
 
+using namespace SavchukOMP;
+
 TEST(savchuk_a_crs_matmult_omp, test_pipeline_run) {
   // Create data
   size_t p = 501;
