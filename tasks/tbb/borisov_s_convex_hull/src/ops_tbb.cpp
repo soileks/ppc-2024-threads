@@ -159,21 +159,21 @@ void ConvexHull::convexHullImage() {
     }
     tbb::mutex mtx;
     tbb::parallel_for(tbb::blocked_range<int>(0, static_cast<int>(remainingPoints.size())),
-  [&](const tbb::blocked_range<int>& r) {
-    Point localNextPoint = nextPoint;
-      for (int i = r.begin(); i != r.end(); ++i) {
-        if ((remainingPoints[i] == convexHull.back()) || (convexHull.back() == nextPoint)) {
-          continue;
-        }
-        if ((remainingPoints[i] == localNextPoint) || pointIsToTheRight(convexHull.back(), localNextPoint, remainingPoints[i])) {
-          mtx.lock();
-          if (pointIsToTheRight(convexHull.back(), nextPoint, remainingPoints[i])) {
-            nextPoint = remainingPoints[i];
-          }
-          mtx.unlock();
-        }
-      }
-    });
+                      [&](const tbb::blocked_range<int>& r) {
+                        Point localNextPoint = nextPoint;
+                        for (int i = r.begin(); i != r.end(); ++i) {
+                          if ((remainingPoints[i] == convexHull.back()) || (convexHull.back() == nextPoint)) {
+                            continue;
+                          }
+                          if ((remainingPoints[i] == localNextPoint) || pointIsToTheRight(convexHull.back(), localNextPoint, remainingPoints[i])) {
+                            mtx.lock();
+                            if (pointIsToTheRight(convexHull.back(), nextPoint, remainingPoints[i])) {
+                              nextPoint = remainingPoints[i];
+                            }
+                            mtx.unlock();
+                          }
+                        }
+                      });
     convexHull.push_back(nextPoint);
     if (convexHull.size() == points.size()) {
       break;
@@ -184,7 +184,7 @@ void ConvexHull::convexHullImage() {
 
   tbb::concurrent_vector<Point> localNewPoints;
   tbb::parallel_for(0, height, 1, [&](int i) {
-   for (int j = 0; j < width; ++j) {
+    for (int j = 0; j < width; ++j) {
       if (isInside(copy, Point(i, j))) {
         localNewPoints.push_back(Point(i, j));
       }
