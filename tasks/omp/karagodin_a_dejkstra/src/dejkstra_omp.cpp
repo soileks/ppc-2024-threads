@@ -69,7 +69,7 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
     }
   }
   pathOutput.push_back(entryNode);
-  std::ranges::reverse(pathOutput);
+  std::reverse(pathOutput.begin(), pathOutput.end());
   res = std::make_pair(pathOutput, minScore);
   return res;
 }
