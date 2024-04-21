@@ -28,6 +28,6 @@ class ShellOMP : public ppc::core::Task {
  private:
   static std::vector<int> merge(const std::vector<std::vector<int>>& chunks);
   static void shell_sort_parallel(std::vector<int>& input);
-  static void shell_sort(std::vector<int>& input);
+  static void shell_sort(std::vector<int>& vec);
   std::vector<int> input_;
 };
