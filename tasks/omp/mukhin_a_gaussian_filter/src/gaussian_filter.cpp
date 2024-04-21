@@ -2,12 +2,12 @@
 #include "omp/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
 
 #include <omp.h>
+
 #include <cmath>
 #include <cstdint>
 #include <cstring>
 
 #include "omp/mukhin_a_gaussian_filter/include/pixel_map.hpp"
-
 
 bool mukhin_i_omp::GaussianFilterOMP::pre_processing() {
   internal_order_test();
@@ -49,18 +49,18 @@ void mukhin_i_omp::GaussianFilterOMP::filter_to_image() {
   int BlockSize = Size / GridSize;
   omp_set_num_threads(GridThreadsNum);
 #pragma omp parallel private(ThreadID)
-{
-  ThreadID = omp_get_thread_num();
-  int i_start = static_cast<uint32_t>((ThreadID / GridSize) * BlockSize);
-  int j_start = static_cast<uint32_t>((ThreadID % GridSize) * BlockSize);
-  for (int i = 0; i < BlockSize; i++) {
-    for (int j = 0; j < BlockSize; j++) {
-      auto ii = static_cast<uint32_t>(i);
-      auto jj = static_cast<uint32_t>(j);
-      image.get_pixel(ii + i_start, jj + j_start) = get_new_pixel(ii + i_start, jj + j_start);
+  {
+    ThreadID = omp_get_thread_num();
+    int i_start = static_cast<uint32_t>((ThreadID / GridSize) * BlockSize);
+    int j_start = static_cast<uint32_t>((ThreadID % GridSize) * BlockSize);
+    for (int i = 0; i < BlockSize; i++) {
+      for (int j = 0; j < BlockSize; j++) {
+        auto ii = static_cast<uint32_t>(i);
+        auto jj = static_cast<uint32_t>(j);
+        image.get_pixel(ii + i_start, jj + j_start) = get_new_pixel(ii + i_start, jj + j_start);
+      }
     }
   }
-}
 }
 
 Pixel mukhin_i_omp::GaussianFilterOMP::get_new_pixel(uint32_t w, uint32_t h) {

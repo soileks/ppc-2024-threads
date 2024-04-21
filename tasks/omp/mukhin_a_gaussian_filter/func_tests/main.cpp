@@ -7,7 +7,6 @@
 #include "omp/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
 #include "omp/mukhin_a_gaussian_filter/include/pixel_map.hpp"
 
-
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_black_pixel_map) {
   // Create data
   uint32_t width = 32;
