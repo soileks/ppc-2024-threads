@@ -56,34 +56,26 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
         endforeach ()
         if (NOT APPLE)
             find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
-            if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.11.0")
-                add_custom_target(
-                        "${ProjectId}_cppcheck" ALL
-                        COMMAND ${CPPCHECK_EXEC}
-                        --enable=warning,performance,portability,information
-                        --disable=missingInclude
-                        --language=c++
-                        --std=c++11
-                        --error-exitcode=1
-                        --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                        --verbose
-                        --quiet
-                        ${ALL_SOURCE_FILES}
-                )
+            execute_process(COMMAND ${CPPCHECK_EXEC} --version OUTPUT_VARIABLE CPPCHECK_VERSION)
+            string(REGEX REPLACE "Cppcheck ([0-9]+\\.[0-9]+).*" "\\1" CPPCHECK_VERSION ${CPPCHECK_VERSION})
+            if (CPPCHECK_VERSION VERSION_GREATER_EQUAL "2.11")
+                set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information
+                --disable=missingInclude
+                --language=c++
+                --std=c++11
+                --error-exitcode=1
+                --template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\" --verbose --quiet")
             else()
-                add_custom_target(
-                        "${ProjectId}_cppcheck" ALL
-                        COMMAND ${CPPCHECK_EXEC}
-                        --enable=warning,performance,portability,information
-                        --language=c++
-                        --std=c++11
-                        --error-exitcode=1
-                        --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                        --verbose
-                        --quiet
-                        ${ALL_SOURCE_FILES}
-                )
+                set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information
+                --language=c++
+                --std=c++11
+                --error-exitcode=1
+                --template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\" --verbose --quiet")
             endif()
+            add_custom_target(
+                    "${ProjectId}_cppcheck" ALL
+                    COMMAND ${CPPCHECK_EXEC} ${CPPCHECK_FLAGS} ${ALL_SOURCE_FILES}
+            )
         endif()
     endif( UNIX )
 ENDMACRO()
