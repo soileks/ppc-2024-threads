@@ -12,6 +12,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <ranges>
 
 #include "core/task/include/task.hpp"
 
