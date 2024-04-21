@@ -4,12 +4,12 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+#include "stl/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
 
-TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
+TEST(mukhin_i_a_gaussian_filter_block_stl, test_pipeline_run) {
   // Create data
-  uint64_t width = 3200;
-  uint64_t height = 3200;
+  uint32_t width = 3200;
+  uint32_t height = 3200;
   PixelMap in(width, height);
   PixelMap out(width, height);
   PixelMap expected(width, height);
@@ -24,7 +24,7 @@ TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<GaussianFilterSeq>(taskDataSeq);
+  auto testTaskSTL = std::make_shared<mukhin_i_stl::GaussianFilterSTL>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -40,16 +40,16 @@ TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(out, expected);
 }
 
-TEST(mukhin_i_a_gaussian_filter_block, test_task_run) {
+TEST(mukhin_i_a_gaussian_filter_block_stl, test_task_run) {
   // Create data
-  uint64_t width = 3200;
-  uint64_t height = 3200;
+  uint32_t width = 3200;
+  uint32_t height = 3200;
   PixelMap in(width, height);
   PixelMap out(width, height);
   PixelMap expected(width, height);
@@ -64,7 +64,7 @@ TEST(mukhin_i_a_gaussian_filter_block, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<GaussianFilterSeq>(taskDataSeq);
+  auto testTaskSTL = std::make_shared<mukhin_i_stl::GaussianFilterSTL>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -80,7 +80,7 @@ TEST(mukhin_i_a_gaussian_filter_block, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(out, expected);
