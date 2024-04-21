@@ -1,13 +1,13 @@
-// Copyright 2024 Vanushkin Dmitry3
+// Copyright 2024 Vanushkin Dmitry
 
 #include "tbb/vanushkin_d_sobel_operator/include/sobel_operator_tbb.hpp"
 
-#include <cmath>
-
 #include <tbb/tbb.h>
 
-using namespace oneapi;
-using namespace dmitryvnn;
+#include <cmath>
+
+using namespace oneapi;  // NOLINT
+using namespace dmitryvnn;  // NOLINT
 
 ConvolutionKernel SobelOperator::convolutionByX = {{-1, 0, +1}, {-2, 0, +2}, {-1, 0, +1}};
 
@@ -110,9 +110,9 @@ bool SobelOperatorParallelTbb::pre_processing() {
     const auto* inputImage = reinterpret_cast<const Color*>(taskData->inputs[0]);
 
     tbb::parallel_for(tbb::blocked_range<size_t>(0, square), [&](tbb::blocked_range<size_t> range) {
-        for (size_t i = range.begin(); i < range.end(); ++i) {
-          grayscaleImage[i] = inputImage[i].to_grayscale();
-        }
+      for (size_t i = range.begin(); i < range.end(); ++i) {
+        grayscaleImage[i] = inputImage[i].to_grayscale();
+      }
     });
 
     resultImage = std::vector<Grayscale>((imageWidth - 2) * (imageHeight - 2));
@@ -125,14 +125,14 @@ bool SobelOperatorParallelTbb::pre_processing() {
 bool SobelOperatorParallelTbb::run() {
   internal_order_test();
   tbb::parallel_for(tbb::blocked_range2d<size_t>(1, imageHeight - 1, 1, imageWidth - 1),
-          [&](tbb::blocked_range2d<size_t> range) {
-      for (size_t y = range.rows().begin(); y < range.rows().end(); ++y) {
-        for (size_t x = range.cols().begin(); x < range.cols().end(); ++x) {
-          auto resultIntensity = apply_convolution(x, y);
-          resultImage[(y - 1) * (imageWidth - 2) + (x - 1)] = resultIntensity;
-        }
-      }
-  });
+                    [&](tbb::blocked_range2d<size_t> range) {
+                      for (size_t y = range.rows().begin(); y < range.rows().end(); ++y) {
+                        for (size_t x = range.cols().begin(); x < range.cols().end(); ++x) {
+                          auto resultIntensity = apply_convolution(x, y);
+                          resultImage[(y - 1) * (imageWidth - 2) + (x - 1)] = resultIntensity;
+                        }
+                      }
+                    });
   return true;
 }
 
@@ -141,9 +141,9 @@ bool SobelOperatorParallelTbb::post_processing() {
   try {
     auto* outputImage = reinterpret_cast<Grayscale*>(taskData->outputs[0]);
     tbb::parallel_for(tbb::blocked_range<size_t>(0, resultImage.size()), [&](tbb::blocked_range<size_t> range) {
-        for (size_t i = range.begin(); i < range.end(); ++i) {
-          outputImage[i] = resultImage[i];
-        }
+      for (size_t i = range.begin(); i < range.end(); ++i) {
+        outputImage[i] = resultImage[i];
+      }
     });
     return true;
   } catch (...) {

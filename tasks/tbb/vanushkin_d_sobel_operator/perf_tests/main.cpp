@@ -1,12 +1,13 @@
 // Copyright 2024 Vanushkin Dmitry
 #include <gtest/gtest.h>
 #include <oneapi/tbb.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "tbb/vanushkin_d_sobel_operator/include/sobel_operator_tbb.hpp"
 
-using namespace dmitryvnn;
+using namespace dmitryvnn;  // NOLINT
 
 TEST(Vanushkin_D_OmpParallelSobelOperator, test_task_pipeline) {
   size_t width = 1024;

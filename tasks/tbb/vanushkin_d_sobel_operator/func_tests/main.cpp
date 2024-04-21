@@ -5,7 +5,7 @@
 
 #include "tbb/vanushkin_d_sobel_operator/include/sobel_operator_tbb.hpp"
 
-using namespace dmitryvnn;
+using namespace dmitryvnn;  // NOLINT
 
 TEST(Vanushkin_D_ParSobelOperator, ApplySobelTo1x2000ColorizedImage) {
   size_t height = 1;
