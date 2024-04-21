@@ -59,9 +59,11 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
             execute_process(COMMAND ${CPPCHECK_EXEC} --version OUTPUT_VARIABLE CPPCHECK_VERSION)
             string(REGEX REPLACE "Cppcheck ([0-9]+\\.[0-9]+).*" "\\1" CPPCHECK_VERSION ${CPPCHECK_VERSION})
             if (CPPCHECK_VERSION VERSION_GREATER_EQUAL "2.11")
-                set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information --disable=missingInclude --language=c++ --std=c++11 --error-exitcode=1 --template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\" --verbose --quiet")
+                set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information")
+                set(CPPCHECK_FLAGS "--disable=missingInclude --language=c++ --std=c++11 --error-exitcode=1 --template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\" --verbose --quiet")
             else()
-                set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information --language=c++ --std=c++11 --error-exitcode=1 --template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\" --verbose --quiet")
+                set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information")
+                set(CPPCHECK_FLAGS "--language=c++ --std=c++11 --error-exitcode=1 --template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\" --verbose --quiet")
             endif()
             add_custom_target(
                     "${ProjectId}_cppcheck" ALL
