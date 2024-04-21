@@ -1,6 +1,8 @@
 // Copyright 2024 Andrey Derun
 #pragma once
 
+#include <omp.h>
+
 #include <algorithm>
 #include <iterator>
 #include <memory>
@@ -8,7 +10,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <omp.h>
 
 #include "core/task/include/task.hpp"
 
