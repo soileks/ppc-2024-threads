@@ -81,27 +81,27 @@ std::vector<int> ShellTBB::merge(const std::vector<std::vector<int>>& chunks) {
 }
 
 void ShellTBB::shell_sort_parallel(std::vector<int>& input) {
-    int numProcs = 4;
-    // int numProcs = tbb::task_scheduler_init::default_num_threads();
-    int size = static_cast<int>(input.size());
-    int chunkSize = size / numProcs;
-    int remainder = size % numProcs;
+  int numProcs = 4;
+  // int numProcs = tbb::task_scheduler_init::default_num_threads();
+  int size = static_cast<int>(input.size());
+  int chunkSize = size / numProcs;
+  int remainder = size % numProcs;
 
-    std::vector<std::vector<int>> chunks(numProcs);
+  std::vector<std::vector<int>> chunks(numProcs);
 
-    tbb::parallel_for(0, numProcs, [&](int i) {
-        int startIdx = i * chunkSize;
-        int endIdx = startIdx + chunkSize;
-        if (i == numProcs - 1) {
-            endIdx += remainder;  // Add remaining elements to the last chunk
-        }
-        chunks[i].assign(input.begin() + startIdx, input.begin() + endIdx);
-        shell_sort(chunks[i]);
-    });
+  tbb::parallel_for(0, numProcs, [&](int i) {
+    int startIdx = i * chunkSize;
+    int endIdx = startIdx + chunkSize;
+    if (i == numProcs - 1) {
+      endIdx += remainder;  // Add remaining elements to the last chunk
+    }
+    chunks[i].assign(input.begin() + startIdx, input.begin() + endIdx);
+    shell_sort(chunks[i]);
+  });
 
-    // Barrier is not needed in TBB
+  // Barrier is not needed in TBB
 
-    input = merge(chunks);
+  input = merge(chunks);
 }
 
 void ShellTBB::shell_sort(std::vector<int>& vec) {
