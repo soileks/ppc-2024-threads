@@ -4,10 +4,11 @@
 #include <vector>
 
 #include "omp/ivlev_a_convex_hull/include/ops_omp.hpp"
+using namespace ivlev_a_omp;
 
 TEST(ivlev_a_convex_hull_omp, one_component) {
   // Create data
-  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {0, 1}, {1, 0}}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{{0, 0}, {0, 1}, {1, 0}, {1, 1}, {2, 2}, {3, 3}}};
   std::vector<std::vector<std::pair<size_t, size_t>>> out_seq = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> out_par = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {1, 0}, {3, 3}}};
@@ -31,7 +32,7 @@ TEST(ivlev_a_convex_hull_omp, one_component) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_EQ(out_seq, res);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -59,7 +60,7 @@ TEST(ivlev_a_convex_hull_omp, two_component) {
   std::vector<std::vector<std::pair<size_t, size_t>>> out_par = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = in;
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs_count.emplace_back(in.size());
   out_seq.resize(in.size());
@@ -78,7 +79,7 @@ TEST(ivlev_a_convex_hull_omp, two_component) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_EQ(out_seq, res);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -106,7 +107,7 @@ TEST(ivlev_a_convex_hull_omp, three_component) {
   std::vector<std::vector<std::pair<size_t, size_t>>> out_par = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = in;
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs_count.emplace_back(in.size());
   out_seq.resize(in.size());
@@ -125,7 +126,7 @@ TEST(ivlev_a_convex_hull_omp, three_component) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_EQ(out_seq, res);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -154,7 +155,7 @@ TEST(ivlev_a_convex_hull_omp, one_big_compnent) {
   std::vector<std::vector<std::pair<size_t, size_t>>> out_par = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 2}, {2, 0}, {2, 4}, {4, 2}}};
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs_count.emplace_back(in.size());
   out_seq.resize(in.size());
@@ -173,7 +174,7 @@ TEST(ivlev_a_convex_hull_omp, one_big_compnent) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_EQ(out_seq, res);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -204,7 +205,7 @@ TEST(ivlev_a_convex_hull_omp, one_small_one_big) {
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {1, 0}, {1, 1}},
                                                              {{0, 0}, {0, 2}, {1, 3}, {3, 0}, {3, 3}}};
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs_count.emplace_back(in.size());
   out_seq.resize(in.size());
@@ -223,7 +224,7 @@ TEST(ivlev_a_convex_hull_omp, one_small_one_big) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
   ASSERT_EQ(out_seq, res);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
