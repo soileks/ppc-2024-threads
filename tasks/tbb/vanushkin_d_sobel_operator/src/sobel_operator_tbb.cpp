@@ -6,7 +6,7 @@
 
 #include <cmath>
 
-using namespace oneapi;  // NOLINT
+using namespace oneapi;     // NOLINT
 using namespace dmitryvnn;  // NOLINT
 
 ConvolutionKernel SobelOperator::convolutionByX = {{-1, 0, +1}, {-2, 0, +2}, {-1, 0, +1}};
