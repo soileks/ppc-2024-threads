@@ -2,11 +2,11 @@
 
 #include "omp/karagodin_a_dejkstra/include/dejkstra_omp.hpp"
 
-std::vector<std::vector<int>> initGraphMapRandom(int16_t size) {
+std::vector<std::vector<int>> initGraphMapRandom(const int16_t size) {
   if (size < 2) {
     throw std::invalid_argument("Size must be greater than 2");
   }
-  std::vector<std::vector<int>> graphMap(size, std::vector<int>(size, 0));
+  std::vector graphMap(size, std::vector<int>(size, 0));
   std::random_device dev;
   std::default_random_engine rng(dev());
   std::uniform_int_distribution<std::default_random_engine::result_type> randNullChance(2, 5);
@@ -28,7 +28,7 @@ std::vector<std::vector<int>> initGraphMapRandom(int16_t size) {
 
 void DejkstraTaskOMP::printGraphMap(const std::vector<std::vector<int>>& graphMapInput) {
   for (const auto& row : graphMapInput) {
-    for (int value : row) {
+    for (const int value : row) {
       std::cout << value << "  ";
     }
     std::cout << std::endl;
@@ -37,14 +37,14 @@ void DejkstraTaskOMP::printGraphMap(const std::vector<std::vector<int>>& graphMa
 
 std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
   size = graphMap.size();
-  std::vector<int> dist(size, std::numeric_limits<int>::max());
+  std::vector dist(size, std::numeric_limits<int>::max());
   dist[entryNode] = 0;
 
   std::priority_queue<Node, std::vector<Node>, CompareNode> pq;
-  pq.push(Node(entryNode, 0));
+  pq.emplace(Node(entryNode, 0));
 
   while (!pq.empty()) {
-    int u = pq.top().vertex;
+    const int u = pq.top().vertex;
     pq.pop();
 
 #pragma omp parallel for
@@ -52,7 +52,7 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
       if (graphMap[u][v] && dist[u] != std::numeric_limits<int>::max() && dist[u] + graphMap[u][v] < dist[v]) {
         dist[v] = dist[u] + graphMap[u][v];
 #pragma omp critical
-        pq.push(Node(v, dist[v]));
+        pq.emplace(Node(v, dist[v]));
       }
     }
   }
@@ -69,7 +69,7 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
     }
   }
   pathOutput.push_back(entryNode);
-  std::reverse(pathOutput.begin(), pathOutput.end());
+  std::ranges::reverse(pathOutput);
   res = std::make_pair(pathOutput, minScore);
   return res;
 }
@@ -87,7 +87,7 @@ bool DejkstraTaskOMP::pre_processing() {
     entryNode = *reinterpret_cast<int*>(taskData->inputs[0]);
     destNode = *reinterpret_cast<int*>(taskData->inputs[1]);
     graphMap = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[2]);
-    size = (taskData->inputs_count[0]);
+    size = taskData->inputs_count[0];
     if (size != 0 && graphMap.data() == nullptr) {
       graphMap = initGraphMapRandom(size);
     }
@@ -100,7 +100,7 @@ bool DejkstraTaskOMP::pre_processing() {
 bool DejkstraTaskOMP::run() {
   try {
     internal_order_test();
-    if (size != 0 && graphMap.size() == 0) {
+    if (size != 0 && graphMap.empty()) {
       graphMap = initGraphMapRandom(size);
     }
     res = getDejMinPath();
