@@ -41,7 +41,7 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
   dist[entryNode] = 0;
 
   std::priority_queue<Node, std::vector<Node>, CompareNode> pq;
-  pq.emplace(Node(entryNode, 0));
+  pq.emplace(entryNode, 0);
 
   while (!pq.empty()) {
     const int u = pq.top().vertex;
@@ -49,10 +49,10 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
 
 #pragma omp parallel for
     for (int v = 0; v < size; ++v) {
-      if (graphMap[u][v] && dist[u] != std::numeric_limits<int>::max() && dist[u] + graphMap[u][v] < dist[v]) {
+      if (graphMap[u][v] != 0 && dist[u] != std::numeric_limits<int>::max() && dist[u] + graphMap[u][v] < dist[v]) {
         dist[v] = dist[u] + graphMap[u][v];
 #pragma omp critical
-        pq.emplace(Node(v, dist[v]));
+        pq.emplace(v, dist[v]);
       }
     }
   }
@@ -62,7 +62,7 @@ std::pair<std::vector<int>, int> DejkstraTaskOMP::getDejMinPath() {
   while (currentNode != entryNode) {
     pathOutput.push_back(currentNode);
     for (int i = 0; i < size; ++i) {
-      if (graphMap[i][currentNode] && dist[i] + graphMap[i][currentNode] == dist[currentNode]) {
+      if (graphMap[i][currentNode] != 0 && dist[i] + graphMap[i][currentNode] == dist[currentNode]) {
         currentNode = i;
         break;
       }
