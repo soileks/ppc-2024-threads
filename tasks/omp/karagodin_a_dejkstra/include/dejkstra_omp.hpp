@@ -9,10 +9,10 @@
 #include <memory>
 #include <queue>
 #include <random>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
-#include <ranges>
 
 #include "core/task/include/task.hpp"
 
