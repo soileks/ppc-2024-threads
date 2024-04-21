@@ -43,7 +43,7 @@ bool mukhin_i_omp::GaussianFilterOMP::run() {
 
 void mukhin_i_omp::GaussianFilterOMP::filter_to_image() {
   int Size = static_cast<int>(width_input);
-  int GridThreadsNum = omp_get_max_threads();
+  int GridThreadsNum = 4;
   int ThreadID;
   int GridSize = static_cast<int>(std::sqrt(static_cast<double>(GridThreadsNum)));
   int BlockSize = Size / GridSize;
