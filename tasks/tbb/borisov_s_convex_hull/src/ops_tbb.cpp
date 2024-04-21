@@ -165,7 +165,8 @@ void ConvexHull::convexHullImage() {
                           if ((remainingPoints[i] == convexHull.back()) || (convexHull.back() == nextPoint)) {
                             continue;
                           }
-                          if ((remainingPoints[i] == localNextPoint) || pointIsToTheRight(convexHull.back(), localNextPoint, remainingPoints[i])) {
+                          if ((remainingPoints[i] == localNextPoint) ||
+                              pointIsToTheRight(convexHull.back(), localNextPoint, remainingPoints[i])) {
                             mtx.lock();
                             if (pointIsToTheRight(convexHull.back(), nextPoint, remainingPoints[i])) {
                               nextPoint = remainingPoints[i];
