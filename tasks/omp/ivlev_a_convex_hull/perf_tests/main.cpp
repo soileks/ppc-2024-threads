@@ -89,7 +89,7 @@ TEST(ivlev_a_convex_hull_perf_test_omp, test_task_run_omp) {
   }
 
   // Create Task
-  auto testTaskParallel = std::make_shared<ConvexHullOMPTaskSeq>(taskDataPar);
+  auto testTaskParallel = std::make_shared<ConvexHullOMPTaskParallel>(taskDataPar);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
