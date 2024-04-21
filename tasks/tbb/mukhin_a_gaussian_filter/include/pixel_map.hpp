@@ -17,8 +17,8 @@ class Pixel {
 
 class PixelMap {
  private:
-  uint64_t n;
-  uint64_t m;
+  uint32_t n;
+  uint32_t m;
 
   void set_data(uint8_t r, uint8_t g, uint8_t b);
 
@@ -26,14 +26,14 @@ class PixelMap {
   std::vector<Pixel> data;
   PixelMap() : n(0), m(0){};
 
-  PixelMap(uint64_t n_, uint64_t m_, uint8_t r = 0, uint8_t g = 0, uint8_t b = 0);
-  uint64_t width() const { return n; }
-  uint64_t height() const { return m; }
+  PixelMap(uint32_t n_, uint32_t m_, uint8_t r = 0, uint8_t g = 0, uint8_t b = 0);
+  uint32_t width() const { return n; }
+  uint32_t height() const { return m; }
   ~PixelMap() = default;
 
-  Pixel& get_pixel(uint64_t i, uint64_t j);
+  Pixel& get_pixel(uint32_t i, uint32_t j);
 
-  const Pixel& get_pixel(uint64_t i, uint64_t j) const;
+  const Pixel& get_pixel(uint32_t i, uint32_t j) const;
 
   friend bool operator==(const PixelMap& a, const PixelMap& b);
 

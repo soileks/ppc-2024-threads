@@ -1,13 +1,22 @@
 // Copyright 2024 Mukhin Ivan
-#include "seq/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+#include "tbb/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+
+#include <oneapi/tbb.h>
 
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <iostream>
 
-#include "seq/mukhin_a_gaussian_filter/include/pixel_map.hpp"
+#include "oneapi/tbb/blocked_range.h"
+#include "oneapi/tbb/blocked_range2d.h"
+#include "oneapi/tbb/parallel_for.h"
+#include "oneapi/tbb/task_arena.h"
+#include "oneapi/tbb/task_group.h"
+#include "tbb/mukhin_a_gaussian_filter/include/pixel_map.hpp"
 
-bool GaussianFilterSeq::pre_processing() {
+bool mukhin_i_tbb::GaussianFilterTBB::pre_processing() {
   internal_order_test();
   input = taskData->inputs[0];
   output = taskData->outputs[0];
@@ -20,41 +29,68 @@ bool GaussianFilterSeq::pre_processing() {
   return true;
 }
 
-bool GaussianFilterSeq::validation() {
+bool mukhin_i_tbb::GaussianFilterTBB::validation() {
   internal_order_test();
   return taskData->inputs_count[0] >= 3 && taskData->inputs_count[1] >= 3 &&
          taskData->outputs_count[0] == taskData->inputs_count[0] &&
          taskData->outputs_count[1] == taskData->inputs_count[1];
 }
 
-bool GaussianFilterSeq::post_processing() {
+bool mukhin_i_tbb::GaussianFilterTBB::post_processing() {
   internal_order_test();
   std::memcpy(output, image.data.data(), width_input * height_input * 3);
   return true;
 }
 
-bool GaussianFilterSeq::run() {
+bool mukhin_i_tbb::GaussianFilterTBB::run() {
   internal_order_test();
   filter_to_image();
   return true;
 }
 
-void GaussianFilterSeq::filter_to_image() {
-  for (uint64_t i = 0; i < width_input; i++) {
-    for (uint64_t j = 0; j < height_input; j++) {
-      image.get_pixel(i, j) = get_new_pixel(i, j);
-    }
-  }
+void mukhin_i_tbb::GaussianFilterTBB::filter_to_image() {
+  //int GridSize = 2;
+  int GridSize = static_cast<int>(std::sqrt(static_cast<double>(4)));
+  int BlockSize = width_input / GridSize;
+  tbb::task_arena arena(4);
+  arena.execute([&]{
+    tbb::parallel_for(tbb::blocked_range2d<uint32_t>(0, static_cast<uint32_t>(BlockSize), 0, static_cast<uint32_t>(BlockSize)), [&](const tbb::blocked_range2d<uint32_t>& r){
+      auto thread_id = tbb::this_task_arena::current_thread_index();
+      auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
+      auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
+      for (uint32_t i = r.rows().begin(); i < r.rows().end(); i++) { 
+        for (uint32_t j = r.cols().begin(); j < r.cols().end(); j++) {
+          image.get_pixel(i + i_start, j + j_start) = get_new_pixel(i + i_start, j + j_start);
+        }
+      }
+    });  
+  });
+  //tbb::parallel_for(tbb::blocked_range<uint32_t>(0, static_cast<uint32_t>(BlockSize)), [&](const tbb::blocked_range<uint32_t>& r){
+  //  auto thread_id = tbb::this_task_arena::current_thread_index();
+  //  auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
+  //  auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
+  //  for (uint32_t i = r.begin(); i < r.end(); i++) {
+  //    for (uint32_t j = r.begin(); j < r.end(); j++) {
+  //      std::cout << i << " " << j << std::endl;
+  //      image.get_pixel(i+ i_start, j+ j_start) = get_new_pixel(i+ i_start, j+ j_start);
+  //    }
+  //  }
+  //});
+  //for (uint32_t i = 0; i < width_input; i++) {
+  //  for (uint32_t j = 0; j < height_input; j++) {
+  //    image.get_pixel(i, j) = get_new_pixel(i, j);
+  //  }
+  //}
 }
 
-Pixel GaussianFilterSeq::get_new_pixel(uint64_t w, uint64_t h) {
+Pixel mukhin_i_tbb::GaussianFilterTBB::get_new_pixel(uint32_t w, uint32_t h) {
   double result_r = 0;
   double result_b = 0;
   double result_g = 0;
   for (int i = -rad; i <= rad; i++) {
     for (int j = -rad; j <= rad; j++) {
-      uint64_t new_h = h + j;
-      uint64_t new_w = w + i;
+      uint32_t new_h = h + j;
+      uint32_t new_w = w + i;
       new_h = clamp(new_h, width_input);
       Pixel neighborColor = image.get_pixel(new_w, new_h);
       result_r += neighborColor.r * kernel[i + rad][j + rad];
@@ -65,13 +101,13 @@ Pixel GaussianFilterSeq::get_new_pixel(uint64_t w, uint64_t h) {
   return Pixel({(uint8_t)std::round(result_r), (uint8_t)std::round(result_g), (uint8_t)std::round(result_b)});
 }
 
-uint64_t GaussianFilterSeq::clamp(uint64_t value, uint64_t max) {
+uint32_t mukhin_i_tbb::GaussianFilterTBB::clamp(uint32_t value, uint32_t max) {
   if (value < 0) return 0;
   if (value >= max) return max - 1;
   return value;
 }
 
-void GaussianFilterSeq::create_gaussian_kernel() {
+void mukhin_i_tbb::GaussianFilterTBB::create_gaussian_kernel() {
   double sigm = 2.0;
   double norm = 0.0;
   for (int i = -rad; i <= rad; i++) {
@@ -80,8 +116,8 @@ void GaussianFilterSeq::create_gaussian_kernel() {
       norm += kernel[i + rad][j + rad];
     }
   }
-  for (uint64_t i = 0; i < kern_size; i++) {
-    for (uint64_t j = 0; j < kern_size; j++) {
+  for (uint32_t i = 0; i < kern_size; i++) {
+    for (uint32_t j = 0; j < kern_size; j++) {
       kernel[i][j] /= norm;
     }
   }
