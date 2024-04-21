@@ -3,6 +3,9 @@
 
 #include <thread>
 
+#undef max
+#undef min
+
 using namespace std::chrono_literals;
 
 namespace BorisovSaveliyTBB {
