@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <omp.h>
 
 #include "core/task/include/task.hpp"
 
@@ -24,6 +25,8 @@ class ShellOMP : public ppc::core::Task {
   static std::vector<int> generate_random_vector(int size, int min, int max);
 
  private:
-  static std::vector<int> shell_sort(const std::vector<int>& input);
+  static std::vector<int> merge(const std::vector<std::vector<int>>& chunks);
+  static void shell_sort_parallel(std::vector<int>& input);
+  static void shell_sort(std::vector<int>& input);
   std::vector<int> input_;
 };
