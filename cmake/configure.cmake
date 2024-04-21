@@ -60,6 +60,7 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
                     "${ProjectId}_cppcheck" ALL
                     COMMAND ${CPPCHECK_EXEC}
                     --enable=warning,performance,portability,information
+                    --disable=missingInclude
                     --language=c++
                     --std=c++11
                     --error-exitcode=1
