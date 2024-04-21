@@ -43,7 +43,7 @@ bool mukhin_i_omp::GaussianFilterOMP::run() {
 
 void mukhin_i_omp::GaussianFilterOMP::filter_to_image() {
   int Size = static_cast<int>(width_input);
-  int GridThreadsNum = 4;
+  int GridThreadsNum = omp_get_max_threads();
   int ThreadID;
   int GridSize = static_cast<int>(std::sqrt(static_cast<double>(GridThreadsNum)));
   int BlockSize = Size / GridSize;
@@ -51,26 +51,26 @@ void mukhin_i_omp::GaussianFilterOMP::filter_to_image() {
 #pragma omp parallel private(ThreadID)
 {
   ThreadID = omp_get_thread_num();
-  int i_start = static_cast<uint64_t>((ThreadID / GridSize) * BlockSize);
-  int j_start = static_cast<uint64_t>((ThreadID % GridSize) * BlockSize);
+  int i_start = static_cast<uint32_t>((ThreadID / GridSize) * BlockSize);
+  int j_start = static_cast<uint32_t>((ThreadID % GridSize) * BlockSize);
   for (int i = 0; i < BlockSize; i++) {
     for (int j = 0; j < BlockSize; j++) {
-      auto ii = static_cast<uint64_t>(i);
-      auto jj = static_cast<uint64_t>(j);
+      auto ii = static_cast<uint32_t>(i);
+      auto jj = static_cast<uint32_t>(j);
       image.get_pixel(ii + i_start, jj + j_start) = get_new_pixel(ii + i_start, jj + j_start);
     }
   }
 }
 }
 
-Pixel mukhin_i_omp::GaussianFilterOMP::get_new_pixel(uint64_t w, uint64_t h) {
+Pixel mukhin_i_omp::GaussianFilterOMP::get_new_pixel(uint32_t w, uint32_t h) {
   double result_r = 0;
   double result_b = 0;
   double result_g = 0;
   for (int i = -rad; i <= rad; i++) {
     for (int j = -rad; j <= rad; j++) {
-      uint64_t new_h = h + j;
-      uint64_t new_w = w + i;
+      uint32_t new_h = h + j;
+      uint32_t new_w = w + i;
       new_h = clamp(new_h, width_input);
       Pixel neighborColor = image.get_pixel(new_w, new_h);
       result_r += neighborColor.r * kernel[i + rad][j + rad];
@@ -81,7 +81,7 @@ Pixel mukhin_i_omp::GaussianFilterOMP::get_new_pixel(uint64_t w, uint64_t h) {
   return Pixel({(uint8_t)std::round(result_r), (uint8_t)std::round(result_g), (uint8_t)std::round(result_b)});
 }
 
-uint64_t mukhin_i_omp::GaussianFilterOMP::clamp(uint64_t value, uint64_t max) {
+uint32_t mukhin_i_omp::GaussianFilterOMP::clamp(uint32_t value, uint32_t max) {
   if (value < 0) return 0;
   if (value >= max) return max - 1;
   return value;
@@ -96,8 +96,8 @@ void mukhin_i_omp::GaussianFilterOMP::create_gaussian_kernel() {
       norm += kernel[i + rad][j + rad];
     }
   }
-  for (uint64_t i = 0; i < kern_size; i++) {
-    for (uint64_t j = 0; j < kern_size; j++) {
+  for (uint32_t i = 0; i < kern_size; i++) {
+    for (uint32_t j = 0; j < kern_size; j++) {
       kernel[i][j] /= norm;
     }
   }
