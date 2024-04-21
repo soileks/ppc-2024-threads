@@ -149,6 +149,8 @@ void ConvexHull::convexHullImage() {
     }
   }
 
+  int i;
+
   Point startingPoint = remainingPoints[startIndex];
   convexHull.push_back(startingPoint);
   Point nextPoint;
@@ -157,16 +159,12 @@ void ConvexHull::convexHullImage() {
     if (nextPoint == convexHull.back()) {
       nextPoint = remainingPoints[1];
     }
-#pragma omp parallel for shared(remainingPoints, convexHull, nextPoint)
-    for (int i = 0; i < static_cast<int>(remainingPoints.size()); i++) {
+    for (i = 0; i < static_cast<int>(remainingPoints.size()); i++) {
       if ((remainingPoints[i] == convexHull.back()) || (convexHull.back() == nextPoint)) {
         continue;
       }
-#pragma omp critical
-      {
-        if ((remainingPoints[i] == nextPoint) || pointIsToTheRight(convexHull.back(), nextPoint, remainingPoints[i])) {
-          nextPoint = remainingPoints[i];
-        }
+      if ((remainingPoints[i] == nextPoint) || pointIsToTheRight(convexHull.back(), nextPoint, remainingPoints[i])) {
+        nextPoint = remainingPoints[i];
       }
     }
     convexHull.push_back(nextPoint);
@@ -176,7 +174,6 @@ void ConvexHull::convexHullImage() {
   } while (convexHull.back() != startingPoint);
 
   std::vector<Point> localNewPoints;
-  int i;
   int j;
 
   std::vector<Point> copy(convexHull.begin(), convexHull.end());
@@ -186,11 +183,8 @@ void ConvexHull::convexHullImage() {
 #pragma omp for nowait
     for (i = 0; i < height; ++i) {
       for (j = 0; j < width; ++j) {
-#pragma omp critical
-        {
-          if (isInside(copy, Point(i, j))) {
-            localNewPoints.emplace_back(i, j);
-          }
+        if (isInside(copy, Point(i, j))) {
+          localNewPoints.emplace_back(i, j);
         }
       }
     }

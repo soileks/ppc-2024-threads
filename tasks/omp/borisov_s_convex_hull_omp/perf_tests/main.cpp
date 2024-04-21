@@ -7,8 +7,8 @@
 #include "omp/borisov_s_convex_hull_omp/include/ops_omp.hpp"
 
 TEST(borisov_s_convex_hull_omp, test_pipeline_run) {
-  size_t width = 50;
-  size_t height = 50;
+  size_t width = 2000;
+  size_t height = 3;
 
   // Create data
   std::vector<uint8_t> in(height * width, 0);
@@ -56,8 +56,8 @@ TEST(borisov_s_convex_hull_omp, test_pipeline_run) {
 }
 
 TEST(borisov_s_convex_hull_omp, test_task_run) {
-  size_t width = 50;
-  size_t height = 50;
+  size_t width = 2000;
+  size_t height = 3;
 
   // Create data
   std::vector<uint8_t> in(height * width, 0);
