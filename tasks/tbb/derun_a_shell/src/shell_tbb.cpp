@@ -1,6 +1,8 @@
 // Copyright 2024 Andrey Derun
 #include "tbb/derun_a_shell/include/shell_tbb.hpp"
 
+#include <oneapi/tbb/parallel_for.h>
+
 #include <thread>
 
 using namespace std::chrono_literals;
