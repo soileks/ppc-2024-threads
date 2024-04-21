@@ -212,10 +212,10 @@ std::vector<std::pair<size_t, size_t>> ConvexHullOMPTaskParallel::Convex_Hull_tm
     for (size_t i = 0; i < n; i++) {
       size_t tmp_r = rotation(component_[p], component_[i], component_[q]);
       if (tmp_r == 2 || (tmp_r == 0 && i > p && i != q)) {
-            q = i;
+        q = i;
       }
     }
-    
+
     res.push_back(component_[q]);
     p = q;
   } while (p != last);
@@ -234,15 +234,13 @@ std::vector<std::pair<size_t, size_t>> ConvexHullOMPTaskParallel::Convex_Hull(
   size_t down = 0;
 
   if (n < 8) {
-    for (int i = 1; i < n; i++) {
+    for (int i = 1; i < (int)n; i++) {
       if (component_[i].second < component_[left].second) left = i;
     }
     return ConvexHullOMPTaskParallel::Convex_Hull_tmp(left, left, n, component_);
   }
 
-  
   std::vector<std::pair<size_t, size_t>> res = {};
-
 
 #pragma omp parallel num_threads(4) shared(left, top, rigth, down, res) firstprivate(n)
   {
@@ -263,7 +261,8 @@ std::vector<std::pair<size_t, size_t>> ConvexHullOMPTaskParallel::Convex_Hull(
       if (component_[thr_left].second < component_[left].second) left = thr_left;
       if (component_[thr_top].first <= component_[top].first && component_[thr_top] != component_[left]) top = thr_top;
       if (component_[thr_rigth].second > component_[rigth].second) rigth = thr_rigth;
-      if (component_[thr_down].first >= component_[down].first && component_[thr_down] != component_[rigth]) down = thr_down;
+      if (component_[thr_down].first >= component_[down].first && component_[thr_down] != component_[rigth])
+        down = thr_down;
     }
 
 #pragma omp barrier
@@ -272,34 +271,33 @@ std::vector<std::pair<size_t, size_t>> ConvexHullOMPTaskParallel::Convex_Hull(
     {
 #pragma omp section
       {
-       std::vector<std::pair<size_t, size_t>> thr_res =
+        std::vector<std::pair<size_t, size_t>> thr_res =
             ConvexHullOMPTaskParallel::Convex_Hull_tmp(left, top, n, component_);
 #pragma omp critical
         { res.insert(res.end(), thr_res.begin(), thr_res.end()); }
       }
 #pragma omp section
       {
-       std::vector<std::pair<size_t, size_t>> thr_res =
+        std::vector<std::pair<size_t, size_t>> thr_res =
             ConvexHullOMPTaskParallel::Convex_Hull_tmp(top, rigth, n, component_);
 #pragma omp critical
         { res.insert(res.end(), thr_res.begin(), thr_res.end()); }
       }
 #pragma omp section
       {
-       std::vector<std::pair<size_t, size_t>> thr_res =
+        std::vector<std::pair<size_t, size_t>> thr_res =
             ConvexHullOMPTaskParallel::Convex_Hull_tmp(rigth, down, n, component_);
 #pragma omp critical
         { res.insert(res.end(), thr_res.begin(), thr_res.end()); }
       }
 #pragma omp section
       {
-       std::vector<std::pair<size_t, size_t>> thr_res =
+        std::vector<std::pair<size_t, size_t>> thr_res =
             ConvexHullOMPTaskParallel::Convex_Hull_tmp(down, left, n, component_);
 #pragma omp critical
         { res.insert(res.end(), thr_res.begin(), thr_res.end()); }
       }
     }
-
   }
 
   return res;
