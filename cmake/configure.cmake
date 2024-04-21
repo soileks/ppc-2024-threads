@@ -56,6 +56,7 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
         endforeach ()
         if (NOT APPLE)
             find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
+            if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.11.0")
             add_custom_target(
                     "${ProjectId}_cppcheck" ALL
                     COMMAND ${CPPCHECK_EXEC}
@@ -69,6 +70,21 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
                     --quiet
                     ${ALL_SOURCE_FILES}
             )
+            endif()
+            if(CMAKE_VERSION VERSION_LESS "3.11.0")
+                add_custom_target(
+                        "${ProjectId}_cppcheck" ALL
+                        COMMAND ${CPPCHECK_EXEC}
+                        --enable=warning,performance,portability,information
+                        --language=c++
+                        --std=c++11
+                        --error-exitcode=1
+                        --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+                        --verbose
+                        --quiet
+                        ${ALL_SOURCE_FILES}
+                )
+            endif()
         ENDIF ()
     endif( UNIX )
 ENDMACRO()
