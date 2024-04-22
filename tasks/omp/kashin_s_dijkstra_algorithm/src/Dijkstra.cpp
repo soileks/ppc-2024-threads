@@ -42,16 +42,16 @@ bool KashinDijkstraOmp::Dijkstra::run() {
     std::pair<int, int> vertex = pq.top();
     pq.pop();
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < count; i++) {
       std::pair<int, int> edge(graph[vertex.second * count + i], i);
       if (i != vertex.second && edge.first != -1) {
         int weight = edge.first + vertex.first;
-        #pragma omp critical
+#pragma omp critical
         {
           if (weight < distance[edge.second]) {
-          distance[edge.second] = weight;
-          pq.emplace(weight, edge.second);
+            distance[edge.second] = weight;
+            pq.emplace(weight, edge.second);
           }
         }
       }
