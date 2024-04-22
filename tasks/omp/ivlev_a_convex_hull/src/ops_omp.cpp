@@ -250,19 +250,18 @@ std::vector<std::pair<size_t, size_t>> ConvexHullOMPTaskParallel::Convex_Hull(
     size_t thr_down = 0;
 #pragma omp for nowait
     for (int i = 1; i < (int)n; i++) {
-      if (component_[i].second < component_[thr_left].second) thr_left = i;
-      if (component_[i].first <= component_[thr_top].first) thr_top = i;
+      if (component_[i].second <= component_[thr_left].second) thr_left = i;
+      if (component_[i].first < component_[thr_top].first) thr_top = i;
       if (component_[i].second > component_[thr_rigth].second) thr_rigth = i;
       if (component_[i].first >= component_[thr_down].first) thr_down = i;
     }
 
 #pragma omp critical
     {
-      if (component_[thr_left].second < component_[left].second) left = thr_left;
-      if (component_[thr_top].first <= component_[top].first && component_[thr_top] != component_[left]) top = thr_top;
-      if (component_[thr_rigth].second > component_[rigth].second) rigth = thr_rigth;
-      if (component_[thr_down].first >= component_[down].first && component_[thr_down] != component_[rigth])
-        down = thr_down;
+      if (component_[thr_left].second < component_[left].second || (component_[thr_left].second == component_[left].second && thr_left > left)) left = thr_left;
+      if (component_[thr_top].first < component_[top].first || (component_[thr_top].first == component_[top].first && thr_top < top)) top = thr_top;
+      if (component_[thr_rigth].second > component_[rigth].second || (component_[thr_rigth].second == component_[rigth].second && thr_rigth < rigth)) rigth = thr_rigth;
+      if (component_[thr_down].first > component_[down].first || (component_[thr_down].first == component_[down].first && thr_down > down)) down = thr_down;
     }
 
 #pragma omp barrier
