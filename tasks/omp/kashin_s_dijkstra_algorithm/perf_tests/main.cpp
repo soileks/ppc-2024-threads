@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
+#include "omp/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
 
-TEST(KashinDijkstraSeqTest, test_pipeline_run) {
+TEST(KashinDijkstraOmpTest, test_pipeline_run) {
   const int vertexCount = 5000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -28,15 +28,15 @@ TEST(KashinDijkstraSeqTest, test_pipeline_run) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testDijkstraSequential = std::make_shared<KashinDijkstraSeq::Dijkstra>(taskDataSeq);
+  auto testDijkstraOmpuential = std::make_shared<KashinDijkstraOmp::Dijkstra>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -52,13 +52,13 @@ TEST(KashinDijkstraSeqTest, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testDijkstraSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testDijkstraOmpuential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(13716, std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSeqTest, test_task_run) {
+TEST(KashinDijkstraOmpTest, test_task_run) {
   const int vertexCount = 5000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -78,15 +78,15 @@ TEST(KashinDijkstraSeqTest, test_task_run) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testDijkstraSequential = std::make_shared<KashinDijkstraSeq::Dijkstra>(taskDataSeq);
+  auto testDijkstraOmpuential = std::make_shared<KashinDijkstraOmp::Dijkstra>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -102,7 +102,7 @@ TEST(KashinDijkstraSeqTest, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testDijkstraSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testDijkstraOmpuential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(13716, std::accumulate(out.begin(), out.end(), 0));

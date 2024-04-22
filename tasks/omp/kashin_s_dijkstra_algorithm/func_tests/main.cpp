@@ -5,7 +5,7 @@
 #include <random>
 #include <vector>
 
-#include "seq/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
+#include "omp/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
 
 #ifdef __APPLE__
 const std::vector<int> TEST_CHECKS = {522, 1074, 3507, 6345};
@@ -13,7 +13,7 @@ const std::vector<int> TEST_CHECKS = {522, 1074, 3507, 6345};
 const std::vector<int> TEST_CHECKS = {299, 987, 3831, 6411};
 #endif
 
-TEST(KashinDijkstraSeqTest, TestGraph10) {
+TEST(KashinDijkstraOmpTest, TestGraph10) {
   const int vertexCount = 10;
   const int edgeWeight = 100;
   const int start = 0;
@@ -33,15 +33,15 @@ TEST(KashinDijkstraSeqTest, TestGraph10) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSeq::Dijkstra dijkstra(taskDataSeq);
+  KashinDijkstraOmp::Dijkstra dijkstra(taskDataOmp);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();
@@ -49,7 +49,7 @@ TEST(KashinDijkstraSeqTest, TestGraph10) {
   ASSERT_EQ(TEST_CHECKS[0], std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSeqTest, CheckingIncorrectInputData) {
+TEST(KashinDijkstraOmpTest, CheckingIncorrectInputData) {
   const int vertexCount = 10;
   const int edgeWeight = 10000;
   const int start = -1;
@@ -69,19 +69,19 @@ TEST(KashinDijkstraSeqTest, CheckingIncorrectInputData) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSeq::Dijkstra dijkstra(taskDataSeq);
+  KashinDijkstraOmp::Dijkstra dijkstra(taskDataOmp);
   ASSERT_EQ(dijkstra.validation(), false);
 }
 
-TEST(KashinDijkstraSeqTest, TestGraph100) {
+TEST(KashinDijkstraOmpTest, TestGraph100) {
   const int vertexCount = 100;
   const int edgeWeight = 100;
   const int start = 0;
@@ -101,15 +101,15 @@ TEST(KashinDijkstraSeqTest, TestGraph100) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSeq::Dijkstra dijkstra(taskDataSeq);
+  KashinDijkstraOmp::Dijkstra dijkstra(taskDataOmp);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();
@@ -117,7 +117,7 @@ TEST(KashinDijkstraSeqTest, TestGraph100) {
   ASSERT_EQ(TEST_CHECKS[1], std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSeqTest, TestGraph1000) {
+TEST(KashinDijkstraOmpTest, TestGraph1000) {
   const int vertexCount = 1000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -137,15 +137,15 @@ TEST(KashinDijkstraSeqTest, TestGraph1000) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSeq::Dijkstra dijkstra(taskDataSeq);
+  KashinDijkstraOmp::Dijkstra dijkstra(taskDataOmp);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();
@@ -153,7 +153,7 @@ TEST(KashinDijkstraSeqTest, TestGraph1000) {
   ASSERT_EQ(TEST_CHECKS[2], std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSeqTest, TestGraph10000) {
+TEST(KashinDijkstraOmpTest, TestGraph10000) {
   const int vertexCount = 2000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -173,15 +173,15 @@ TEST(KashinDijkstraSeqTest, TestGraph10000) {
   }
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->inputs_count.emplace_back(start);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->inputs_count.emplace_back(start);
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSeq::Dijkstra dijkstra(taskDataSeq);
+  KashinDijkstraOmp::Dijkstra dijkstra(taskDataOmp);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();

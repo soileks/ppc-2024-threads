@@ -2,7 +2,7 @@
 // Created by Стёпа on 29.03.2024.
 //
 
-#include "seq/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
+#include "omp/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
 
 #include <omp.h>
 
