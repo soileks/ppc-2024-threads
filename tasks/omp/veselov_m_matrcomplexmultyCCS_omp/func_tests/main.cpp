@@ -1,11 +1,11 @@
-// Copyright 2023 Nesterov Alexander
+// Copyright 2023 Veselov Mikhail
 #include <gtest/gtest.h>
 
 #include <vector>
 
-#include "omp/veselov_m_matrcomplexmultyCCS_omp/include/ops_seq.hpp"
+#include "omp/veselov_m_matrcomplexmultyCCS_omp/include/ops_omp.hpp"
 
-using namespace VeselovSeq;
+using namespace VeselovOmp;
 
 TEST(veselov_m_matrcomplexmultyCCS, test_sizes_true) {
   size_t n1 = 4;

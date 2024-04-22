@@ -1,9 +1,9 @@
-// Copyright 2024 Nesterov Alexander
-#include "omp/veselov_m_matrcomplexmultyCCS_omp/include/ops_seq.hpp"
+// Copyright 2024 Veselov Mikhail
+#include "omp/veselov_m_matrcomplexmultyCCS_omp/include/ops_omp.hpp"
 
 #include <thread>
 
-using namespace VeselovSeq;
+using namespace VeselovOmp;
 
 bool SparseMatrixComplexMultiOMPSequential::validation() {
   internal_order_test();

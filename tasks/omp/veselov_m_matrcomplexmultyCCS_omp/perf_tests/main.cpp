@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/veselov_m_matrcomplexmultyCCS_omp/include/ops_seq.hpp"
+#include "omp/veselov_m_matrcomplexmultyCCS_omp/include/ops_omp.hpp"
 
-using namespace VeselovSeq;
+using namespace VeselovOmp;
 
 TEST(veselov_m_matrcomplexmultyCCS, test_pipeline_run) {
   // Create data

@@ -5,7 +5,7 @@
 
 #include "core/task/include/task.hpp"
 
-namespace VeselovSeq {
+namespace VeselovOmp {
 struct Complex {
   double real;
   double imag;
