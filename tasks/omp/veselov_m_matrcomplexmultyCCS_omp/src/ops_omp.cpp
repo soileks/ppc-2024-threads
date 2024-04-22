@@ -14,6 +14,7 @@ bool SparseMatrixComplexMultiOMPSequential::validation() {
 
 bool SparseMatrixComplexMultiOMPSequential::pre_processing() {
   internal_order_test();
+  
   auto* mat1 = reinterpret_cast<Complex*>(taskData->inputs[0]);
   auto* mat2 = reinterpret_cast<Complex*>(taskData->inputs[1]);
 
