@@ -1,6 +1,5 @@
 // Copyright 2024 Veselov Mikhail
 #include "tbb/veselov_m_matrcomplexmultyCCS_tbb/include/ops_tbb.hpp"
-
 #include <thread>
 
 using namespace VeselovTbb;
