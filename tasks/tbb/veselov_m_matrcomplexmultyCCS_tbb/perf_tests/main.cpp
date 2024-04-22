@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/veselov_m_matrcomplexmultyCSS_tbb/include/ops_tbb.hpp"
+#include "tbb/veselov_m_matrcomplexmultyCCS_tbb/include/ops_tbb.hpp"
 
 using namespace VeselovTbb;
 
@@ -52,7 +52,7 @@ TEST(veselov_m_matrcomplexmultyCCS, test_pipeline_run) {
   std::cout << "Start" << std::endl;
 
   // Create Task
-  auto testTaskOMP = std::make_shared<SparseMatrixComplexMultiOMPParallel>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<SparseMatrixComplexMultiTBBParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -118,7 +118,7 @@ TEST(veselov_m_matrcomplexmultyCCS, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskOMP = std::make_shared<SparseMatrixComplexMultiOMPParallel>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<SparseMatrixComplexMultiTBBParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
