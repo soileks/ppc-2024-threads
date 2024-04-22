@@ -2,10 +2,11 @@
 
 #include "omp/dostavalov_s_sop_gradient/include/ops_omp.hpp"
 
+#include <omp.h>
+
 #include <cmath>
 #include <random>
 #include <vector>
-#include <omp.h>
 
 namespace dostavalov_s_omp {
 std::vector<double> randVector(int size) {
@@ -30,13 +31,13 @@ std::vector<double> randMatrix(int size) {
   std::mt19937 gen(rd());
   std::uniform_real_distribution<double> dis(MIN_VALUE, MAX_VALUE);
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < size; ++j) {
       random_matrix[i * size + j] = dis(gen);
     }
   }
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < i; ++j) {
       random_matrix[i * size + j] = random_matrix[j * size + i];
@@ -92,7 +93,7 @@ bool OmpSLAYGradient::run() {
   while (true) {
       std::vector<double> A_Dir(size, 0.0);
 
-      #pragma omp parallel for shared(matrix_ptr, direction, A_Dir)
+#pragma omp parallel for shared(matrix_ptr, direction, A_Dir)
       for (long i = 0; i < size; ++i) {
       for (long j = 0; j < size; ++j) {
         A_Dir[i] += matrix_ptr[i * size + j] * direction[j];
@@ -102,7 +103,7 @@ bool OmpSLAYGradient::run() {
       double residual_dot_residual = 0.0;
       double A_Dir_dot_direction = 0.0;
 
-      #pragma omp parallel for reduction(+ : residual_dot_residual, A_Dir_dot_direction)
+#pragma omp parallel for reduction(+ : residual_dot_residual, A_Dir_dot_direction)
       for (long i = 0; i < size; ++i) {
         residual_dot_residual += residual[i] * residual[i];
         A_Dir_dot_direction += A_Dir[i] * direction[i];
@@ -110,19 +111,19 @@ bool OmpSLAYGradient::run() {
 
       double alpha = residual_dot_residual / A_Dir_dot_direction;
 
-      #pragma omp parallel for
+#pragma omp parallel for
       for (long i = 0; i < result.size(); ++i) {
         result[i] += alpha * direction[i];
       }
 
-      #pragma omp parallel for
+#pragma omp parallel for
       for (long i = 0; i < residual.size(); ++i) {
         residual[i] = prev_residual[i] - alpha * A_Dir[i];
       }
 
       double new_residual = 0.0;
 
-      #pragma omp parallel for reduction(+ : new_residual)
+#pragma omp parallel for reduction(+ : new_residual)
       for (long i = 0; i < residual.size(); ++i) {
         new_residual += residual[i] * residual[i];
       }
@@ -147,7 +148,7 @@ bool OmpSLAYGradient::run() {
 bool OmpSLAYGradient::post_processing() {
   internal_order_test();
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (long i = 0; i < answer.size(); i++) {
     reinterpret_cast<double*>(taskData->outputs[0])[i] = answer[i];
   }
@@ -160,7 +161,7 @@ bool check_solution(const std::vector<double>& matrixA, const std::vector<double
   size_t size = vectorB.size();
   std::vector<double> A_Sol(size, 0.0);
 
-  #pragma omp parallel for shared(matrixA, vectorB, solutionC, A_Sol)
+#pragma omp parallel for shared(matrixA, vectorB, solutionC, A_Sol)
   for (long i = 0; i < size; ++i) {
     A_Sol[i] = 0.0;
     for (long j = 0; j < size; ++j) {
@@ -168,7 +169,7 @@ bool check_solution(const std::vector<double>& matrixA, const std::vector<double
     }
   }
 
-  #pragma omp parallel for reduction(&& : solution_correct)
+#pragma omp parallel for reduction(&& : solution_correct)
   for (long i = 0; i < size; ++i) {
     if (std::abs(A_Sol[i] - vectorB[i]) > TOLERANCE) {
       solution_correct = false;
