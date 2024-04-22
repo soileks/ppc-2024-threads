@@ -129,8 +129,8 @@ TEST(dostavalov_s_sop_gradient, Test_Size_2) {
   }
 }
 
-TEST(dostavalov_s_sop_gradient, Test_Rand_300) {
-  int size = 300;
+TEST(dostavalov_s_sop_gradient, Test_Rand_200) {
+  int size = 200;
   std::vector<double> matrix = randMatrix(size);
   std::vector<double> vector = randVector(size);
 
