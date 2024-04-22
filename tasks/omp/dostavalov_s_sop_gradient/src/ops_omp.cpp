@@ -177,7 +177,7 @@ bool check_solution(const std::vector<double>& matrixA, const std::vector<double
     }
   }
 
-bool stop = false;
+  bool stop = false;
 #pragma omp parallel for
   for (i = 0; i < size; ++i) {
     if (!stop) {
