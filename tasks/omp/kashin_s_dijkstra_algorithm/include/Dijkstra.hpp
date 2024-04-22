@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-namespace KashinDijkstraSeq {
+namespace KashinDijkstraOmp {
 
 struct Compare {
   bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) { return a > b; }

@@ -4,7 +4,9 @@
 
 #include "seq/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
 
-bool KashinDijkstraSeq::Dijkstra::pre_processing() {
+#include <omp.h>
+
+bool KashinDijkstraOmp::Dijkstra::pre_processing() {
   internal_order_test();
   graph = reinterpret_cast<int*>(taskData->inputs[0]);
   count = taskData->outputs_count[0];
@@ -14,7 +16,7 @@ bool KashinDijkstraSeq::Dijkstra::pre_processing() {
   return true;
 }
 
-bool KashinDijkstraSeq::Dijkstra::validation() {
+bool KashinDijkstraOmp::Dijkstra::validation() {
   internal_order_test();
   int countg = taskData->inputs_count[0];
   int countd = taskData->outputs_count[0];
@@ -32,9 +34,9 @@ bool KashinDijkstraSeq::Dijkstra::validation() {
   return true;
 }
 
-bool KashinDijkstraSeq::Dijkstra::run() {
+bool KashinDijkstraOmp::Dijkstra::run() {
   internal_order_test();
-  std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraSeq::Compare> pq;
+  std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraOmp::Compare> pq;
   pq.emplace(0, start);
   while (!pq.empty()) {
     std::pair<int, int> vertex = pq.top();
@@ -58,7 +60,7 @@ bool KashinDijkstraSeq::Dijkstra::run() {
   return true;
 }
 
-bool KashinDijkstraSeq::Dijkstra::post_processing() {
+bool KashinDijkstraOmp::Dijkstra::post_processing() {
   internal_order_test();
   int* out_ptr = reinterpret_cast<int*>(taskData->outputs[0]);
   for (uint32_t i = 0; i < distance.size(); i++) {
