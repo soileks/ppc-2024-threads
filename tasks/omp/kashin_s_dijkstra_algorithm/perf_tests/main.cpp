@@ -101,7 +101,7 @@ TEST(KashinDijkstraOmpTest, test_task_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  // Create Perf analyzer
+  // Create Perf analyyzer
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testDijkstraOmpuential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
