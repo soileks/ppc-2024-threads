@@ -39,9 +39,7 @@ TEST(dostavalov_s_sop_gradient, Test_Empty) {
   testTaskSequential.run();
   testTaskSequential.post_processing();
 
-  for (size_t i = 0; i < result.size(); i++) {
-    ASSERT_LE(std::abs(true_result[i] - result[i]), TOLERANCE);
-  }
+  ASSERT_EQ(result, true_result);
 }
 
 TEST(dostavalov_s_sop_gradient, Test_Drob_Size_4) {
