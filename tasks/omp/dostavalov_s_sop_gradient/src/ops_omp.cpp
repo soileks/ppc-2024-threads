@@ -90,7 +90,7 @@ bool OmpSLAYGradient::run() {
 
   double* matrix_ptr = matrix.data();
 
-while (true) {
+  while (true) {
     std::vector<double> A_Dir(size, 0.0);
 
 #pragma omp parallel for shared(matrix_ptr, direction, A_Dir)
