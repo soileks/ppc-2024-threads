@@ -56,4 +56,4 @@ class SparseMatrixComplexMultiOMPParallel : public ppc::core::Task {
   int numCols2{};
   Complex* res{};
 };
-}  // namespace VeselovSeq
+}  // namespace VeselovOmp
