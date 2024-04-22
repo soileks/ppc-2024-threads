@@ -7,7 +7,6 @@ using namespace VeselovTbb;
 
 bool SparseMatrixComplexMultiTBBSequential::validation() {
   internal_order_test();
-  
   return taskData->inputs_count[1] == taskData->inputs_count[2] &&
          taskData->outputs_count[0] == taskData->inputs_count[0] &&
          taskData->outputs_count[1] == taskData->inputs_count[3];
