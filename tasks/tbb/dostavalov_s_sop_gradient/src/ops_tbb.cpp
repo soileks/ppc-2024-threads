@@ -46,6 +46,13 @@ std::vector<double> randMatrix(int size) {
   return random_matrix;
 }
 
+std::atomic<double>& operator+=(std::atomic<double>& atomic_value, double value) {
+  double current_value = atomic_value.load();
+  while (!atomic_value.compare_exchange_weak(current_value, current_value + value))
+    ;
+  return atomic_value;
+}
+
 bool TbbSLAYGradient::pre_processing() {
   internal_order_test();
 
