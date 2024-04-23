@@ -7,6 +7,7 @@
 #include <cmath>
 #include <random>
 #include <vector>
+#include <atomic>
 
 namespace dostavalov_s_tbb {
 std::vector<double> randVector(int size) {
@@ -80,17 +81,11 @@ bool TbbSLAYGradient::validation() {
 bool TbbSLAYGradient::run() {
   internal_order_test();
 
-  internal_order_test();
-
   long size = vector.size();
   std::vector<double> result(size, 0.0);
   std::vector<double> residual = vector;
   std::vector<double> direction = residual;
   std::vector<double> prev_residual = vector;
-
-  std::mutex mutex_residual_dot;
-  std::mutex mutex_A_Dir_dot;
-  std::mutex mutex_new_residual;
 
   double* matrix_ptr = matrix.data();
 
@@ -105,55 +100,15 @@ bool TbbSLAYGradient::run() {
       }
     });
 
-    double residual_dot_residual = 0.0;
-    double A_Dir_dot_direction = 0.0;
-
-    tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
-      double local_residual_dot_residual = 0.0;
-      double local_A_Dir_dot_direction = 0.0;
-      for (long i = range.begin(); i != range.end(); ++i) {
-        double local_residual = residual[i];
-        double local_A_Dir = A_Dir[i];
-        local_residual_dot_residual += local_residual * local_residual;
-        local_A_Dir_dot_direction += local_A_Dir * direction[i];
-      }
-      {
-        std::lock_guard<std::mutex> lock(mutex_residual_dot);
-        residual_dot_residual += local_residual_dot_residual;
-      }
-      {
-        std::lock_guard<std::mutex> lock(mutex_A_Dir_dot);
-        A_Dir_dot_direction += local_A_Dir_dot_direction;
-      }
-    });
-
+    double residual_dot_residual = computeDotProduct(residual, residual);
+    double A_Dir_dot_direction = computeDotProduct(A_Dir, direction);
     double alpha = residual_dot_residual / A_Dir_dot_direction;
 
-    tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
-      for (long i = range.begin(); i != range.end(); ++i) {
-        result[i] += alpha * direction[i];
-      }
-    });
+    updateResult(result, direction, alpha);
 
-    tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
-      for (long i = range.begin(); i != range.end(); ++i) {
-        residual[i] = prev_residual[i] - alpha * A_Dir[i];
-      }
-    });
+    updateResidual(residual, prev_residual, A_Dir, alpha);
 
-    double new_residual = 0.0;
-
-    tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
-      double local_new_residual = 0.0;
-      for (long i = range.begin(); i != range.end(); ++i) {
-        double local_residual = residual[i];
-        local_new_residual += local_residual * local_residual;
-      }
-      {
-        std::lock_guard<std::mutex> lock(mutex_new_residual);
-        new_residual += local_new_residual;
-      }
-    });
+    double new_residual = computeDotProduct(residual, residual);
 
     if (sqrt(new_residual) < TOLERANCE) {
       break;
@@ -161,17 +116,68 @@ bool TbbSLAYGradient::run() {
 
     double beta = new_residual / residual_dot_residual;
 
-    tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
-      for (long i = range.begin(); i != range.end(); ++i) {
-        direction[i] = residual[i] + beta * direction[i];
-      }
-    });
+    updateDirection(direction, residual, beta);
 
     prev_residual = residual;
   }
 
   answer = result;
   return true;
+}
+
+double TbbSLAYGradient::computeDotProduct(const std::vector<double>& vec1, const std::vector<double>& vec2) {
+  double dot_product = 0.0;
+  for (size_t i = 0; i < vec1.size(); ++i) {
+    dot_product += vec1[i] * vec2[i];
+  }
+  return dot_product;
+}
+
+void TbbSLAYGradient::updateResult(std::vector<double>& result, const std::vector<double>& direction, double alpha) {
+  std::vector<std::atomic<double>> atomic_result(result.begin(), result.end());
+
+  tbb::parallel_for(tbb::blocked_range<long>(0, static_cast<long>(result.size())),
+                    [&](const tbb::blocked_range<long>& range) {
+    for (long i = range.begin(); i != range.end(); ++i) {
+      atomic_result[i] += alpha * direction[i];
+    }
+  });
+
+  for (long i = 0; i < static_cast<long>(result.size()); ++i) {
+    result[i] = atomic_result[i];
+  }
+}
+
+void TbbSLAYGradient::updateResidual(std::vector<double>& residual, const std::vector<double>& prev_residual,
+                                     const std::vector<double>& A_Dir, double alpha) {
+  std::vector<std::atomic<double>> atomic_residual(residual.begin(), residual.end());
+
+  tbb::parallel_for(tbb::blocked_range<long>(0, static_cast<long>(residual.size())),
+                    [&](const tbb::blocked_range<long>& range) {
+    for (long i = range.begin(); i != range.end(); ++i) {
+      atomic_residual[i] = prev_residual[i] - alpha * A_Dir[i];
+    }
+  });
+
+  for (size_t i = 0; i < static_cast<long>(residual.size()); ++i) {
+    residual[i] = atomic_residual[i];
+  }
+}
+
+void TbbSLAYGradient::updateDirection(std::vector<double>& direction, const std::vector<double>& residual,
+                                      double beta) {
+  std::vector<std::atomic<double>> atomic_direction(direction.begin(), direction.end());
+
+  tbb::parallel_for(tbb::blocked_range<long>(0, static_cast<long>(direction.size())),
+                    [&](const tbb::blocked_range<long>& range) {
+    for (long i = range.begin(); i != range.end(); ++i) {
+      atomic_direction[i] = residual[i] + beta * direction[i];
+    }
+  });
+
+  for (size_t i = 0; i < static_cast<long>(direction.size()); ++i) {
+    direction[i] = atomic_direction[i];
+  }
 }
 
 bool TbbSLAYGradient::post_processing() {
