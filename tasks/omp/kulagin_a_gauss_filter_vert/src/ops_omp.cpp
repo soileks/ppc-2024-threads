@@ -40,12 +40,12 @@ bool FilterGaussVerticalTaskOMPKulagin::run() {
 #ifdef _MSC_VER
     // Microsoft, update omp pls, so I can use size_t in a for loop instead of int
     const int _w = static_cast<int>(w);
-#pragma omp for schedule(static)
+#pragma omp parallel for schedule(static)
     for (int x = 0; x < _w; x++) {
       kulagin_a_gauss::apply_filter_line<true>(w, h, img, kernel, img_res.get(), static_cast<size_t>(x));
     }
 #else
-#pragma omp for schedule(static)
+#pragma omp parallel for schedule(static)
     for (size_t x = 0; x < w; x++) {
       kulagin_a_gauss::apply_filter_line<true>(w, h, img, kernel, img_res.get(), x);
     }
