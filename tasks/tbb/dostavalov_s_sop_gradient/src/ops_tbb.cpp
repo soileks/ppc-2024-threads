@@ -159,7 +159,7 @@ void TbbSLAYGradient::updateResidual(std::vector<double>& residual, const std::v
                       }
                     });
 
-  for (size_t i = 0; i < static_cast<long>(residual.size()); ++i) {
+  for (long i = 0; i < static_cast<long>(residual.size()); ++i) {
     residual[i] = atomic_residual[i];
   }
 }
@@ -175,7 +175,7 @@ void TbbSLAYGradient::updateDirection(std::vector<double>& direction, const std:
                       }
                     });
 
-  for (size_t i = 0; i < static_cast<long>(direction.size()); ++i) {
+  for (long i = 0; i < static_cast<long>(direction.size()); ++i) {
     direction[i] = atomic_direction[i];
   }
 }
