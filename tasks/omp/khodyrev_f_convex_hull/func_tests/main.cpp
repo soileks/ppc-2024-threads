@@ -25,7 +25,6 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_validation) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
   taskDataSeq->outputs_count.emplace_back(height + 1);
   taskDataSeq->outputs_count.emplace_back(width + 1);
-
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(height);
@@ -64,7 +63,6 @@ TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_small_image) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(height_in);
@@ -115,7 +113,6 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_medium_image) {
   ASSERT_EQ(testTaskSequential.pre_processing(), true);
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
-
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
@@ -170,7 +167,6 @@ TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_big_image) {
   ASSERT_EQ(testTaskSequential.post_processing(), true);
 
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(height_in);
   taskDataPar->inputs_count.emplace_back(width_in);
@@ -222,9 +218,7 @@ TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_very_big_image) {
   ASSERT_EQ(testTaskSequential.run(), true);
   ASSERT_EQ(testTaskSequential.post_processing(), true);
 
-
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(height_in);
   taskDataPar->inputs_count.emplace_back(width_in);
