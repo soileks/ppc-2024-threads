@@ -39,7 +39,7 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_validation) {
   ASSERT_EQ(testTaskParallel.validation(), false);
 }
 
-TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_small_image) {
+TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_small_image) {
   int height_in = 4;
   int width_in = 3;
   int height_out = 4;
@@ -136,7 +136,7 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_medium_image) {
   }
 }
 
-TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_big_image) {
+TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_big_image) {
   int height_in = 1000;
   int width_in = 1000;
   int height_out = 1000;
@@ -188,7 +188,7 @@ TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_big_image) {
   }
 }
 
-TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_very_big_image) {
+TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_very_big_image) {
   int height_in = 3000;
   int width_in = 1000;
   int height_out = 3000;
