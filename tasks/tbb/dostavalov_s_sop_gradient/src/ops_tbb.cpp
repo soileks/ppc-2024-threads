@@ -7,7 +7,6 @@
 #include <cmath>
 #include <random>
 #include <vector>
-#include <random>
 
 namespace dostavalov_s_tbb {
 std::vector<double> randVector(int size) {
@@ -66,7 +65,6 @@ bool TbbSLAYGradient::pre_processing() {
 
 bool TbbSLAYGradient::validation() {
   internal_order_test();
-
 
   if (taskData->inputs_count[0] != taskData->inputs_count[1] * taskData->inputs_count[1]) {
     return false;
