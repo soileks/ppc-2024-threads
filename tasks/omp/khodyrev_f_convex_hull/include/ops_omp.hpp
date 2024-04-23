@@ -38,7 +38,6 @@ class KhodyrevTaskOMP : public ppc::core::Task {
   std::vector<int> result;
 };
 
-
 class KhodyrevTaskSequential : public ppc::core::Task {
  public:
   explicit KhodyrevTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}

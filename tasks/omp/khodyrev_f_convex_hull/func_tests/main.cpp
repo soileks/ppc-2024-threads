@@ -126,7 +126,7 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_medium_image) {
   ASSERT_EQ(testTaskParallel.validation(), true);
   ASSERT_EQ(testTaskParallel.pre_processing(), true);
   ASSERT_EQ(testTaskParallel.run(), true);
-  ASSERT_EQ(testTaskParallel.post_processing(), true);  
+  ASSERT_EQ(testTaskParallel.post_processing(), true);
 
   for (std::vector<int>::size_type i = 0; i < in.size(); i++) {
     EXPECT_EQ(out_seq[i], true_result[i]);
@@ -185,7 +185,7 @@ TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_big_image) {
   }
   for (std::vector<int>::size_type i = 0; i < in.size(); i++) {
     EXPECT_EQ(out_par[i], true_result[i]);
-  }  
+  }
 }
 
 TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_very_big_image) {
@@ -230,12 +230,12 @@ TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_very_big_image) {
   ASSERT_EQ(testTaskParallel.validation(), true);
   ASSERT_EQ(testTaskParallel.pre_processing(), true);
   ASSERT_EQ(testTaskParallel.run(), true);
-  ASSERT_EQ(testTaskParallel.post_processing(), true);  
+  ASSERT_EQ(testTaskParallel.post_processing(), true);
 
   for (std::vector<int>::size_type i = 0; i < in.size(); i++) {
     EXPECT_EQ(out_seq[i], true_result[i]);
   }
   for (std::vector<int>::size_type i = 0; i < in.size(); i++) {
     EXPECT_EQ(out_par[i], true_result[i]);
-  }  
+  }
 }
