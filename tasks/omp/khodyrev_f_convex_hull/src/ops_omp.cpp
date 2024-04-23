@@ -28,7 +28,6 @@ bool khodyrev_omp::KhodyrevTaskOMP::pre_processing() {
   }
   return true;
 }
-
 bool khodyrev_omp::KhodyrevTaskOMP::validation() {
   internal_order_test();
   return taskData->inputs_count[0] == taskData->outputs_count[0] ||
@@ -84,8 +83,8 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
             if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
             return orientation > 0;
           });
-      }
         }
+      }
 #pragma omp taskwait
     }
 
