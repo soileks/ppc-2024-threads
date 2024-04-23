@@ -1,4 +1,4 @@
-// Copyright 2024 Dostavalov Semyon
+// Copyright 2024 Dostavalov Semyons
 
 #include <string>
 #include <vector>
