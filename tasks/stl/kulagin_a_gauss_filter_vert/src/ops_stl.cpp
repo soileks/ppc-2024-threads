@@ -1,9 +1,9 @@
 // Copyright 2024 Kulagin Aleksandr
 #include "stl/kulagin_a_gauss_filter_vert/include/ops_stl.hpp"
 
-#include <thread>
 #include <cstring>
 #include <exception>
+#include <thread>
 
 enum class CURRENT_POSITION { START, END, MIDDLE };
 
