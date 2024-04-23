@@ -23,11 +23,11 @@ class TbbSLAYGradient : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-  double computeDotProduct(const std::vector<double>& vec1, const std::vector<double>& vec2);
-  void updateResult(std::vector<double>& result, const std::vector<double>& direction, double alpha);
-  void updateResidual(std::vector<double>& residual, const std::vector<double>& prev_residual,
+  double static computeDotProduct(const std::vector<double>& vec1, const std::vector<double>& vec2);
+  void static updateResult(std::vector<double>& result, const std::vector<double>& direction, double alpha);
+  void static updateResidual(std::vector<double>& residual, const std::vector<double>& prev_residual,
                       const std::vector<double>& A_Dir, double alpha);
-  void updateDirection(std::vector<double>& direction, const std::vector<double>& residual, double beta);
+  void static updateDirection(std::vector<double>& direction, const std::vector<double>& residual, double beta);
 
  private:
   std::vector<double> matrix, vector, answer;
