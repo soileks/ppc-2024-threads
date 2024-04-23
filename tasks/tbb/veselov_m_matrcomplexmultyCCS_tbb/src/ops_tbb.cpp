@@ -166,6 +166,7 @@ bool SparseMatrixComplexMultiTBBParallel::post_processing() {
   for (int i = 0; i < numRows1 * numCols2; i++) {
     out_ptr[i] = res[i];
   }
+
   delete[] res;
 
   return true;
