@@ -205,14 +205,12 @@ bool khodyrev_omp::KhodyrevTaskSequential::run() {
       hull.pop();
       result[p.y * width_out + p.x] = 1;
     }
-  } 
-  catch (const std::exception& e) {
+  } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
     return false;
   }
   return true;
 }
-
 bool khodyrev_omp::KhodyrevTaskSequential::post_processing() {
   internal_order_test();
   try {
