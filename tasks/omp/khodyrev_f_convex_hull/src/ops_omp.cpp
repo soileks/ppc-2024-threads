@@ -72,8 +72,8 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
 
 #pragma omp parallel
     {
-      Pixel* pixels_begin = &pixels[0];
-      Pixel* pixels_end = &pixels[0] + pixels.size();
+      Pixel* pixels_begin = pixels.data();
+      Pixel* pixels_end = pixels.data() + pixels.size();
 #pragma omp single
       {
 #pragma omp task shared(pixels_begin, pixels_end)
