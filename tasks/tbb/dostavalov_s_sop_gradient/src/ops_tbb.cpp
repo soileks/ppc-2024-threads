@@ -1,4 +1,4 @@
-// Copyright 2024 Dostavalov Semyon
+// Copyright 2024 Dostavalov Semyons
 
 #include "tbb/dostavalov_s_sop_gradient/include/ops_tbb.hpp"
 
