@@ -130,7 +130,7 @@ TEST(dostavalov_s_sop_gradient_tbb, Test_Size_2) {
 }
 
 TEST(dostavalov_s_sop_gradient_tbb, Test_Rand_150) {
-  int size = 150;
+  int size = 200;
   std::vector<double> matrix = randMatrix(size);
   std::vector<double> vector = randVector(size);
 

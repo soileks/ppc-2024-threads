@@ -4,10 +4,10 @@
 
 #include <tbb/tbb.h>
 
+#include <atomic>
 #include <cmath>
 #include <random>
 #include <vector>
-#include <atomic>
 
 namespace dostavalov_s_tbb {
 std::vector<double> randVector(int size) {
@@ -138,10 +138,10 @@ void TbbSLAYGradient::updateResult(std::vector<double>& result, const std::vecto
 
   tbb::parallel_for(tbb::blocked_range<long>(0, static_cast<long>(result.size())),
                     [&](const tbb::blocked_range<long>& range) {
-    for (long i = range.begin(); i != range.end(); ++i) {
-      atomic_result[i] += alpha * direction[i];
-    }
-  });
+                      for (long i = range.begin(); i != range.end(); ++i) {
+                        atomic_result[i] += alpha * direction[i];
+                      }
+                    });
 
   for (long i = 0; i < static_cast<long>(result.size()); ++i) {
     result[i] = atomic_result[i];
@@ -154,10 +154,10 @@ void TbbSLAYGradient::updateResidual(std::vector<double>& residual, const std::v
 
   tbb::parallel_for(tbb::blocked_range<long>(0, static_cast<long>(residual.size())),
                     [&](const tbb::blocked_range<long>& range) {
-    for (long i = range.begin(); i != range.end(); ++i) {
-      atomic_residual[i] = prev_residual[i] - alpha * A_Dir[i];
-    }
-  });
+                      for (long i = range.begin(); i != range.end(); ++i) {
+                        atomic_residual[i] = prev_residual[i] - alpha * A_Dir[i];
+                      }
+                    });
 
   for (size_t i = 0; i < static_cast<long>(residual.size()); ++i) {
     residual[i] = atomic_residual[i];
@@ -170,10 +170,10 @@ void TbbSLAYGradient::updateDirection(std::vector<double>& direction, const std:
 
   tbb::parallel_for(tbb::blocked_range<long>(0, static_cast<long>(direction.size())),
                     [&](const tbb::blocked_range<long>& range) {
-    for (long i = range.begin(); i != range.end(); ++i) {
-      atomic_direction[i] = residual[i] + beta * direction[i];
-    }
-  });
+                      for (long i = range.begin(); i != range.end(); ++i) {
+                        atomic_direction[i] = residual[i] + beta * direction[i];
+                      }
+                    });
 
   for (size_t i = 0; i < static_cast<long>(direction.size()); ++i) {
     direction[i] = atomic_direction[i];
