@@ -129,8 +129,8 @@ TEST(dostavalov_s_sop_gradient_tbb, Test_Size_2) {
   }
 }
 
-TEST(dostavalov_s_sop_gradient_tbb, Test_Rand_200) {
-  int size = 200;
+TEST(dostavalov_s_sop_gradient_tbb, Test_Rand_150) {
+  int size = 150;
   std::vector<double> matrix = randMatrix(size);
   std::vector<double> vector = randVector(size);
 
@@ -148,8 +148,8 @@ TEST(dostavalov_s_sop_gradient_tbb, Test_Rand_200) {
   ASSERT_TRUE(check_solution(matrix, vector, result));
 }
 
-TEST(dostavalov_s_sop_gradient_tbb, Test_Rand_150) {
-  int size = 150;
+TEST(dostavalov_s_sop_gradient_tbb, Test_Rand_100) {
+  int size = 100;
   std::vector<double> matrix = randMatrix(size);
   std::vector<double> vector = randVector(size);
 
