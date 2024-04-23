@@ -44,11 +44,11 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_small_image) {
   int width_in = 3;
   int height_out = 4;
   int width_out = 3;
-  std::vector<int> in = {0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0};
+  std::vector<int> in = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
   std::vector<int> out_seq(height_out * width_out, 0);
   std::vector<int> out_par(height_out * width_out, 0);
 
-  std::vector<int> true_result = {0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0};
+  std::vector<int> true_result = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
