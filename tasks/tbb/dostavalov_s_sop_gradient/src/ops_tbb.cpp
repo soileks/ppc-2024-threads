@@ -82,7 +82,6 @@ bool TbbSLAYGradient::run() {
 
   internal_order_test();
 
-  auto start_time = std::chrono::high_resolution_clock::now();
   long size = vector.size();
   std::vector<double> result(size, 0.0);
   std::vector<double> residual = vector;
@@ -182,8 +181,6 @@ bool TbbSLAYGradient::post_processing() {
 bool check_solution(const std::vector<double>& matrixA, const std::vector<double>& vectorB,
                     const std::vector<double>& solutionC) {
   bool solution_correct = true;
-
-  auto start_time = std::chrono::high_resolution_clock::now();
 
   long size = vectorB.size();
   std::vector<double> A_Sol(size, 0.0);
