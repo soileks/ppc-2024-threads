@@ -1,4 +1,3 @@
-// Copyright 2024 Khodyrev Fedor
 #include "omp/khodyrev_f_convex_hull/include/ops_omp.hpp"
 
 #include <omp.h>
@@ -51,11 +50,11 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       }
     }
 
-#pragma omp parallel shared(pixels, start_point)
+#pragma omp parallel
     {
       Pixel local_start_point = start_point;
 #pragma omp for
-      for (size_t i = 0; i < pixels.size(); i++) {
+      for (int i = 0; i < static_cast<int>(pixels.size()); i++) {
         if (pixels[i].y < local_start_point.y ||
             (pixels[i].y == local_start_point.y && pixels[i].x < local_start_point.x)) {
           local_start_point = pixels[i];
@@ -72,13 +71,12 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
 
 #pragma omp parallel
     {
-      Pixel* pixels_begin = pixels.data();
-      Pixel* pixels_end = pixels.data() + pixels.size();
+      std::vector<Pixel> local_pixels(pixels.begin(), pixels.end());
 #pragma omp single
       {
-#pragma omp task shared(pixels_begin, pixels_end)
+#pragma omp task shared(local_pixels)
         {
-          std::sort(pixels_begin, pixels_end, [&](const Pixel& p1, const Pixel& p2) -> bool {
+          std::sort(local_pixels.begin(), local_pixels.end(), [&](const Pixel& p1, const Pixel& p2) -> bool {
             int orientation =
                 (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
             if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
