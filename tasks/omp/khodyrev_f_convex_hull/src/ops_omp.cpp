@@ -50,11 +50,11 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       }
     }
 
-#pragma omp parallel shared(pixels, start_point)
+#pragma omp parallel
     {
       Pixel local_start_point = start_point;
 #pragma omp for
-      for (size_t i = 0; i < pixels.size(); i++) {
+      for (int i = 0; i < static_cast<int>(pixels.size()); ++i) {
         if (pixels[i].y < local_start_point.y ||
             (pixels[i].y == local_start_point.y && pixels[i].x < local_start_point.x)) {
           local_start_point = pixels[i];
