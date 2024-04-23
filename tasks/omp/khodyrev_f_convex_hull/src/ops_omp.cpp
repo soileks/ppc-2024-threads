@@ -224,5 +224,6 @@ bool khodyrev_omp::KhodyrevTaskSequential::post_processing() {
     std::cout << e.what() << std::endl;
     return false;
   }
+  
   return true;
 }
