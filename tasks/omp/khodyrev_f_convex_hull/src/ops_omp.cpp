@@ -117,7 +117,6 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
   return true;
 }
 
-
 bool khodyrev_omp::KhodyrevTaskOMP::post_processing() {
   internal_order_test();
   try {
