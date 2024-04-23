@@ -1,4 +1,4 @@
-// Copyright 2024 Dostavalov Semyons
+// Copyright 2024 Dostavalov Semyon
 
 #include "tbb/dostavalov_s_sop_gradient/include/ops_tbb.hpp"
 
@@ -113,8 +113,8 @@ bool TbbSLAYGradient::run() {
         local_residual_dot_residual += local_residual * local_residual;
         local_A_Dir_dot_direction += local_A_Dir * direction[i];
       }
-      atomic_residual_dot_residual += local_residual_dot_residual;
-      atomic_A_Dir_dot_direction += local_A_Dir_dot_direction;
+      atomic_residual_dot_residual.fetch_add(local_residual_dot_residual);
+      atomic_A_Dir_dot_direction.fetch_add(local_A_Dir_dot_direction);
     });
 
     double residual_dot_residual = atomic_residual_dot_residual;
@@ -141,7 +141,7 @@ bool TbbSLAYGradient::run() {
         double local_residual = residual[i];
         local_new_residual += local_residual * local_residual;
       }
-      atomic_new_residual += local_new_residual;
+      atomic_new_residual.fetch_add(local_new_residual);
     });
 
     double new_residual = atomic_new_residual;
