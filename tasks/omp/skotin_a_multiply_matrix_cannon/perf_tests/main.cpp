@@ -18,15 +18,12 @@ std::vector<uint8_t> createMatrixData(size_t size, double value) {
   return byteData;
 }
 
-void checkMatrixMultiplicationResult(const std::vector<uint8_t>& outputData,
-    size_t matrixSize, double expectedValue) {
+void checkMatrixMultiplicationResult(const std::vector<uint8_t>& outputData, size_t matrixSize, double expectedValue) {
   for (size_t i = 0; i < matrixSize; ++i) {
     for (size_t j = 0; j < matrixSize; ++j) {
       double actualValue;
-      memcpy(&actualValue, &outputData[(i * matrixSize + j)
-          * sizeof(double)], sizeof(double));
-      EXPECT_NEAR(actualValue, expectedValue, 1e-8) <<
-          "Mismatch at (" << i << "," << j << ")";
+      memcpy(&actualValue, &outputData[(i * matrixSize + j) * sizeof(double)], sizeof(double));
+      EXPECT_NEAR(actualValue, expectedValue, 1e-8) << "Mismatch at (" << i << "," << j << ")";
     }
   }
 }
@@ -56,8 +53,7 @@ TEST(Skotin_A_Multiply_Matrix_Cannon_Seq, test_pipeline_run) {
 
   perfAttr->current_timer = [&] {
     auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::
-        chrono::nanoseconds>(current_time_point - t0).count();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
     return static_cast<double>(duration) * 1e-9;
   };
 
@@ -66,8 +62,7 @@ TEST(Skotin_A_Multiply_Matrix_Cannon_Seq, test_pipeline_run) {
 
   ppc::core::Perf::print_perf_statistic(perfResults);
 
-  SkotinOMPPerfTests::checkMatrixMultiplicationResult(
-      outputData, matrixSize, 10000.0);
+  SkotinOMPPerfTests::checkMatrixMultiplicationResult(outputData, matrixSize, 10000.0);
 }
 
 TEST(Skotin_A_Multiply_Matrix_Cannon_Seq, test_task_run) {
@@ -104,6 +99,5 @@ TEST(Skotin_A_Multiply_Matrix_Cannon_Seq, test_task_run) {
 
   ppc::core::Perf::print_perf_statistic(perfResults);
 
-  SkotinOMPPerfTests::checkMatrixMultiplicationResult(
-      outputData, matrixSize, 11000.0);
+  SkotinOMPPerfTests::checkMatrixMultiplicationResult(outputData, matrixSize, 11000.0);
 }

@@ -1,16 +1,16 @@
 // Copyright 2024 Skotin Alexander
 #pragma once
 
-#include <string>
-#include <vector>
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
+
 #include "core/task/include/task.hpp"
 
 class SkotinMatrixMultiplicationOMPSeq : public ppc::core::Task {
  public:
-  explicit SkotinMatrixMultiplicationOMPSeq(std::shared_ptr<ppc::
-      core::TaskData> taskData_)
+  explicit SkotinMatrixMultiplicationOMPSeq(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
 
   bool pre_processing() override;
@@ -30,8 +30,7 @@ class SkotinMatrixMultiplicationOMPSeq : public ppc::core::Task {
 
 class SkotinMatrixMultiplicationOMPParallel : public ppc::core::Task {
  public:
-  explicit SkotinMatrixMultiplicationOMPParallel(std::shared_ptr<ppc::
-      core::TaskData> taskData_)
+  explicit SkotinMatrixMultiplicationOMPParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
 
   bool pre_processing() override;

@@ -51,8 +51,7 @@ bool SkotinMatrixMultiplicationOMPSeq::run() {
       for (size_t i = 0; i < n; ++i) {
         for (size_t j = blockCol; j < std::min(blockCol + blockSize, n); ++j) {
           double sum = 0.0;
-          for (size_t k = blockRow; k < std::min(blockRow +
-              blockSize, n); ++k) {
+          for (size_t k = blockRow; k < std::min(blockRow + blockSize, n); ++k) {
             sum += matrixA[i][k] * matrixB[k][j];
           }
           resultMatrix[i][j] += sum;
@@ -64,16 +63,12 @@ bool SkotinMatrixMultiplicationOMPSeq::run() {
   return true;
 }
 
-bool SkotinMatrixMultiplicationOMPSeq::post_processing() {
-    return saveResult();
-}
+bool SkotinMatrixMultiplicationOMPSeq::post_processing() { return saveResult(); }
 
-bool SkotinMatrixMultiplicationOMPSeq::loadMatrix(
-    const std::vector<double>& inputData,
-    std::vector<std::vector<double>>& matrix, size_t size) {
+bool SkotinMatrixMultiplicationOMPSeq::loadMatrix(const std::vector<double>& inputData,
+                                                  std::vector<std::vector<double>>& matrix, size_t size) {
   if (inputData.size() != size * size) {
-    std::cerr << "Input data size does not match expected matrix size."
-        << std::endl;
+    std::cerr << "Input data size does not match expected matrix size." << std::endl;
     return false;
   }
   if (inputData.size() != size * size) return false;
@@ -87,16 +82,14 @@ bool SkotinMatrixMultiplicationOMPSeq::loadMatrix(
 }
 
 bool SkotinMatrixMultiplicationOMPSeq::saveResult() {
-  size_t totalBytes = resultMatrix.size() * resultMatrix[0].size()
-      * sizeof(double);
+  size_t totalBytes = resultMatrix.size() * resultMatrix[0].size() * sizeof(double);
 
   std::vector<uint8_t> outputData(totalBytes);
 
   for (size_t i = 0; i < resultMatrix.size(); ++i) {
     for (size_t j = 0; j < resultMatrix[i].size(); ++j) {
       double value = resultMatrix[i][j];
-      memcpy(&outputData[(i * resultMatrix[i].size() + j) *
-          sizeof(double)], &value, sizeof(double));
+      memcpy(&outputData[(i * resultMatrix[i].size() + j) * sizeof(double)], &value, sizeof(double));
     }
   }
 
@@ -164,16 +157,12 @@ bool SkotinMatrixMultiplicationOMPParallel::run() {
   return true;
 }
 
-bool SkotinMatrixMultiplicationOMPParallel::post_processing() {
-    return saveResult();
-}
+bool SkotinMatrixMultiplicationOMPParallel::post_processing() { return saveResult(); }
 
-bool SkotinMatrixMultiplicationOMPParallel::loadMatrix(
-    const std::vector<double>& inputData,
-    std::vector<std::vector<double>>& matrix, size_t size) {
+bool SkotinMatrixMultiplicationOMPParallel::loadMatrix(const std::vector<double>& inputData, 
+                                                       std::vector<std::vector<double>>& matrix, size_t size) {
   if (inputData.size() != size * size) {
-    std::cerr << "Input data size does not match expected matrix size."
-        << std::endl;
+    std::cerr << "Input data size does not match expected matrix size." << std::endl;
     return false;
   }
   if (inputData.size() != size * size) return false;
@@ -187,16 +176,14 @@ bool SkotinMatrixMultiplicationOMPParallel::loadMatrix(
 }
 
 bool SkotinMatrixMultiplicationOMPParallel::saveResult() {
-  size_t totalBytes = resultMatrix.size() * resultMatrix[0].size()
-      * sizeof(double);
+  size_t totalBytes = resultMatrix.size() * resultMatrix[0].size() * sizeof(double);
 
   std::vector<uint8_t> outputData(totalBytes);
 
   for (size_t i = 0; i < resultMatrix.size(); ++i) {
     for (size_t j = 0; j < resultMatrix[i].size(); ++j) {
       double value = resultMatrix[i][j];
-      memcpy(&outputData[(i * resultMatrix[i].size() + j)
-          * sizeof(double)], &value, sizeof(double));
+      memcpy(&outputData[(i * resultMatrix[i].size() + j) * sizeof(double)], &value, sizeof(double));
     }
   }
 

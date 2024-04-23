@@ -16,21 +16,17 @@ std::vector<uint8_t> createMatrixData(size_t size, double value) {
   return byteData;
 }
 
-void checkMatrixMultiplicationResult(const std::vector<uint8_t>& outputData,
-    size_t matrixSize, double expectedValue) {
+void checkMatrixMultiplicationResult(const std::vector<uint8_t>& outputData, size_t matrixSize, double expectedValue) {
   for (size_t i = 0; i < matrixSize; ++i) {
     for (size_t j = 0; j < matrixSize; ++j) {
       double actualValue;
-      memcpy(&actualValue, &outputData[(i * matrixSize + j) *
-          sizeof(double)], sizeof(double));
-      EXPECT_NEAR(actualValue, expectedValue, 1e-8) <<
-          "Mismatch at (" << i << "," << j << ")";
+      memcpy(&actualValue, &outputData[(i * matrixSize + j) * sizeof(double)], sizeof(double));
+      EXPECT_NEAR(actualValue, expectedValue, 1e-8) << "Mismatch at (" << i << "," << j << ")";
     }
   }
 }
 
-void TestMatrixMultiplication(size_t matrixSize, double fillValueA,
-    double fillValueB, double expectedValue) {
+void TestMatrixMultiplication(size_t matrixSize, double fillValueA, double fillValueB, double expectedValue) {
   auto matrixAData = createMatrixData(matrixSize, fillValueA);
   auto matrixBData = createMatrixData(matrixSize, fillValueB);
 
