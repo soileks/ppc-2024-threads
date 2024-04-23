@@ -28,6 +28,7 @@ bool SparseMatrixComplexMultiOMPSequential::pre_processing() {
   int notNullNumbers = 0;
   for (int j = 0; j < numCols1; ++j) {
     cols1.push_back(notNullNumbers);
+    
     for (int i = 0; i < numRows1; ++i) {
       int index = i * numRows1 + j;
       if (mat1[index].real != 0 || mat1[index].imag != 0) {
