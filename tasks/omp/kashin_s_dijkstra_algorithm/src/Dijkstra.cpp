@@ -38,6 +38,7 @@ bool KashinDijkstraOmp::Dijkstra::run() {
   internal_order_test();
   std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraOmp::Compare> pq;
   pq.emplace(0, start);
+  std::vector<std::pair<int,int>> ram(count); 
   while (!pq.empty()) {
     std::pair<int, int> vertex = pq.top();
     pq.pop();
@@ -47,14 +48,15 @@ bool KashinDijkstraOmp::Dijkstra::run() {
       std::pair<int, int> edge(graph[vertex.second * count + i], i);
       if (i != vertex.second && edge.first != -1) {
         int weight = edge.first + vertex.first;
-#pragma omp critical
-        {
-          if (weight < distance[edge.second]) {
-            distance[edge.second] = weight;
-            pq.emplace(weight, edge.second);
-          }
+        if (weight < distance[edge.second]) {
+          distance[edge.second] = weight;
+          ram[i] = std::pair<int,int>(weight,edge.second)
+          // pq.emplace(weight, edge.second);
         }
       }
+    }
+    for (std::pair<int,int> add : ram) {
+      pq.emplace(ram.first, ram.second);
     }
   }
   return true;
