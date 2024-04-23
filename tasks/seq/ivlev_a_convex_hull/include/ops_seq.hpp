@@ -25,4 +25,4 @@ class ConvexHullSequential : public ppc::core::Task {
 };
 
 size_t rotation(const std::pair<int, int>& a, const std::pair<int, int>& b, const std::pair<int, int>& c);
-} // namespace ivlev_a_seq
+}  // namespace ivlev_a_seq
