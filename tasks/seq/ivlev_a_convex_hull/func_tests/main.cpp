@@ -4,10 +4,11 @@
 #include <vector>
 
 #include "seq/ivlev_a_convex_hull/include/ops_seq.hpp"
+using namespace ivlev_a_seq;
 
 TEST(ivlev_a_convex_hull_sequential, one_component) {
   // Create data
-  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {0, 1}, {1, 0}}};
+  std::vector<std::vector<std::pair<size_t, size_t>>> in = {{{0, 0}, {0, 1}, {1, 0}, {1, 1}, {2, 2}, {3, 3}}};
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {1, 0}, {3, 3}}};
 

@@ -5,26 +5,27 @@
 
 #include "core/perf/include/perf.hpp"
 #include "seq/ivlev_a_convex_hull/include/ops_seq.hpp"
+using namespace ivlev_a_seq;
 
 TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
   // Create data
   std::vector<std::vector<std::pair<size_t, size_t>>> in = {{}};
-  in[0].emplace_back(0, 0);
   in[0].emplace_back(0, 1);
+  in[0].emplace_back(1, 0);
   in[0].emplace_back(1, 1);
-  for (size_t i = 2; i < 99999; i++) {
+  for (size_t i = 2; i < 2999999; i++) {
     in[0].emplace_back(i, i - 2);
     in[0].emplace_back(i, i - 1);
     in[0].emplace_back(i, i);
     in[0].emplace_back(i, i + 1);
     in[0].emplace_back(i, i + 2);
   }
-  in[0].emplace_back(99999, 99999);
-  in[0].emplace_back(100000, 99999);
-  in[0].emplace_back(100000, 100000);
+  in[0].emplace_back(2999999, 2999999);
+  in[0].emplace_back(2999999, 3000000);
+  in[0].emplace_back(3000000, 2999999);
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {
-      {{0, 0}, {0, 1}, {2, 0}, {2, 4}, {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
+      {{0, 1}, {1, 0}, {2, 0}, {2, 4}, {2999998, 2999996}, {2999998, 3000000}, {2999999, 3000000}, {3000000, 2999999}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -63,22 +64,22 @@ TEST(sequential_ivlev_a_convex_hull_perf_test, test_pipeline_run_) {
 TEST(sequential_ivlev_a_convex_hull_perf_test, test_task_run_) {
   // Create data
   std::vector<std::vector<std::pair<size_t, size_t>>> in = {{}};
-  in[0].emplace_back(0, 0);
   in[0].emplace_back(0, 1);
+  in[0].emplace_back(1, 0);
   in[0].emplace_back(1, 1);
-  for (size_t i = 2; i < 99999; i++) {
+  for (size_t i = 2; i < 2999999; i++) {
     in[0].emplace_back(i, i - 2);
     in[0].emplace_back(i, i - 1);
     in[0].emplace_back(i, i);
     in[0].emplace_back(i, i + 1);
     in[0].emplace_back(i, i + 2);
   }
-  in[0].emplace_back(99999, 99999);
-  in[0].emplace_back(100000, 99999);
-  in[0].emplace_back(100000, 100000);
+  in[0].emplace_back(2999999, 2999999);
+  in[0].emplace_back(2999999, 3000000);
+  in[0].emplace_back(3000000, 2999999);
   std::vector<std::vector<std::pair<size_t, size_t>>> out = {};
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {
-      {{0, 0}, {0, 1}, {2, 0}, {2, 4}, {99998, 99996}, {99998, 100000}, {100000, 99999}, {100000, 100000}}};
+      {{0, 1}, {1, 0}, {2, 0}, {2, 4}, {2999998, 2999996}, {2999998, 3000000}, {2999999, 3000000}, {3000000, 2999999}}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();

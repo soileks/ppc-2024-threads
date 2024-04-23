@@ -7,6 +7,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace ivlev_a_seq {
 class ConvexHullSequential : public ppc::core::Task {
  public:
   explicit ConvexHullSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -18,12 +19,10 @@ class ConvexHullSequential : public ppc::core::Task {
  private:
   std::vector<std::pair<size_t, size_t>> sizes;
   std::vector<std::vector<std::pair<size_t, size_t>>> components;
-  std::vector<std::vector<size_t>> images;
   std::vector<std::vector<std::pair<size_t, size_t>>> results;
 
-  static std::vector<std::pair<size_t, size_t>> ToComponents(const std::vector<size_t>& image_,
-                                                             std::pair<size_t, size_t> size_);
-  static std::vector<size_t> ToImage(const std::vector<std::pair<size_t, size_t>>& component_,
-                                     std::pair<size_t, size_t> size_);
   static std::vector<std::pair<size_t, size_t>> Convex_Hull(const std::vector<std::pair<size_t, size_t>>& component_);
 };
+
+size_t rotation(const std::pair<int, int>& a, const std::pair<int, int>& b, const std::pair<int, int>& c);
+} // namespace ivlev_a_seq

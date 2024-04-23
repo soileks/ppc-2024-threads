@@ -4,6 +4,7 @@
 #include <thread>
 
 using namespace std::chrono_literals;
+using namespace ivlev_a_seq;
 
 bool ConvexHullSequential::pre_processing() {
   internal_order_test();
@@ -21,10 +22,9 @@ bool ConvexHullSequential::pre_processing() {
           m_w = components[i][j].second;
         }
       }
-      std::sort(components[i].begin(), components[i].end());
+      // std::sort(components[i].begin(), components[i].end());
       sizes.emplace_back(components[i].back().first + 1, m_w + 1);
     }
-    images.resize(taskData->inputs_count[0]);
     results.resize(taskData->inputs_count[0]);
   } catch (...) {
     std::cout << "pre\n";
@@ -58,8 +58,6 @@ bool ConvexHullSequential::run() {
   internal_order_test();
   try {
     for (size_t i = 0; i < taskData->inputs_count[0]; i++) {
-      // images[i] = ToImage(components[i], sizes[i]);
-      // results[i] = ToComponents(images[i], sizes[i]);
       results[i] = Convex_Hull(components[i]);
     }
   } catch (...) {
@@ -88,33 +86,7 @@ bool ConvexHullSequential::post_processing() {
   return true;
 }
 
-std::vector<std::pair<size_t, size_t>> ConvexHullSequential::ToComponents(const std::vector<size_t>& image_,
-                                                                          std::pair<size_t, size_t> size_) {
-  std::vector<std::pair<size_t, size_t>> res;
-
-  for (size_t i = 0; i < image_.size(); i++) {
-    if (image_[i] == 1) {
-      res.emplace_back(i / size_.second, i % size_.second);
-    }
-  }
-
-  return res;
-}
-
-std::vector<size_t> ConvexHullSequential::ToImage(const std::vector<std::pair<size_t, size_t>>& component_,
-                                                  std::pair<size_t, size_t> size_) {
-  size_t height = size_.first;
-  size_t width = size_.second;
-  std::vector<size_t> res(height * width, 0);
-
-  for (const std::pair<size_t, size_t>& point : component_) {
-    res[point.first * width + point.second] = 1;
-  }
-
-  return res;
-}
-
-size_t rotation(const std::pair<int, int>& a, const std::pair<int, int>& b, const std::pair<int, int>& c) {
+size_t ivlev_a_seq::rotation(const std::pair<int, int>& a, const std::pair<int, int>& b, const std::pair<int, int>& c) {
   int tmp = (b.first - a.first) * (c.second - b.second) - (b.second - a.second) * (c.first - b.first);
   if (tmp == 0) return 0;
   return ((tmp > 0) ? 1 : 2);
