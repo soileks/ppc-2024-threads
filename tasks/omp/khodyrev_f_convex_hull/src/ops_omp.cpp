@@ -109,7 +109,7 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       Pixel p = hull.top();
       hull.pop();
       result[p.y * width_out + p.x] = 1;
-    }  
+    }
   } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
     return false;
