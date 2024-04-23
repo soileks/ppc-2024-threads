@@ -3,6 +3,7 @@
 #include "tbb/dostavalov_s_sop_gradient/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
+#include <atomic>
 
 #include <cmath>
 #include <random>
