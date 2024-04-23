@@ -148,4 +148,3 @@ inline bool get_img_from_file(const std::string& path, std::vector<uint32_t>& im
   return f.good();
 }
 }  // namespace kulagin_a_gauss
-
