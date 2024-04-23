@@ -134,8 +134,8 @@ bool SkotinMatrixMultiplicationOMPParallel::validation() {
 }
 
 bool SkotinMatrixMultiplicationOMPParallel::run() {
-  size_t blockSize = std::sqrt(matrixA.size());
-  size_t n = matrixA.size();
+  int blockSize = std::sqrt(matrixA.size());
+  int n = matrixA.size();
   resultMatrix.resize(n, std::vector<double>(n, 0.0));
 
 #pragma omp parallel for
