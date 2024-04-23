@@ -4,7 +4,6 @@
 
 #include <tbb/tbb.h>
 
-#include <atomic>
 #include <cmath>
 #include <random>
 #include <vector>
@@ -89,6 +88,10 @@ bool TbbSLAYGradient::run() {
   std::vector<double> direction = residual;
   std::vector<double> prev_residual = vector;
 
+  std::mutex mutex_residual_dot;
+  std::mutex mutex_A_Dir_dot;
+  std::mutex mutex_new_residual;
+
   double* matrix_ptr = matrix.data();
 
   while (true) {
@@ -102,8 +105,8 @@ bool TbbSLAYGradient::run() {
       }
     });
 
-    std::atomic<double> atomic_residual_dot_residual(0.0);
-    std::atomic<double> atomic_A_Dir_dot_direction(0.0);
+    double residual_dot_residual = 0.0;
+    double A_Dir_dot_direction = 0.0;
 
     tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
       double local_residual_dot_residual = 0.0;
@@ -114,12 +117,16 @@ bool TbbSLAYGradient::run() {
         local_residual_dot_residual += local_residual * local_residual;
         local_A_Dir_dot_direction += local_A_Dir * direction[i];
       }
-      atomic_residual_dot_residual.fetch_add(local_residual_dot_residual);
-      atomic_A_Dir_dot_direction.fetch_add(local_A_Dir_dot_direction);
+      {
+        std::lock_guard<std::mutex> lock(mutex_residual_dot);
+        residual_dot_residual += local_residual_dot_residual;
+      }
+      {
+        std::lock_guard<std::mutex> lock(mutex_A_Dir_dot);
+        A_Dir_dot_direction += local_A_Dir_dot_direction;
+      }
     });
 
-    double residual_dot_residual = atomic_residual_dot_residual;
-    double A_Dir_dot_direction = atomic_A_Dir_dot_direction;
     double alpha = residual_dot_residual / A_Dir_dot_direction;
 
     tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
@@ -134,7 +141,7 @@ bool TbbSLAYGradient::run() {
       }
     });
 
-    std::atomic<double> atomic_new_residual(0.0);
+    double new_residual = 0.0;
 
     tbb::parallel_for(tbb::blocked_range<long>(0, size), [&](const tbb::blocked_range<long>& range) {
       double local_new_residual = 0.0;
@@ -142,10 +149,11 @@ bool TbbSLAYGradient::run() {
         double local_residual = residual[i];
         local_new_residual += local_residual * local_residual;
       }
-      atomic_new_residual.fetch_add(local_new_residual);
+      {
+        std::lock_guard<std::mutex> lock(mutex_new_residual);
+        new_residual += local_new_residual;
+      }
     });
-
-    double new_residual = atomic_new_residual;
 
     if (sqrt(new_residual) < TOLERANCE) {
       break;
