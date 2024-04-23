@@ -135,7 +135,7 @@ TEST(kasimtcev_r_monteCarlo_TBB, Tested_sum_cos) {
 
 TEST(kasimtcev_r_monteCarlo_TBB, Tested_x_multiply_y) {
   double res = 2.25;
-  func f = fxy;
+  func f = fxy1;
 
   std::vector<double> a1 = {0, 1};
   std::vector<double> a2 = {0, 3};
@@ -177,7 +177,7 @@ TEST(kasimtcev_r_monteCarlo_TBB, Tested_x_multiply_y) {
 
 TEST(kasimtcev_r_monteCarlo_TBB, Tested_x_multiply_yy) {
   double res = 1.5;
-  func f = fxyy;
+  func f = fxyy1;
 
   std::vector<double> a1 = {0, 3};
   std::vector<double> a2 = {0, 1};
