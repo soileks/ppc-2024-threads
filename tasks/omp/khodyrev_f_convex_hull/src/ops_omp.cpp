@@ -74,7 +74,7 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       Pixel* pixels_begin = &pixels[0];
       Pixel* pixels_end = &pixels[0] + pixels.size();
 #pragma omp single
-        {
+    {
 #pragma omp task shared(pixels_begin, pixels_end)
       {
           std::sort(pixels_begin, pixels_end, [&](const Pixel& p1, const Pixel& p2) -> bool {
