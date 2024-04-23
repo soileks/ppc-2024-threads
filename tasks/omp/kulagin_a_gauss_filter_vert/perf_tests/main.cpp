@@ -1,5 +1,6 @@
 // Copyright 2024 Kulagin Aleksandr
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include "core/perf/include/perf.hpp"
 #include "omp/kulagin_a_gauss_filter_vert/include/ops_omp.hpp"
@@ -31,12 +32,7 @@ TEST(kulagin_a_gauss_filter_vert_seq, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -78,12 +74,7 @@ TEST(kulagin_a_gauss_filter_vert_seq, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
