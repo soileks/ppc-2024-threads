@@ -74,9 +74,9 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       Pixel* pixels_begin = &pixels[0];
       Pixel* pixels_end = &pixels[0] + pixels.size();
 #pragma omp single
-    {
-#pragma omp task shared(pixels_begin, pixels_end)
       {
+#pragma omp task shared(pixels_begin, pixels_end)
+        {
           std::sort(pixels_begin, pixels_end, [&](const Pixel& p1, const Pixel& p2) -> bool {
             int orientation =
                 (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
