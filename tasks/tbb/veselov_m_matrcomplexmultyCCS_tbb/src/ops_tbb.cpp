@@ -42,6 +42,7 @@ bool SparseMatrixComplexMultiTBBSequential::pre_processing() {
   notNullNumbers = 0;
   for (int j = 0; j < numCols2; ++j) {
     cols2.push_back(notNullNumbers);
+    
     for (int i = 0; i < numRows2; ++i) {
       int index = i * numRows2 + j;
       if (mat2[index].real != 0 || mat2[index].imag != 0) {
