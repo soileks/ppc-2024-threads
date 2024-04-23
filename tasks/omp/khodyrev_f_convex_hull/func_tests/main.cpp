@@ -1,6 +1,7 @@
 // Copyright 2024 Khodyrev Fedor
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <stack>
 #include <vector>
 
@@ -135,7 +136,7 @@ TEST(khodyrev_f_convex_hull_omp, Test_convex_hull_with_medium_image) {
   }
   for (std::vector<int>::size_type i = 0; i < in.size(); i++) {
     EXPECT_EQ(out_par[i], true_result[i]);
-  }  
+  }
 }
 
 TEST(khodyrev_f_convex_hull_seq, Test_convex_hull_with_big_image) {

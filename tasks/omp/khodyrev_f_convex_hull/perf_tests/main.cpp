@@ -1,6 +1,7 @@
 // Copyright 2024 Khodyrev Fedor
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <stack>
 #include <vector>
 

@@ -37,7 +37,7 @@ bool khodyrev_omp::KhodyrevTaskOMP::validation() {
 bool khodyrev_omp::KhodyrevTaskOMP::run() {
   internal_order_test();
   try {
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int y = 0; y < height_in; ++y) {
       for (int x = 0; x < width_in; ++x) {
         if (isWhite(image, width_in, x, y)) {
@@ -50,16 +50,16 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       }
     }
 
-    #pragma omp parallel shared(pixels, start_point)
+#pragma omp parallel shared(pixels, start_point)
     {
         Pixel local_start_point = start_point;
-        #pragma omp for
+#pragma omp for
         for (size_t i = 0; i < pixels.size(); i++) {
             if (pixels[i].y < local_start_point.y || (pixels[i].y == local_start_point.y && pixels[i].x < local_start_point.x)) {
                 local_start_point = pixels[i];
             }
         }
-        #pragma omp critical
+#pragma omp critical
         {
             if (local_start_point.y < start_point.y || (local_start_point.y == start_point.y && local_start_point.x < start_point.x)) {
                 start_point = local_start_point;
@@ -67,13 +67,13 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
         }
     }
 
-    #pragma omp parallel
+#pragma omp parallel
     {
         Pixel* pixels_begin = &pixels[0];
         Pixel* pixels_end = &pixels[0] + pixels.size();
-        #pragma omp single
+#pragma omp single
         {
-            #pragma omp task shared(pixels_begin, pixels_end)
+#pragma omp task shared(pixels_begin, pixels_end)
             {
                 std::sort(pixels_begin, pixels_end, [&](const Pixel& p1, const Pixel& p2) -> bool {
                     int orientation =
@@ -83,7 +83,7 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
                 });
             }
         }
-        #pragma omp taskwait
+#pragma omp taskwait
     }
 
     hull.push(pixels[0]);
@@ -168,10 +168,6 @@ bool khodyrev_omp::KhodyrevTaskSequential::run() {
         }
       }
     }
-
-//     for (size_t i = 0; i < pixels.size(); ++i) {
-//     std::cout << "Pixel " << i << ": x = " << pixels[i].x << ", y = " << pixels[i].y << std::endl;
-// }
 
     start_point = pixels[0];
     for (const Pixel& pixel : pixels) {

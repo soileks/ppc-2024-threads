@@ -60,4 +60,4 @@ class KhodyrevTaskSequential : public ppc::core::Task {
   std::vector<int> result;
 };
 
-} // namespace khodyrev_omp
+}  // namespace khodyrev_omp
