@@ -50,11 +50,11 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       }
     }
 
-#pragma omp parallel
+#pragma omp parallel shared(pixels, start_point)
     {
       Pixel local_start_point = start_point;
 #pragma omp for
-      for (int i = 0; i < static_cast<int>(pixels.size()); i++) {
+      for (size_t i = 0; i < pixels.size(); i++) {
         if (pixels[i].y < local_start_point.y ||
             (pixels[i].y == local_start_point.y && pixels[i].x < local_start_point.x)) {
           local_start_point = pixels[i];
@@ -69,23 +69,12 @@ bool khodyrev_omp::KhodyrevTaskOMP::run() {
       }
     }
 
-#pragma omp parallel
-    {
-      std::vector<Pixel> local_pixels(pixels.begin(), pixels.end());
-#pragma omp single
-      {
-#pragma omp task shared(local_pixels)
-        {
-          std::sort(local_pixels.begin(), local_pixels.end(), [&](const Pixel& p1, const Pixel& p2) -> bool {
-            int orientation =
-                (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
-            if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
-            return orientation > 0;
-          });
-        }
-      }
-#pragma omp taskwait
-    }
+    std::sort(pixels.begin(), pixels.end(), [&](const Pixel& p1, const Pixel& p2) -> bool {
+      int orientation =
+          (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
+      if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
+      return orientation > 0;
+    });
 
     hull.push(pixels[0]);
     hull.push(pixels[1]);
