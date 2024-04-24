@@ -28,7 +28,7 @@ TEST(FoxBlockedParallel, MatrixMultiplication2x2) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
-  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
+  auto* output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
@@ -63,7 +63,7 @@ TEST(FoxBlockedParallel, MatrixMultiplication) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
-  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
+  auto* output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
@@ -113,7 +113,7 @@ TEST(FoxBlockedParallel, MatrixMultiplication_VerySmallMatrices) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
-  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
+  auto* output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
@@ -163,7 +163,7 @@ TEST(FoxBlockedParallel, MatrixMultiplication_SmallMatrices) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
-  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
+  auto* output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
@@ -198,7 +198,7 @@ TEST(FoxBlockedParallel, MatrixMultiplicationWithNegatives) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
-  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
+  auto* output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
