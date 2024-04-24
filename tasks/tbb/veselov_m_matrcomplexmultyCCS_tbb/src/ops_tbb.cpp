@@ -84,7 +84,7 @@ bool SparseMatrixComplexMultiTBBSequential::post_processing() {
   for (int i = 0; i < numRows1 * numCols2; i++) {
     out_ptr[i] = res[i];
   }
-  
+
   delete[] res;
 
   return true;
@@ -144,7 +144,7 @@ bool SparseMatrixComplexMultiTBBParallel::pre_processing() {
 bool SparseMatrixComplexMultiTBBParallel::run() {
   internal_order_test();
 
-tbb::parallel_for(0, numCols2, 1, [&](int j) {
+  tbb::parallel_for(0, numCols2, 1, [&](int j) {
     for (int k = cols2[j]; k < cols2[j + 1]; k++) {
       Complex b = val2[k];
       int row_b = rows2[k];
