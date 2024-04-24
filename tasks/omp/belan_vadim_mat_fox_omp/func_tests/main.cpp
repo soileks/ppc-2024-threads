@@ -1,4 +1,3 @@
-// Copyright 2024 Vadim Belan
 #include <gtest/gtest.h>
 
 #include <vector>
@@ -29,17 +28,17 @@ TEST(FoxBlockedParallel, MatrixMultiplication2x2) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
+  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
   // Check the output
-  double *output = reinterpret_cast<double *>(taskData->outputs[0]);
   for (size_t i = 0; i < 4; ++i) {
     ASSERT_DOUBLE_EQ(output[i], expectedOutput[i]);
   }
 
   // Free memory
-  delete[] reinterpret_cast<double *>(taskData->outputs[0]);
+  delete[] output;
 }
 
 TEST(FoxBlockedParallel, MatrixMultiplication) {
@@ -64,17 +63,17 @@ TEST(FoxBlockedParallel, MatrixMultiplication) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
+  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
   // Check the output
-  double *output = reinterpret_cast<double *>(taskData->outputs[0]);
   for (size_t i = 0; i < 9; ++i) {
     ASSERT_DOUBLE_EQ(output[i], expectedOutput[i]);
   }
 
   // Free memory
-  delete[] reinterpret_cast<double *>(taskData->outputs[0]);
+  delete[] output;
 }
 
 TEST(FoxBlockedParallel, MatrixMultiplication_VerySmallMatrices) {
@@ -114,17 +113,17 @@ TEST(FoxBlockedParallel, MatrixMultiplication_VerySmallMatrices) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
+  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
   // Check the output
-  double *output = reinterpret_cast<double *>(taskData->outputs[0]);
   for (size_t i = 0; i < 10 * 10; ++i) {
     ASSERT_DOUBLE_EQ(output[i], expectedOutput[i]);
   }
 
   // Free memory
-  delete[] reinterpret_cast<double *>(taskData->outputs[0]);
+  delete[] output;
 }
 
 TEST(FoxBlockedParallel, MatrixMultiplication_SmallMatrices) {
@@ -164,17 +163,17 @@ TEST(FoxBlockedParallel, MatrixMultiplication_SmallMatrices) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
+  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
   // Check the output
-  double *output = reinterpret_cast<double *>(taskData->outputs[0]);
   for (size_t i = 0; i < 100 * 100; ++i) {
     ASSERT_DOUBLE_EQ(output[i], expectedOutput[i]);
   }
 
   // Free memory
-  delete[] reinterpret_cast<double *>(taskData->outputs[0]);
+  delete[] output;
 }
 
 TEST(FoxBlockedParallel, MatrixMultiplicationWithNegatives) {
@@ -199,15 +198,15 @@ TEST(FoxBlockedParallel, MatrixMultiplicationWithNegatives) {
   FoxBlockedParallel foxBlockedParallel(taskData);
   foxBlockedParallel.validation();
   foxBlockedParallel.pre_processing();
+  auto output = reinterpret_cast<double *>(taskData->outputs[0]);
   foxBlockedParallel.run();
   foxBlockedParallel.post_processing();
 
   // Check the output
-  double *output = reinterpret_cast<double *>(taskData->outputs[0]);
   for (size_t i = 0; i < 9; ++i) {
     ASSERT_DOUBLE_EQ(output[i], expectedOutput[i]);
   }
 
   // Free memory
-  delete[] reinterpret_cast<double *>(taskData->outputs[0]);
+  delete[] output;
 }
