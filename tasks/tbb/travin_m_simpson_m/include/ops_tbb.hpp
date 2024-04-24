@@ -1,10 +1,11 @@
 // Copyright 2024 Travin Maksim
 #pragma once
 
+#include <oneapi/tbb.h>
+
 #include <cmath>
 #include <functional>
 #include <memory>
-#include <oneapi/tbb.h>
 #include <string>
 #include <utility>
 #include <vector>
