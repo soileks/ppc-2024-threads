@@ -29,7 +29,13 @@ std::vector<double> kirillov_omp::strassen(const std::vector<double>& A, const s
 
   splitMatrix(A, A11, A12, A21, A22);
   splitMatrix(B, B11, B12, B21, B22);
-  std::vector<double> p1, p2, p3, p4, p5, p6, p7;
+  std::vector<double> p1;
+  std::vector<double> p2;
+  std::vector<double> p3;
+  std::vector<double> p4;
+  std::vector<double> p5;
+  std::vector<double> p6;
+  std::vector<double> p7;
 #pragma omp parallel sections
   {
 #pragma omp section
