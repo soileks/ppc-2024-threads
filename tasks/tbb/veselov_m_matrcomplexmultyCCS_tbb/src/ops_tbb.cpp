@@ -1,8 +1,9 @@
 // Copyright 2024 Veselov Mikhail
 #include "tbb/veselov_m_matrcomplexmultyCCS_tbb/include/ops_tbb.hpp"
 
-#include <thread>
 #include <tbb/tbb.h>
+
+#include <thread>
 
 using namespace VeselovTbb;
 
@@ -166,7 +167,6 @@ bool SparseMatrixComplexMultiTBBParallel::post_processing() {
   for (int i = 0; i < numRows1 * numCols2; i++) {
     out_ptr[i] = res[i];
   }
-
   delete[] res;
 
   return true;
