@@ -28,7 +28,7 @@ bool SparseMat_CRS_Mult_OMP::run() {
   std::vector<std::vector<size_t>> glob_col_ind(mat_in_1->row_c);
 
 #pragma omp parallel for default(none) shared(glob_row, glob_col_ind) schedule(static)
-  for (int i = 0; i < mat_in_1->row_c; i++) {
+  for (int i = 0; i < static_cast<int>(mat_in_1)->row_c; i++) {
     std::vector<double> loc_row(mat_out->col_c, 0.0);
     for (size_t j = mat_in_1->row_ind[i]; j < mat_in_1->row_ind[i + 1]; j++) {
       size_t col = mat_in_1->col_ind[j];
