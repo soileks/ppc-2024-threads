@@ -2,6 +2,7 @@
 #include "tbb/veselov_m_matrcomplexmultyCCS_tbb/include/ops_tbb.hpp"
 
 #include <thread>
+#include <tbb/tbb.h>
 
 using namespace VeselovTbb;
 
@@ -142,8 +143,7 @@ bool SparseMatrixComplexMultiTBBParallel::pre_processing() {
 bool SparseMatrixComplexMultiTBBParallel::run() {
   internal_order_test();
 
-#pragma omp parallel for
-  for (int j = 0; j < numCols2; j++) {
+tbb::parallel_for(0, numCols2, 1, [&](int j) {
     for (int k = cols2[j]; k < cols2[j + 1]; k++) {
       Complex b = val2[k];
       int row_b = rows2[k];
@@ -154,7 +154,7 @@ bool SparseMatrixComplexMultiTBBParallel::run() {
         res[row_a * numCols2 + j].imag += a.real * b.imag + a.imag * b.real;
       }
     }
-  }
+  });
 
   return true;
 }
