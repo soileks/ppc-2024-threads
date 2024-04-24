@@ -30,23 +30,23 @@ std::vector<double> kirillov_omp::strassen(const std::vector<double>& A, const s
   splitMatrix(A, A11, A12, A21, A22);
   splitMatrix(B, B11, B12, B21, B22);
   std::vector<double> p1, p2, p3, p4, p5, p6, p7;
-  #pragma omp parallel sections
-    {
-  #pragma omp section
-      p1 = strassen(add(A11, A22), add(B11, B22), half);
-  #pragma omp section
-      p2 = strassen(add(A21, A22), B11, half);
-  #pragma omp section
-      p3 = strassen(A11, sub(B12, B22), half);
-  #pragma omp section
-      p4 = strassen(A22, sub(B21, B11), half);
-  #pragma omp section
-      p5 = strassen(add(A11, A12), B22, half);
-  #pragma omp section
-      p6 = strassen(sub(A21, A11), add(B11, B12), half);
-  #pragma omp section
-      p7 = strassen(sub(A12, A22), add(B21, B22), half);
-    }
+#pragma omp parallel sections
+  {
+#pragma omp section
+    p1 = strassen(add(A11, A22), add(B11, B22), half);
+#pragma omp section
+    p2 = strassen(add(A21, A22), B11, half);
+#pragma omp section
+    p3 = strassen(A11, sub(B12, B22), half);
+#pragma omp section
+    p4 = strassen(A22, sub(B21, B11), half);
+#pragma omp section
+    p5 = strassen(add(A11, A12), B22, half);
+#pragma omp section
+    p6 = strassen(sub(A21, A11), add(B11, B12), half);
+#pragma omp section
+    p7 = strassen(sub(A12, A22), add(B21, B22), half);
+  }
 
   std::vector<double> C11 = add(add(p1, p4), sub(p7, p5));
   std::vector<double> C12 = add(p3, p5);
@@ -57,7 +57,7 @@ std::vector<double> kirillov_omp::strassen(const std::vector<double>& A, const s
 }
 
 std::vector<double> kirillov_omp::joinMatrices(const std::vector<double>& A11, const std::vector<double>& A12,
-                                         const std::vector<double>& A21, const std::vector<double>& A22, int n) {
+                                               const std::vector<double>& A21, const std::vector<double>& A22, int n) {
   int half = n / 2;
   std::vector<double> A(n * n, 0.0);
   for (int i = 0; i < half; i++) {
@@ -72,7 +72,7 @@ std::vector<double> kirillov_omp::joinMatrices(const std::vector<double>& A11, c
 }
 
 void kirillov_omp::splitMatrix(const std::vector<double>& A, std::vector<double>& A11, std::vector<double>& A12,
-                         std::vector<double>& A21, std::vector<double>& A22) {
+                               std::vector<double>& A21, std::vector<double>& A22) {
   int half = std::sqrt(A.size()) / 2;
   for (int i = 0; i < half; i++) {
     for (int j = 0; j < half; j++) {
