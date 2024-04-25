@@ -85,7 +85,7 @@ bool TestTaskSequentialMortinaIntegralTrapezoid::run() {
 
 bool TestTaskSequentialMortinaIntegralTrapezoid::post_processing() {
   internal_order_test();
-  reinterpret_cast<double*>(taskData->outputs[0])[0] = res;
+  reinterpret_cast<double *>(taskData->outputs[0])[0] = res;
   return true;
 }
 
@@ -115,7 +115,7 @@ bool TestOMPTaskParallelMortinaIntegralTrapezoid::run() {
 
 bool TestOMPTaskParallelMortinaIntegralTrapezoid::post_processing() {
   internal_order_test();
-  reinterpret_cast<double*>(taskData->outputs[0])[0] = res;
+  reinterpret_cast<double *>(taskData->outputs[0])[0] = res;
   return true;
 }
 }  // namespace Mortina_a_omp_integral_trapezoid
