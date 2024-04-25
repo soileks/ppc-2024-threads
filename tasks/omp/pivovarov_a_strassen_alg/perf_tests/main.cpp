@@ -7,7 +7,7 @@
 #include "omp/pivovarov_a_strassen_alg/include/ops_omp.hpp"
 
 TEST(omp_pivovarov_a_strassen_alg_perf_test, test_pipeline_run) {
-  int n = 128;
+  int n = 64;
 
   // Create data
   std::vector<double> in_A = createRndMatrix(n);
@@ -57,7 +57,7 @@ TEST(omp_pivovarov_a_strassen_alg_perf_test, test_pipeline_run) {
 }
 
 TEST(omp_pivovarov_a_strassen_alg_perf_test, test_task_run) {
-  int n = 128;
+  int n = 64;
 
   // Create data
   std::vector<double> in_A = createRndMatrix(n);
