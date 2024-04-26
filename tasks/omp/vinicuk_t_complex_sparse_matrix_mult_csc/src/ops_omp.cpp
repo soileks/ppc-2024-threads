@@ -64,7 +64,7 @@ bool vinichuk_t_omp::MultMatrixCSCComplex::run() {
       }
     }
   }
-  for (int i = 0; i < temp_values.size(); i++) {
+  for (size_t i = 0; i < temp_values.size(); i++) {
     mtrx_res->col_ptrs.push_back(mtrx_res->values.size() + temp_values[i].size());
     mtrx_res->values.insert(mtrx_res->values.end(), temp_values[i].begin(), temp_values[i].end());
     mtrx_res->row_indexes.insert(mtrx_res->row_indexes.end(), temp_row_indexes[i].begin(), temp_row_indexes[i].end());
