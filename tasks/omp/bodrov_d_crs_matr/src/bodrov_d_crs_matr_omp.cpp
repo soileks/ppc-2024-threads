@@ -1,10 +1,10 @@
 // Copyright 2024 Bodrov Daniil
+#include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
+
 #include <algorithm>
 #include <complex>
 #include <utility>
 #include <vector>
-
-#include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
 
 using namespace std::chrono_literals;
 
