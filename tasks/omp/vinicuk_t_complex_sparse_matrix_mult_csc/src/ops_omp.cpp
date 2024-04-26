@@ -43,13 +43,13 @@ bool vinichuk_t_omp::MultMatrixCSCComplex::run() {
   mtrx_res->col_ptrs.push_back(0);
 
 #pragma omp parallel for private(sum) schedule(dynamic)
-  for (int j = 0; j < mtrx_B->num_cols; j++) {
+  for (size_t j = 0; j < mtrx_B->num_cols; j++) {
     // std::vector<std::complex<double>> temp_values;
     // std::vector<int> temp_row_indexes;
-    for (int i = 0; i < mtrx_A->num_rows; i++) {
+    for (size_t i = 0; i < mtrx_A->num_rows; i++) {
       sum.imag(0.0);
       sum.real(0.0);
-      for (int k = mtrx_B->col_ptrs[j]; k < mtrx_B->col_ptrs[j + 1]; k++) {
+      for (size_t k = mtrx_B->col_ptrs[j]; k < mtrx_B->col_ptrs[j + 1]; k++) {
         auto start = mtrx_A->row_indexes.begin() + mtrx_A->col_ptrs[mtrx_B->row_indexes[k]];
         auto end = mtrx_A->row_indexes.begin() + mtrx_A->col_ptrs[mtrx_B->row_indexes[k] + 1];
         auto it = find(start, end, i);
@@ -64,7 +64,7 @@ bool vinichuk_t_omp::MultMatrixCSCComplex::run() {
       }
     }
   }
-  for (int i = 0; i < temp_values.size(); i++) {
+  for (size_t i = 0; i < temp_values.size(); i++) {
     mtrx_res->col_ptrs.push_back(mtrx_res->values.size() + temp_values[i].size());
     mtrx_res->values.insert(mtrx_res->values.end(), temp_values[i].begin(), temp_values[i].end());
     mtrx_res->row_indexes.insert(mtrx_res->row_indexes.end(), temp_row_indexes[i].begin(), temp_row_indexes[i].end());
