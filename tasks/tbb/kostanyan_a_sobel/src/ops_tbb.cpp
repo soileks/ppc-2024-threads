@@ -96,7 +96,7 @@ bool Kostanyan_EdgeDetectionTBBParallel::run() {
     return true;
   }
 
-  tbb::parallel_for(tbb::blocked_range<int>(1, n - 1), [&](const tbb::blocked_range<int>& range) {
+  tbb::parallel_for(tbb::blocked_range<int>(1, n - 1), [&](const tbb::blocked_range<int> &range) {
     for (int i = range.begin(); i != range.end(); ++i) {
       for (int j = 1; j < m - 1; j++) {
         int gx = -input_[(i - 1) * m + j - 1] + input_[(i - 1) * m + j + 1] - 2 * input_[i * m + j - 1] +

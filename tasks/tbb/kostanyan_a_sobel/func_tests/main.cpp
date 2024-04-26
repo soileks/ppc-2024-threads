@@ -36,7 +36,7 @@ TEST(kostanyan_a_sobel_tbb, Test_EdgeDetection) {
   kostanyan_EdgeDetectionTBBSequential.run();
   kostanyan_EdgeDetectionTBBSequential.post_processing();
 
-    // Create TaskData for TBB
+  // Create TaskData for TBB
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
   taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataOmp->inputs_count.emplace_back(in.size());
@@ -81,12 +81,11 @@ TEST(kostanyan_a_sobel_tbb, Test_Empty_Image) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
-    // Create Task for Sequential
+  // Create Task for Sequential
   Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.run(), false);
-
 
   // Create TaskData for TBB
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -127,7 +126,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Single_Pixel_Image) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
-    // Create Task for Sequential
+  // Create Task for Sequential
   Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
@@ -175,13 +174,12 @@ TEST(kostanyan_a_sobel_tbb, Test_All_White_Image) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
-    // Create Task for Sequential
+  // Create Task for Sequential
   Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   kostanyan_EdgeDetectionTBBSequential.run();
   kostanyan_EdgeDetectionTBBSequential.post_processing();
-
 
   // Create TaskData for TBB
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -228,7 +226,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Large_Image) {
   taskDataSeq->inputs_count.emplace_back(pict.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
-  
+
   // Create Task for Sequential
   Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
