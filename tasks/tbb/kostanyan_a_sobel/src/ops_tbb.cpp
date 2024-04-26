@@ -1,5 +1,5 @@
 // Copyright Kostanyan Arsen 2024
-#include "/home/arkosta/omp/ppc-2024-threads/tasks/tbb/kostanyan_a_sobel/include/ops_tbb.hpp"
+#include "tbb/kostanyan_a_sobel/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
 

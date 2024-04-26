@@ -4,7 +4,7 @@
 #include <cmath>
 #include <vector>
 
-#include "/home/arkosta/omp/ppc-2024-threads/tasks/tbb/kostanyan_a_sobel/include/ops_tbb.hpp"
+#include "tbb/kostanyan_a_sobel/include/ops_tbb.hpp"
 
 TEST(kostanyan_a_sobel_tbb, Test_EdgeDetection) {
   const int n = 10;
