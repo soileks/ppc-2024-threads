@@ -1,10 +1,10 @@
 // Copyright 2024 Bodrov Daniil
-#include "seq/bodrov_d_crs_matr/include/bodrov_d_crs_matr_seq.hpp"
-
 #include <algorithm>
 #include <complex>
 #include <utility>
 #include <vector>
+
+#include "seq/bodrov_d_crs_matr/include/bodrov_d_crs_matr_seq.hpp"
 
 using namespace std::chrono_literals;
 
@@ -92,7 +92,8 @@ bool SparseMatrixSolverBodrovOMP::validation() {
   return true;
 }
 
-std::complex<double> computeDotProduct(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M, int row_A, int row_B) {
+std::complex<double> computeDotProduct(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M, int row_A,
+                                       int row_B) {
   std::complex<double> result;
   int k_A = A_M.pointer[row_A];
   int k_B = B_M.pointer[row_B];
