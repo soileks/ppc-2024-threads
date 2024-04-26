@@ -28,7 +28,8 @@ bool LysanovaTaskOmp::pre_processing() {
 bool LysanovaTaskOmp::run() {
   internal_order_test();
   try {
-    int q = 2, t = n / q;
+    int q = 2;
+    int t = n / q;
     double* c;
     double* a;
     double* b;

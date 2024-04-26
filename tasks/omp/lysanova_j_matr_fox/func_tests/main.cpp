@@ -65,7 +65,9 @@ TEST(lysanova_j_matr_fox_omp, AEsd) {
 
 TEST(lysanova_j_matr_fox_omp, EA) {
   size_t n = 8;
-  std::vector<double> C(n * n), B(n * n), A(n * n);
+  std::vector<double> C(n * n);
+  std::vector<double> B(n * n);
+  std::vector<double> A(n * n);
   me_omp::RandomFillMatrix(B.data(), B.size());
   me_omp::EMatrix(A.data(), n);
 
@@ -91,7 +93,9 @@ TEST(lysanova_j_matr_fox_omp, EA) {
 
 TEST(lysanova_j_matr_fox_omp, EsdA) {
   size_t n = 8;
-  std::vector<double> C(n * n), B(n * n), A(n * n);
+  std::vector<double> C(n * n);
+  std::vector<double> B(n * n);
+  std::vector<double> A(n * n);
   me_omp::RandomFillMatrix(B.data(), B.size());
   me_omp::EsdMatrix(A.data(), n);
 
@@ -120,7 +124,9 @@ TEST(lysanova_j_matr_fox_omp, EsdA) {
 TEST(lysanova_j_matr_fox_omp, kAE) {
   size_t n = 8;
   double k = 42.0;
-  std::vector<double> C(n * n), B(n * n), A(n * n);
+  std::vector<double> C(n * n);
+  std::vector<double> B(n * n);
+  std::vector<double> A(n * n);
   me_omp::RandomFillMatrix(A.data(), A.size());
   me_omp::EMatrix(B.data(), n, k);
 

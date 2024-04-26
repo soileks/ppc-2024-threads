@@ -18,7 +18,7 @@ class LysanovaTaskOmp : public ppc::core::Task {
 
  private:
   double *A{}, *B{}, *C{};
-  size_t n{};
+  int n{};
 };
 
 namespace lysanova_j_matr_fox_omp {
