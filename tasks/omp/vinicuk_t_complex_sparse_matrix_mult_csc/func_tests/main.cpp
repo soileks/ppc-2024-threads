@@ -106,7 +106,7 @@ TEST(vinicuk_t_complex_sparse_matrix_mult_csc_omp, test_multiply_diganal_square_
   testTaskSequential.post_processing();
   std::complex<double> answer1(3.0, 4.0);
 
-  for (int i = 0; i < mtrx_res.values.size(); i++) ASSERT_EQ(mtrx_res.values[i], answer1);
+  for (size_t i = 0; i < mtrx_res.values.size(); i++) ASSERT_EQ(mtrx_res.values[i], answer1);
 }
 
 TEST(vinicuk_t_complex_sparse_matrix_mult_csc_omp, test_multiply_triangle_square_matrix_on_vector) {
@@ -155,7 +155,7 @@ TEST(vinicuk_t_complex_sparse_matrix_mult_csc_omp, test_multiply_triangle_square
   testTaskSequential.post_processing();
 
   k = n;
-  for (int i = 0; i < mtrx_res.values.size(); i++) {
+  for (size_t i = 0; i < mtrx_res.values.size(); i++) {
     ASSERT_EQ(mtrx_res.values[i], std::complex<double>(3.0 * k, 4.0 * k));
     k--;
   }
