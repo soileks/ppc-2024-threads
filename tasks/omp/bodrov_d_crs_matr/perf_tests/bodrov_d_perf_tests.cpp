@@ -10,12 +10,12 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
 
-SparseMatrix generate_random_matrix1(int n, int m, double proba, int seed) {
+SparseMatrixBodrovOMP generate_random_matrix_bodrov_omp(int n, int m, double proba, int seed) {
   std::mt19937 gen(seed);
   std::uniform_real_distribution<double> random(-2.0, 2.0);
   std::bernoulli_distribution bernoulli(proba);
 
-  SparseMatrix result;
+  SparseMatrixBodrovOMP result;
   result.n_rows = n;
   result.n_cols = m;
   result.pointer.assign(result.n_rows + 1, 0);
@@ -39,10 +39,10 @@ SparseMatrix generate_random_matrix1(int n, int m, double proba, int seed) {
   return result;
 }
 
-TEST(bodrov_d_crs_matr_seq, test_pipeline_run) {
-  SparseMatrix A = generate_random_matrix1(100, 100, 0.6, 4113);
-  SparseMatrix B = generate_random_matrix1(100, 100, 0.6, 2134);
-  SparseMatrix Result;
+TEST(bodrov_d_crs_matr_omp, test_pipeline_run) {
+  SparseMatrixBodrovOMP A = generate_random_matrix_bodrov_omp(100, 100, 0.6, 4113);
+  SparseMatrixBodrovOMP B = generate_random_matrix_bodrov_omp(100, 100, 0.6, 2134);
+  SparseMatrixBodrovOMP Result;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -51,7 +51,7 @@ TEST(bodrov_d_crs_matr_seq, test_pipeline_run) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  auto taskOmp = std::make_shared<SparseMatrixSolver>(taskDataOmp);
+  auto taskOmp = std::make_shared<SparseMatrixSolverBodrovOMP>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -68,10 +68,10 @@ TEST(bodrov_d_crs_matr_seq, test_pipeline_run) {
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
 
-TEST(bodrov_d_crs_matr_seq, test_task_run) {
-  SparseMatrix A = generate_random_matrix1(100, 100, 0.6, 4113);
-  SparseMatrix B = generate_random_matrix1(100, 100, 0.6, 2134);
-  SparseMatrix Result;
+TEST(bodrov_d_crs_matr_omp, test_task_run) {
+  SparseMatrixBodrovOMP A = generate_random_matrix_bodrov_omp(100, 100, 0.6, 4113);
+  SparseMatrixBodrovOMP B = generate_random_matrix_bodrov_omp(100, 100, 0.6, 2134);
+  SparseMatrixBodrovOMP Result;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -80,7 +80,7 @@ TEST(bodrov_d_crs_matr_seq, test_task_run) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  auto taskOmp = std::make_shared<SparseMatrixSolver>(taskDataOmp);
+  auto taskOmp = std::make_shared<SparseMatrixSolverBodrovOMP>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

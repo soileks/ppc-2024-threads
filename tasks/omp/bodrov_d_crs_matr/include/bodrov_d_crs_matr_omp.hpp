@@ -8,7 +8,7 @@
 
 #include "core/task/include/task.hpp"
 
-struct SparseMatrix {
+struct SparseMatrixBodrovOMP {
   int n_rows{};
   int n_cols{};
   std::vector<std::complex<double>> non_zero_values{};
@@ -16,14 +16,14 @@ struct SparseMatrix {
   std::vector<int> col_indexes{};
 };
 
-class SparseMatrixSolver : public ppc::core::Task {
+class SparseMatrixSolverBodrovOMP : public ppc::core::Task {
  public:
-  explicit SparseMatrixSolver(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit SparseMatrixSolverBodrovOMP(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
   bool post_processing() override;
 
  private:
-  SparseMatrix *A_M{}, *B_M{}, *Result{};
+  SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
 };

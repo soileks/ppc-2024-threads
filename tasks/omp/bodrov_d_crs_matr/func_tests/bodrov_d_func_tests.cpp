@@ -7,21 +7,21 @@
 #include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
 
 TEST(bodrov_d_crs_matr_omp, test_invalid_matrices) {
-  SparseMatrix A;
+  SparseMatrixBodrovOMP A;
   A.n_rows = 2;
   A.n_cols = 3;
   A.pointer = {0, 2, 3};
   A.col_indexes = {0, 2, 1};
   A.non_zero_values = {1, 2, 3};
 
-  SparseMatrix B;
+  SparseMatrixBodrovOMP B;
   B.n_rows = 3;
   B.n_cols = 2;
   B.pointer = {0, 2, 3};
   B.col_indexes = {0, 2, 1};
   B.non_zero_values = {1, 2, 3};
 
-  SparseMatrix Result;
+  SparseMatrixBodrovOMP Result;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -30,28 +30,28 @@ TEST(bodrov_d_crs_matr_omp, test_invalid_matrices) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  SparseMatrixSolver taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), false);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
-  SparseMatrix A;
+  SparseMatrixBodrovOMP A;
   A.n_rows = 3;
   A.n_cols = 3;
   A.pointer = {0, 1, 2, 3};
   A.col_indexes = {0, 1, 2};
   A.non_zero_values = {1, 1, 1};
 
-  SparseMatrix B;
+  SparseMatrixBodrovOMP B;
   B.n_rows = 3;
   B.n_cols = 3;
   B.pointer = {0, 1, 2, 3};
   B.col_indexes = {0, 1, 2};
   B.non_zero_values = {1, 1, 1};
 
-  SparseMatrix Result;
+  SparseMatrixBodrovOMP Result;
 
-  SparseMatrix Expected;
+  SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 3;
   Expected.n_cols = 3;
   Expected.pointer = {0, 1, 2, 3};
@@ -65,7 +65,7 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  SparseMatrixSolver taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), true);
   ASSERT_EQ(taskOmp.pre_processing(), true);
   ASSERT_EQ(taskOmp.run(), true);
@@ -79,23 +79,23 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
 }
 
 TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
-  SparseMatrix A;
+  SparseMatrixBodrovOMP A;
   A.n_rows = 3;
   A.n_cols = 3;
   A.pointer = {0, 1, 3, 4};
   A.col_indexes = {0, 1, 0, 2};
   A.non_zero_values = {1, 2, 3, 4};
 
-  SparseMatrix B;
+  SparseMatrixBodrovOMP B;
   B.n_rows = 3;
   B.n_cols = 3;
   B.pointer = {0, 2, 3, 4};
   B.col_indexes = {0, 2, 1, 2};
   B.non_zero_values = {1, 2, 3, 4};
 
-  SparseMatrix Result;
+  SparseMatrixBodrovOMP Result;
 
-  SparseMatrix Expected;
+  SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 3;
   Expected.n_cols = 3;
   Expected.pointer = {0, 2, 3, 4};
@@ -109,7 +109,7 @@ TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  SparseMatrixSolver taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), true);
   ASSERT_EQ(taskOmp.pre_processing(), true);
   ASSERT_EQ(taskOmp.run(), true);
@@ -128,14 +128,14 @@ TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
 }
 
 TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
-  SparseMatrix A;
+  SparseMatrixBodrovOMP A;
   A.n_rows = 4;
   A.n_cols = 4;
   A.pointer = {0, 1, 3, 5, 8};
   A.col_indexes = {0, 1, 3, 0, 2, 0, 1, 3};
   A.non_zero_values = {1, {0, 1}, {0, 1}, 1, {1, 1}, 2, 3, {2, -1}};
 
-  SparseMatrix B;
+  SparseMatrixBodrovOMP B;
   B.n_rows = 4;
   B.n_cols = 4;
   B.pointer = {0, 1, 4, 6, 9};
@@ -143,8 +143,8 @@ TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
   B.non_zero_values = {1,           {-1, 1}, {1.5, 0.5},   {0.5, -0.5}, {-0.5, 0.5},
                        {0.5, -0.5}, {1, -1}, {-1.5, -1.5}, {-0.5, 0.5}};
 
-  SparseMatrix Result;
-  SparseMatrix Expected;
+  SparseMatrixBodrovOMP Result;
+  SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 4;
   Expected.n_cols = 4;
   Expected.pointer = {0, 1, 2, 3, 4};
@@ -158,7 +158,7 @@ TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  SparseMatrixSolver taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), true);
   ASSERT_EQ(taskOmp.pre_processing(), true);
   ASSERT_EQ(taskOmp.run(), true);
@@ -177,23 +177,23 @@ TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
 }
 
 TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
-  SparseMatrix A;
+  SparseMatrixBodrovOMP A;
   A.n_rows = 5;
   A.n_cols = 4;
   A.pointer = {0, 2, 3, 4, 5, 6};
   A.col_indexes = {0, 2, 1, 0, 2, 3};
   A.non_zero_values = {{0, 1}, {2, 3}, {1, 1}, {4, 1}, {1, 2}, {2, 2}};
 
-  SparseMatrix B;
+  SparseMatrixBodrovOMP B;
   B.n_rows = 4;
   B.n_cols = 5;
   B.pointer = {0, 2, 3, 5, 7};
   B.col_indexes = {0, 3, 2, 1, 3, 2, 4};
   B.non_zero_values = {{1, 1}, {4, 1}, {1, 2}, {3, 0}, {7, 7}, {2, 1}, {3, 2}};
 
-  SparseMatrix Result;
+  SparseMatrixBodrovOMP Result;
 
-  SparseMatrix Expected;
+  SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 5;
   Expected.n_cols = 5;
   Expected.pointer = {0, 3, 4, 6, 8, 10};
@@ -207,7 +207,7 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  SparseMatrixSolver taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), true);
   ASSERT_EQ(taskOmp.pre_processing(), true);
   ASSERT_EQ(taskOmp.run(), true);
@@ -226,23 +226,23 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
 }
 
 TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
-  SparseMatrix A;
+  SparseMatrixBodrovOMP A;
   A.n_rows = 3;
   A.n_cols = 3;
   A.pointer = {0, 1, 2, 3};
   A.col_indexes = {0, 1, 2};
   A.non_zero_values = {{2, 3}, {1, 1}, {4, 1}};
 
-  SparseMatrix B;
+  SparseMatrixBodrovOMP B;
   B.n_rows = 3;
   B.n_cols = 3;
   B.pointer = {0, 1, 2, 3};
   B.col_indexes = {2, 1, 0};
   B.non_zero_values = {{3, 0}, {7, 7}, {2, 1}};
 
-  SparseMatrix Result;
+  SparseMatrixBodrovOMP Result;
 
-  SparseMatrix Expected;
+  SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 3;
   Expected.n_cols = 3;
   Expected.pointer = {0, 1, 2, 3};
@@ -256,7 +256,7 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  SparseMatrixSolver taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), true);
   ASSERT_EQ(taskOmp.pre_processing(), true);
   ASSERT_EQ(taskOmp.run(), true);

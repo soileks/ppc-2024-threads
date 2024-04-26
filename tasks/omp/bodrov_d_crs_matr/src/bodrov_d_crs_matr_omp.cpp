@@ -8,8 +8,8 @@
 
 using namespace std::chrono_literals;
 
-SparseMatrix T(const SparseMatrix& M) {
-  SparseMatrix temp_matrix{M.n_cols, M.n_rows, {}, {}, {}};
+SparseMatrixBodrovOMP T(const SparseMatrixBodrovOMP& M) {
+  SparseMatrixBodrovOMP temp_matrix{M.n_cols, M.n_rows, {}, {}, {}};
 
   std::vector<std::vector<std::pair<int, std::complex<double>>>> columns(M.n_cols);
 
@@ -32,7 +32,7 @@ SparseMatrix T(const SparseMatrix& M) {
   return temp_matrix;
 }
 
-bool isValidPointer(const SparseMatrix& M) {
+bool isValidPointer(const SparseMatrixBodrovOMP& M) {
   if (M.pointer.size() != static_cast<size_t>(M.n_rows + 1)) return false;
 
   for (int i = 1; i <= M.n_rows; i++) {
@@ -42,7 +42,7 @@ bool isValidPointer(const SparseMatrix& M) {
   return true;
 }
 
-bool isValidColumnIndexes(const SparseMatrix& M) {
+bool isValidColumnIndexes(const SparseMatrixBodrovOMP& M) {
   int non_zero_elems_count = M.non_zero_values.size();
 
   if (M.col_indexes.size() != static_cast<size_t>(non_zero_elems_count)) return false;
@@ -54,7 +54,7 @@ bool isValidColumnIndexes(const SparseMatrix& M) {
   return true;
 }
 
-bool IsCRS(const SparseMatrix& M) {
+bool IsCRS(const SparseMatrixBodrovOMP& M) {
   if (!isValidPointer(M)) return false;
 
   if (M.pointer[0] != 0 || M.pointer[M.n_rows] != static_cast<int>(M.non_zero_values.size())) return false;
@@ -64,7 +64,7 @@ bool IsCRS(const SparseMatrix& M) {
   return true;
 }
 
-bool SparseMatrixSolver::pre_processing() {
+bool SparseMatrixSolverBodrovOMP::pre_processing() {
   internal_order_test();
 
   *B_M = T(*B_M);
@@ -72,16 +72,16 @@ bool SparseMatrixSolver::pre_processing() {
   return true;
 }
 
-bool SparseMatrixSolver::validation() {
+bool SparseMatrixSolverBodrovOMP::validation() {
   internal_order_test();
 
   if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
       !taskData->outputs_count.empty())
     return false;
 
-  A_M = reinterpret_cast<SparseMatrix*>(taskData->inputs[0]);
-  B_M = reinterpret_cast<SparseMatrix*>(taskData->inputs[1]);
-  Result = reinterpret_cast<SparseMatrix*>(taskData->outputs[0]);
+  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
 
   if (A_M == nullptr || B_M == nullptr || Result == nullptr) return false;
 
@@ -92,7 +92,7 @@ bool SparseMatrixSolver::validation() {
   return true;
 }
 
-std::complex<double> computeDotProduct(const SparseMatrix& A_M, const SparseMatrix& B_M, int row_A, int row_B) {
+std::complex<double> computeDotProduct(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M, int row_A, int row_B) {
   std::complex<double> result;
   int k_A = A_M.pointer[row_A];
   int k_B = B_M.pointer[row_B];
@@ -117,7 +117,7 @@ std::complex<double> computeDotProduct(const SparseMatrix& A_M, const SparseMatr
 
 bool isNonZero(const std::complex<double>& value) { return std::norm(value) > 1e-6; }
 
-bool SparseMatrixSolver::run() {
+bool SparseMatrixSolverBodrovOMP::run() {
   internal_order_test();
 
   Result->n_rows = A_M->n_rows;
@@ -147,7 +147,7 @@ bool SparseMatrixSolver::run() {
   return true;
 }
 
-bool SparseMatrixSolver::post_processing() {
+bool SparseMatrixSolverBodrovOMP::post_processing() {
   internal_order_test();
   return true;
 }
