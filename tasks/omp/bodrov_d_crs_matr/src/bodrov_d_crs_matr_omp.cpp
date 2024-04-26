@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-#include "seq/bodrov_d_crs_matr/include/bodrov_d_crs_matr_seq.hpp"
+#include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
 
 using namespace std::chrono_literals;
 
