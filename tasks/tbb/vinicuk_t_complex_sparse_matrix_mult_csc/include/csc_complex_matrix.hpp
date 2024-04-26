@@ -14,10 +14,4 @@ struct CSCComplexMatrix {
   int num_cols;
 
   CSCComplexMatrix(int _num_cols, int _num_rows) : num_rows(_num_rows), num_cols(_num_cols) {}
-  CSCComplexMatrix(const CSCComplexMatrix& other)
-      : values(other.values),
-        row_indexes(other.row_indexes),
-        col_ptrs(other.col_ptrs),
-        num_rows(other.num_rows),
-        num_cols(other.num_cols) {}
 };
