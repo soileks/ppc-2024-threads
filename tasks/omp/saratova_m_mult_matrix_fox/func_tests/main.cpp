@@ -1,7 +1,7 @@
 // Copyright 2024 Saratova Marina
 #include <gtest/gtest.h>
-
 #include <omp.h>
+
 #include <iostream>
 #include <vector>
 
@@ -47,7 +47,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Another_Matrix) {
   std::vector<double> par_in1{0.0, 1.0, 1.0, 0.0};
   std::vector<double> par_in2{24.0, 45.0, -31.0, 10.0};  
   std::vector<double> out_seq(n * n);
-  std::vector<double> out_par(n * n);  
+  std::vector<double> out_par(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(seq_in1.data()));
@@ -86,7 +86,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Another_Matrix) {
     for (size_t j = 0; j < n; j++) {
       EXPECT_DOUBLE_EQ(out_par[i * n + j], par_in2[((n - i - 1)) * n + j]);
     }
-  }  
+  }
 }
 
 TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Matrix) {
@@ -96,7 +96,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Matrix) {
   std::vector<double> par_in1{1.0, 0.0, 0.0, 1.0};
   std::vector<double> par_in2{24.0, 45.0, -31.0, 10.0};  
   std::vector<double> out_seq(n * n);
-  std::vector<double> out_par(n * n);  
+  std::vector<double> out_par(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(seq_in1.data()));
@@ -131,7 +131,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Matrix) {
   }
   for (size_t i = 0; i < n * n; i++) {
     EXPECT_DOUBLE_EQ(out_par[i], par_in2[i]);
-  }  
+  }
 }
 
 TEST(Saratova_M_Mult_Matrix_Fox, Matrix_Mult_On_Identity) {
@@ -139,9 +139,9 @@ TEST(Saratova_M_Mult_Matrix_Fox, Matrix_Mult_On_Identity) {
   std::vector<double> seq_in1{24.0, 45.0, -31.0, 10.0};
   std::vector<double> seq_in2{1.0, 0.0, 0.0, 1.0};
   std::vector<double> par_in1{24.0, 45.0, -31.0, 10.0};
-  std::vector<double> par_in2{1.0, 0.0, 0.0, 1.0};  
+  std::vector<double> par_in2{1.0, 0.0, 0.0, 1.0};
   std::vector<double> out_seq(n * n);
-  std::vector<double> out_par(n * n); 
+  std::vector<double> out_par(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(seq_in1.data()));
@@ -176,7 +176,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Matrix_Mult_On_Identity) {
   }
   for (size_t i = 0; i < n * n; i++) {
     EXPECT_DOUBLE_EQ(out_par[i], par_in1[i]);
-  }  
+  }
 }
 
 TEST(Saratova_M_Mult_Matrix_Fox, Matrix_Mult_On_Another_Identity) {
@@ -184,9 +184,9 @@ TEST(Saratova_M_Mult_Matrix_Fox, Matrix_Mult_On_Another_Identity) {
   std::vector<double> seq_in1{24.0, 45.0, -31.0, 10.0};
   std::vector<double> seq_in2{0.0, 1.0, 1.0, 0.0};
   std::vector<double> par_in1{24.0, 45.0, -31.0, 10.0};
-  std::vector<double> par_in2{0.0, 1.0, 1.0, 0.0};  
+  std::vector<double> par_in2{0.0, 1.0, 1.0, 0.0};
   std::vector<double> out_seq(n * n);
-  std::vector<double> out_par(n * n);  
+  std::vector<double> out_par(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(seq_in1.data()));
@@ -225,5 +225,5 @@ TEST(Saratova_M_Mult_Matrix_Fox, Matrix_Mult_On_Another_Identity) {
     for (size_t j = 0; j < n; j++) {
       EXPECT_DOUBLE_EQ(out_par[i * n + j], par_in1[i * n + (n - j - 1)]);
     }
-  }  
+  }
 }

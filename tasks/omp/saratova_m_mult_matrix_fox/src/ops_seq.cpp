@@ -78,7 +78,7 @@ bool saratova_omp::SaratovaTaskOmp::run() {
     double tmp;
     int result_index;
     for (int l = 0; l < n; l += block_size) {
-#pragma omp parallel for num_threads(num * num) private(result_index)
+#pragma omp parallel for num_threads(num* num) private(result_index)
       for (int i = 0; i < n; i += block_size) {
         result_index = (i + l) % n;
 #pragma omp parallel for num_threads(num) private(result_row, matrix_a_row, matrix_b_row, tmp)

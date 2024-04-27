@@ -27,7 +27,7 @@ class SaratovaTaskSequential : public ppc::core::Task {
   size_t n{};
 };
 
-class SaratovaTaskOmp : public ppc::core::Task { 
+class SaratovaTaskOmp : public ppc::core::Task {
  public:
   explicit SaratovaTaskOmp(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
