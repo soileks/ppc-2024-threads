@@ -48,7 +48,7 @@ bool OMPFilterGaussHorizontalSeqUlyanov::pre_processing() {
 
 bool OMPFilterGaussHorizontalSeqUlyanov::validation() {
   internal_order_test();
-  
+
   return taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr && taskData->inputs_count[0] != 0 &&
          taskData->inputs_count[1] != 0 && taskData->outputs_count[0] != 0 && taskData->outputs_count[1] != 0;
 }
@@ -124,18 +124,18 @@ bool OMPFilterGaussHorizontalParUlyanov::run() {
   internal_order_test();
   double start = omp_get_wtime();
 
-  #pragma omp parallel for schedule(static)
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        for (int l = 0; l < 3; l++) {
-          if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-            resultImage[(i * height + j) * 3 + l] = inputImage[(i * height + j) * 3 + l];
-          } else {
-            resultImage[(i * height + j) * 3 + l] = calcColorUlyanov(inputImage, height, i, j, kernel, l);
-          }
+#pragma omp parallel for schedule(static)
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      for (int l = 0; l < 3; l++) {
+        if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+          resultImage[(i * height + j) * 3 + l] = inputImage[(i * height + j) * 3 + l];
+        } else {
+          resultImage[(i * height + j) * 3 + l] = calcColorUlyanov(inputImage, height, i, j, kernel, l);
         }
       }
     }
+  }
 
   double finish = omp_get_wtime();
   std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
