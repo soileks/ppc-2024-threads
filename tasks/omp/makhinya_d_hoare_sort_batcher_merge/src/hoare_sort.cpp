@@ -52,7 +52,7 @@ void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type* l
       // k = 4
       sortable_type* l = first_ptr + i * chank;
       sortable_type* r = l + chank;
-      if(_comp(*l , *r)) {
+      if (_comp(*l , *r)) {
         std::swap(*r ,*l);
       }
     }
