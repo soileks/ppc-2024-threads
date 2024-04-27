@@ -165,7 +165,7 @@ void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& s
       parts[temp].push_back(j);
     }
 
-    side = std::move(batchersMergeOmp(parts));
+    side = batchersMergeOmp(parts);
 
     for (auto& part : parts) {
       part.clear();
