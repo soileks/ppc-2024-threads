@@ -3,7 +3,6 @@
 
 #include <omp.h>
 
-#define THREADS 4
 
 void sol_fill_missing(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t i, size_t j, size_t k) {
   if (j >= p1.size()) {
