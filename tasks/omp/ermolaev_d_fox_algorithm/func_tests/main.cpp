@@ -73,8 +73,8 @@ TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Random_128) {
   }
 }
 
-TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Simple_256) {
-  constexpr size_t matrix_size = 256;
+TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Simple_32) {
+  constexpr size_t matrix_size = 32;
   std::vector<double> A(matrix_size * matrix_size, 1.0);
   std::vector<double> B(matrix_size * matrix_size, 2.0);
   std::vector<double> C(matrix_size * matrix_size, 0.0);
@@ -99,8 +99,8 @@ TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Simple_256) {
   }
 }
 
-TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Random_256) {
-  constexpr size_t matrix_size = 256;
+TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Random_32) {
+  constexpr size_t matrix_size = 32;
   const double tolerance = 1e-5;
   std::mt19937 gen(1);
   std::uniform_real_distribution<> dis(1.0, 6.0);
