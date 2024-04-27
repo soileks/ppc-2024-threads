@@ -7,7 +7,7 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/ermolaev_d_fox_algorithm/include/ops_omp.hpp"
 
-double timer() { return omp_get_wtime(); }
+double timer_for_test() { return omp_get_wtime(); }
 
 TEST(ermolaev_d_fox_algorithm_seq, test_pipline_run) {
   constexpr size_t matrix_size = 512;
@@ -44,7 +44,7 @@ TEST(ermolaev_d_fox_algorithm_seq, test_pipline_run) {
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 1;
-  perfAttr->current_timer = &timer;
+  perfAttr->current_timer = &timer_for_test;
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
@@ -89,7 +89,7 @@ TEST(ermolaev_d_fox_algorithm_seq, test_task_run) {
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 1;
-  perfAttr->current_timer = &timer;
+  perfAttr->current_timer = &timer_for_test;
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
