@@ -192,7 +192,7 @@ void ConvexHull::convexHullImage() {
     unsigned int start_row = i * chunk_height;
     unsigned int end_row = (i + 1 == num_threads) ? this_height : (i + 1) * chunk_height;
 
-    threads.emplace_back([this, &copy, &local_points, i, start_row, end_row, this_width]() {
+    threads.emplace_back([&copy, &local_points, i, start_row, end_row, this_width]() {
       for (unsigned int row = start_row; row < end_row; ++row) {
         for (int col = 0; col < this_width; ++col) {
           if (isInside(copy, Point(row, col))) {
