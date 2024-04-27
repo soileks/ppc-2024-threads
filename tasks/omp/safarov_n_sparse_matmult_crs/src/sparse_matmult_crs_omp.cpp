@@ -2,6 +2,7 @@
 #include "omp/safarov_n_sparse_matmult_crs/include/sparse_matmult_crs_omp.hpp"
 
 #include <omp.h>
+
 #include <algorithm>
 #include <cmath>
 #include <utility>
