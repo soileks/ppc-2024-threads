@@ -45,7 +45,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Another_Matrix) {
   std::vector<double> seq_in1{0.0, 1.0, 1.0, 0.0};
   std::vector<double> seq_in2{24.0, 45.0, -31.0, 10.0};
   std::vector<double> par_in1{0.0, 1.0, 1.0, 0.0};
-  std::vector<double> par_in2{24.0, 45.0, -31.0, 10.0};  
+  std::vector<double> par_in2{24.0, 45.0, -31.0, 10.0};
   std::vector<double> out_seq(n * n);
   std::vector<double> out_par(n * n);
 
@@ -75,7 +75,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Another_Matrix) {
   ASSERT_EQ(saratovaTaskOmp.validation(), true);
   saratovaTaskOmp.pre_processing();
   saratovaTaskOmp.run();
-  saratovaTaskOmp.post_processing();  
+  saratovaTaskOmp.post_processing();
 
   for (size_t i = 0; i < n; i++) {
     for (size_t j = 0; j < n; j++) {
@@ -94,7 +94,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, Identity_Mult_On_Matrix) {
   std::vector<double> seq_in1{1.0, 0.0, 0.0, 1.0};
   std::vector<double> seq_in2{24.0, 45.0, -31.0, 10.0};
   std::vector<double> par_in1{1.0, 0.0, 0.0, 1.0};
-  std::vector<double> par_in2{24.0, 45.0, -31.0, 10.0};  
+  std::vector<double> par_in2{24.0, 45.0, -31.0, 10.0};
   std::vector<double> out_seq(n * n);
   std::vector<double> out_par(n * n);
 
