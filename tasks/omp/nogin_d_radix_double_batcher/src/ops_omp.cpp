@@ -189,18 +189,18 @@ std::vector<double> radixSortBatcherOmp(std::vector<double> vec) {
   }
 
 #pragma omp parallel sections
-{
-  #pragma omp section
   {
-    std::vector<std::vector<double>> parts(256);
-    partSortOmp(parts, negative);
+#pragma omp section
+    {
+      std::vector<std::vector<double>> parts(256);
+      partSortOmp(parts, negative);
+    }
+#pragma omp section
+    {
+      std::vector<std::vector<double>> parts(256);
+      partSortOmp(parts, positive);
+    }
   }
-  #pragma omp section
-  {
-    std::vector<std::vector<double>> parts(256);
-    partSortOmp(parts, positive);
-  }
-}
 
   vec.clear();
   vec.reserve(negative.size() + positive.size());
@@ -221,4 +221,4 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
 
   return vec;
 }
-}  // namespace NoginDenisSeq
+}  // namespace NoginDenisOmp

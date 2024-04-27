@@ -1,7 +1,8 @@
 // Copyright 2024 Nogin Denis
 #pragma once
-#include <algorithm>
 #include <omp.h>
+
+#include <algorithm>
 #include <random>
 #include <vector>
 
@@ -28,7 +29,7 @@ class RadixSortDoubleBatcherOmpParallel : public ppc::core::Task {
  public:
   explicit RadixSortDoubleBatcherOmpParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
-      
+
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -48,4 +49,4 @@ void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& s
 std::vector<double> radixSortBatcherOmp(std::vector<double> v);
 
 std::vector<double> randomVector(int sizeVec, double minValue, double maxValue);
-}  // namespace NoginDenisSeq
+}  // namespace NoginDenisOmp
