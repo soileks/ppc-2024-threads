@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <thread>
+#include <cmath>
 
 using namespace std::chrono_literals;
 namespace {
