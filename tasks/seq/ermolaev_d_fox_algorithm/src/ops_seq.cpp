@@ -1,9 +1,9 @@
 #include "seq/ermolaev_d_fox_algorithm/include/ops_seq.hpp"
 
+#include <cmath>
 #include <cstring>
 #include <iostream>
 #include <thread>
-#include <cmath>
 
 using namespace std::chrono_literals;
 namespace {
