@@ -1,7 +1,6 @@
 // Copyright 2024 Savotina Valeria
 
 #pragma once
-
 #include <omp.h>
 
 #include <cfloat>
