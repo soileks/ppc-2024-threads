@@ -16,7 +16,7 @@ TEST(kostanyan_a_sobel_omp, Test_EdgeDetection) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_omp_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out_seq(n * m, 0);
   std::vector<uint8_t> out_omp(n * m, 0);
 
@@ -39,14 +39,14 @@ TEST(kostanyan_a_sobel_omp, Test_EdgeDetection) {
   taskDataOmp->outputs_count.emplace_back(out_omp.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
   kostanyan_EdgeDetectionSequential.pre_processing();
   kostanyan_EdgeDetectionSequential.run();
   kostanyan_EdgeDetectionSequential.post_processing();
 
   // Create Task for OpenMP
-  Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionParallel.validation(), true);
   kostanyan_EdgeDetectionParallel.pre_processing();
   kostanyan_EdgeDetectionParallel.run();
@@ -91,13 +91,13 @@ TEST(kostanyan_a_sobel_omp, Test_Empty_Image) {
   taskDataOmp->outputs_count.emplace_back(out_omp.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
   kostanyan_EdgeDetectionSequential.pre_processing();
   ASSERT_EQ(kostanyan_EdgeDetectionSequential.run(), false);
 
   // Create Task for OpenMP
-  Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionParallel.validation(), true);
   kostanyan_EdgeDetectionParallel.pre_processing();
   ASSERT_EQ(kostanyan_EdgeDetectionParallel.run(), false);
@@ -113,7 +113,7 @@ TEST(kostanyan_a_sobel_omp, Test_Single_Pixel_Image) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_omp_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out_seq(n * m, 0);
   std::vector<uint8_t> out_omp(n * m, 0);
 
@@ -136,7 +136,7 @@ TEST(kostanyan_a_sobel_omp, Test_Single_Pixel_Image) {
   taskDataOmp->outputs_count.emplace_back(out_omp.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
   kostanyan_EdgeDetectionSequential.pre_processing();
   kostanyan_EdgeDetectionSequential.run();
@@ -144,7 +144,7 @@ TEST(kostanyan_a_sobel_omp, Test_Single_Pixel_Image) {
   ASSERT_EQ(pict[0], out_seq[0]);
 
   // Create Task for OpenMP
-  Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionParallel.validation(), true);
   kostanyan_EdgeDetectionParallel.pre_processing();
   kostanyan_EdgeDetectionParallel.run();
@@ -184,14 +184,14 @@ TEST(kostanyan_a_sobel_omp, Test_All_White_Image) {
   taskDataOmp->outputs_count.emplace_back(out_omp.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
   kostanyan_EdgeDetectionSequential.pre_processing();
   kostanyan_EdgeDetectionSequential.run();
   kostanyan_EdgeDetectionSequential.post_processing();
 
   // Create Task for OpenMP
-  Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionParallel.validation(), true);
   kostanyan_EdgeDetectionParallel.pre_processing();
   kostanyan_EdgeDetectionParallel.run();
@@ -214,7 +214,7 @@ TEST(kostanyan_a_sobel_omp, Test_Large_Image) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_omp_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out_seq(n * m, 0);
   std::vector<uint8_t> out_omp(n * m, 0);
 
@@ -237,14 +237,14 @@ TEST(kostanyan_a_sobel_omp, Test_Large_Image) {
   taskDataOmp->outputs_count.emplace_back(out_omp.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionSequential kostanyan_EdgeDetectionSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionSequential.validation(), true);
   kostanyan_EdgeDetectionSequential.pre_processing();
   kostanyan_EdgeDetectionSequential.run();
   kostanyan_EdgeDetectionSequential.post_processing();
 
   // Create Task for OpenMP
-  Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
+  kostanyan_omp_sobel::Kostanyan_EdgeDetectionParallel kostanyan_EdgeDetectionParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionParallel.validation(), true);
   kostanyan_EdgeDetectionParallel.pre_processing();
   kostanyan_EdgeDetectionParallel.run();

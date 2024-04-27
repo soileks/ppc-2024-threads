@@ -4,7 +4,7 @@
 #include <random>
 #include <thread>
 
-using namespace std::chrono_literals;
+namespace kostanyan_omp_sobel {
 
 std::vector<uint8_t> kostanyan_getRandomPicture(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
@@ -111,3 +111,4 @@ bool Kostanyan_EdgeDetectionParallel::post_processing() {
   }
   return true;
 }
+}  // namespace kostanyan_omp_sobel
