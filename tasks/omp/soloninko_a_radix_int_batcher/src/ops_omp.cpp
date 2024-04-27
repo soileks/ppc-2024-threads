@@ -127,7 +127,7 @@ std::vector<int> sol_merge_omp(std::vector<int> vec1, std::vector<int> vec2) {
   }
 
 #pragma omp parallel for
-  for (size_t i = 0; i < res.size() - 1; i++) {
+  for (int i = 0; i < static_cast<int>(res.size()) - 1; i++) {
     if (res[i] > res[i + 1]) {
       std::swap(res[i], res[i + 1]);
     }
