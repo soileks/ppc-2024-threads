@@ -2,7 +2,7 @@
 
 #include "omp/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort.hpp"
 
-bool HoareSort::pre_processing() {
+bool HoareSortOMP::pre_processing() {
   internal_order_test();
   // Init value for input and output
   _data = reinterpret_cast<vec_t*>(taskData->inputs[0]);
@@ -14,13 +14,13 @@ bool HoareSort::pre_processing() {
   return true;
 }
 
-bool HoareSort::validation() {
+bool HoareSortOMP::validation() {
   internal_order_test();
   // Check count elements of output
   return (taskData->inputs.size() == 1 || taskData->inputs.size() == 2) && taskData->outputs.size() <= 1;
 }
 
-bool HoareSort::run() {
+bool HoareSortOMP::run() {
   internal_order_test();
   sortable_type* begin = _data->data();
   sortable_type* end = begin + _data->size() - 1UL;
@@ -28,12 +28,12 @@ bool HoareSort::run() {
   return true;
 }
 
-bool HoareSort::post_processing() {
+bool HoareSortOMP::post_processing() {
   internal_order_test();
   return true;
 }
 
-bool HoareSort::check_order() {
+bool HoareSortOMP::check_order() {
   for (uint32_t i = 1U; i < _data->size(); ++i) {
     if (_comp((*_data)[i], (*_data)[i - 1U])) {
       return true;
@@ -43,7 +43,7 @@ bool HoareSort::check_order() {
   return true;
 }
 
-void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type const* last_ptr) {
+void HoareSortOMP::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type const* last_ptr) {
   const uint32_t len = last_ptr - first_ptr;
   for (uint32_t k = 1; k < len; k <<= 1) {
     const uint32_t chank = len / k;
@@ -59,7 +59,7 @@ void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type co
   }
 }
 
-void HoareSort::parallel_hoare_sort(sortable_type* first_ptr, sortable_type const* last_ptr) {
+void HoareSortOMP::parallel_hoare_sort(sortable_type* first_ptr, sortable_type const* last_ptr) {
   const uint32_t K = 16;
   const uint32_t chank = (last_ptr - first_ptr) / K;
 
@@ -75,7 +75,7 @@ void HoareSort::parallel_hoare_sort(sortable_type* first_ptr, sortable_type cons
   }
 }
 
-void HoareSort::seq_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr) {
+void HoareSortOMP::seq_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr) {
   if (last_ptr <= first_ptr) {
     return;
   }
@@ -95,9 +95,9 @@ void HoareSort::seq_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr
   }
 
   if (first_ptr < rr) {
-    HoareSort::seq_hoare_sort(first_ptr, rr);
+    HoareSortOMP::seq_hoare_sort(first_ptr, rr);
   }
   if (ll < last_ptr) {
-    HoareSort::seq_hoare_sort(ll, last_ptr);
+    HoareSortOMP::seq_hoare_sort(ll, last_ptr);
   }
 }

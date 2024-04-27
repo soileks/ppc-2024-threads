@@ -10,11 +10,11 @@ const uint32_t COUNT = 1UL << 22;
 const uint32_t SEED = 420;
 
 TEST(MakhinyaPerf, test_pipeline_run) {
-  HoareSort::vec_t in_vec(COUNT);
+  HoareSortOMP::vec_t in_vec(COUNT);
 
   srand(SEED);
-  for (HoareSort::sortable_type& x : in_vec) {
-    x = static_cast<HoareSort::sortable_type>(rand());
+  for (HoareSortOMP::sortable_type& x : in_vec) {
+    x = static_cast<HoareSortOMP::sortable_type>(rand());
   }
 
   // Create TaskData
@@ -26,7 +26,7 @@ TEST(MakhinyaPerf, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(0);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<HoareSort>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<HoareSortOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -49,11 +49,11 @@ TEST(MakhinyaPerf, test_pipeline_run) {
 }
 
 TEST(MakhinyaPerf, test_task_run) {
-  HoareSort::vec_t in_vec(COUNT);
+  HoareSortOMP::vec_t in_vec(COUNT);
 
   srand(SEED);
-  for (HoareSort::sortable_type& x : in_vec) {
-    x = static_cast<HoareSort::sortable_type>(rand());
+  for (HoareSortOMP::sortable_type& x : in_vec) {
+    x = static_cast<HoareSortOMP::sortable_type>(rand());
   }
 
   // Create TaskData
@@ -65,7 +65,7 @@ TEST(MakhinyaPerf, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(0);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<HoareSort>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<HoareSortOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
