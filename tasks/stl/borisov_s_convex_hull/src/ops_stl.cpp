@@ -184,7 +184,6 @@ void ConvexHull::convexHullImage() {
   int this_height = height;
   int this_width = width;
 
-  std::vector<Point> localNewPoints;
   std::vector<std::thread> threads;
   unsigned int chunk_height = this_height / num_threads;
   std::vector<std::vector<Point>> local_points(num_threads);
@@ -194,13 +193,13 @@ void ConvexHull::convexHullImage() {
     unsigned int end_row = (i + 1 == num_threads) ? this_height : (i + 1) * chunk_height;
 
     threads.emplace_back([this, &copy, &local_points, i, start_row, end_row, this_width]() {
-        for (unsigned int row = start_row; row < end_row; ++row) {
-            for (int col = 0; col < this_width; ++col) {
-                if (isInside(copy, Point(row, col))) {
-                    local_points[i].emplace_back(row, col);
-                }
-            }
+      for (unsigned int row = start_row; row < end_row; ++row) {
+        for (int col = 0; col < this_width; ++col) {
+          if (isInside(copy, Point(row, col))) {
+            local_points[i].emplace_back(row, col);
+          }
         }
+      }
     });
   }
 
