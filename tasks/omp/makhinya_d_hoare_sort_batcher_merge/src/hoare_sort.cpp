@@ -73,11 +73,7 @@ void HoareSort::parallel_hoare_sort(sortable_type* first_ptr, sortable_type* las
     seq_hoare_sort(l2, r2);
     sort_bitonic_seguence(l1, r2);
   }
-
-
 }
-
-
 
 void HoareSort::seq_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr) {
   if (last_ptr <= first_ptr) {

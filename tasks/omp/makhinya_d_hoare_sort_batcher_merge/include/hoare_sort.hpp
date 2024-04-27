@@ -2,6 +2,7 @@
 #pragma once
 
 #include <omp.h>
+
 #include <functional>
 #include <string>
 #include <vector>
