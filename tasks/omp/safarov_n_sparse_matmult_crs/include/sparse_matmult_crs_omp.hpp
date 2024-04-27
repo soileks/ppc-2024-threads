@@ -20,8 +20,8 @@ struct SparseMatrixCRS {
 
 class SparseMatrixMultiplicationCRS_OMP : public ppc::core::Task {
  public:
-  explicit SparseMatrixMultiplicationCRS_OMP(std::shared_ptr<ppc::core::TaskData> taskData_) :
-      Task(std::move(taskData_)) {}
+  explicit SparseMatrixMultiplicationCRS_OMP(std::shared_ptr<ppc::core::TaskData> taskData_)
+      : Task(std::move(taskData_)) {}
   bool validation() override;
   bool pre_processing() override;
   bool run() override;
