@@ -1,8 +1,8 @@
 // Copyright 2024 Chuvashov Andrey
 
-#include <omp.h>
-
 #include "omp/chuvashov_a_batcher_ints_sort/include/batcher_ints_sort.hpp"
+
+#include <omp.h>
 
 #define THREADS_COUNT 4
 
@@ -27,13 +27,13 @@ std::vector<int> ChuvashovOMP_BatcherEven(std::vector<int> arr1, std::vector<int
 
   if (j >= arr1.size()) {
 #pragma omp parallel for num_threads(THREADS_COUNT)
-    for (int l = k; l < arr2.size(); l += 2) {
+    for (int l = k; l < static_cast<int>(arr2.size()); l += 2) {
       result[i] = arr2[l];
       i++;
     }
   } else {
 #pragma omp parallel for num_threads(THREADS_COUNT)
-    for (int l = j; l < arr1.size(); l += 2) {
+    for (int l = j; l < static_cast<int>(arr1.size()); l += 2) {
       result[i] = arr1[l];
       i++;
     }
@@ -61,13 +61,13 @@ std::vector<int> ChuvashovOMP_BatcherOdd(std::vector<int> arr1, std::vector<int>
 
   if (j >= arr1.size()) {
 #pragma omp parallel for num_threads(THREADS_COUNT)
-    for (int l = k; l < arr2.size(); l += 2) {
+    for (int l = k; l < static_cast<int>(arr2.size()); l += 2) {
       result[i] = arr2[l];
       i++;
     }
   } else {
 #pragma omp parallel for num_threads(THREADS_COUNT)
-    for (int l = j; l < arr1.size(); l += 2) {
+    for (int l = j; l < static_cast<int>(arr1.size()); l += 2) {
       result[i] = arr1[l];
       i++;
     }
@@ -91,13 +91,13 @@ std::vector<int> ChuvashovOMP_merge(std::vector<int> arr1, std::vector<int> arr2
   }
   if ((k >= arr2.size()) && (j < arr1.size())) {
 #pragma omp parallel for num_threads(THREADS_COUNT)
-    for (int l = i; l < result.size(); l++) {
+    for (int l = i; l < static_cast<int>(result.size()); l++) {
       result[l] = arr1[j];
       j++;
     }
   }
 #pragma omp parallel for num_threads(THREADS_COUNT)
-  for (int l = 0; l < result.size() - 1; l++) {
+  for (int l = 0; l < static_cast<int>(result.size() - 1); l++) {
     if (result[l] > result[l + 1]) {
       std::swap(result[l], result[l + 1]);
     }
