@@ -68,21 +68,21 @@ bool FoxAlgorithm::run() {
     int blockSize = calculateBlockSize(n);
     int numBlocks = n / blockSize;
 
-    for (size_t stage = 0; stage < numBlocks; ++stage) {
-      for (size_t i = 0; i < numBlocks; ++i) {
-        for (size_t j = 0; j < numBlocks; ++j) {
-          size_t k = (i + stage) % numBlocks;
+    for (int stage = 0; stage < numBlocks; ++stage) {
+      for (int i = 0; i < numBlocks; ++i) {
+        for (int j = 0; j < numBlocks; ++j) {
+          int k = (i + stage) % numBlocks;
           std::vector<std::vector<double>> block_A(blockSize, std::vector<double>(blockSize));
           std::vector<std::vector<double>> block_B(blockSize, std::vector<double>(blockSize));
-          for (size_t row = 0; row < blockSize; ++row) {
-            for (size_t col = 0; col < blockSize; ++col) {
+          for (int row = 0; row < blockSize; ++row) {
+            for (int col = 0; col < blockSize; ++col) {
               block_A[row][col] = matrix_A[((i * blockSize) + row) * data_size + (k * blockSize) + col];
               block_B[row][col] = matrix_B[((k * blockSize) + row) * data_size + (j * blockSize) + col];
             }
           }
           std::vector<std::vector<double>> block_C = multiply_block(block_A, block_B);
-          for (size_t row = 0; row < blockSize; ++row) {
-            for (size_t col = 0; col < blockSize; ++col) {
+          for (int row = 0; row < blockSize; ++row) {
+            for (int col = 0; col < blockSize; ++col) {
               matrix_C[((i * blockSize) + row) * data_size + (j * blockSize) + col] += block_C[row][col];
             }
           }
