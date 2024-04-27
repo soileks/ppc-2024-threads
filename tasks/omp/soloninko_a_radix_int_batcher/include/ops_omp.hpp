@@ -10,6 +10,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace SoloninkoOMPBatcher {
 class TaskOMPSequentialBatcherSoloninko : public ppc::core::Task {
  public:
   explicit TaskOMPSequentialBatcherSoloninko(std::shared_ptr<ppc::core::TaskData> taskData_)
@@ -46,3 +47,4 @@ inline std::vector<int> sol_GetRandVector(int size) {
 
   return vec;
 }
+}  // namespace SoloninkoOMPBatcher

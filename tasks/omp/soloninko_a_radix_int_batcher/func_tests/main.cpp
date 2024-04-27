@@ -7,7 +7,7 @@
 
 TEST(soloninko_a_Test_Vec_OMP, Test_Vec_20_omp) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(20);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(20);
   std::vector<int> seq_res(vec.size(), 0);
 
   // Create TaskData
@@ -18,7 +18,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_20_omp) {
   taskDataSeq->outputs_count.emplace_back(seq_res.size());
 
   // Create Task
-  TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
+  SoloninkoOMPBatcher::TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -34,7 +34,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_20_omp) {
   taskDataPar->outputs_count.emplace_back(omp_res.size());
 
   // Create Task
-  TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
+  SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -47,7 +47,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_20_omp) {
 
 TEST(soloninko_a_Test_Vec_OMP, Test_Vec_40_omp) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(40);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(40);
   std::vector<int> seq_res(vec.size(), 0);
 
   // Create TaskData
@@ -58,7 +58,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_40_omp) {
   taskDataSeq->outputs_count.emplace_back(seq_res.size());
 
   // Create Task
-  TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
+  SoloninkoOMPBatcher::TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -74,7 +74,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_40_omp) {
   taskDataPar->outputs_count.emplace_back(omp_res.size());
 
   // Create Task
-  TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
+  SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -87,7 +87,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_40_omp) {
 
 TEST(soloninko_a_Test_Vec_OMP, Test_Vec_60_omp) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(60);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(60);
   std::vector<int> seq_res(vec.size(), 0);
 
   // Create TaskData
@@ -98,7 +98,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_60_omp) {
   taskDataSeq->outputs_count.emplace_back(seq_res.size());
 
   // Create Task
-  TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
+  SoloninkoOMPBatcher::TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -114,7 +114,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_60_omp) {
   taskDataPar->outputs_count.emplace_back(omp_res.size());
 
   // Create Task
-  TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
+  SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -127,7 +127,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_60_omp) {
 
 TEST(soloninko_a_Test_Vec_OMP, Test_Vec_80_omp) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(80);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(80);
   std::vector<int> seq_res(vec.size(), 0);
 
   // Create TaskData
@@ -138,7 +138,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_80_omp) {
   taskDataSeq->outputs_count.emplace_back(seq_res.size());
 
   // Create Task
-  TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
+  SoloninkoOMPBatcher::TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -154,7 +154,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_80_omp) {
   taskDataPar->outputs_count.emplace_back(omp_res.size());
 
   // Create Task
-  TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
+  SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
@@ -167,7 +167,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_80_omp) {
 
 TEST(soloninko_a_Test_Vec_OMP, Test_Vec_100_omp) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(100);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(100);
   std::vector<int> seq_res(vec.size(), 0);
 
   // Create TaskData
@@ -178,7 +178,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_100_omp) {
   taskDataSeq->outputs_count.emplace_back(seq_res.size());
 
   // Create Task
-  TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
+  SoloninkoOMPBatcher::TaskOMPSequentialBatcherSoloninko testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -194,7 +194,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_100_omp) {
   taskDataPar->outputs_count.emplace_back(omp_res.size());
 
   // Create Task
-  TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
+  SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko testOmpTaskParallel(taskDataPar);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();

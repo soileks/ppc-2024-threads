@@ -10,7 +10,7 @@
 
 TEST(soloninko_a_Test_Vec_perf_test, test_pipeline_run) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(2000000);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(2000000);
   std::vector<int> res(vec.size(), 0);
 
   // Create TaskData
@@ -21,7 +21,7 @@ TEST(soloninko_a_Test_Vec_perf_test, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(res.size());
 
   // Create Task
-  auto testTaskOMP = std::make_shared<TestTaskOMPParallelBatcherSoloninko>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -40,7 +40,7 @@ TEST(soloninko_a_Test_Vec_perf_test, test_pipeline_run) {
 
 TEST(soloninko_a_Test_Vec_perf_test, test_task_run) {
   // Create data
-  std::vector<int> vec = sol_GetRandVector(2000000);
+  std::vector<int> vec = SoloninkoOMPBatcher::sol_GetRandVector(2000000);
   std::vector<int> res(vec.size(), 0);
 
   // Create TaskData
@@ -51,7 +51,7 @@ TEST(soloninko_a_Test_Vec_perf_test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(res.size());
 
   // Create Task
-  auto testTaskOMP = std::make_shared<TestTaskOMPParallelBatcherSoloninko>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<SoloninkoOMPBatcher::TestTaskOMPParallelBatcherSoloninko>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

@@ -3,6 +3,7 @@
 
 #include <omp.h>
 
+namespace SoloninkoOMPBatcher {
 void sol_fill_missing(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t i, size_t j, size_t k) {
   if (j >= p1.size()) {
     for (size_t l = k; l < p2.size(); l += 2) {
@@ -276,3 +277,4 @@ bool TaskOMPSequentialBatcherSoloninko::post_processing() {
   std::copy(res.begin(), res.end(), reinterpret_cast<int *>(taskData->outputs[0]));
   return true;
 }
+}  // namespace SoloninkoOMPBatcher
