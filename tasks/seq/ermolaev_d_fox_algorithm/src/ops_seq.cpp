@@ -21,6 +21,14 @@ std::vector<std::vector<double>> multiply_block(const std::vector<std::vector<do
   return block_C;
 }
 
+int calculateBlockSize(int n, int cacheSize = 1024, int elementSize = 8) {
+  int b = std::sqrt((cacheSize) / (elementSize * 2));
+
+  while (n % b != 0) {
+    b--;
+  }
+  return b;
+}
 }  // namespace
 
 bool FoxAlgorithm::validation() {
@@ -56,8 +64,9 @@ bool FoxAlgorithm::pre_processing() {
 bool FoxAlgorithm::run() {
   internal_order_test();
   try {
-    size_t blockSize = 1;
-    size_t numBlocks = data_size / blockSize;
+    int n = static_cast<int>(data_size);
+    int blockSize = calculateBlockSize(n);
+    int numBlocks = n / blockSize;
 
     for (size_t stage = 0; stage < numBlocks; ++stage) {
       for (size_t i = 0; i < numBlocks; ++i) {

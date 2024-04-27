@@ -7,10 +7,10 @@
 #include "seq/ermolaev_d_fox_algorithm/include/ops_seq.hpp"
 
 TEST(ermolaev_d_fox_algorithm_seq, test_pipline_run) {
-  constexpr size_t matrix_size = 125;
+  constexpr size_t matrix_size = 512;
   const double tolerance = 1e-5;
   std::mt19937 gen(1);  // Инициализация генератора случайных чисел с начальным значением 1
-  std::uniform_real_distribution<> dis(5.0, 1e-5);
+  std::uniform_real_distribution<> dis(1.0, 6.0);
   std::vector<double> A(matrix_size * matrix_size);
   std::vector<double> B(matrix_size * matrix_size);
   std::vector<double> C(matrix_size * matrix_size, 0.0);
@@ -62,10 +62,10 @@ TEST(ermolaev_d_fox_algorithm_seq, test_pipline_run) {
   }
 }
 TEST(ermolaev_d_fox_algorithm_seq, test_task_run) {
-  constexpr size_t matrix_size = 125;
+  constexpr size_t matrix_size = 256;
   const double tolerance = 1e-5;
   std::mt19937 gen(1);  // Инициализация генератора случайных чисел с начальным значением 1
-  std::uniform_real_distribution<> dis(5.0, 1e-5);
+  std::uniform_real_distribution<> dis(1.0, 6.0);
   std::vector<double> A(matrix_size * matrix_size);
   std::vector<double> B(matrix_size * matrix_size);
   std::vector<double> C(matrix_size * matrix_size, 0.0);
