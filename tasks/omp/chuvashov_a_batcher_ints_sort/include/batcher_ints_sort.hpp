@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include<algorithm>
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <random>
