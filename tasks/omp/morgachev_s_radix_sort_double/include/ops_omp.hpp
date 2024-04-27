@@ -9,11 +9,10 @@
 
 namespace morgachev_omp {
 
-  void countSort(double* in, double* out, int length, int exp);
-  void radixSortOMP(std::vector<double>& data, size_t dataSize);
-  std::vector<double> radixSortSeq(std::vector<double>& data);
-  std::vector<double> doubleMerge(const std::vector<double>& left,
-	  const std::vector<double>& right);
+void countSort(double* in, double* out, int length, int exp);
+void radixSortOMP(std::vector<double>& data, size_t dataSize);
+std::vector<double> radixSortSeq(std::vector<double>& data);
+std::vector<double> doubleMerge(const std::vector<double>& left, const std::vector<double>& right);
 
 class RadixSortDoubleOMP : public ppc::core::Task {
  public:

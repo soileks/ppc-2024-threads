@@ -82,24 +82,23 @@ void morgachev_omp::radixSortOMP(std::vector<double>& data, size_t dataSize) {
   std::vector<double> result;
 
 #pragma omp parallel
-{
+  {
     int nThreads = omp_get_num_threads();
     int curThread = omp_get_thread_num();
     int localSize = dataSize / nThreads;
     std::vector<double> localVector;
 
     if (curThread == nThreads - 1) {
-        std::copy(data.begin() + localSize * curThread, data.end(),
-            std::back_inserter(localVector));
+      std::copy(data.begin() + localSize * curThread, data.end(), std::back_inserter(localVector));
     } else {
-        std::copy(data.begin() + localSize * curThread, data.begin() + localSize * (curThread + 1),
+      std::copy(data.begin() + localSize * curThread, data.begin() + localSize * (curThread + 1),
                 std::back_inserter(localVector));
     }
 
     localVector = radixSortSeq(localVector);
 #pragma omp critical
     result = doubleMerge(result, localVector);
-}
+  }
 
   data = result;
 }
@@ -116,8 +115,7 @@ std::vector<double> morgachev_omp::radixSortSeq(std::vector<double>& data) {
   return tempLeft;
 }
 
-std::vector<double> morgachev_omp::doubleMerge(const std::vector<double>& left,
-    const std::vector<double>& right) {
+std::vector<double> morgachev_omp::doubleMerge(const std::vector<double>& left, const std::vector<double>& right) {
   std::vector<double> result;
   result.resize(left.size() + right.size());
   std::merge(left.begin(), left.end(), right.begin(), right.end(), result.begin());
