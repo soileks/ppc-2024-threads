@@ -49,7 +49,7 @@ void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type co
     const uint32_t chank = len / k;
 #pragma omp parallel for
     for (uint32_t i = 0; i < k; ++i) {
-      // k = 4
+      // k = 5
       sortable_type* l = first_ptr + i * chank;
       sortable_type* r = l + chank;
       if (_comp(*l, *r)) {
