@@ -3,7 +3,6 @@
 
 #include <omp.h>
 
-
 void sol_fill_missing(std::vector<int> &res, std::vector<int> p1, std::vector<int> p2, size_t i, size_t j, size_t k) {
   if (j >= p1.size()) {
     for (size_t l = k; l < p2.size(); l += 2) {
