@@ -25,9 +25,9 @@ class HoareSort : public ppc::core::Task {
 
  private:
   static bool default_compare(const sortable_type& a, const sortable_type& b) { return a < b; }
-  void seq_hoare_sort(sortable_type* first_ptr, sortable_type* const last_ptr);
-  void parallel_hoare_sort(sortable_type* first_ptr, sortable_type* const last_ptr);
-  void sort_bitonic_seguence(sortable_type* first_ptr, sortable_type* const last_ptr);
+  void seq_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr);
+  void parallel_hoare_sort(sortable_type* first_ptr, sortable_type const* last_ptr);
+  void sort_bitonic_seguence(sortable_type* first_ptr, sortable_type const* last_ptr);
 
   vec_t* _data;
   compare_t _comp;

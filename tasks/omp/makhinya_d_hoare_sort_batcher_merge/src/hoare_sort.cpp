@@ -43,7 +43,7 @@ bool HoareSort::check_order() {
   return true;
 }
 
-void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type* last_ptr) {
+void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type const* last_ptr) {
   const uint32_t len = last_ptr - first_ptr;
   for (uint32_t k = 1; k < len; k <<= 1) {
     const uint32_t chank = len / k;
@@ -59,7 +59,7 @@ void HoareSort::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type* l
   }
 }
 
-void HoareSort::parallel_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr) {
+void HoareSort::parallel_hoare_sort(sortable_type* first_ptr, sortable_type const* last_ptr) {
   const uint32_t K = 16;
   const uint32_t chank = (last_ptr - first_ptr) / K;
 
