@@ -193,22 +193,22 @@ void ConvexHull::convexHullImage() {
     unsigned int start_row = i * chunk_height;
     unsigned int end_row = (i + 1 == num_threads) ? this_height : (i + 1) * chunk_height;
 
-    threads.emplace_back([this, &copy, &localNewPoints, &mtx, start_row, end_row, this_width]() {
-        for (unsigned int i = start_row; i < end_row; ++i) {
-            for (int j = 0; j < this_width; ++j) {
-                if (isInside(copy, Point(i, j))) {
-                    mtx.lock();
-                    localNewPoints.emplace_back(i, j);
-                    mtx.unlock();
-                }
-            }
+    threads.emplace_back([&copy, &localNewPoints, &mtx, start_row, end_row, this_width]() {
+      for (unsigned int i = start_row; i < end_row; ++i) {
+        for (int j = 0; j < this_width; ++j) {
+          if (isInside(copy, Point(i, j))) {
+            mtx.lock();
+            localNewPoints.emplace_back(i, j);
+            mtx.unlock();
+          }
         }
+      }
     });
   }
 
-for (auto& thread : threads) {
+  for (auto& thread : threads) {
     thread.join();
-}
+  }
 
   convexHull.insert(convexHull.end(), localNewPoints.begin(), localNewPoints.end());
 
