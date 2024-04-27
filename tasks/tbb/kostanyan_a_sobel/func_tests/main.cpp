@@ -1,4 +1,4 @@
-// Copyright 2023 Kostanyan Arsen
+// Copyright 2024 Kostanyan Arsen
 #include <gtest/gtest.h>
 
 #include <cmath>
@@ -16,7 +16,7 @@ TEST(kostanyan_a_sobel_tbb, Test_EdgeDetection) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_tbb_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out_seq(n * m, 0);
   std::vector<uint8_t> out_tbb(n * m, 0);
 
@@ -30,7 +30,7 @@ TEST(kostanyan_a_sobel_tbb, Test_EdgeDetection) {
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   kostanyan_EdgeDetectionTBBSequential.run();
@@ -46,7 +46,7 @@ TEST(kostanyan_a_sobel_tbb, Test_EdgeDetection) {
   taskDataOmp->outputs_count.emplace_back(out_tbb.size());
 
   // Create Task for TBB
-  Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBParallel.validation(), true);
   kostanyan_EdgeDetectionTBBParallel.pre_processing();
   kostanyan_EdgeDetectionTBBParallel.run();
@@ -82,7 +82,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Empty_Image) {
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.run(), false);
@@ -97,7 +97,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Empty_Image) {
   taskDataOmp->outputs_count.emplace_back(out_tbb.size());
 
   // Create Task for TBB
-  Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBParallel.validation(), true);
   kostanyan_EdgeDetectionTBBParallel.pre_processing();
   ASSERT_EQ(kostanyan_EdgeDetectionTBBParallel.run(), false);
@@ -113,7 +113,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Single_Pixel_Image) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_tbb_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out_seq(n * m, 0);
   std::vector<uint8_t> out_tbb(n * m, 0);
 
@@ -127,7 +127,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Single_Pixel_Image) {
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   kostanyan_EdgeDetectionTBBSequential.run();
@@ -144,7 +144,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Single_Pixel_Image) {
   taskDataOmp->outputs_count.emplace_back(out_tbb.size());
 
   // Create Task for TBB
-  Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBParallel.validation(), true);
   kostanyan_EdgeDetectionTBBParallel.pre_processing();
   kostanyan_EdgeDetectionTBBParallel.run();
@@ -175,7 +175,7 @@ TEST(kostanyan_a_sobel_tbb, Test_All_White_Image) {
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   kostanyan_EdgeDetectionTBBSequential.run();
@@ -191,7 +191,7 @@ TEST(kostanyan_a_sobel_tbb, Test_All_White_Image) {
   taskDataOmp->outputs_count.emplace_back(out_tbb.size());
 
   // Create Task for TBB
-  Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBParallel.validation(), true);
   kostanyan_EdgeDetectionTBBParallel.pre_processing();
   kostanyan_EdgeDetectionTBBParallel.run();
@@ -214,7 +214,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Large_Image) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_tbb_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out_seq(n * m, 0);
   std::vector<uint8_t> out_tbb(n * m, 0);
 
@@ -228,7 +228,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Large_Image) {
   taskDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task for Sequential
-  Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBSequential kostanyan_EdgeDetectionTBBSequential(taskDataSeq);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBSequential.validation(), true);
   kostanyan_EdgeDetectionTBBSequential.pre_processing();
   kostanyan_EdgeDetectionTBBSequential.run();
@@ -244,7 +244,7 @@ TEST(kostanyan_a_sobel_tbb, Test_Large_Image) {
   taskDataOmp->outputs_count.emplace_back(out_tbb.size());
 
   // Create Task for TBB
-  Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
+  kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBParallel kostanyan_EdgeDetectionTBBParallel(taskDataOmp);
   ASSERT_EQ(kostanyan_EdgeDetectionTBBParallel.validation(), true);
   kostanyan_EdgeDetectionTBBParallel.pre_processing();
   kostanyan_EdgeDetectionTBBParallel.run();

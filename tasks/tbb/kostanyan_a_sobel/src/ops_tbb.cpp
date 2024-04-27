@@ -8,7 +8,7 @@
 #include <vector>
 #undef min
 
-using namespace std::chrono_literals;
+namespace kostanyan_tbb_sobel {
 
 std::vector<uint8_t> kostanyan_getRandomPicture(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
@@ -108,7 +108,6 @@ bool Kostanyan_EdgeDetectionTBBParallel::run() {
     }
   });
 
-  std::this_thread::sleep_for(30ms);
   return true;
 }
 
@@ -119,3 +118,4 @@ bool Kostanyan_EdgeDetectionTBBParallel::post_processing() {
   }
   return true;
 }
+}  // namespace kostanyan_tbb_sobel

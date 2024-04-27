@@ -17,7 +17,7 @@ TEST(tbb_kostanyan_sobel_perf_test, test_pipeline_run) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_tbb_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out(n * m, 0);
 
   // Create TaskData
@@ -30,7 +30,7 @@ TEST(tbb_kostanyan_sobel_perf_test, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTBB = std::make_shared<Kostanyan_EdgeDetectionTBBParallel>(taskDataSeq);
+  auto testTaskTBB = std::make_shared<kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -67,7 +67,7 @@ TEST(tbb_kostanyan_sobel_perf_test, test_task_run) {
   std::vector<int> in(2);
   in[0] = n;
   in[1] = m;
-  std::vector<uint8_t> pict = kostanyan_getRandomPicture(n, m, min, max);
+  std::vector<uint8_t> pict = kostanyan_tbb_sobel::kostanyan_getRandomPicture(n, m, min, max);
   std::vector<uint8_t> out(n * m, 0);
 
   // Create TaskData
@@ -80,7 +80,7 @@ TEST(tbb_kostanyan_sobel_perf_test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTBB = std::make_shared<Kostanyan_EdgeDetectionTBBParallel>(taskDataSeq);
+  auto testTaskTBB = std::make_shared<kostanyan_tbb_sobel::Kostanyan_EdgeDetectionTBBParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

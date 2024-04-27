@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-
+namespace kostanyan_tbb_sobel {
 std::vector<uint8_t> kostanyan_getRandomPicture(int n, int m, uint8_t min, uint8_t max);
 
 class Kostanyan_EdgeDetectionTBBSequential : public ppc::core::Task {
@@ -38,3 +38,4 @@ class Kostanyan_EdgeDetectionTBBParallel : public ppc::core::Task {
   std::vector<uint8_t> res = {};
   int n{}, m{};
 };
+}  // namespace kostanyan_tbb_sobel
