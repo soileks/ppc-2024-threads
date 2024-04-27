@@ -36,34 +36,26 @@ void SavotinaQuickSort(std::vector<SavotinaPoint>& pointArr, int left, int right
 
 // A search minimum point in point's array (min x, then min y)
 SavotinaPoint SavotinaMinPoint(const std::vector<SavotinaPoint>& pointArr) {
-  double minX = pointArr[0].x;
-  double minY = 0;
-  std::stack<int> S;
-  S.push(0);
+  double minX = DBL_MAX;
+  double minY = DBL_MAX;
+  int minIndex = 0;
   int pArrSize = pointArr.size();
 
-  // Search min x
-  for (int i = 1; i < pArrSize; ++i) {
-    double Xi = pointArr[i].x;
-    if (Xi < minX) {
-      minX = Xi;
-      while (!S.empty()) S.pop();
-      S.push(i);
-    } else if (Xi == minX) {
-      S.push(i);
+  for (int i = 0; i < pArrSize; ++i) {
+    if (pointArr[i].x < minX) {
+      minX = pointArr[i].x;
+      minIndex = i;
     }
   }
 
-  // Search min y
-  minY = pointArr[S.top()].y;
-  S.pop();
-  while (!S.empty()) {
-    double Yi = pointArr[S.top()].y;
-    if (Yi < minY) minY = Yi;
-    S.pop();
+  for (int i = 0; i < pArrSize; ++i) {
+    if (pointArr[i].x == minX && pointArr[i].y < minY) {
+      minY = pointArr[i].y;
+      minIndex = i;
+    }
   }
 
-  return SavotinaPoint(minX, minY);  // Anonymous object
+  return pointArr[minIndex];
 }
 
 // Determining the number (index) of a point in the array
