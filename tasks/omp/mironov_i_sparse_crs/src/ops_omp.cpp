@@ -40,8 +40,8 @@ mironov_omp::MatrixCRS::MatrixCRS(const double* matrix, int n, int m, bool trans
 
 mironov_omp::MatrixCRS Multiplicate2(const mironov_omp::MatrixCRS& A, const mironov_omp::MatrixCRS& BT, int m) {
   int N = A.N;
-  std::vector<int>* columns = new std::vector<int>[N];
-  std::vector<double>* values = new std::vector<double>[N];
+  auto* columns = new std::vector<int>[N];
+  auto* values = new std::vector<double>[N];
   int* row_index = new int[N + 1];
   memset(row_index, 0, sizeof(int) * N);
   int i;
