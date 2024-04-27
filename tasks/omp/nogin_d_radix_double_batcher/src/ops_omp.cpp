@@ -139,7 +139,6 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
   }
 
   std::vector<std::pair<double, int>> indexedValues;
-#pragma omp parallel for
   for (size_t i = 0; i < subvectors.size(); ++i) {
     for (const auto& val : subvectors[i]) {
       indexedValues.emplace_back(val, i);
@@ -149,7 +148,6 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
   std::sort(indexedValues.begin(), indexedValues.end());
   merged.resize(indexedValues.size());
 
-#pragma omp parallel for
   for (size_t i = 0; i < indexedValues.size(); ++i) {
     merged[i] = indexedValues[i].first;
   }
@@ -158,8 +156,8 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
 }
 
 void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& side) {
-#pragma omp parallel for
   for (int i = 0; i < sizeDouble; ++i) {
+#pragma omp parallel for
     for (auto& j : side) {
       auto temp = static_cast<uint64_t>(j);
       temp >>= i * 8;
@@ -167,7 +165,7 @@ void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& s
       parts[temp].push_back(j);
     }
 
-    side = batchersMergeOmp(parts);
+    side = std::move(batchersMergeOmp(parts));
 
     for (auto& part : parts) {
       part.clear();
@@ -223,4 +221,4 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
 
   return vec;
 }
-} // namespace NoginDenisSeq
+}  // namespace NoginDenisSeq
