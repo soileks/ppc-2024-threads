@@ -1,4 +1,4 @@
-//Copyright 2024 Soloninko Andrey
+// Copyright 2024 Soloninko Andrey
 
 #include <gtest/gtest.h>
 #include <omp.h>

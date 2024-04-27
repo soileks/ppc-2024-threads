@@ -10,7 +10,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_20_omp) {
   std::vector<int> vec = sol_GetRandVector(20);
   std::vector<int> seq_res(vec.size(), 0);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
@@ -40,7 +40,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_20_omp) {
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
 
-  for(size_t i = 0; i < vec.size(); i++) {
+  for (size_t i = 0; i < vec.size(); i++) {
     ASSERT_EQ(seq_res[i], omp_res[i]);
   }
 }
@@ -50,7 +50,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_40_omp) {
   std::vector<int> vec = sol_GetRandVector(40);
   std::vector<int> seq_res(vec.size(), 0);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
@@ -80,7 +80,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_40_omp) {
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
 
-  for(size_t i = 0; i < vec.size(); i++) {
+  for (size_t i = 0; i < vec.size(); i++) {
     ASSERT_EQ(seq_res[i], omp_res[i]);
   }
 }
@@ -90,7 +90,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_60_omp) {
   std::vector<int> vec = sol_GetRandVector(60);
   std::vector<int> seq_res(vec.size(), 0);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
@@ -120,7 +120,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_60_omp) {
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
 
-  for(size_t i = 0; i < vec.size(); i++) {
+  for (size_t i = 0; i < vec.size(); i++) {
     ASSERT_EQ(seq_res[i], omp_res[i]);
   }
 }
@@ -130,7 +130,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_80_omp) {
   std::vector<int> vec = sol_GetRandVector(80);
   std::vector<int> seq_res(vec.size(), 0);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
@@ -160,7 +160,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_80_omp) {
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
 
-  for(size_t i = 0; i < vec.size(); i++) {
+  for (size_t i = 0; i < vec.size(); i++) {
     ASSERT_EQ(seq_res[i], omp_res[i]);
   }
 }
@@ -170,7 +170,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_100_omp) {
   std::vector<int> vec = sol_GetRandVector(100);
   std::vector<int> seq_res(vec.size(), 0);
 
-    // Create TaskData
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
   taskDataSeq->inputs_count.emplace_back(vec.size());
@@ -200,7 +200,7 @@ TEST(soloninko_a_Test_Vec_OMP, Test_Vec_100_omp) {
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
 
-  for(size_t i = 0; i < vec.size(); i++) {
+  for (size_t i = 0; i < vec.size(); i++) {
     ASSERT_EQ(seq_res[i], omp_res[i]);
   }
 }
