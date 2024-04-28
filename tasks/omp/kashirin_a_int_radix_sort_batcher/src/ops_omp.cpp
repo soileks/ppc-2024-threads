@@ -49,7 +49,9 @@ void radixSort(std::vector<int>& src, size_t left, size_t right) {
 }
 
 void merge2(std::vector<int>& src1, std::vector<int>& src2, std::vector<int>& res) {
-  size_t i = 0, j = 0, end = res.size();
+  size_t i = 0;
+  size_t j = 0;
+  size_t end = res.size();
   size_t k = 0;
   while (k < end) {
     if ((i < src1.size()) && ((j >= src2.size()) || (src1[i] < src2[j]))) {
