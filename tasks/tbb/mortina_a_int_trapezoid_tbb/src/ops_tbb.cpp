@@ -39,7 +39,7 @@ double trapezoidal_integral_tbb(double a1, double b1, double a2, double b2, int 
   double result = 0;
 
   result = tbb::parallel_reduce(
-    tbb::blocked_range2d<int>(0, n1, 0, n2), 0.0,
+      tbb::blocked_range2d<int>(0, n1, 0, n2), 0.0,
       [&](const tbb::blocked_range2d<int> &r, double res) {
         for (int i = r.rows().begin(); i != r.rows().end(); ++i) {
           for (int j = r.cols().begin(); j != r.cols().end(); ++j) {
