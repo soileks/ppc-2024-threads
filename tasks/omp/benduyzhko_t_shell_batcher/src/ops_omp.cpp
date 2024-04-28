@@ -1,4 +1,4 @@
-// Copyright 2024 Nesterov Alexander
+// Copyright 2024 Benduyzhko Tatiana
 #include "omp/benduyzhko_t_shell_batcher/include/ops_omp.hpp"
 
 #include <omp.h>
@@ -26,21 +26,20 @@ void shell(int* arr, int n);
 bool BenduyzhkoOMP::run() {
   internal_order_test();
 
-  int d = n >> 2;
+  int p = n >> 1;
+
 #pragma omp parallel for
-  for (int i = 0; i < 4; i++) {
-    ::shell(in_out + i * d, d);
+  for (int i = 0; i < 2; i++) {
+    ::shell(in_out + i * p, p);
   }
 
-  for (int p = d; p < n; p <<= 1) {
-    for (int k = p; k >= 1; k >>= 1) {
+  for (int k = p; k >= 1; k >>= 1) {
 #pragma omp parallel for
-      for (int j = k % p; j < n - k; j += 2 * k) {
-        for (int i = 0; i < std::min(k - 1, n - j - k - 1) + 1; ++i) {
-          if ((i + j) / (p * 2) == (i + j + k) / (p * 2)) {
-            if (in_out[i + j] > in_out[i + j + k]) {
-              std::swap(in_out[i + j], in_out[i + j + k]);
-            }
+    for (int j = k % p; j < n - k; j += 2 * k) {
+      for (int i = 0; i < std::min(k - 1, n - j - k - 1) + 1; ++i) {
+        if ((i + j) / n == (i + j + k) / n) {
+          if (in_out[i + j] > in_out[i + j + k]) {
+            std::swap(in_out[i + j], in_out[i + j + k]);
           }
         }
       }
