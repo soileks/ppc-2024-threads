@@ -44,11 +44,11 @@ bool HoareSortOMP::check_order() {
 }
 
 void HoareSortOMP::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type const* last_ptr) {
-  const uint32_t len = last_ptr - first_ptr;
-  for (uint32_t k = 1; k < len; k <<= 1) {
+  const int32_t len = last_ptr - first_ptr;
+  for (int32_t k = 1; k < len; k <<= 1) {
     const uint32_t chank = len / k;
 #pragma omp parallel for
-    for (uint32_t i = 0; i < k; ++i) {
+    for (int32_t i = 0; i < k; ++i) {
       // k = 5
       sortable_type* l = first_ptr + i * chank;
       sortable_type* r = l + chank;
@@ -60,11 +60,11 @@ void HoareSortOMP::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type
 }
 
 void HoareSortOMP::parallel_hoare_sort(sortable_type* first_ptr, sortable_type const* last_ptr) {
-  const uint32_t K = 16;
+  const int32_t K = 16;
   const uint32_t chank = (last_ptr - first_ptr) / K;
 
 #pragma omp parallel for
-  for (uint32_t i = 0; i < K; i += 2) {
+  for (int32_t i = 0; i < K; i += 2) {
     sortable_type* l1 = first_ptr + i * chank;
     sortable_type* r1 = l1 + chank;
     sortable_type* l2 = first_ptr + (i + 1) * chank;
