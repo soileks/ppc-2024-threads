@@ -175,13 +175,13 @@ TEST(Volodin_OMP_Sobel, Test_Sobel_Random_Image) {
   const int width = 256;
   const int height = 256;
 
-  std::vector<int> inImage;
+  std::vector<int> inImage(width * height, 0);
 
   std::default_random_engine rnd;
   std::uniform_int_distribution<> dist(0, 255);
 
   for (int i = 0; i < width * height; ++i) {
-    inImage.push_back(dist(rnd));
+    inImage[i] = dist(rnd);
   }
 
   std::vector<int> outImage(width * height, 0);

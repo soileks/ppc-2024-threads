@@ -12,13 +12,13 @@ TEST(volodin_omp_sobel_perf_test, test_pipeline_run) {
   const int width = 2048;
   const int height = 2048;
 
-  std::vector<int> inImage;
+  std::vector<int> inImage(width * height, 0);
 
   std::default_random_engine rnd;
   std::uniform_int_distribution<> dist(0, 255);
 
   for (int i = 0; i < width * height; ++i) {
-    inImage.push_back(dist(rnd));
+    inImage[i] = dist(rnd);
   }
 
   std::vector<int> outImage(height * width, 0);
@@ -51,13 +51,13 @@ TEST(volodin_omp_sobel_perf_test, test_task_run) {
   const int width = 2048;
   const int height = 2048;
 
-  std::vector<int> inImage;
+  std::vector<int> inImage(width * height, 0);
 
   std::default_random_engine rnd;
   std::uniform_int_distribution<> dist(0, 255);
 
   for (int i = 0; i < width * height; ++i) {
-    inImage.push_back(dist(rnd));
+    inImage[i] = dist(rnd);
   }
 
   std::vector<int> outImage(height * width, 0);

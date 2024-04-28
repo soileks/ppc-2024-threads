@@ -25,5 +25,5 @@ class SobelTaskOMP : public ppc::core::Task {
   int width_;
   int height_;
 
-  int clamp(int value, int min, int max);
+  static int clamp(int value, int min, int max);
 };
