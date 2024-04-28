@@ -1,5 +1,6 @@
 // Copyright 2024 Kashirin Alexander
 #include <omp.h>
+#include <cmath>
 //#include "seq/kashirin_a_int_radix_sort_batcher/include/ops_seq.hpp" 
 #include "omp/kashirin_a_int_radix_sort_batcher/include/ops_omp.hpp"
 using namespace std::chrono_literals;
@@ -9,7 +10,7 @@ int remainder(int num, int k) { return (num / static_cast<int>(pow(10, k - 1))) 
  void oddToArr(std::vector<int>& src, std::vector<int>& res) {
    int j = 0;
 #pragma omp parallel for
-   for (int i = 1; i < src.size(); i += 2) {
+   for (size_t i = 1; i < src.size(); i += 2) {
      res[j++] = src[i];
    }
  }
@@ -17,7 +18,7 @@ int remainder(int num, int k) { return (num / static_cast<int>(pow(10, k - 1))) 
 void evenToArr(std::vector<int>& src, std::vector<int>& res) {
   int j = 0;
 #pragma omp parallel for
-  for (int i = 0; i < src.size(); i += 2) {
+  for (size_t i = 0; i < src.size(); i += 2) {
     res[j++] = src[i];
   }
 }
