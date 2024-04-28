@@ -94,7 +94,8 @@ TEST_F(MakhinyaDTestSort, Random_Vec) {
 TEST_F(MakhinyaDTestSort, Random_Vec_With_Comp) {
   HoareSortOMP::vec_t in_vec(COUNT);
 
-  HoareSortOMP::compare_t in_comp = [](const HoareSortOMP::sortable_type& a, const HoareSortOMP::sortable_type& b) -> bool {
+  HoareSortOMP::compare_t in_comp = [](const HoareSortOMP::sortable_type& a,
+                                       const HoareSortOMP::sortable_type& b) -> bool {
     if ((a & 1) != (b & 1)) return (a & 1) < (b & 1);
     return a > b;
   };
