@@ -10,7 +10,7 @@ bool RadixSortDoubleBatcherSequential::pre_processing() {
   // Init value for input and output
   arr = std::vector<double>(taskData->inputs_count[0]);
 
-  auto* temp_arr = reinterpret_cast<double*>(taskData->inputs[0]);
+  auto *temp_arr = reinterpret_cast<double *>(taskData->inputs[0]);
   for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     arr[i] = temp_arr[i];
   }
@@ -31,11 +31,11 @@ bool RadixSortDoubleBatcherSequential::run() {
 
 bool RadixSortDoubleBatcherSequential::post_processing() {
   internal_order_test();
-  std::copy(res.begin(), res.end(), reinterpret_cast<double*>(taskData->outputs[0]));
+  std::copy(res.begin(), res.end(), reinterpret_cast<double *>(taskData->outputs[0]));
   return true;
 }
 
-std::vector<double> batchersMergeSeq(std::vector<std::vector<double>>& subvectors) {
+std::vector<double> batchersMergeSeq(std::vector<std::vector<double>> &subvectors) {
   std::vector<double> merged;
   if (subvectors.empty()) {
     return merged;
@@ -43,7 +43,7 @@ std::vector<double> batchersMergeSeq(std::vector<std::vector<double>>& subvector
 
   std::vector<std::pair<double, int>> indexedValues;
   for (size_t i = 0; i < subvectors.size(); ++i) {
-    for (const auto& val : subvectors[i]) {
+    for (const auto &val : subvectors[i]) {
       indexedValues.emplace_back(val, i);
     }
   }
@@ -58,9 +58,9 @@ std::vector<double> batchersMergeSeq(std::vector<std::vector<double>>& subvector
   return merged;
 }
 
-void partSortSeq(std::vector<std::vector<double>>& parts, std::vector<double>& side) {
+void partSortSeq(std::vector<std::vector<double>> &parts, std::vector<double> &side) {
   for (int i = 0; i < sizeDouble; ++i) {
-    for (auto& j : side) {
+    for (auto &j : side) {
       auto temp = static_cast<uint64_t>(j);
       temp >>= i * 8;
       temp &= 255;
@@ -69,7 +69,7 @@ void partSortSeq(std::vector<std::vector<double>>& parts, std::vector<double>& s
 
     side = batchersMergeSeq(parts);
 
-    for (auto& part : parts) {
+    for (auto &part : parts) {
       part.clear();
     }
   }
@@ -80,7 +80,7 @@ std::vector<double> radixSortBatcherSeq(std::vector<double> vec) {
   std::vector<double> positive;
   std::vector<double> negative;
 
-  for (auto& i : vec) {
+  for (auto &i : vec) {
     auto temp = static_cast<uint64_t>(i);
 
     if ((temp & mask) != 0) {
@@ -107,7 +107,7 @@ bool RadixSortDoubleBatcherOmpParallel::pre_processing() {
   // Init value for input and output
   arr = std::vector<double>(taskData->inputs_count[0]);
 
-  auto* temp_arr = reinterpret_cast<double*>(taskData->inputs[0]);
+  auto *temp_arr = reinterpret_cast<double *>(taskData->inputs[0]);
   for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     arr[i] = temp_arr[i];
   }
@@ -128,11 +128,11 @@ bool RadixSortDoubleBatcherOmpParallel::run() {
 
 bool RadixSortDoubleBatcherOmpParallel::post_processing() {
   internal_order_test();
-  std::copy(res.begin(), res.end(), reinterpret_cast<double*>(taskData->outputs[0]));
+  std::copy(res.begin(), res.end(), reinterpret_cast<double *>(taskData->outputs[0]));
   return true;
 }
 
-std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvectors) {
+std::vector<double> batchersMergeOmp(std::vector<std::vector<double>> &subvectors) {
   std::vector<double> merged;
   if (subvectors.empty()) {
     return merged;
@@ -140,7 +140,7 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
 
   std::vector<std::pair<double, int>> indexedValues;
   for (size_t i = 0; i < subvectors.size(); ++i) {
-    for (const auto& val : subvectors[i]) {
+    for (const auto &val : subvectors[i]) {
       indexedValues.emplace_back(val, i);
     }
   }
@@ -155,19 +155,19 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
   return merged;
 }
 
-void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& side) {
-  for (int i = 0; i < sizeDouble; ++i) {
+void partSortOmp(std::vector<std::vector<double>> &parts, std::vector<double> &side) {
 #pragma omp parallel for
-    for (auto& j : side) {
-      auto temp = static_cast<uint64_t>(j);
+  for (int i = 0; i < sizeDouble; ++i) {
+    for (unsigned long int j = 0; j < side.size(); ++j) {
+      auto temp = static_cast<uint64_t>(side[j]);
       temp >>= i * 8;
       temp &= 255;
-      parts[temp].push_back(j);
+      parts[temp].push_back(side[j]);
     }
 
     side = batchersMergeOmp(parts);
 
-    for (auto& part : parts) {
+    for (auto &part : parts) {
       part.clear();
     }
   }
@@ -178,7 +178,7 @@ std::vector<double> radixSortBatcherOmp(std::vector<double> vec) {
   std::vector<double> positive;
   std::vector<double> negative;
 
-  for (auto& i : vec) {
+  for (auto &i : vec) {
     auto temp = static_cast<uint64_t>(i);
 
     if ((temp & mask) != 0) {
@@ -192,13 +192,13 @@ std::vector<double> radixSortBatcherOmp(std::vector<double> vec) {
   {
 #pragma omp section
     {
-      std::vector<std::vector<double>> parts(256);
-      partSortOmp(parts, negative);
+      std::vector<std::vector<double>> partsNegative(256);
+      partSortOmp(partsNegative, negative);
     }
 #pragma omp section
     {
-      std::vector<std::vector<double>> parts(256);
-      partSortOmp(parts, positive);
+      std::vector<std::vector<double>> partsPositive(256);
+      partSortOmp(partsPositive, positive);
     }
   }
 
@@ -217,7 +217,7 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
 
   std::vector<double> randomVec(sizeVec);
 
-  for (double& value : randomVec) value = random(gen);
+  for (double &value : randomVec) value = random(gen);
 
   return randomVec;
 }
