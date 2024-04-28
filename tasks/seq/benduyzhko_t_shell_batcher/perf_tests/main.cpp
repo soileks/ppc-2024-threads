@@ -10,7 +10,7 @@
 TEST(sequential_benduyzhko_t_shell_batcher_perf_test, test_pipeline_run) {
   int n = 1e6;
   std::vector<int> arr(n);
-  BenduyzhkoSequential::get_random_numbers(arr.data(), n, -n, n, 4);
+  BenduyzhkoSequential::get_random_numbers(arr.data(), n, -n, n, 42);
   std::vector<int> out(arr);
 
   // Create TaskData
@@ -48,7 +48,7 @@ TEST(sequential_benduyzhko_t_shell_batcher_perf_test, test_pipeline_run) {
 TEST(sequential_benduyzhko_t_shell_batcher_perf_test, test_task_run) {
   int n = 1e6;
   std::vector<int> arr(n);
-  BenduyzhkoSequential::get_random_numbers(arr.data(), n, -n, n, 4);
+  BenduyzhkoSequential::get_random_numbers(arr.data(), n, -n, n, 42);
   std::vector<int> out = arr;
 
   // Create TaskData
