@@ -10,6 +10,7 @@
 #include <thread>
 #include <vector>
 #include <list>
+#include <unordered_set>
 
 using namespace std::chrono_literals;
 
@@ -61,12 +62,21 @@ void visualize(const std::vector<T>& v, int m, int n) {
   std::cout << "\n";
 }
 
-std::vector<int> reducePointers(const std::vector<int*> v) {
-  std::vector<int> res(v.size());
-  for (int i = 0; i < v.size(); i++) {
-    res[i] = v[i] ? *v[i] : 0;
+std::vector<int> reducePointersSeq(const std::vector<int*>& labelled) {
+  std::vector<int> reduced(labelled.size());
+  for (int i = 0; i < labelled.size(); i++) {
+    reduced[i] = labelled[i] ? *labelled[i] : 0;
   }
-  return res;
+  return reduced;
+}
+
+std::vector<int> reducePointersOmp(const std::vector<int*>& labelled, int chunkSize) {
+  std::vector<int> reduced(labelled.size());
+#pragma omp parallel for shedule(static, chunkSize)
+  for (int i = 0; i < labelled.size(); i++) {
+    reduced[i] = labelled[i] ? *labelled[i] : 0;
+  }
+  return reduced;
 }
 
 void processHorizontal(std::vector<int*>& labelled, std::list<int>& labels, const std::vector<uint8_t>& v, int& label,
@@ -159,27 +169,48 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
   processVertical(labelled, labels, v, label, n, 0, m);
   processMedium(labelled, labels, v, label, n, 0, m);
 
-  return reducePointers(labelled);
+  return reducePointersSeq(labelled);
+}
+
+void mergeBounds(std::vector<int*>& labelled, int blockSize, int m, int n) { 
+  for (int i = blockSize; i < m - 1; i += blockSize) {
+    for (int j = 0; j < n; j++) {
+      if (get(labelled, n, i - 1, j) && get(labelled, n, i + 1, j)) {
+        *get(labelled, n, i + 1, j) = *get(labelled, n, i - 1, j);
+      }
+    }
+  }
 }
 
 std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
   std::vector<int*> labelled(v.size(), nullptr);
-  std::list<int> labels;
-  int label = 0;
   const int numThreads = std::min(8, m / 2);
   const int blockSize = m / numThreads;
   const int dataSizeForThread = (blockSize + 1) * n;
+  std::vector<std::list<int>> allLabels;
 
-#pragma omp parallel num_threads(numThreads) private(label) private(labels)
+#pragma omp parallel num_threads(numThreads)
   { 
+    std::list<int> labels;
     int tid = omp_get_thread_num();
-    label = dataSizeForThread * tid;
+    int label = dataSizeForThread * tid;
     int start = blockSize * tid;
     int end = blockSize * (tid + 1);
+    if (tid == numThreads - 1 && blockSize * numThreads < m) {
+      end++; 
+    }
+    processHorizontal(labelled, labels, v, label, n, start);
+    processVertical(labelled, labels, v, label, n, start, end);
+    processMedium(labelled, labels, v, label, n, start, end);
 
+#pragma omp critical
+    { 
+      allLabels.push_back(std::move(labels));
+    }
   }
+  mergeBounds(labelled, blockSize, m, n);
 
-
+  return reducePointersOmp(labelled, blockSize);
 }
 
 bool TestOMPTaskSequential::pre_processing() {
