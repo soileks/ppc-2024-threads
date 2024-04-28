@@ -1,11 +1,3 @@
-// Copyright 2024 Prokofev Kirill
-#pragma once
-
-#include <algorithm>
-#include <cmath>
-#include <functional>
-#include <iostream>
-#include <map>
 #include <queue>
 #include <string>
 #include <utility>
@@ -22,6 +14,7 @@ int FindCountPointsInComponent(const std::vector<int>& image);
 std::vector<int> RemoveExtraPoints(const std::vector<int>& image, int width, int height, int label);
 void Sort(std::vector<int>* points, int xMin, int yMin);
 std::vector<int> GrahamAlgorithm(std::vector<int> points);
+std::vector<int> GenerateImgForPerfTests(int componentCount);
 std::vector<int> ConvertImageToVector(std::vector<std::vector<int>> notVecImg, int width, int height);
 int Cross(int x1, int y1, int x2, int y2, int x3, int y3);
 

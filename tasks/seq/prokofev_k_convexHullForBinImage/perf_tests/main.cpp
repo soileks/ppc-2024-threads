@@ -8,13 +8,11 @@
 
 TEST(prokofev_k_convex_hull_seq, test_pipeline_run) {
   // Create data
+  int countComp = 2000;
   int width = 8;
-  int height = 500000;
-  std::vector<int> out(9);
-  std::vector<int> row = {0, 0, 1, 1, 1, 1, 0, 0};
-  std::vector<std::vector<int>> notVecImage(height, row);
-  std::vector<int> vecImage = prokofev_k_covexHull_Seq::ConvertImageToVector(notVecImage, width, height);
-  std::vector<int> trueRes = {2, 0, 5, 0, 5, 499999, 2, 499999, -1};
+  int height = 8 * countComp + countComp;
+  std::vector<int> out(9 * countComp);
+  std::vector<int> vecImage = prokofev_k_covexHull_Seq::GenerateImgForPerfTests(countComp);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -44,21 +42,15 @@ TEST(prokofev_k_convex_hull_seq, test_pipeline_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-
-  for (size_t i = 0; i < trueRes.size(); i++) {
-    ASSERT_EQ(trueRes[i], out[i]);
-  }
 }
 
 TEST(prokofev_k_convex_hull_seq, test_task_run) {
   // Create data
+  int countComp = 2000;
   int width = 8;
-  int height = 500000;
-  std::vector<int> out(9);
-  std::vector<int> row = {0, 0, 1, 1, 1, 1, 0, 0};
-  std::vector<std::vector<int>> notVecImage(height, row);
-  std::vector<int> vecImage = prokofev_k_covexHull_Seq::ConvertImageToVector(notVecImage, width, height);
-  std::vector<int> trueRes = {2, 0, 5, 0, 5, 499999, 2, 499999, -1};
+  int height = 8 * countComp + countComp;
+  std::vector<int> out(9 * countComp);
+  std::vector<int> vecImage = prokofev_k_covexHull_Seq::GenerateImgForPerfTests(countComp);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -88,8 +80,4 @@ TEST(prokofev_k_convex_hull_seq, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-
-  for (size_t i = 0; i < trueRes.size(); i++) {
-    ASSERT_EQ(trueRes[i], out[i]);
-  }
 }

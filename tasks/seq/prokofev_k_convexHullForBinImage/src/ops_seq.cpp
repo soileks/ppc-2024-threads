@@ -276,3 +276,21 @@ std::vector<int> prokofev_k_covexHull_Seq::ConvertImageToVector(std::vector<std:
   }
   return newImg;
 }
+
+std::vector<int> prokofev_k_covexHull_Seq::GenerateImgForPerfTests(int componentCount) {
+  int width = 8;
+  int height = 8;
+  std::vector<int> nullRow = {0, 0, 0, 0, 0, 0, 0, 0};
+  std::vector<int> row = {0, 0, 1, 1, 1, 1, 0, 0};
+  std::vector<std::vector<int>> notVecImg(height * componentCount + componentCount);
+  for (int i = 0; i < componentCount; i++) {
+    for (int j = 0; j < height + 1; j++) {
+      if (j != 8) {
+        notVecImg[i * (height + 1) + j] = row;
+      } else {
+        notVecImg[i * (height + 1) + j] = nullRow;
+      }
+    }
+  }
+  return prokofev_k_covexHull_Seq::ConvertImageToVector(notVecImg, width, notVecImg.size());
+}
