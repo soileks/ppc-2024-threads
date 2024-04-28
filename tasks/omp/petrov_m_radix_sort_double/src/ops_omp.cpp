@@ -99,7 +99,8 @@ std::vector<double> PetrovRadixSortDoubleOMP::PetrovMerge(const std::vector<doub
   int len2 = arr2.size();
   std::vector<double> out;
   out.reserve(len1 + len2);
-  int indexFirst = 0, indexSecond = 0;
+  int indexFirst = 0; 
+  int indexSecond = 0;
   while (indexFirst < len1 && indexSecond < len2) {
     if (arr1[indexFirst] < arr2[indexSecond]) {
       out.push_back(arr1[indexFirst++]);
@@ -177,7 +178,7 @@ bool PetrovRadixSortDoubleOMP::pre_processing() {
     while (!sort.empty()) {
       sort.pop_back();
     }
-    auto inp = reinterpret_cast<double*>((taskData->inputs[0]));
+    auto *inp = reinterpret_cast<double*>((taskData->inputs[0]));
     for (int i = 0; i < data_size; i++) {
       sort.push_back(inp[i]);
     }

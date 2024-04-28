@@ -23,8 +23,8 @@ class PetrovRadixSortDoubleOMP : public ppc::core::Task {
   static void PetrovCountSort(double* in, double* out, int len, int exp);
   static bool PetrovCountSortSigns(const double* in, double* out, int len);
   static std::vector<double> PetrovRadixSort(const std::vector<double>& data1);
-  std::vector<std::vector<double>> PetrovSplitVector(const std::vector<double>& data, int numParts);
-  std::vector<double> PetrovMerge(const std::vector<double>& arr1, const std::vector<double>& arr2);
+  static std::vector<std::vector<double>> PetrovSplitVector(const std::vector<double>& data, int numParts);
+  static std::vector<double> PetrovMerge(const std::vector<double>& arr1, const std::vector<double>& arr2);
   std::vector<double> PetrovRadixSortOmp(const std::vector<double>& data, int numParts);
   std::vector<double> PetrovBinaryMergeTree(std::vector<std::vector<double>>& sortedVectors);
 };
