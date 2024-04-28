@@ -1,8 +1,10 @@
 // Copyright 2024 Nogin Denis
 #pragma once
+
 #include <omp.h>
 
 #include <algorithm>
+#include <cstdint>
 #include <random>
 #include <vector>
 

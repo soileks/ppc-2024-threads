@@ -215,10 +215,10 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
   std::default_random_engine gen{rd()};
   std::uniform_real_distribution<double> random(minValue, maxValue);
 
-  std::vector<double> vec(sizeVec);
+  std::vector<double> randomVec(sizeVec);
 
-  for (double& value : vec) value = random(gen);
+  for (double& value : randomVec) value = random(gen);
 
-  return vec;
+  return randomVec;
 }
 }  // namespace NoginDenisOmp
