@@ -5,198 +5,65 @@
 
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
 
-TEST(Parallel_Operations_OpenMP, Test_Sum) {
-  std::vector<int> vec = getRandomVector(100);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(Parallel_Operations_OpenMP, Test_1_bin_lab) {
+  int m = 100;
+  int n = 100;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVector(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+  std::vector<uint8_t> outNum_seq(4);
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs.push_back(outNum_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
+  taskDataSeq->outputs_count.push_back(4);
 
-  // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(testOmpTaskSequential.validation(), true);
-  testOmpTaskSequential.pre_processing();
-  testOmpTaskSequential.run();
-  testOmpTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
+  int objectsNum_seq = deserializeInt32(outNum_seq.data());
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
+  std::vector<uint8_t> outNum_omp(4);
 
-  // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataOmp->inputs.push_back(in.data());
+  taskDataOmp->inputs.push_back(serializedM.data());
+  taskDataOmp->inputs.push_back(serializedN.data());
+  taskDataOmp->inputs_count.push_back(in.size());
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->outputs.push_back(outV_omp.data());
+  taskDataOmp->outputs.push_back(outNum_omp.data());
+  taskDataOmp->outputs_count.push_back(outV_omp.size());
+  taskDataOmp->outputs_count.push_back(4);
 
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
+  BinaryLabellingOmp testTaskOmp(taskDataOmp);
+  ASSERT_TRUE(testTaskOmp.validation());
+  ASSERT_TRUE(testTaskOmp.pre_processing());
+  ASSERT_TRUE(testTaskOmp.run());
+  ASSERT_TRUE(testTaskOmp.post_processing());
 
-TEST(Parallel_Operations_OpenMP, Test_Diff) {
-  std::vector<int> vec = getRandomVector(100);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+  std::vector<int> outVD_omp = deserializeInt32V(outV_omp);
+  int objectsNum_omp = deserializeInt32(outNum_omp.data());
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  EXPECT_EQ(objectsNum_omp, objectsNum_seq);
+  EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 
-  // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testOmpTaskSequential.validation(), true);
-  testOmpTaskSequential.pre_processing();
-  testOmpTaskSequential.run();
-  testOmpTaskSequential.post_processing();
 
-  // Create data
-  std::vector<int> par_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
-
-  // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
-
-TEST(Parallel_Operations_OpenMP, Test_Diff_2) {
-  std::vector<int> vec = getRandomVector(10);
-  // Create data
-  std::vector<int> ref_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
-
-  // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testOmpTaskSequential.validation(), true);
-  testOmpTaskSequential.pre_processing();
-  testOmpTaskSequential.run();
-  testOmpTaskSequential.post_processing();
-
-  // Create data
-  std::vector<int> par_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
-
-  // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
-
-TEST(Parallel_Operations_OpenMP, Test_Mult) {
-  std::vector<int> vec = getRandomVector(10);
-  // Create data
-  std::vector<int> ref_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
-
-  // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "*");
-  ASSERT_EQ(testOmpTaskSequential.validation(), true);
-  testOmpTaskSequential.pre_processing();
-  testOmpTaskSequential.run();
-  testOmpTaskSequential.post_processing();
-
-  // Create data
-  std::vector<int> par_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
-
-  // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
-
-TEST(Parallel_Operations_OpenMP, Test_Mult_2) {
-  std::vector<int> vec = getRandomVector(5);
-  // Create data
-  std::vector<int> ref_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
-
-  // Create Task
-  TestOMPTaskSequential testOmpTaskSequential(taskDataSeq, "*");
-  ASSERT_EQ(testOmpTaskSequential.validation(), true);
-  testOmpTaskSequential.pre_processing();
-  testOmpTaskSequential.run();
-  testOmpTaskSequential.post_processing();
-
-  // Create data
-  std::vector<int> par_res(1, 0);
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
-
-  // Create Task
-  TestOMPTaskParallel testOmpTaskParallel(taskDataPar, "*");
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

@@ -15,12 +15,12 @@
 
 using namespace std::chrono_literals;
 
-std::vector<int> getRandomVector(int sz) {
+std::vector<uint8_t> getRandomVector(int sz) {
   std::random_device dev;
   std::mt19937 gen(dev());
-  std::vector<int> vec(sz);
+  std::vector<uint8_t> vec(sz);
   for (int i = 0; i < sz; i++) {
-    vec[i] = gen() % 100 + 1;
+    vec[i] = static_cast<uint8_t>(gen() > std::mt19937::max() / 2);
   }
   return vec;
 }
@@ -69,6 +69,14 @@ uint32_t deserializeInt32(const uint8_t* data) {
   return res;
 }
 
+std::vector<int> deserializeInt32V(const std::vector<uint8_t> v) {
+  std::vector<int> res(v.size() / sizeof(int));
+  for (size_t i = 0; i < v.size(); i += 4) {
+    res[i / 4] = deserializeInt32(v.data() + i);
+  }
+  return res;
+}
+
 template <class T>
 void visualize(const std::vector<T>& v, int m, int n) {
   std::cout << "\n\n";
@@ -113,8 +121,10 @@ void processVertical(std::vector<int*>& labelled, std::list<int>& labels, const 
     } else if (!get(labelled, n, i - 1, 0) && !get(labelled, n, i, 0)) {
       labels.push_back(++label);
       get(labelled, n, i, 0) = &labels.back();
-    } else if (get(labelled, n, i - 1, 0)) {
+    } else if (get(labelled, n, i - 1, 0) && get(labelled, n, i, 0)) {
       *get(labelled, n, i, 0) = *get(labelled, n, i - 1, 0);
+    } else if (get(labelled, n, i - 1, 0) && !get(labelled, n, i, 0)) {
+      get(labelled, n, i, 0) = get(labelled, n, i - 1, 0);
     }
   }
 }
@@ -180,9 +190,9 @@ std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>&
   processMedium(labelled, labels, v, label, n, 0, m);
 
    std::vector<int> reduced = reducePointers(labelled);
-  std::unordered_set<int> labels(reduced.begin(), reduced.end());
+  std::unordered_set<int> labelSet(reduced.begin(), reduced.end());
 
-  return std::make_pair(reduced, static_cast<int>(labels.size()));
+  return std::pair<std::vector<int>, int>(reduced, static_cast<int>(labelSet.size()));
 }
 
 void mergeBounds(std::vector<int*>& labelled, int blockSize, int m, int n) { 
@@ -229,7 +239,7 @@ std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>&
   return std::make_pair(reduced, static_cast<int>(labels.size()));
 }
 
-bool TestOMPTaskSequential::pre_processing() {
+bool BinaryLabellingSeq::pre_processing() {
   internal_order_test();
   try {
     _source.resize(taskData->inputs_count[0]);
@@ -243,7 +253,7 @@ bool TestOMPTaskSequential::pre_processing() {
   return true;
 }
 
-bool TestOMPTaskSequential::validation() {
+bool BinaryLabellingSeq::validation() {
   internal_order_test();
 
   return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 2 && taskData->inputs_count[1] == 4 &&
@@ -251,7 +261,7 @@ bool TestOMPTaskSequential::validation() {
          taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
-bool TestOMPTaskSequential::run() {
+bool BinaryLabellingSeq::run() {
   internal_order_test();
   try {
     auto res = getLabelledImageSeq(_source, _m, _n);
@@ -264,7 +274,7 @@ bool TestOMPTaskSequential::run() {
 }
 
 
-bool TestOMPTaskSequential::post_processing() {
+bool BinaryLabellingSeq::post_processing() {
   internal_order_test();
   try {
     memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
@@ -277,7 +287,7 @@ bool TestOMPTaskSequential::post_processing() {
   return true;
 }
 
-bool TestOMPTaskParallel::pre_processing() {
+bool BinaryLabellingOmp::pre_processing() {
   internal_order_test();
   try {
     _source.resize(taskData->inputs_count[0]);
@@ -291,7 +301,7 @@ bool TestOMPTaskParallel::pre_processing() {
   return true;
 }
 
-bool TestOMPTaskParallel::validation() {
+bool BinaryLabellingOmp::validation() {
   internal_order_test();
 
   return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 2 && taskData->inputs_count[1] == 4 &&
@@ -299,7 +309,7 @@ bool TestOMPTaskParallel::validation() {
          taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
-bool TestOMPTaskParallel::run() {
+bool BinaryLabellingOmp::run() {
   internal_order_test();
   double start = omp_get_wtime();
   try {
@@ -314,7 +324,7 @@ bool TestOMPTaskParallel::run() {
   return true;
 }
 
-bool TestOMPTaskParallel::post_processing() {
+bool BinaryLabellingOmp::post_processing() {
   internal_order_test();
   try {
     memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),

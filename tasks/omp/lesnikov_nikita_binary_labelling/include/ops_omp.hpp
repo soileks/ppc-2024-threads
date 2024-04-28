@@ -6,12 +6,15 @@
 
 #include "core/task/include/task.hpp"
 
-std::vector<int> getRandomVector(int sz);
+std::vector<uint8_t> getRandomVector(int sz);
 bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2);
+std::vector<uint8_t> serializeInt32(uint32_t num);
+uint32_t deserializeInt32(const uint8_t* data);
+std::vector<int> deserializeInt32V(const std::vector<uint8_t> v);
 
-class TestOMPTaskSequential : public ppc::core::Task {
+class BinaryLabellingSeq : public ppc::core::Task {
  public:
-  explicit TestOMPTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
+  explicit BinaryLabellingSeq(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
@@ -26,9 +29,9 @@ class TestOMPTaskSequential : public ppc::core::Task {
   uint32_t _numObjects = 0;
 };
 
-class TestOMPTaskParallel : public ppc::core::Task {
+class BinaryLabellingOmp : public ppc::core::Task {
  public:
-  explicit TestOMPTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_, std::string ops_)
+  explicit BinaryLabellingOmp(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
