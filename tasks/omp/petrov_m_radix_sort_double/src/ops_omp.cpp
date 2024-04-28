@@ -76,7 +76,7 @@ std::vector<std::vector<double>> PetrovRadixSortDoubleOMP::PetrovSplitVector(con
   std::vector<std::vector<double>> resultVec;
   std::vector<double> tmp;
 
-  if (numParts < 2 || data.size() < numParts) {
+  if (numParts < 2 || (int)data.size() < numParts) {
     resultVec.push_back(data);
     return resultVec;
   }
@@ -162,7 +162,7 @@ std::vector<double> PetrovRadixSortDoubleOMP::PetrovRadixSortOmp(const std::vect
   omp_set_num_threads(numParts);
 
 #pragma omp parallel for
-  for (int i = 0; i < vectorsForParallel.size(); ++i) {
+  for (int i = 0; i < (int)vectorsForParallel.size(); ++i) {
     vectorsForParallel[i] = PetrovRadixSort(vectorsForParallel[i]);
   }
 
