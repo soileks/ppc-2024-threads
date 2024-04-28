@@ -22,7 +22,7 @@ bool ConvexHullSequential::pre_processing() {
           m_w = components[i][j].second;
         }
       }
-      // std::sort(components[i].begin(), components[i].end());
+
       sizes.emplace_back(components[i].back().first + 1, m_w + 1);
     }
     results.resize(taskData->inputs_count[0]);
@@ -45,7 +45,6 @@ bool ConvexHullSequential::validation() {
     }
     if (taskData->outputs[0] == nullptr) return false;
 
-    // m.b. dop check
   } catch (...) {
     std::cout << "val\n";
     return false;
