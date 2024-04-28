@@ -38,27 +38,35 @@ void SavotinaQuickSort(std::vector<SavotinaPoint>& pointArr, int left, int right
 }
 
 // A search minimum point in point's array (min x, then min y)
-SavotinaPoint SavotinaMinPointSeq(const std::vector<SavotinaPoint>& pointArr) {
-  double minX = DBL_MAX;
-  double minY = DBL_MAX;
-  int minIndex = 0;
+SavotinaPoint SavotinaMinPoint(const std::vector<SavotinaPoint>& pointArr) {
+  double minX = pointArr[0].x;
+  double minY = 0;
+  std::stack<int> S;
+  S.push(0);
   int pArrSize = pointArr.size();
 
-  for (int i = 0; i < pArrSize; ++i) {
-    if (pointArr[i].x < minX) {
-      minX = pointArr[i].x;
-      minIndex = i;
+  // Search min x
+  for (int i = 1; i < pArrSize; ++i) {
+    double Xi = pointArr[i].x;
+    if (Xi < minX) {
+      minX = Xi;
+      while (!S.empty()) S.pop();
+      S.push(i);
+    } else if (Xi == minX) {
+      S.push(i);
     }
   }
 
-  for (int i = 0; i < pArrSize; ++i) {
-    if (pointArr[i].x == minX && pointArr[i].y < minY) {
-      minY = pointArr[i].y;
-      minIndex = i;
-    }
+  // Search min y
+  minY = pointArr[S.top()].y;
+  S.pop();
+  while (!S.empty()) {
+    double Yi = pointArr[S.top()].y;
+    if (Yi < minY) minY = Yi;
+    S.pop();
   }
 
-  return pointArr[minIndex];
+  return SavotinaPoint(minX, minY);  // Anonymous object
 }
 
 // Determining the number (index) of a point in the array
@@ -143,7 +151,7 @@ bool SavotinaGrahamsAlgorithmSequential::run() {
   if (pointsArr.empty()) return true;
 
   // Step 1: search the minimum point P0
-  SavotinaPoint P0 = SavotinaOmp::SavotinaMinPointSeq(pointsArr);
+  SavotinaPoint P0 = SavotinaOmp::SavotinaMinPoint(pointsArr);
   int p0 = SavotinaOmp::SavotinaPointPositionSeq(P0, pointsArr);
 
   // Step 2: sort all points except P0
@@ -161,32 +169,6 @@ bool SavotinaGrahamsAlgorithmSequential::post_processing() {
 
   std::copy(minConvexHull.begin(), minConvexHull.end(), reinterpret_cast<SavotinaPoint*>(taskData->outputs[0]));
   return true;
-}
-
-// A search minimum point in point's array (min x, then min y)
-SavotinaPoint SavotinaMinPointOMP(const std::vector<SavotinaPoint>& pointArr) {
-  double minX = DBL_MAX;
-  double minY = DBL_MAX;
-  int minIndex = 0;
-  int pArrSize = pointArr.size();
-
-#pragma omp parallel for reduction(min : minX)
-  for (int i = 0; i < pArrSize; ++i) {
-    if (pointArr[i].x < minX) {
-      minX = pointArr[i].x;
-      minIndex = i;
-    }
-  }
-
-#pragma omp parallel for reduction(min : minY)
-  for (int i = 0; i < pArrSize; ++i) {
-    if (pointArr[i].x == minX && pointArr[i].y < minY) {
-      minY = pointArr[i].y;
-      minIndex = i;
-    }
-  }
-
-  return pointArr[minIndex];
 }
 
 // Determining the number (index) of a point in the array
@@ -213,7 +195,6 @@ bool SavotinaGrahamsAlgorithmOmpParallel::pre_processing() {
   pointsArr = std::vector<SavotinaPoint>(taskData->inputs_count[0]);
 
   auto* pArray = reinterpret_cast<SavotinaPoint*>(taskData->inputs[0]);
-#pragma omp parallel for
   for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     pointsArr[i] = pArray[i];
   }
@@ -236,7 +217,7 @@ bool SavotinaGrahamsAlgorithmOmpParallel::run() {
 
   // Step 1: search the minimum point P0
   // SavotinaPoint P0 = SavotinaOmp::SavotinaMinPointOMP(pointsArr);
-  SavotinaPoint P0 = SavotinaOmp::SavotinaMinPointOMP(pointsArr);
+  SavotinaPoint P0 = SavotinaOmp::SavotinaMinPoint(pointsArr);
   int p0 = SavotinaOmp::SavotinaPointPositionOMP(P0, pointsArr);
 
   // Step 2: sort all points except P0
@@ -258,7 +239,6 @@ bool SavotinaGrahamsAlgorithmOmpParallel::post_processing() {
 
 std::vector<SavotinaPoint> SavotinaRandomPoints(double leftBorder, double rightBorder, size_t size) {
   std::vector<SavotinaPoint> arrPoints(size);
-#pragma omp parallel for
   for (SavotinaPoint& value : arrPoints) value = SavotinaPoint::aRandomPoint(leftBorder, rightBorder);
   return arrPoints;
 }

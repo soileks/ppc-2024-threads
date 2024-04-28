@@ -68,7 +68,7 @@ int SavotinaPoint::Compare(const SavotinaPoint& pivot, const SavotinaPoint& P) c
 }
 
 SavotinaPoint SavotinaPoint::aRandomPoint(double min, double max) {
-  unsigned int seed = 1000;
+  size_t seed = 1000;
   std::default_random_engine gen(seed);
   std::uniform_real_distribution<double> random(min, max);
   return SavotinaPoint(random(gen), random(gen));
