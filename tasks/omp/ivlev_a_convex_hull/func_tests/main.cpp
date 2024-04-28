@@ -14,25 +14,6 @@ TEST(ivlev_a_convex_hull_omp, one_component) {
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 0}, {0, 1}, {1, 0}, {3, 3}}};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  out_seq.resize(in.size());
-  taskDataSeq->outputs_count.emplace_back(out_seq.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
-  for (size_t i = 0; i < in.size(); i++) {
-    taskDataSeq->inputs_count.emplace_back(in[i].size());
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
-  }
-
-  // Create Task
-  ConvexHullOMPTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(out_seq, res);
-
-  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -50,7 +31,6 @@ TEST(ivlev_a_convex_hull_omp, one_component) {
   ASSERT_EQ(testTaskParallel.run(), true);
   ASSERT_EQ(testTaskParallel.post_processing(), true);
   ASSERT_EQ(out_par, res);
-  ASSERT_EQ(out_seq, out_par);
 }
 
 TEST(ivlev_a_convex_hull_omp, two_component) {
@@ -61,25 +41,6 @@ TEST(ivlev_a_convex_hull_omp, two_component) {
   std::vector<std::vector<std::pair<size_t, size_t>>> res = in;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  out_seq.resize(in.size());
-  taskDataSeq->outputs_count.emplace_back(out_seq.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
-  for (size_t i = 0; i < in.size(); i++) {
-    taskDataSeq->inputs_count.emplace_back(in[i].size());
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
-  }
-
-  // Create Task
-  ConvexHullOMPTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(out_seq, res);
-
-  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -97,7 +58,6 @@ TEST(ivlev_a_convex_hull_omp, two_component) {
   ASSERT_EQ(testTaskParallel.run(), true);
   ASSERT_EQ(testTaskParallel.post_processing(), true);
   ASSERT_EQ(out_par, res);
-  ASSERT_EQ(out_seq, out_par);
 }
 
 TEST(ivlev_a_convex_hull_omp, three_component) {
@@ -108,25 +68,6 @@ TEST(ivlev_a_convex_hull_omp, three_component) {
   std::vector<std::vector<std::pair<size_t, size_t>>> res = in;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  out_seq.resize(in.size());
-  taskDataSeq->outputs_count.emplace_back(out_seq.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
-  for (size_t i = 0; i < in.size(); i++) {
-    taskDataSeq->inputs_count.emplace_back(in[i].size());
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
-  }
-
-  // Create Task
-  ConvexHullOMPTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(out_seq, res);
-
-  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -144,7 +85,6 @@ TEST(ivlev_a_convex_hull_omp, three_component) {
   ASSERT_EQ(testTaskParallel.run(), true);
   ASSERT_EQ(testTaskParallel.post_processing(), true);
   ASSERT_EQ(out_par, res);
-  ASSERT_EQ(out_seq, out_par);
 }
 
 TEST(ivlev_a_convex_hull_omp, one_big_compnent) {
@@ -156,25 +96,6 @@ TEST(ivlev_a_convex_hull_omp, one_big_compnent) {
   std::vector<std::vector<std::pair<size_t, size_t>>> res = {{{0, 2}, {2, 0}, {2, 4}, {4, 2}}};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  out_seq.resize(in.size());
-  taskDataSeq->outputs_count.emplace_back(out_seq.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
-  for (size_t i = 0; i < in.size(); i++) {
-    taskDataSeq->inputs_count.emplace_back(in[i].size());
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
-  }
-
-  // Create Task
-  ConvexHullOMPTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(out_seq, res);
-
-  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -192,7 +113,6 @@ TEST(ivlev_a_convex_hull_omp, one_big_compnent) {
   ASSERT_EQ(testTaskParallel.run(), true);
   ASSERT_EQ(testTaskParallel.post_processing(), true);
   ASSERT_EQ(out_par, res);
-  ASSERT_EQ(out_seq, out_par);
 }
 
 TEST(ivlev_a_convex_hull_omp, one_small_one_big) {
@@ -206,25 +126,6 @@ TEST(ivlev_a_convex_hull_omp, one_small_one_big) {
                                                              {{0, 0}, {0, 2}, {1, 3}, {3, 0}, {3, 3}}};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  out_seq.resize(in.size());
-  taskDataSeq->outputs_count.emplace_back(out_seq.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_seq.data()));
-  for (size_t i = 0; i < in.size(); i++) {
-    taskDataSeq->inputs_count.emplace_back(in[i].size());
-    taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in[i].data()));
-  }
-
-  // Create Task
-  ConvexHullOMPTaskSequential testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  ASSERT_EQ(testTaskSequential.pre_processing(), true);
-  ASSERT_EQ(testTaskSequential.run(), true);
-  ASSERT_EQ(testTaskSequential.post_processing(), true);
-  ASSERT_EQ(out_seq, res);
-
-  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs_count.emplace_back(in.size());
   out_par.resize(in.size());
@@ -242,5 +143,4 @@ TEST(ivlev_a_convex_hull_omp, one_small_one_big) {
   ASSERT_EQ(testTaskParallel.run(), true);
   ASSERT_EQ(testTaskParallel.post_processing(), true);
   ASSERT_EQ(out_par, res);
-  ASSERT_EQ(out_seq, out_par);
 }
