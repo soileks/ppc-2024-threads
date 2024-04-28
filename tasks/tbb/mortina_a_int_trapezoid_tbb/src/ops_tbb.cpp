@@ -38,26 +38,28 @@ double trapezoidal_integral_tbb(double a1, double b1, double a2, double b2, int 
   double h2 = (b2 - a2) / n2;
   double result = 0;
 
-  result = tbb::parallel_reduce(tbb::blocked_range2d<int>(0, n1, 0, n2), 0.0,
-                                [&](const tbb::blocked_range2d<int> &r, double res) {
-                                    for (int i = r.rows().begin(); i != r.rows().end(); ++i) {
-                                        for (int j = r.cols().begin(); j != r.cols().end(); ++j) {
-                                            double x0 = a1 + i * h1;
-                                            double x1 = a1 + (i + 1) * h1;
+  result = tbb::parallel_reduce(
+    tbb::blocked_range2d<int>(0, n1, 0, n2), 0.0,
+      [&](const tbb::blocked_range2d<int> &r, double res) {
+        for (int i = r.rows().begin(); i != r.rows().end(); ++i) {
+          for (int j = r.cols().begin(); j != r.cols().end(); ++j) {
+            double x0 = a1 + i * h1;
+            double x1 = a1 + (i + 1) * h1;
 
-                                            double y0 = a2 + j * h2;
-                                            double y1 = a2 + (j + 1) * h2;
+            double y0 = a2 + j * h2;
+            double y1 = a2 + (j + 1) * h2;
 
-                                            double f00 = f(x0, y0);
-                                            double f01 = f(x0, y1);
-                                            double f10 = f(x1, y0);
-                                            double f11 = f(x1, y1);
+            double f00 = f(x0, y0);
+            double f01 = f(x0, y1);
+            double f10 = f(x1, y0);
+            double f11 = f(x1, y1);
 
-                                            res += ((f00 + f01 + f10 + f11) / 4.0) * (x1 - x0) * (y1 - y0);
-                                        }
-                                    }
-                                  return res;
-                                }, std::plus<double>());
+            res += ((f00 + f01 + f10 + f11) / 4.0) * (x1 - x0) * (y1 - y0);
+          }
+        }
+        return res;
+      },
+      std::plus<>());
 
   return result;
 }
