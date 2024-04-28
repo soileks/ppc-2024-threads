@@ -197,9 +197,10 @@ std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>&
 
 void mergeBounds(std::vector<int*>& labelled, int blockSize, int m, int n) { 
   for (int i = blockSize; i < m - 1; i += blockSize) {
+    std::cout << i << std::endl;
     for (int j = 0; j < n; j++) {
-      if (get(labelled, n, i - 1, j) && get(labelled, n, i + 1, j)) {
-        *get(labelled, n, i + 1, j) = *get(labelled, n, i - 1, j);
+      if (get(labelled, n, i - 1, j) && get(labelled, n, i, j)) {
+        *get(labelled, n, i, j) = *get(labelled, n, i - 1, j);
       }
     }
   }
@@ -210,7 +211,7 @@ std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>&
   const int numThreads = std::min(8, m / 2);
   const int blockSize = m / numThreads;
   const int dataSizeForThread = (blockSize + 1) * n;
-  std::vector<std::list<int>> allLabels;
+  std::list<std::list<int>> allLabels;
 
 #pragma omp parallel num_threads(numThreads)
   { 
@@ -221,6 +222,10 @@ std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>&
     int end = blockSize * (tid + 1);
     if (tid == numThreads - 1 && blockSize * numThreads < m) {
       end++; 
+    }
+    if (!get(v, n, start, 0)) {
+      labels.push_back(++label);
+      labelled[0] = &labels.back();
     }
     processHorizontal(labelled, labels, v, label, n, start);
     processVertical(labelled, labels, v, label, n, start, end);
