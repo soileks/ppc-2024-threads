@@ -42,11 +42,11 @@ class RadixSortDoubleBatcherOmpParallel : public ppc::core::Task {
 
 std::vector<double> batchersMergeSeq(std::vector<std::vector<double>>& subvectors);
 void partSortSeq(std::vector<std::vector<double>>& parts, std::vector<double>& side);
-std::vector<double> radixSortBatcherSeq(std::vector<double> v);
+std::vector<double> radixSortBatcherSeq(std::vector<double> vec);
 
 std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvectors);
 void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& side);
-std::vector<double> radixSortBatcherOmp(std::vector<double> v);
+std::vector<double> radixSortBatcherOmp(std::vector<double> vec);
 
 std::vector<double> randomVector(int sizeVec, double minValue, double maxValue);
 }  // namespace NoginDenisOmp
