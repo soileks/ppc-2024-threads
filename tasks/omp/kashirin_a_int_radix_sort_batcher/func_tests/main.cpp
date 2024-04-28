@@ -1,11 +1,10 @@
 // Copyright 2024 kashirin Alexander
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <vector>
 
-//#include "seq/kashirin_a_int_radix_sort_batcher/include/ops_seq.hpp"
 #include "omp/kashirin_a_int_radix_sort_batcher/include/ops_omp.hpp"
-
 
 TEST(kashirin_a_int_radix_sort_batcher_omp, Test_sort_10) {
   const int count = 10;

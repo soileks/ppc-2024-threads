@@ -1,14 +1,14 @@
 // Copyright 2024 Kashirin Alexander
 #pragma once
+#include <omp.h>
+
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <thread>
 #include <vector>
-#include <omp.h>
 
 #include "core/task/include/task.hpp"
-
 
 class OmpIntRadixSortWithBatcherMerge : public ppc::core::Task {
  public:
