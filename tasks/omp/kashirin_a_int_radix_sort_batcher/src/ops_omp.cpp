@@ -8,12 +8,14 @@ using namespace std::chrono_literals;
 
 int remainder(int num, int k) { return (num / static_cast<int>(pow(10, k - 1))) % 10; }
 
- void oddToArr(std::vector<int>& src, std::vector<int>& res) {
-   int j = 0;
+
+
+void oddToArr(std::vector<int>& src, std::vector<int>& res) {
+  int j = 0;
 #pragma omp parallel for
-   for (int i = 1; i < (int)src.size(); i += 2) {
-     res[j++] = src[i];
-   }
+  for (int i = 1; i < (int)src.size(); i += 2) {
+    res[j++] = src[i];
+  }
  }
 
 void evenToArr(std::vector<int>& src, std::vector<int>& res) {
@@ -103,10 +105,7 @@ bool OmpIntRadixSortWithBatcherMerge::validation() {
 bool OmpIntRadixSortWithBatcherMerge::run() {
   internal_order_test();
   try {
-    double start = omp_get_wtime();
     oddEvenMergeSort(input, result, 0, input.size() - 1);
-    double end = omp_get_wtime();
-    std::cout << "time = " << end - start << std::endl;
   } catch (...) {
     return false;
   }
