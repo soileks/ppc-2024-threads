@@ -4,7 +4,7 @@
 #include <functional>
 #include <vector>
 
-#include "omp/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort.hpp"
+#include "omp/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort_omp.hpp"
 
 class MakhinyaDTestSort : public ::testing::Test {
  public:

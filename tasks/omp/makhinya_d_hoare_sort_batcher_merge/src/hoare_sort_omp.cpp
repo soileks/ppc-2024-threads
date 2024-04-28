@@ -1,6 +1,6 @@
 // Copyright 2024 Makhinya Danil
 
-#include "omp/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort.hpp"
+#include "omp/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort_omp.hpp"
 
 bool HoareSortOMP::pre_processing() {
   internal_order_test();
