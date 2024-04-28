@@ -11,6 +11,7 @@
 #include <vector>
 #include <list>
 #include <unordered_set>
+#include <unordered_map>
 
 using namespace std::chrono_literals;
 
@@ -22,6 +23,24 @@ std::vector<int> getRandomVector(int sz) {
     vec[i] = gen() % 100 + 1;
   }
   return vec;
+}
+
+bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) { 
+  if (map1.size() != map2.size()) {
+    return false;
+  }
+  std::unordered_map<int, int> corresp;
+  for (size_t i = 0; i < map1.size(); i++) {
+    if (!map1[i] && !map2[i])
+        continue;
+    if ((map1[i] && !map2[i]) || (map2[i] && !map1[i]))
+      return false;
+    if (corresp.find(map1[i]) == corresp.end())
+      corresp[map1[i]] = map2[i];
+    else if (corresp[map1[i]] != map2[i])
+      return false;
+  }
+  return true;
 }
 
 template <class T>
@@ -62,17 +81,8 @@ void visualize(const std::vector<T>& v, int m, int n) {
   std::cout << "\n";
 }
 
-std::vector<int> reducePointersSeq(const std::vector<int*>& labelled) {
+std::vector<int> reducePointers(const std::vector<int*>& labelled) {
   std::vector<int> reduced(labelled.size());
-  for (int i = 0; i < labelled.size(); i++) {
-    reduced[i] = labelled[i] ? *labelled[i] : 0;
-  }
-  return reduced;
-}
-
-std::vector<int> reducePointersOmp(const std::vector<int*>& labelled, int chunkSize) {
-  std::vector<int> reduced(labelled.size());
-#pragma omp parallel for shedule(static, chunkSize)
   for (int i = 0; i < labelled.size(); i++) {
     reduced[i] = labelled[i] ? *labelled[i] : 0;
   }
@@ -154,7 +164,7 @@ void processMedium(std::vector<int*>& labelled, std::list<int>& labels, const st
   }
 }
 
-std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n) {
+std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n) {
   std::vector<int*> labelled(v.size(), nullptr);
   std::list<int> labels;
 
@@ -169,7 +179,10 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
   processVertical(labelled, labels, v, label, n, 0, m);
   processMedium(labelled, labels, v, label, n, 0, m);
 
-  return reducePointersSeq(labelled);
+   std::vector<int> reduced = reducePointers(labelled);
+  std::unordered_set<int> labels(reduced.begin(), reduced.end());
+
+  return std::make_pair(reduced, static_cast<int>(labels.size()));
 }
 
 void mergeBounds(std::vector<int*>& labelled, int blockSize, int m, int n) { 
@@ -182,7 +195,7 @@ void mergeBounds(std::vector<int*>& labelled, int blockSize, int m, int n) {
   }
 }
 
-std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
+std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
   std::vector<int*> labelled(v.size(), nullptr);
   const int numThreads = std::min(8, m / 2);
   const int blockSize = m / numThreads;
@@ -210,7 +223,10 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
   }
   mergeBounds(labelled, blockSize, m, n);
 
-  return reducePointersOmp(labelled, blockSize);
+  std::vector<int> reduced = reducePointers(labelled);
+  std::unordered_set<int> labels(reduced.begin(), reduced.end());
+
+  return std::make_pair(reduced, static_cast<int>(labels.size()));
 }
 
 bool TestOMPTaskSequential::pre_processing() {
@@ -237,20 +253,27 @@ bool TestOMPTaskSequential::validation() {
 
 bool TestOMPTaskSequential::run() {
   internal_order_test();
-  if (ops == "+") {
-    res = std::accumulate(input_.begin(), input_.end(), 1);
-  } else if (ops == "-") {
-    res -= std::accumulate(input_.begin(), input_.end(), 0);
-  } else if (ops == "*") {
-    res = std::accumulate(input_.begin(), input_.end(), 1, std::multiplies<>());
+  try {
+    auto res = getLabelledImageSeq(_source, _m, _n);
+    _result = res.first;
+    _numObjects = res.second;
+  } catch (...) {
+    return false;
   }
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
+
 bool TestOMPTaskSequential::post_processing() {
   internal_order_test();
-  reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
+  try {
+    memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
+           _result.size() * static_cast<size_t>(sizeof(int)));
+    auto serializedObjectsNum = serializeInt32(_numObjects);
+    memcpy(taskData->outputs[1], serializedObjectsNum.data(), serializedObjectsNum.size());
+  } catch (...) {
+    return false;
+  }
   return true;
 }
 
@@ -279,24 +302,13 @@ bool TestOMPTaskParallel::validation() {
 bool TestOMPTaskParallel::run() {
   internal_order_test();
   double start = omp_get_wtime();
-  auto temp_res = res;
-  if (ops == "+") {
-#pragma omp parallel for reduction(+ : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res += input_[i];
-    }
-  } else if (ops == "-") {
-#pragma omp parallel for reduction(- : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res -= input_[i];
-    }
-  } else if (ops == "*") {
-#pragma omp parallel for reduction(* : temp_res)
-    for (int i = 0; i < static_cast<int>(input_.size()); i++) {
-      temp_res *= input_[i];
-    }
+  try {
+    auto res = getLabelledImageOmp(_source, _m, _n);
+    _result = res.first;
+    _numObjects = res.second;
+  } catch (...) {
+    return false;
   }
-  res = temp_res;
   double finish = omp_get_wtime();
   std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
   return true;
@@ -304,6 +316,13 @@ bool TestOMPTaskParallel::run() {
 
 bool TestOMPTaskParallel::post_processing() {
   internal_order_test();
-  reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
+  try {
+    memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
+        _result.size() * static_cast<size_t>(sizeof(int)));
+    auto serializedObjectsNum = serializeInt32(_numObjects);
+    memcpy(taskData->outputs[1], serializedObjectsNum.data(), serializedObjectsNum.size());
+  } catch (...) {
+    return false;
+  }
   return true;
 }
