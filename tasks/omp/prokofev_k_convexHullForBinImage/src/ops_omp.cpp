@@ -38,7 +38,6 @@ bool prokofev_k_covexHull_Omp::BinaryImageConvexHullOmp::validation() {
 
 bool prokofev_k_covexHull_Omp::BinaryImageConvexHullOmp::run() {
   internal_order_test();
-  internal_order_test();
   try {
     std::vector<int> local_image = FindComponents(img, width, height);
     int count_components = FindCountComponents(local_image);
