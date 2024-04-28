@@ -1,27 +1,25 @@
 // Copyright 2024 Kashirin Alexander
+#include "omp/kashirin_a_int_radix_sort_batcher/include/ops_omp.hpp"
+
 #include <omp.h>
 
 #include <cmath>
-
-#include "omp/kashirin_a_int_radix_sort_batcher/include/ops_omp.hpp"
 using namespace std::chrono_literals;
 
 int remainder(int num, int k) { return (num / static_cast<int>(pow(10, k - 1))) % 10; }
 
-
-
 void oddToArr(std::vector<int>& src, std::vector<int>& res) {
   int j = 0;
 #pragma omp parallel for
-  for (int i = 1; i < (int)src.size(); i += 2) {
+  for (int i = 1; i < static_cast<int>src.size(); i += 2) {
     res[j++] = src[i];
   }
- }
+}
 
 void evenToArr(std::vector<int>& src, std::vector<int>& res) {
   int j = 0;
 #pragma omp parallel for
-  for (int i = 0; i < (int)src.size(); i += 2) {
+  for (int i = 0; i < static_cast<int>src.size(); i += 2) {
     res[j++] = src[i];
   }
 }
@@ -31,7 +29,7 @@ void radixSort(std::vector<int>& src, size_t left, size_t right) {
   std::vector<int> amount(10, 0);
   int k = 1;
   while (k <= 3) {
-    for (int i = (int)left; i <= (int)right; i++) {
+    for (int i = static_cast<int> left; i <= static_cast<int> right; i++) {
       int rem = remainder(src[i], k);
       tmp[rem][amount[rem]++] = src[i];
     }
@@ -49,7 +47,6 @@ void radixSort(std::vector<int>& src, size_t left, size_t right) {
     k++;
   }
 }
-
 
 void merge2(std::vector<int>& src1, std::vector<int>& src2, std::vector<int>& res) {
   size_t i = 0, j = 0, end = res.size();
