@@ -58,7 +58,7 @@ double trapezoidal_integral_tbb(double a1, double b1, double a2, double b2, int 
           }
         }
         return res;
-      },
+      }
       std::plus<double>());
 
   return result;
