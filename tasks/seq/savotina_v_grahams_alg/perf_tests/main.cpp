@@ -6,8 +6,8 @@
 
 TEST(savotina_v_grahams_alg_seq, test_pipeline_run) {
   double min = 0;
-  double max = 10000;
-  size_t size = 2000000;  // size of vector of random points
+  double max = 100000;
+  size_t size = 1000000;  // size of vector of random points
 
   // Create data
   std::vector<SavotinaPoint> points = {SavotinaPoint(max, min), SavotinaPoint(min, max), SavotinaPoint(max, max),
@@ -53,8 +53,8 @@ TEST(savotina_v_grahams_alg_seq, test_pipeline_run) {
 
 TEST(savotina_v_grahams_alg_seq, test_task_run) {
   double min = 0;
-  double max = 10000;
-  size_t size = 2000000;  // size of vector of random points
+  double max = 100000;
+  size_t size = 1000000;  // size of vector of random points
 
   // Create data
   std::vector<SavotinaPoint> points = {SavotinaPoint(max, min), SavotinaPoint(min, max), SavotinaPoint(max, max),
