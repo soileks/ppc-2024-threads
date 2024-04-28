@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "omp/nogin_d_radix_double_batcher/include/ops_omp.hpp"
+#include "tbb/nogin_d_radix_double_batcher/include/ops_tbb.hpp"
 
 TEST(nogin_d_radix_double_batcher_omp, array) {
   // Create data
@@ -18,7 +18,7 @@ TEST(nogin_d_radix_double_batcher_omp, array) {
   RSDBDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisTbb::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -28,18 +28,18 @@ TEST(nogin_d_radix_double_batcher_omp, array) {
   std::vector<double> out_par(array.size());
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
-  RSDBDataOmp->inputs_count.emplace_back(array.size());
-  RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
-  RSDBDataOmp->outputs_count.emplace_back(out_par.size());
+  std::shared_ptr<ppc::core::TaskData> RSDBDataTbb = std::make_shared<ppc::core::TaskData>();
+  RSDBDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataTbb->inputs_count.emplace_back(array.size());
+  RSDBDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
+  RSDBDataTbb->outputs_count.emplace_back(out_par.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherOmpParallel testRDSBompParallel(RSDBDataOmp);
-  ASSERT_EQ(testRDSBompParallel.validation(), true);
-  testRDSBompParallel.pre_processing();
-  testRDSBompParallel.run();
-  testRDSBompParallel.post_processing();
+  NoginDenisTbb::RadixSortDoubleBatcherTbbParallel testRDSBtbbParallel(RSDBDataTbb);
+  ASSERT_EQ(testRDSBtbbParallel.validation(), true);
+  testRDSBtbbParallel.pre_processing();
+  testRDSBtbbParallel.run();
+  testRDSBtbbParallel.post_processing();
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);
@@ -65,7 +65,7 @@ TEST(nogin_d_radix_double_batcher_omp, test_array_2) {
   RSDBDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisTbb::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -75,18 +75,18 @@ TEST(nogin_d_radix_double_batcher_omp, test_array_2) {
   std::vector<double> out_par(array.size());
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
-  RSDBDataOmp->inputs_count.emplace_back(array.size());
-  RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
-  RSDBDataOmp->outputs_count.emplace_back(out_par.size());
+  std::shared_ptr<ppc::core::TaskData> RSDBDataTbb = std::make_shared<ppc::core::TaskData>();
+  RSDBDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataTbb->inputs_count.emplace_back(array.size());
+  RSDBDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
+  RSDBDataTbb->outputs_count.emplace_back(out_par.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherOmpParallel testRDSBompParallel(RSDBDataOmp);
-  ASSERT_EQ(testRDSBompParallel.validation(), true);
-  testRDSBompParallel.pre_processing();
-  testRDSBompParallel.run();
-  testRDSBompParallel.post_processing();
+  NoginDenisTbb::RadixSortDoubleBatcherTbbParallel testRDSBtbbParallel(RSDBDataTbb);
+  ASSERT_EQ(testRDSBtbbParallel.validation(), true);
+  testRDSBtbbParallel.pre_processing();
+  testRDSBtbbParallel.run();
+  testRDSBtbbParallel.post_processing();
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);
@@ -106,7 +106,7 @@ TEST(nogin_d_radix_double_batcher_omp, test_empty) {
   RSDBDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisTbb::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -116,18 +116,18 @@ TEST(nogin_d_radix_double_batcher_omp, test_empty) {
   std::vector<double> out_par(array.size());
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
-  RSDBDataOmp->inputs_count.emplace_back(array.size());
-  RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
-  RSDBDataOmp->outputs_count.emplace_back(out_par.size());
+  std::shared_ptr<ppc::core::TaskData> RSDBDataTbb = std::make_shared<ppc::core::TaskData>();
+  RSDBDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataTbb->inputs_count.emplace_back(array.size());
+  RSDBDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
+  RSDBDataTbb->outputs_count.emplace_back(out_par.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherOmpParallel testRDSBompParallel(RSDBDataOmp);
-  ASSERT_EQ(testRDSBompParallel.validation(), true);
-  testRDSBompParallel.pre_processing();
-  testRDSBompParallel.run();
-  testRDSBompParallel.post_processing();
+  NoginDenisTbb::RadixSortDoubleBatcherTbbParallel testRDSBtbbParallel(RSDBDataTbb);
+  ASSERT_EQ(testRDSBtbbParallel.validation(), true);
+  testRDSBtbbParallel.pre_processing();
+  testRDSBtbbParallel.run();
+  testRDSBtbbParallel.post_processing();
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);
@@ -147,7 +147,7 @@ TEST(nogin_d_radix_double_batcher_omp, test_one_number) {
   RSDBDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisTbb::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -157,18 +157,18 @@ TEST(nogin_d_radix_double_batcher_omp, test_one_number) {
   std::vector<double> out_par(array.size());
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
-  RSDBDataOmp->inputs_count.emplace_back(array.size());
-  RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
-  RSDBDataOmp->outputs_count.emplace_back(out_par.size());
+  std::shared_ptr<ppc::core::TaskData> RSDBDataTbb = std::make_shared<ppc::core::TaskData>();
+  RSDBDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataTbb->inputs_count.emplace_back(array.size());
+  RSDBDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
+  RSDBDataTbb->outputs_count.emplace_back(out_par.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherOmpParallel testRDSBompParallel(RSDBDataOmp);
-  ASSERT_EQ(testRDSBompParallel.validation(), true);
-  testRDSBompParallel.pre_processing();
-  testRDSBompParallel.run();
-  testRDSBompParallel.post_processing();
+  NoginDenisTbb::RadixSortDoubleBatcherTbbParallel testRDSBtbbParallel(RSDBDataTbb);
+  ASSERT_EQ(testRDSBtbbParallel.validation(), true);
+  testRDSBtbbParallel.pre_processing();
+  testRDSBtbbParallel.run();
+  testRDSBtbbParallel.post_processing();
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);
@@ -188,7 +188,7 @@ TEST(nogin_d_radix_double_batcher_omp, test_with_negative) {
   RSDBDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisTbb::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -198,18 +198,18 @@ TEST(nogin_d_radix_double_batcher_omp, test_with_negative) {
   std::vector<double> out_par(array.size());
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
-  RSDBDataOmp->inputs_count.emplace_back(array.size());
-  RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
-  RSDBDataOmp->outputs_count.emplace_back(out_par.size());
+  std::shared_ptr<ppc::core::TaskData> RSDBDataTbb = std::make_shared<ppc::core::TaskData>();
+  RSDBDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataTbb->inputs_count.emplace_back(array.size());
+  RSDBDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
+  RSDBDataTbb->outputs_count.emplace_back(out_par.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherOmpParallel testRDSBompParallel(RSDBDataOmp);
-  ASSERT_EQ(testRDSBompParallel.validation(), true);
-  testRDSBompParallel.pre_processing();
-  testRDSBompParallel.run();
-  testRDSBompParallel.post_processing();
+  NoginDenisTbb::RadixSortDoubleBatcherTbbParallel testRDSBtbbParallel(RSDBDataTbb);
+  ASSERT_EQ(testRDSBtbbParallel.validation(), true);
+  testRDSBtbbParallel.pre_processing();
+  testRDSBtbbParallel.run();
+  testRDSBtbbParallel.post_processing();
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);
@@ -218,7 +218,7 @@ TEST(nogin_d_radix_double_batcher_omp, test_with_negative) {
 
 TEST(nogin_d_radix_double_batcher_omp, test_random) {
   // Create data
-  std::vector<double> array = NoginDenisOmp::randomVector(1000, -1000000, 1000000);
+  std::vector<double> array = NoginDenisTbb::randomVector(1000, -1000000, 1000000);
   // Create data
   std::vector<double> out_seq(array.size());
 
@@ -230,7 +230,7 @@ TEST(nogin_d_radix_double_batcher_omp, test_random) {
   RSDBDataSeq->outputs_count.emplace_back(out_seq.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisTbb::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -240,18 +240,18 @@ TEST(nogin_d_radix_double_batcher_omp, test_random) {
   std::vector<double> out_par(array.size());
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
-  RSDBDataOmp->inputs_count.emplace_back(array.size());
-  RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
-  RSDBDataOmp->outputs_count.emplace_back(out_par.size());
+  std::shared_ptr<ppc::core::TaskData> RSDBDataTbb = std::make_shared<ppc::core::TaskData>();
+  RSDBDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataTbb->inputs_count.emplace_back(array.size());
+  RSDBDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out_par.data()));
+  RSDBDataTbb->outputs_count.emplace_back(out_par.size());
 
   // Create Task
-  NoginDenisOmp::RadixSortDoubleBatcherOmpParallel testRDSBompParallel(RSDBDataOmp);
-  ASSERT_EQ(testRDSBompParallel.validation(), true);
-  testRDSBompParallel.pre_processing();
-  testRDSBompParallel.run();
-  testRDSBompParallel.post_processing();
+  NoginDenisTbb::RadixSortDoubleBatcherTbbParallel testRDSBtbbParallel(RSDBDataTbb);
+  ASSERT_EQ(testRDSBtbbParallel.validation(), true);
+  testRDSBtbbParallel.pre_processing();
+  testRDSBtbbParallel.run();
+  testRDSBtbbParallel.post_processing();
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);

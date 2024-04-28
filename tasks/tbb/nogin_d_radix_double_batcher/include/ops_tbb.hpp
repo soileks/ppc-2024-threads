@@ -1,6 +1,10 @@
 // Copyright 2024 Nogin Denis
 #pragma once
 #include <omp.h>
+#include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
+#include <tbb/parallel_sort.h>
+#include <tbb/tbb.h>
 
 #include <algorithm>
 #include <random>
@@ -8,7 +12,7 @@
 
 #include "core/task/include/task.hpp"
 
-namespace NoginDenisOmp {
+namespace NoginDenisTbb {
 
 class RadixSortDoubleBatcherSequential : public ppc::core::Task {
  public:
@@ -25,9 +29,9 @@ class RadixSortDoubleBatcherSequential : public ppc::core::Task {
   std::vector<double> res;
 };
 
-class RadixSortDoubleBatcherOmpParallel : public ppc::core::Task {
+class RadixSortDoubleBatcherTbbParallel : public ppc::core::Task {
  public:
-  explicit RadixSortDoubleBatcherOmpParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
+  explicit RadixSortDoubleBatcherTbbParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
 
   bool pre_processing() override;
@@ -44,9 +48,9 @@ std::vector<double> batchersMergeSeq(std::vector<std::vector<double>>& subvector
 void partSortSeq(std::vector<std::vector<double>>& parts, std::vector<double>& side);
 std::vector<double> radixSortBatcherSeq(std::vector<double> v);
 
-std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvectors);
-void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& side);
-std::vector<double> radixSortBatcherOmp(std::vector<double> v);
+std::vector<double> batchersMergeTbb(std::vector<std::vector<double>>& subvectors);
+void partSortTbb(std::vector<std::vector<double>>& parts, std::vector<double>& side);
+std::vector<double> radixSortBatcherTbb(std::vector<double> v);
 
 std::vector<double> randomVector(int sizeVec, double minValue, double maxValue);
-}  // namespace NoginDenisOmp
+}  // namespace NoginDenisTbb

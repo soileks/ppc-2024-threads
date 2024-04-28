@@ -1,7 +1,7 @@
 // Copyright 2024 Nogin Denis
-#include "omp/nogin_d_radix_double_batcher/include/ops_omp.hpp"
+#include "tbb/nogin_d_radix_double_batcher/include/ops_tbb.hpp"
 
-namespace NoginDenisOmp {
+namespace NoginDenisTbb {
 
 constexpr int sizeDouble = sizeof(double);
 
@@ -102,7 +102,7 @@ std::vector<double> radixSortBatcherSeq(std::vector<double> vec) {
   return vec;
 }
 
-bool RadixSortDoubleBatcherOmpParallel::pre_processing() {
+bool RadixSortDoubleBatcherTbbParallel::pre_processing() {
   internal_order_test();
   // Init value for input and output
   arr = std::vector<double>(taskData->inputs_count[0]);
@@ -114,25 +114,25 @@ bool RadixSortDoubleBatcherOmpParallel::pre_processing() {
   return true;
 }
 
-bool RadixSortDoubleBatcherOmpParallel::validation() {
+bool RadixSortDoubleBatcherTbbParallel::validation() {
   internal_order_test();
   // Check count elements of output
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool RadixSortDoubleBatcherOmpParallel::run() {
+bool RadixSortDoubleBatcherTbbParallel::run() {
   internal_order_test();
-  res = radixSortBatcherOmp(arr);
+  res = radixSortBatcherTbb(arr);
   return true;
 }
 
-bool RadixSortDoubleBatcherOmpParallel::post_processing() {
+bool RadixSortDoubleBatcherTbbParallel::post_processing() {
   internal_order_test();
   std::copy(res.begin(), res.end(), reinterpret_cast<double*>(taskData->outputs[0]));
   return true;
 }
 
-std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvectors) {
+std::vector<double> batchersMergeTbb(std::vector<std::vector<double>>& subvectors) {
   std::vector<double> merged;
   if (subvectors.empty()) {
     return merged;
@@ -155,9 +155,8 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
   return merged;
 }
 
-void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& side) {
+void partSortTbb(std::vector<std::vector<double>>& parts, std::vector<double>& side) {
   for (int i = 0; i < sizeDouble; ++i) {
-#pragma omp parallel for
     for (auto& j : side) {
       auto temp = static_cast<uint64_t>(j);
       temp >>= i * 8;
@@ -165,7 +164,7 @@ void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& s
       parts[temp].push_back(j);
     }
 
-    side = batchersMergeOmp(parts);
+    side = batchersMergeSeq(parts);
 
     for (auto& part : parts) {
       part.clear();
@@ -173,14 +172,13 @@ void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& s
   }
 }
 
-std::vector<double> radixSortBatcherOmp(std::vector<double> vec) {
-  uint64_t mask = static_cast<uint64_t>(1) << (sizeDouble * 8 - 1);
+std::vector<double> radixSortBatcherTbb(std::vector<double> vec) {
+  uint64_t mask = static_cast<uint64_t>(1) << (sizeof(double) * 8 - 1);
   std::vector<double> positive;
   std::vector<double> negative;
 
   for (auto& i : vec) {
     auto temp = static_cast<uint64_t>(i);
-
     if ((temp & mask) != 0) {
       negative.push_back(i);
     } else {
@@ -188,19 +186,9 @@ std::vector<double> radixSortBatcherOmp(std::vector<double> vec) {
     }
   }
 
-#pragma omp parallel sections
-  {
-#pragma omp section
-    {
-      std::vector<std::vector<double>> parts(256);
-      partSortOmp(parts, negative);
-    }
-#pragma omp section
-    {
-      std::vector<std::vector<double>> parts(256);
-      partSortOmp(parts, positive);
-    }
-  }
+  std::vector<std::vector<double>> parts(256);
+  partSortTbb(parts, negative);
+  partSortTbb(parts, positive);
 
   vec.clear();
   vec.reserve(negative.size() + positive.size());
@@ -209,6 +197,7 @@ std::vector<double> radixSortBatcherOmp(std::vector<double> vec) {
 
   return vec;
 }
+
 
 std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) {
   std::random_device rd;
@@ -221,4 +210,4 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
 
   return vec;
 }
-}  // namespace NoginDenisOmp
+}  // namespace NoginDenisTbb
