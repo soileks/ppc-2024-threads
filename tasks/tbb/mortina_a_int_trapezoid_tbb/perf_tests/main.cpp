@@ -35,7 +35,8 @@ TEST(tbb_mortina_a_int_trapezoid, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTBB = std::make_shared<mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid>(taskDataSeq, sin_cos);
+  auto testTaskTBB = std::make_shared<mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid>(
+      taskDataSeq, sin_cos);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -81,7 +82,8 @@ TEST(tbb_mortina_a_int_trapezoid, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTBB = std::make_shared<mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid>(taskDataSeq, sin_cos);
+  auto testTaskTBB = std::make_shared<mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid>(
+      taskDataSeq, sin_cos);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

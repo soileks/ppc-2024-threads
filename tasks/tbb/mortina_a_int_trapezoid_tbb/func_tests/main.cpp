@@ -34,7 +34,7 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_1) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testOmpTaskSequential(taskDataSeq, 
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testOmpTaskSequential(taskDataSeq,
                                                                                                         x_y_quadro);
   ASSERT_EQ(testOmpTaskSequential.validation(), true);
   testOmpTaskSequential.pre_processing();
@@ -54,7 +54,7 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_1) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid testOmpTaskParallel(taskDataPar, 
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid testOmpTaskParallel(taskDataPar,
                                                                                                     x_y_quadro);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
@@ -92,7 +92,8 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_2) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, sin_cos);
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq,
+                                                                                                     sin_cos);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -111,7 +112,7 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_2) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid testOmpTaskParallel(taskDataPar, 
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid testOmpTaskParallel(taskDataPar,
                                                                                                     sin_cos);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
@@ -149,7 +150,8 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_3) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_mul_y);
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq,
+                                                                                                     x_mul_y);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -168,7 +170,7 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_3) {
   taskDataPar->outputs_count.emplace_back(par_res.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid testOmpTaskParallel(taskDataPar, 
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskParallelMortinaIntegralTrapezoid testOmpTaskParallel(taskDataPar,
                                                                                                     x_mul_y);
   ASSERT_EQ(testOmpTaskParallel.validation(), true);
   testOmpTaskParallel.pre_processing();
@@ -265,7 +267,8 @@ TEST(Parallel_mortina_a_int_trapizoid_TBB, Test_5) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq, x_del_y);
+  mortina_a_integral_trapezoid_tbb::TestTBBTaskSequentialMortinaIntegralTrapezoid testTaskSequential(taskDataSeq,
+                                                                                                     x_del_y);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
