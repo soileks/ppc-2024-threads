@@ -54,9 +54,8 @@ TEST(savotina_v_grahams_alg_tbb, Test1) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
 
@@ -119,9 +118,8 @@ TEST(savotina_v_grahams_alg_tbb, Test2) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
 
@@ -176,9 +174,8 @@ TEST(savotina_v_grahams_alg_tbb, Test3) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
 
@@ -221,9 +218,8 @@ TEST(savotina_v_grahams_alg_tbb, Test4) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
 
@@ -268,9 +264,8 @@ TEST(savotina_v_grahams_alg_tbb, Test5) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
 
@@ -313,9 +308,8 @@ TEST(savotina_v_grahams_alg_tbb, Test6) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
 
@@ -365,8 +359,7 @@ TEST(savotina_v_grahams_alg_tbb, Test7) {
   testGrahamsAlgTbb.post_processing();
 
   for (size_t i = 0; i < mchSeq.size(); ++i) {
-    SavotinaTbb::SavotinaPoint first = mchSeq[i];
-    SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    ASSERT_EQ(first, second);
+    ASSERT_EQ(mchSeq[i].x, mchTbb[i].x);
+    ASSERT_EQ(mchSeq[i].y, mchTbb[i].y);
   }
 }
