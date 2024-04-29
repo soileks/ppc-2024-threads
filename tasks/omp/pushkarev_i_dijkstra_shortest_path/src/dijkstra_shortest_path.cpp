@@ -41,13 +41,8 @@ bool DijkstraTaskOMP::run() {
 
 #pragma omp parallel for
   for (size_t i = 0; i < n; ++i) {
-    bool end_flag = false;
-
-    if (end_flag) {
-      continue;
-    }
-
-    size_t u = (size_t)-1, min_dist = std::numeric_limits<int>::max();
+    size_t u = (size_t)-1;
+    size_t min_dist = std::numeric_limits<int>::max();
 // Find the node with the shortest distance
 #pragma omp critical
     {
@@ -58,15 +53,12 @@ bool DijkstraTaskOMP::run() {
         }
       }
     }
-    if (u == (size_t)-1) {
-#pragma omp critical
-      { end_flag = true; }
-    }
+
 // Relax adjacent nodes
 #pragma omp critical
     {
       for (size_t v = 0; v < n; ++v) {
-        if (!processed[v] && graph[u][v] && (distances_[u] + graph[u][v] < distances_[v])) {
+        if (!processed[v] && (graph[u][v] != 0) && (distances_[u] + graph[u][v] < distances_[v])) {
           distances_[v] = distances_[u] + graph[u][v];
         }
       }
