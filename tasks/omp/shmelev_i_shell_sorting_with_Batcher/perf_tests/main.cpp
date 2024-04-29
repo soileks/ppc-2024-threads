@@ -1,6 +1,5 @@
 // Copyright 2024 Shmelev Ivan
 #include <gtest/gtest.h>
-#include <omp.h>
 
 #include <vector>
 

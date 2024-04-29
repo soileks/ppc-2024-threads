@@ -2,8 +2,6 @@
 
 #include "omp/shmelev_i_shell_sorting_with_Batcher/include/ops_seq.hpp"
 
-#include <omp.h>
-
 #include <algorithm>
 
 bool shmelev_omp::ShmelevTaskSequential::pre_processing() {
