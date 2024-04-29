@@ -131,11 +131,16 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
   } else if (get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
     get(labelled, n, i, j) = get(labelled, n, i, j - 1);
   } else if (get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
-    int value = get(labelled, n, i, j - 1).value();
-    InfPtr* ptr = new InfPtr(value);
-    get(labelled, n, i, j - 1).set(ptr);
-    get(labelled, n, i - 1, j).set(ptr);
-    get(labelled, n, i, j).set(ptr);
+    if (get(labelled, n, i, j - 1).value() == get(labelled, n, i - 1, j).value()) {
+      get(labelled, n, i, j) = get(labelled, n, i - 1, j);
+    }
+    else {
+      int value = get(labelled, n, i - 1, j).value();
+      InfPtr* ptr = new InfPtr(value);
+      get(labelled, n, i, j - 1).set(ptr);
+      get(labelled, n, i - 1, j).set(ptr);
+      get(labelled, n, i, j).set(ptr);
+    }
   }
 }
 
