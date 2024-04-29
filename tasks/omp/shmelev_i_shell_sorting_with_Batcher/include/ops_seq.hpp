@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-
 #include "core/task/include/task.hpp"
 
 namespace shmelev_omp {

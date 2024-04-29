@@ -73,7 +73,7 @@ void shmelev_omp::ShmelevTaskSequential::batcherMerge(int l, int r) {
     merge(l, m, r);
   }
 }
-bool shmelev_omp::ShmelevTaskSequential::sorted(std::vector<int> input) { 
+bool shmelev_omp::ShmelevTaskSequential::sorted(std::vector<int> input) {
   return std::is_sorted(input.begin(), input.end());
 }
 
@@ -133,7 +133,7 @@ bool shmelev_omp::ShmelevTaskOmp::run() {
   internal_order_test();
 #pragma omp parallel
   {
-    #pragma omp single nowait
+#pragma omp single nowait
     batcherMerge(0, input_.size() - 1);
   }
   return true;
