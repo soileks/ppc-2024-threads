@@ -147,7 +147,7 @@ void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>
     } else {
       get(labelled, n, start, j) = get(labelled, n, start, j - 1);
     }
-  } 
+  }
 }
 
 void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start,
@@ -283,7 +283,6 @@ bool BinaryLabellingSeq::run() {
   }
   return true;
 }
-
 
 bool BinaryLabellingSeq::post_processing() {
   internal_order_test();
