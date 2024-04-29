@@ -20,7 +20,7 @@ class InfPtr {
  public:
   InfPtr() : _ptr(nullptr), _value(0) {}
   InfPtr(int value) : _ptr(nullptr), _value(value) {}
-  void set(std::shared_ptr<InfPtr> ptr) {
+  void set(const std::shared_ptr<InfPtr>& ptr) {
     if (!_ptr) {
       _ptr = ptr;
       return;
@@ -32,6 +32,9 @@ class InfPtr {
       return _value;
     }
     return _ptr->value();
+  }
+  bool hasVal() {
+    return static_cast<bool>(value);
   }
 
  private:
@@ -55,8 +58,9 @@ bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) {
   }
   std::unordered_map<int, int> corresp;
   for (size_t i = 0; i < map1.size(); i++) {
-    if (!map1[i] && !map2[i]) continue;
-    if ((map1[i] && !map2[i]) || (map2[i] && !map1[i])) return false;
+    if (!static_cast<bool>(map1[i]) && !static_cast<bool>(map2[i])) continue;
+    if ((static_cast<bool>(map1[i]) && !static_cast<bool>(map2[i])) ||
+        (static_cast<bool>(map2[i]) && !static_cast<bool>(map1[i]))) return false;
     if (corresp.find(map1[i]) == corresp.end())
       corresp[map1[i]] = map2[i];
     else if (corresp[map1[i]] != map2[i])
@@ -68,7 +72,7 @@ bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) {
 size_t getObjectsNum(const std::vector<int>& map) {
   std::unordered_set<int> labels;
   for (int i : map) {
-    if (i) {
+    if (i != 0) {
       labels.insert(i);
     }
   }
@@ -101,24 +105,12 @@ uint32_t deserializeInt32(const uint8_t* data) {
   return res;
 }
 
-std::vector<int> deserializeInt32V(const std::vector<uint8_t> v) {
+std::vector<int> deserializeInt32V(const std::vector<uint8_t>& v) {
   std::vector<int> res(v.size() / sizeof(int));
   for (size_t i = 0; i < v.size(); i += 4) {
     res[i / 4] = deserializeInt32(v.data() + i);
   }
   return res;
-}
-
-template <class T>
-void visualize(const std::vector<T>& v, int m, int n) {
-  std::cout << "\n\n";
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      std::cout << (int)get(v, n, i, j) << " ";
-    }
-    std::cout << "\n";
-  }
-  std::cout << "\n";
 }
 
 std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
@@ -131,8 +123,7 @@ std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
 
 std::vector<int> reducePointersOmp(std::vector<InfPtr>& labelled, int numThreads) {
   std::vector<int> reduced(labelled.size());
-  int chunk = labelled.size() / static_cast<size_t>(numThreads);
-#pragma omp parallel for schedule(static, chunk)
+#pragma omp parallel num_threads(numThreads) for schedule(static)
   for (int i = 0; i < static_cast<int>(labelled.size()); i++) {
     reduced[i] = labelled[i].value();
   }
@@ -143,7 +134,7 @@ void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>
   for (int j = 1; j < n; j++) {
     if (get(v, n, start, j)) {
       continue;
-    } else if (!get(labelled, n, start, j - 1).value()) {
+    } else if (!get(labelled, n, start, j - 1).hasVal()) {
       get(labelled, n, start, j).set(std::make_shared<InfPtr>(++label));
     } else {
       get(labelled, n, start, j) = get(labelled, n, start, j - 1);
@@ -156,7 +147,7 @@ void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& 
   for (int i = start + 1; i < end; i++) {
     if (get(v, n, i, 0)) {
       continue;
-    } else if (!get(labelled, n, i - 1, 0).value()) {
+    } else if (!get(labelled, n, i - 1, 0).hasVal()) {
       get(labelled, n, i, 0).set(std::make_shared<InfPtr>(++label));
     } else {
       get(labelled, n, i, 0) = get(labelled, n, i - 1, 0);
@@ -165,13 +156,13 @@ void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& 
 }
 
 void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, int j) {
-  if (!get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
+  if (!get(labelled, n, i, j - 1).hasVal() && !get(labelled, n, i - 1, j).hasVal()) {
     get(labelled, n, i, j).set(std::make_shared<InfPtr>(++label));
-  } else if (!get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
+  } else if (!get(labelled, n, i, j - 1).hasVal() && get(labelled, n, i - 1, j).hasVal()) {
     get(labelled, n, i, j) = get(labelled, n, i - 1, j);
-  } else if (get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
+  } else if (get(labelled, n, i, j - 1).hasVal() && !get(labelled, n, i - 1, j).hasVal()) {
     get(labelled, n, i, j) = get(labelled, n, i, j - 1);
-  } else if (get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
+  } else if (get(labelled, n, i, j - 1).hasVal() && get(labelled, n, i - 1, j).hasVal()) {
     if (get(labelled, n, i, j - 1).value() == get(labelled, n, i - 1, j).value()) {
       get(labelled, n, i, j) = get(labelled, n, i - 1, j);
     } else {
@@ -201,7 +192,7 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
 
   int label = 0;
 
-  if (v.size() && !v[0]) {
+  if (!v.empty() && !static_cast<bool>(v[0])) {
     labelled[0].set(std::make_shared<InfPtr>(++label));
   }
 
@@ -215,7 +206,7 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
 void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) {
   for (int i = blockSize; i < m - 1; i += blockSize) {
     for (int j = 0; j < n; j++) {
-      if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value() &&
+      if (get(labelled, n, i - 1, j).hasVal() && get(labelled, n, i, j).hasVal() &&
           get(labelled, n, i - 1, j).value() != get(labelled, n, i, j).value()) {
         int value = get(labelled, n, i, j).value();
         auto ptr = std::make_shared<InfPtr>(value);
@@ -241,7 +232,7 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
     if (tid == numThreads - 1 && m % numThreads != 0) {
       end += m % numThreads;
     }
-    if (!get(v, n, start, 0)) {
+    if (!static_cast<bool>(get(v, n, start, 0))) {
       get(labelled, n, start, 0).set(std::make_shared<InfPtr>(++label));
     }
     processHorizontal(labelled, v, label, n, start);
