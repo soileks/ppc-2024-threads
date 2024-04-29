@@ -16,8 +16,7 @@ std::vector<int> deserializeInt32V(const std::vector<uint8_t> v);
 
 class BinaryLabellingSeq : public ppc::core::Task {
  public:
-  explicit BinaryLabellingSeq(std::shared_ptr<ppc::core::TaskData> taskData_) :
-Task(std::move(taskData_)) {}
+  explicit BinaryLabellingSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -32,8 +31,7 @@ Task(std::move(taskData_)) {}
 
 class BinaryLabellingOmp : public ppc::core::Task {
  public:
-  explicit BinaryLabellingOmp(std::shared_ptr<ppc::core::TaskData> taskData_) :
-Task(std::move(taskData_)) {}
+  explicit BinaryLabellingOmp(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

@@ -1,10 +1,10 @@
 // Copyright 2024 Lesnikov Nikita
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <vector>
 
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
-#include <omp.h>
 
 TEST(lesnikov_binary_labelling_func_test, Test10_10) {
   int m = 10;

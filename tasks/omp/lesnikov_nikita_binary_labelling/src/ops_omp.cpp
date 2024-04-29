@@ -1,15 +1,16 @@
 // Copyright 2024 Lesnikov Nikita
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
 
+#include <omp.h>
+#include <cstring>
 #include <iostream>
 #include <list>
 #include <numeric>
 #include <random>
 #include <string>
-#include <unordered_map>
-#include <cstring>
-#include <unordered_set>
 #include <thread>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std::chrono_literals;
@@ -31,6 +32,7 @@ class InfPtr {
     }
     return _ptr->value();
   }
+
  private:
   std::shared_ptr<InfPtr> _ptr;
   int _value;
@@ -130,14 +132,13 @@ std::vector<int> reducePointersOmp(std::vector<InfPtr>& labelled, int numThreads
   std::vector<int> reduced(labelled.size());
   int chunk = labelled.size() / static_cast<size_t>(numThreads);
 #pragma omp parallel for schedule(static, chunk)
-  for (size_t i = 0; i < labelled.size(); i++) {
+  for (int i = 0; i < static_cast<int>(labelled.size()); i++) {
     reduced[i] = labelled[i].value();
   }
   return reduced;
 }
 
-void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
-int n, int start) {
+void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start) {
   for (int j = 1; j < n; j++) {
     if (get(v, n, start, j)) {
       continue;
@@ -149,8 +150,7 @@ int n, int start) {
   } 
 }
 
-void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
-int n, int start, int end) {
+void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     if (get(v, n, i, 0)) {
       continue;
@@ -182,8 +182,7 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
   }
 }
 
-void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
-int n, int start, int end) {
+void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
       if (get(v, n, i, j)) {
@@ -270,8 +269,7 @@ bool BinaryLabellingSeq::validation() {
 
   return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
          taskData->inputs_count[2] == 4 &&
-         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) *
-deserializeInt32(taskData->inputs[2]);
+         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
 bool BinaryLabellingSeq::run() {
@@ -315,8 +313,7 @@ bool BinaryLabellingOmp::validation() {
 
   return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
          taskData->inputs_count[2] == 4 &&
-         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) *
-deserializeInt32(taskData->inputs[2]);
+         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
 bool BinaryLabellingOmp::run() {
