@@ -25,7 +25,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(1);
 
   // Create Task
-  auto dijkstraTask = std::make_shared<DijkstraTask>(taskDataSeq);
+  auto DijkstraTask = std::make_shared<DijkstraTaskOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -41,7 +41,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(dijkstraTask);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(DijkstraTask);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(distances[0], 0);
@@ -71,7 +71,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(1);
 
   // Create Task
-  auto dijkstraTask = std::make_shared<DijkstraTask>(taskDataSeq);
+  auto DijkstraTask = std::make_shared<DijkstraTaskOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -87,7 +87,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(dijkstraTask);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(DijkstraTask);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(distances[0], 0);
