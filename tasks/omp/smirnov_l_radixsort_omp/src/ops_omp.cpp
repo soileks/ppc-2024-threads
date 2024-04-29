@@ -235,10 +235,9 @@ bool RadixSortOMPParallel::run() {
 
 bool RadixSortOMPParallel::post_processing() {
   internal_order_test();
-  auto* outputs = reinterpret_cast<int*>(taskData->outputs[0]);
 #pragma omp parallel for
   for (size_t i = 0; i < workVector.size(); i++) {
-    outputs[i] = workVector[i];
+    reinterpret_cast<int*>(taskData->outputs[0])[i] = workVector[i];
   }
   return true;
 }
