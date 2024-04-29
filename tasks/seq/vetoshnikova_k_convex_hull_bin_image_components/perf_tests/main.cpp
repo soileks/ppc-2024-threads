@@ -7,17 +7,40 @@
 #include "seq/vetoshnikova_k_convex_hull_bin_image_components/include/ops_seq.hpp"
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
-  int h = 10000;
-  int w = 7;
+  int h = 200;
+  int w = 200;
   // Create data
-  std::vector<int> out(200);
+  std::vector<int> out(w * h);
   std::vector<uint8_t> in(h * w, 0);
-  in[0] = 1;
-  in[1] = 1;
-  in[7] = 1;
-  in[8] = 1;
-  std::vector<int> hullTrue = {0, 0, 0, 1, 1, 1, 1, 0, -1};
 
+  for (int i = 0; i < h * w / 2; i++) {
+    in[i] = 1;
+  }
+  std::vector<int> hullTrue(4 * w + h - 3, 0);
+
+  int i;
+  for (i = 0; i < w * 2; i++) {
+    if (i % 2 == 0)
+      hullTrue[i] = 0;
+    else
+      hullTrue[i] = i / 2;
+  }
+  int k = 1;
+  while (k < h / 2) {
+    hullTrue[i] = k;
+    hullTrue[i + 1] = w - 1;
+    i += 2;
+    k++;
+  }
+  k--;
+  int m = w - 2;
+  while (m >= 0) {
+    hullTrue[i] = k;
+    hullTrue[i + 1] = m;
+    m--;
+    i += 2;
+  }
+  hullTrue[i] = -1;
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(in.data()));
@@ -45,22 +68,46 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_pipeline_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < hullTrue.size(); i++) {
-    ASSERT_EQ(hullTrue[i], out[i]);
+  for (size_t j = 0; j < hullTrue.size(); j++) {
+    ASSERT_EQ(hullTrue[j], out[j]);
   }
 }
 
 TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
-  int h = 10000;
-  int w = 7;
+  int h = 200;
+  int w = 200;
   // Create data
-  std::vector<int> out(200);
+  std::vector<int> out(w * h);
   std::vector<uint8_t> in(h * w, 0);
-  in[0] = 1;
-  in[1] = 1;
-  in[7] = 1;
-  in[8] = 1;
-  std::vector<int> hullTrue = {0, 0, 0, 1, 1, 1, 1, 0, -1};
+
+  for (int i = 0; i < h * w / 2; i++) {
+    in[i] = 1;
+  }
+  std::vector<int> hullTrue(4 * w + h - 3, 0);
+
+  int i;
+  for (i = 0; i < w * 2; i++) {
+    if (i % 2 == 0)
+      hullTrue[i] = 0;
+    else
+      hullTrue[i] = i / 2;
+  }
+  int k = 1;
+  while (k < h / 2) {
+    hullTrue[i] = k;
+    hullTrue[i + 1] = w - 1;
+    i += 2;
+    k++;
+  }
+  k--;
+  int m = w - 2;
+  while (m >= 0) {
+    hullTrue[i] = k;
+    hullTrue[i + 1] = m;
+    m--;
+    i += 2;
+  }
+  hullTrue[i] = -1;
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -89,7 +136,8 @@ TEST(vetoshnikova_k_hull_bin_image_seq, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < hullTrue.size(); i++) {
-    ASSERT_EQ(hullTrue[i], out[i]);
+
+  for (size_t j = 0; j < hullTrue.size(); j++) {
+    ASSERT_EQ(hullTrue[j], out[j]);
   }
 }

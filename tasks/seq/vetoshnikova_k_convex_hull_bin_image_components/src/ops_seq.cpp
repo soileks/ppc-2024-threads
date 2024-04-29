@@ -7,7 +7,6 @@ using namespace std::chrono_literals;
 
 bool ConstructingConvexHullSeq::pre_processing() {
   internal_order_test();
-
   h = taskData->inputs_count[0];
   w = taskData->inputs_count[1];
   img.resize(h);
@@ -18,6 +17,7 @@ bool ConstructingConvexHullSeq::pre_processing() {
     imgMark[i].resize(w, 0);
   }
   numComponents = 0;
+
   return true;
 }
 
@@ -28,6 +28,7 @@ bool ConstructingConvexHullSeq::validation() {
 
 bool ConstructingConvexHullSeq::run() {
   internal_order_test();
+
   markingComponent();
   for (int i = 0; i < numComponents; ++i) {
     convexHull(i + 2);
@@ -37,7 +38,11 @@ bool ConstructingConvexHullSeq::run() {
 
 bool ConstructingConvexHullSeq::post_processing() {
   internal_order_test();
-  for (size_t i = 0; i < hull.size(); ++i) reinterpret_cast<int*>(taskData->outputs[0])[i] = hull[i];
+
+  if (!hull.empty()) {
+    for (size_t i = 0; i < hull.size(); ++i) reinterpret_cast<int*>(taskData->outputs[0])[i] = hull[i];
+  }
+  hull.clear();
   return true;
 }
 
@@ -57,50 +62,52 @@ void ConstructingConvexHullSeq::convexHull(int label) {
     }
   }
 
-  int n = points.size();
+  if (!points.empty()) {
+    int n = points.size();
 
-  int minX = points[0].x;
-  int minIndex = 0;
+    int minX = points[0].x;
+    int minIndex = 0;
 
-  for (int i = 1; i < n; ++i) {
-    int currX = points[i].x;
-    if ((currX < minX) || (currX == minX && points[i].y < points[minIndex].y)) {
-      minX = currX;
-      minIndex = i;
-    }
-  }
-
-  std::swap(points[0], points[minIndex]);
-
-  for (int i = 1; i < n; ++i) {
-    int j = i;
-    while (j > 1 && orientation(points[0], points[j - 1], points[j]) < 0) {
-      std::swap(points[j], points[j - 1]);
-      j -= 1;
-    }
-  }
-
-  std::vector<Point> hullPoints;
-
-  hullPoints.emplace_back(points[0]);
-  hullPoints.emplace_back(points[1]);
-
-  for (int i = 2; i < n; ++i) {
-    while (hullPoints.size() > 1 &&
-           orientation(hullPoints[hullPoints.size() - 2], hullPoints[hullPoints.size() - 1], points[i]) < 0) {
-      hullPoints.pop_back();
+    for (int i = 1; i < n; ++i) {
+      int currX = points[i].x;
+      if ((currX < minX) || (currX == minX && points[i].y < points[minIndex].y)) {
+        minX = currX;
+        minIndex = i;
+      }
     }
 
-    hullPoints.emplace_back(points[i]);
-  }
+    std::swap(points[0], points[minIndex]);
 
-  int size = hullPoints.size();
+    for (int i = 1; i < n; ++i) {
+      int j = i;
+      while (j > 1 && orientation(points[0], points[j - 1], points[j]) < 0) {
+        std::swap(points[j], points[j - 1]);
+        j -= 1;
+      }
+    }
 
-  for (int i = 0; i < size; ++i) {
-    hull.emplace_back(hullPoints[i].y);
-    hull.emplace_back(hullPoints[i].x);
+    std::vector<Point> hullPoints;
+
+    hullPoints.emplace_back(points[0]);
+    hullPoints.emplace_back(points[1]);
+
+    for (int i = 2; i < n; ++i) {
+      while (hullPoints.size() > 1 &&
+             orientation(hullPoints[hullPoints.size() - 2], hullPoints[hullPoints.size() - 1], points[i]) < 0) {
+        hullPoints.pop_back();
+      }
+
+      hullPoints.emplace_back(points[i]);
+    }
+
+    int size = hullPoints.size();
+
+    for (int i = 0; i < size; ++i) {
+      hull.emplace_back(hullPoints[i].y);
+      hull.emplace_back(hullPoints[i].x);
+    }
+    hull.emplace_back(-1);
   }
-  hull.emplace_back(-1);
 }
 
 void ConstructingConvexHullSeq::markingComponent() {
