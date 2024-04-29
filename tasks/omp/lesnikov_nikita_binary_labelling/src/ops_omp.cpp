@@ -150,7 +150,8 @@ void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>
   } 
 }
 
-void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start, int end) {
+void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start,
+                     int end) {
   for (int i = start + 1; i < end; i++) {
     if (get(v, n, i, 0)) {
       continue;
@@ -182,7 +183,8 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
   }
 }
 
-void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start, int end) {
+void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start,
+                   int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
       if (get(v, n, i, j)) {
