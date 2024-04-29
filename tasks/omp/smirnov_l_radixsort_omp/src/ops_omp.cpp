@@ -3,21 +3,20 @@
 
 #include <omp.h>
 
+#include <algorithm>
 #include <cmath>
 #include <random>
 #include <thread>
 #include <utility>
 #include <vector>
 
+
 std::vector<int> getRandomVectorSmirn(const int length) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  const std::uniform_int_distribution<int> distribution(0, 9);
-
   std::vector<int> randomVector(length);
-
+  std::random_device dev;
+  std::mt19937 gen(dev());
   for (int i = 0; i < length; i++) {
-    randomVector[i] = distribution(gen);
+    randomVector[i] = gen() % 1000;
   }
   return randomVector;
 }
@@ -239,7 +238,7 @@ bool RadixSortOMPParallel::post_processing() {
   internal_order_test();
   auto* outputs = reinterpret_cast<int*>(taskData->outputs[0]);
 #pragma omp parallel for
-  for (int i = 0; i < workVector.size(); i++) {
+  for (size_t i = 0; i < workVector.size(); i++) {
     outputs[i] = workVector[i];
   }
   return true;
