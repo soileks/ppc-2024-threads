@@ -33,9 +33,7 @@ class InfPtr {
     }
     return _ptr->value();
   }
-  bool hasVal() {
-    return static_cast<bool>(value);
-  }
+  bool hasVal() { return static_cast<bool>(value); }
 
  private:
   std::shared_ptr<InfPtr> _ptr;
@@ -58,9 +56,13 @@ bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) {
   }
   std::unordered_map<int, int> corresp;
   for (size_t i = 0; i < map1.size(); i++) {
-    if (!static_cast<bool>(map1[i]) && !static_cast<bool>(map2[i])) continue;
+    if (!static_cast<bool>(map1[i]) && !static_cast<bool>(map2[i])) {
+      continue;
+    }
     if ((static_cast<bool>(map1[i]) && !static_cast<bool>(map2[i])) ||
-        (static_cast<bool>(map2[i]) && !static_cast<bool>(map1[i]))) return false;
+        (static_cast<bool>(map2[i]) && !static_cast<bool>(map1[i]))) {
+      return false;
+    }
     if (corresp.find(map1[i]) == corresp.end())
       corresp[map1[i]] = map2[i];
     else if (corresp[map1[i]] != map2[i])
