@@ -2,14 +2,14 @@
 
 #include "omp/veselov_i_systemsgradmethod/include/systemsgradmethod_omp.hpp"
 
-#include "omp.h"
-
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <numeric>
 #include <random>
 #include <thread>
+
+#include "omp.h"
 
 using namespace std::chrono_literals;
 
@@ -34,7 +34,7 @@ std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std
   return result;
 }
 
-std::vector<double> SLEgradSolver(const std::vector<double> &Aa,const std::vector<double> &bb, int n,
+std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb, int n,
                                   double tol = 1e-6) {
   std::vector<double> res(n, 0.0);
   std::vector<double> r = bb;
@@ -43,8 +43,6 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa,const std::vecto
 
   double tol_squared = tol * tol;
   double r_norm_squared = dotProduct(r, r);
-
-  omp_set_num_threads(4);
 
   while (r_norm_squared > tol_squared) {
     std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
@@ -84,12 +82,10 @@ bool SystemsGradMethodOmp::pre_processing() {
     internal_order_test();
     A = std::vector<double>(taskData->inputs_count[0]);
     std::copy(reinterpret_cast<double *>(taskData->inputs[0]),
-              reinterpret_cast<double *>(taskData->inputs[0]) + taskData->inputs_count[0],
-              A.begin());
+              reinterpret_cast<double *>(taskData->inputs[0]) + taskData->inputs_count[0], A.begin());
     b = std::vector<double>(taskData->inputs_count[1]);
     std::copy(reinterpret_cast<double *>(taskData->inputs[1]),
-              reinterpret_cast<double *>(taskData->inputs[1]) + taskData->inputs_count[1],
-              b.begin());
+              reinterpret_cast<double *>(taskData->inputs[1]) + taskData->inputs_count[1], b.begin());
     rows = *reinterpret_cast<int *>(taskData->inputs[2]);
     x = std::vector<double>(rows, 0.0);
   } catch (...) {
@@ -123,7 +119,7 @@ bool SystemsGradMethodOmp::post_processing() {
   return true;
 }
 
-bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,const std::vector<double> &xx,
+bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb, const std::vector<double> &xx,
                    double tol) {
   int n = bb.size();
   std::vector<double> Ax(n, 0.0);
@@ -168,4 +164,4 @@ std::vector<double> genRandomMatrix(int size, int maxVal) {
   }
   return matrix;
 }
-} // namespace veselov_i_omp
+}  // namespace veselov_i_omp
