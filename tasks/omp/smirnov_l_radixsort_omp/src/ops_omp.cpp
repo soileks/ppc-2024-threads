@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-
 std::vector<int> getRandomVectorSmirn(const int length) {
   std::vector<int> randomVector(length);
   std::random_device dev;
