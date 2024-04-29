@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
+#include <omp.h>
 
-TEST(Parallel_Operations_OpenMP, Test10_10) {
+TEST(lesnikov_binary_labelling_func_test, Test10_10) {
   int m = 10;
   int n = 10;
   auto serializedM = serializeInt32(m);
@@ -58,7 +59,7 @@ TEST(Parallel_Operations_OpenMP, Test10_10) {
   EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_OpenMP, Test100_100) {
+TEST(lesnikov_binary_labelling_func_test, Test100_100) {
   int m = 100;
   int n = 100;
   auto serializedM = serializeInt32(m);
@@ -111,7 +112,7 @@ TEST(Parallel_Operations_OpenMP, Test100_100) {
   EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_OpenMP, Test200_200) {
+TEST(lesnikov_binary_labelling_func_test, Test200_200) {
   int m = 100;
   int n = 100;
   auto serializedM = serializeInt32(m);
@@ -164,7 +165,7 @@ TEST(Parallel_Operations_OpenMP, Test200_200) {
   EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_OpenMP, Test300_300) {
+TEST(lesnikov_binary_labelling_func_test, Test300_300) {
   int m = 300;
   int n = 300;
   auto serializedM = serializeInt32(m);
@@ -217,7 +218,7 @@ TEST(Parallel_Operations_OpenMP, Test300_300) {
   EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_OpenMP, Test400_400) {
+TEST(lesnikov_binary_labelling_func_test, Test400_400) {
   int m = 300;
   int n = 300;
   auto serializedM = serializeInt32(m);
