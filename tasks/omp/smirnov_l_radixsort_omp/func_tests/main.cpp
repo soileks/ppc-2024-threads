@@ -13,8 +13,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_One_OMP_Sm) {
   std::vector<int> out2(expected.size(), 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar
-  = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(in.size());
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -40,8 +39,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Two_OMP_Sm) {
   std::vector<int> out2(expected.size(), 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar
-  = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(in.size());
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -67,8 +65,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Three_OMP_Sm) {
   std::vector<int> out2(expected.size(), 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar
-  = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(in.size());
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -94,8 +91,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Four_OMP_Sm) {
   std::vector<int> out2(expected.size(), 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar
-  = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(in.size());
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
@@ -114,17 +110,14 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Four_OMP_Sm) {
 }
 
 TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Five_OMP_Sm) {
-  std::vector<int> in = {-14, -10, -50, 50, 90, 54, 3, 14,
-    19, 100, -54, 134, 363, 0, 79};
-  std::vector<int> expected = {-54, -50, -14, -10, 0, 3, 14,
-    19, 50, 54, 79, 90, 100, 134, 363};
+  std::vector<int> in = {-14, -10, -50, 50, 90, 54, 3, 14, 19, 100, -54, 134, 363, 0, 79};
+  std::vector<int> expected = {-54, -50, -14, -10, 0, 3, 14, 19, 50, 54, 79, 90, 100, 134, 363};
 
   // Create data
   std::vector<int> out2(expected.size(), 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar
-  = std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataPar->inputs_count.emplace_back(in.size());
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));

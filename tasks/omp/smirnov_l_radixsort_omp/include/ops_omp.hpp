@@ -1,20 +1,17 @@
 // Copyright 2024 Smirnov Leonid
 #pragma once
 
-#include <vector>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
 std::vector<int> getRandomVectorSmirn(int length);
 
-
 class RadixSortOMPSequential : public ppc::core::Task {
  public:
-  explicit RadixSortOMPSequential
-  (std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit RadixSortOMPSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -26,8 +23,7 @@ class RadixSortOMPSequential : public ppc::core::Task {
 
 class RadixSortOMPParallel : public ppc::core::Task {
  public:
-  explicit RadixSortOMPParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit RadixSortOMPParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

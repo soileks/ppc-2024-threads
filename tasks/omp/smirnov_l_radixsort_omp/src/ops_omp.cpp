@@ -1,12 +1,12 @@
 // Copyright 2024 Smirnov Leonid
 #include "omp/smirnov_l_radixsort_omp/include/ops_omp.hpp"
 
+#include <cmath>
 #include <omp.h>
 #include <random>
 #include <thread>
 #include <utility>
 #include <vector>
-#include <cmath>
 
 std::vector<int> getRandomVectorSmirn(const int length) {
   std::random_device rd;
@@ -25,8 +25,8 @@ std::vector<int> getRandomVectorSmirn(const int length) {
 bool RadixSortOMPSequential::validation() {
   internal_order_test();
   // Check count elements of output
-  if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1
-    || taskData->inputs.size() != 1 || taskData->outputs.size() != 1) {
+  if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
+    taskData->outputs.size() != 1) {
     return false;
   }
   if (taskData->inputs[0] == nullptr || taskData->outputs[0] == nullptr) {
@@ -58,10 +58,8 @@ bool RadixSortOMPSequential::run() {
   try {
     std::vector<int> temporaryArray = workVector;
 
-    const int maxElem = *std::max_element
-    (temporaryArray.begin(), temporaryArray.end());
-    const int numDigitsMaxElement =
-      maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1;
+    const int maxElem = *std::max_element(temporaryArray.begin(), temporaryArray.end());
+    const int numDigitsMaxElement = maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1;
 
     std::vector<int> temp(temporaryArray.size());
 
@@ -96,7 +94,7 @@ bool RadixSortOMPSequential::run() {
     }
     workVector = temporaryArray;
     return true;
-  }catch (...) {
+  } catch (...) {
     return false;
   }
 }
@@ -143,7 +141,7 @@ bool RadixSortOMPParallel::pre_processing() {
 
     workVector = std::vector<int>(size, 0);
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < size; i++) {
       workVector[i] = data[i];
     }
@@ -156,11 +154,9 @@ bool RadixSortOMPParallel::pre_processing() {
 
 std::vector<int> radixSortSmirn(std::vector<int> vector) {
   std::vector<int> temporaryArray = std::move(vector);
-  const int maxElem = *std::max_element
-  (temporaryArray.begin(), temporaryArray.end());
+  const int maxElem = *std::max_element(temporaryArray.begin(), temporaryArray.end());
 
-  const int numDigitsMaxElement =
-    maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1;
+  const int numDigitsMaxElement = maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1;
 
   for (int digitIndex = 0; digitIndex < numDigitsMaxElement; digitIndex++) {
     int devider = static_cast<int>(pow(10, digitIndex));
@@ -195,12 +191,9 @@ std::vector<int> radixSortSmirn(std::vector<int> vector) {
   return temporaryArray;
 }
 
-std::vector<int> mergeListsSmirn
-(const std::vector<int>& firstVector, const std::vector<int>& secondVector) {
+std::vector<int> mergeListsSmirn(const std::vector<int>& firstVector, const std::vector<int>& secondVector) {
   std::vector<int> result(firstVector.size() + secondVector.size());
-  std::merge(firstVector.begin(), firstVector.end(),
-    secondVector.begin(), secondVector.end(),
-    result.begin());
+  std::merge(firstVector.begin(), firstVector.end(), secondVector.begin(), secondVector.end(), result.begin());
   return result;
 }
 
@@ -227,8 +220,7 @@ bool RadixSortOMPParallel::run() {
           righ += sizeResultVector - step * threadNum;
         }
 
-        std::vector<int> workVectorLocal
-        (workVector.begin() + left, workVector.begin() + righ);
+        std::vector<int> workVectorLocal(workVector.begin() + left, workVector.begin() + righ);
 
         workVectorLocal = radixSortSmirn(workVectorLocal);
 
@@ -238,7 +230,7 @@ bool RadixSortOMPParallel::run() {
     }
     workVector = resultVector;
     return true;
-  }catch (...) {
+  } catch (...) {
     return false;
   }
 }
@@ -246,7 +238,7 @@ bool RadixSortOMPParallel::run() {
 bool RadixSortOMPParallel::post_processing() {
   internal_order_test();
   auto* outputs = reinterpret_cast<int*>(taskData->outputs[0]);
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < workVector.size(); i++) {
     outputs[i] = workVector[i];
   }
