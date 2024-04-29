@@ -148,7 +148,7 @@ void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>
 void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start,
                      int end) {
   for (int i = start + 1; i < end; i++) {
-    if (get(v, n, i, 0)) {
+    if (static_cast<bool>(get(v, n, i, 0))) {
       continue;
     }
     if (!get(labelled, n, i - 1, 0).hasVal()) {
@@ -183,7 +183,7 @@ void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v,
                    int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
-      if (static_cast<int>(get(v, n, i, j))) {
+      if (static_cast<bool>(get(v, n, i, j))) {
         continue;
       }
       processUnlabelled(labelled, label, n, i, j);
