@@ -42,7 +42,6 @@ bool DijkstraTaskOMP::run() {
   std::atomic<bool> end_flag(false);
 #pragma omp parallel for
   for (size_t i = 0; i < n; ++i) {
-
     if (end_flag) {
       continue;
     }
