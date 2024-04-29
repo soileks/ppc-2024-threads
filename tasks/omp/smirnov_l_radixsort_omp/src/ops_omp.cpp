@@ -22,7 +22,6 @@ std::vector<int> getRandomVectorSmirn(const int length) {
   return randomVector;
 }
 
-
 bool RadixSortOMPSequential::validation() {
   internal_order_test();
   // Check count elements of output
