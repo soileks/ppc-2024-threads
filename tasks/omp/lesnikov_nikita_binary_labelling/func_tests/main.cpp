@@ -64,6 +64,4 @@ TEST(Parallel_Operations_OpenMP, Test_1_bin_lab) {
 
   EXPECT_EQ(objectsNum_omp, objectsNum_seq);
   EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
-
-
 }

@@ -12,6 +12,37 @@ std::vector<uint8_t> serializeInt32(uint32_t num);
 uint32_t deserializeInt32(const uint8_t* data);
 std::vector<int> deserializeInt32V(const std::vector<uint8_t> v);
 
+class InfPtr {
+ public:
+  InfPtr() = default;
+  InfPtr(int value) : _value(value) {}
+  void set(InfPtr* ptr) {
+    if (!_ptr) {
+      _ptr = ptr;
+    }
+    InfPtr* temp = _ptr;
+    while (temp->_ptr)
+    {
+      temp = temp->_ptr;
+    }
+    temp->_ptr = ptr;
+  }
+  int& value() {
+    if (!_ptr) {
+      return _value;
+    }
+    InfPtr* temp = _ptr;
+    while (temp->_ptr)
+    {
+      temp = temp->_ptr;
+    }
+    return temp->_value;
+  }
+ private:
+  InfPtr* _ptr = nullptr;
+  int _value = 0;
+};
+
 class BinaryLabellingSeq : public ppc::core::Task {
  public:
   explicit BinaryLabellingSeq(std::shared_ptr<ppc::core::TaskData> taskData_)

@@ -89,15 +89,15 @@ void visualize(const std::vector<T>& v, int m, int n) {
   std::cout << "\n";
 }
 
-std::vector<int> reducePointers(const std::vector<int*>& labelled) {
+std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
   std::vector<int> reduced(labelled.size());
   for (int i = 0; i < labelled.size(); i++) {
-    reduced[i] = labelled[i] ? *labelled[i] : 0;
+    reduced[i] = labelled[i].value();
   }
   return reduced;
 }
 
-void processHorizontal(std::vector<int*>& labelled, std::list<int>& labels, const std::vector<uint8_t>& v, int& label,
+void processHorizontal(std::vector<int*>& labelled, const std::vector<uint8_t>& v, int& label,
                        int n, int start) {
   for (int j = 1; j < n; j++) {
     if (get(v, n, start, j)) {
@@ -172,44 +172,48 @@ std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>&
   return std::pair<std::vector<int>, int>(reduced, static_cast<int>(labelSet.size()));
 }
 
-void mergeBounds(std::vector<int*>& labelled, int blockSize, int m, int n) { 
+void mergeBounds(std::vector<int**>& labelled, int blockSize, int m, int n) { 
   for (int i = blockSize; i < m - 1; i += blockSize) {
     for (int j = 0; j < n; j++) {
       if (get(labelled, n, i - 1, j) && get(labelled, n, i, j)) {
-        *get(labelled, n, i, j) = *get(labelled, n, i - 1, j);
+        **get(labelled, n, i, j) = **get(labelled, n, i - 1, j);
       }
     }
   }
 }
 
 std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
-  std::vector<int*> labelled(v.size(), nullptr);
+  std::vector<int**> labelled(v.size(), nullptr);
   const int numThreads = std::min(8, m / 2);
   const int blockSize = m / numThreads;
   const int dataSizeForThread = (blockSize + 1) * n;
   std::list<std::list<int>> allLabels(numThreads);
+  std::list<std::list<int*>> pAllLabels(numThreads);
 
 #pragma omp parallel num_threads(numThreads)
   { 
     std::list<int> labels;
+    std::list<int*> pLabels;
     int tid = omp_get_thread_num();
     int label = dataSizeForThread * tid;
     int start = blockSize * tid;
     int end = blockSize * (tid + 1);
-    if (tid == numThreads - 1 && blockSize * numThreads < m) {
+    if (tid == numThreads - 1 && m % numThreads != 0) {
       end += m % numThreads;
     }
     if (!get(v, n, start, 0)) {
       labels.push_back(++label);
-      get(labelled, n, start, 0) = &labels.back();
+      pLabels.push_back(&labels.back());
+      get(labelled, n, start, 0) = &pLabels.back();
     }
-    processHorizontal(labelled, labels, v, label, n, start);
-    processVertical(labelled, labels, v, label, n, start, end);
-    processMedium(labelled, labels, v, label, n, start, end);
+    processHorizontal(labelled, labels, pLabels, v, label, n, start);
+    processVertical(labelled, labels, pLabels, v, label, n, start, end);
+    processMedium(labelled, labels, pLabels, v, label, n, start, end);
 
 #pragma omp critical
     { 
       allLabels.push_back(std::move(labels));
+      pAllLabels.push_back(std::move(pLabels));
     }
   }
   mergeBounds(labelled, blockSize, m, n);
