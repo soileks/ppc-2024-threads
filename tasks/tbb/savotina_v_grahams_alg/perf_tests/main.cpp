@@ -8,7 +8,7 @@
 TEST(savotina_v_grahams_alg_tbb, test_pipeline_run) {
   double min = 0;
   double max = 100000;
-  size_t size = 1000000;  // size of vector of random points
+  size_t size = 1500000;  // size of vector of random points
 
   // Create data
   std::vector<SavotinaTbb::SavotinaPoint> points = {
@@ -53,7 +53,7 @@ TEST(savotina_v_grahams_alg_tbb, test_pipeline_run) {
 TEST(savotina_v_grahams_alg_tbb, test_task_run) {
   double min = 0;
   double max = 100000;
-  size_t size = 1000000;  // size of vector of random points
+  size_t size = 1500000;  // size of vector of random points
 
   // Create data
   std::vector<SavotinaTbb::SavotinaPoint> points = {
