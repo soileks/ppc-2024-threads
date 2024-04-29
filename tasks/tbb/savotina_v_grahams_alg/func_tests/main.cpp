@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-//#include <iostream>
+// #include <iostream>
 #include "tbb/savotina_v_grahams_alg/include/ops_tbb.hpp"
 
 // Points are arranged in a chaotic order (type of x and y is int)
@@ -47,11 +47,11 @@ TEST(savotina_v_grahams_alg_tbb, Test1) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
@@ -105,11 +105,11 @@ TEST(savotina_v_grahams_alg_tbb, Test2) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
@@ -158,11 +158,11 @@ TEST(savotina_v_grahams_alg_tbb, Test3) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
@@ -205,11 +205,11 @@ TEST(savotina_v_grahams_alg_tbb, Test4) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
@@ -253,11 +253,11 @@ TEST(savotina_v_grahams_alg_tbb, Test5) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
@@ -300,11 +300,11 @@ TEST(savotina_v_grahams_alg_tbb, Test6) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
@@ -350,11 +350,11 @@ TEST(savotina_v_grahams_alg_tbb, Test7) {
   testGrahamsAlgTbb.run();
   testGrahamsAlgTbb.post_processing();
 
-  //std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
+  // std::cout << "mchSeq[i]:       " << "mchTbb[i]:\n";
   for (size_t i = 0; i < mchSeq.size(); ++i) {
     SavotinaTbb::SavotinaPoint first = mchSeq[i];
     SavotinaTbb::SavotinaPoint second = mchTbb[i];
-    //std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
+    // std::cout << first.x << ", " << first.y << "      " << second.x << ", " << second.y << '\n';
 
     ASSERT_EQ(first, second);
   }
