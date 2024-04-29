@@ -15,28 +15,19 @@ std::vector<int> deserializeInt32V(const std::vector<uint8_t> v);
 class InfPtr {
  public:
   InfPtr() = default;
-  InfPtr(int value) : _value(value) {}
+  InfPtr(int value) : _value(value), _ptr(nullptr) {}
   void set(InfPtr* ptr) {
     if (!_ptr) {
       _ptr = ptr;
+      return;
     }
-    InfPtr* temp = _ptr;
-    while (temp->_ptr)
-    {
-      temp = temp->_ptr;
-    }
-    temp->_ptr = ptr;
+    _ptr->set(ptr);
   }
-  int& value() {
+  int value() {
     if (!_ptr) {
       return _value;
     }
-    InfPtr* temp = _ptr;
-    while (temp->_ptr)
-    {
-      temp = temp->_ptr;
-    }
-    return temp->_value;
+    return _ptr->value();
   }
  private:
   InfPtr* _ptr = nullptr;

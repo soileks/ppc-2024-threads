@@ -97,103 +97,99 @@ std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
   return reduced;
 }
 
-void processHorizontal(std::vector<int*>& labelled, const std::vector<uint8_t>& v, int& label,
+void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
                        int n, int start) {
   for (int j = 1; j < n; j++) {
     if (get(v, n, start, j)) {
       continue;
-    } else if (!get(labelled, n, start, j - 1)) {
-      labels.push_back(++label);
-      get(labelled, n, start, j) = &labels.back();
+    } else if (!get(labelled, n, start, j - 1).value()) {
+      get(labelled, n, start, j).set(new InfPtr(++label));
     } else {
       get(labelled, n, start, j) = get(labelled, n, start, j - 1);
     }
-  }
+  } 
 }
 
-void processVertical(std::vector<int*>& labelled, std::list<int>& labels, const std::vector<uint8_t>& v, int& label,
+void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
     int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     if (get(v, n, i, 0)) {
       continue;
-    } else if (!get(labelled, n, i - 1, 0)) {
-      labels.push_back(++label);
-      get(labelled, n, i, 0) = &labels.back();
+    } else if (!get(labelled, n, i - 1, 0).value()) {
+      get(labelled, n, i, 0).set(new InfPtr(++label));
     } else {
       get(labelled, n, i, 0) = get(labelled, n, i - 1, 0);
     }
   }
 }
 
-void processUnlabelled(std::vector<int*>& labelled, std::list<int>& labels, int& label, int n, int i, int j) {
-  if (!get(labelled, n, i, j - 1) && !get(labelled, n, i - 1, j)) {
-    labels.push_back(++label);
-    get(labelled, n, i, j) = &labels.back();
-  } else if (!get(labelled, n, i, j - 1) && get(labelled, n, i - 1, j)) {
+void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, int j) {
+  if (!get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
+    get(labelled, n, i, j).set(new InfPtr(++label));
+  } else if (!get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
     get(labelled, n, i, j) = get(labelled, n, i - 1, j);
-  } else if (get(labelled, n, i, j - 1) && !get(labelled, n, i - 1, j)) {
+  } else if (get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
     get(labelled, n, i, j) = get(labelled, n, i, j - 1);
-  } else if (get(labelled, n, i, j - 1) && get(labelled, n, i - 1, j)) {
-    *get(labelled, n, i, j - 1) = *get(labelled, n, i - 1, j);
-    get(labelled, n, i, j) = get(labelled, n, i - 1, j);
+  } else if (get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
+    int value = get(labelled, n, i, j - 1).value();
+    InfPtr* ptr = new InfPtr(value);
+    get(labelled, n, i, j - 1).set(ptr);
+    get(labelled, n, i - 1, j).set(ptr);
+    get(labelled, n, i, j).set(ptr);
   }
 }
 
-void processMedium(std::vector<int*>& labelled, std::list<int>& labels, const std::vector<uint8_t>& v, int& label,
+void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
                    int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
       if (get(v, n, i, j)) {
         continue;
       }
-      processUnlabelled(labelled, labels, label, n, i, j);
+      processUnlabelled(labelled, label, n, i, j);
     }
   }
 }
 
 std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n) {
-  std::vector<int*> labelled(v.size(), nullptr);
-  std::list<int> labels;
+  std::vector<InfPtr> labelled(v.size());
 
   int label = 0;
 
   if (v.size() && !v[0]) {
-    labels.push_back(++label);
-    labelled[0] = &labels.back();
+    labelled[0].set(new InfPtr(++label));
   }
 
-  processHorizontal(labelled, labels, v, label, n, 0);
-  processVertical(labelled, labels, v, label, n, 0, m);
-  processMedium(labelled, labels, v, label, n, 0, m);
+  processHorizontal(labelled, v, label, n, 0);
+  processVertical(labelled, v, label, n, 0, m);
+  processMedium(labelled, v, label, n, 0, m);
 
-   std::vector<int> reduced = reducePointers(labelled);
+  std::vector<int> reduced = reducePointers(labelled);
   std::unordered_set<int> labelSet(reduced.begin(), reduced.end());
 
   return std::pair<std::vector<int>, int>(reduced, static_cast<int>(labelSet.size()));
 }
 
-void mergeBounds(std::vector<int**>& labelled, int blockSize, int m, int n) { 
+void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) { 
   for (int i = blockSize; i < m - 1; i += blockSize) {
     for (int j = 0; j < n; j++) {
-      if (get(labelled, n, i - 1, j) && get(labelled, n, i, j)) {
-        **get(labelled, n, i, j) = **get(labelled, n, i - 1, j);
+      if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value()) {
+        int value = get(labelled, n, i, j).value();
+        get(labelled, n, i - 1, j).set(new InfPtr(value));
+        get(labelled, n, i, j).set(new InfPtr(value));
       }
     }
   }
 }
 
 std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
-  std::vector<int**> labelled(v.size(), nullptr);
+  std::vector<InfPtr> labelled(v.size());
   const int numThreads = std::min(8, m / 2);
   const int blockSize = m / numThreads;
   const int dataSizeForThread = (blockSize + 1) * n;
-  std::list<std::list<int>> allLabels(numThreads);
-  std::list<std::list<int*>> pAllLabels(numThreads);
 
 #pragma omp parallel num_threads(numThreads)
   { 
-    std::list<int> labels;
-    std::list<int*> pLabels;
     int tid = omp_get_thread_num();
     int label = dataSizeForThread * tid;
     int start = blockSize * tid;
@@ -202,19 +198,11 @@ std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>&
       end += m % numThreads;
     }
     if (!get(v, n, start, 0)) {
-      labels.push_back(++label);
-      pLabels.push_back(&labels.back());
-      get(labelled, n, start, 0) = &pLabels.back();
+      get(labelled, n, start, 0).set(new InfPtr(++label));
     }
-    processHorizontal(labelled, labels, pLabels, v, label, n, start);
-    processVertical(labelled, labels, pLabels, v, label, n, start, end);
-    processMedium(labelled, labels, pLabels, v, label, n, start, end);
-
-#pragma omp critical
-    { 
-      allLabels.push_back(std::move(labels));
-      pAllLabels.push_back(std::move(pLabels));
-    }
+    processHorizontal(labelled, v, label, n, start);
+    processVertical(labelled, v, label, n, start, end);
+    processMedium(labelled, v, label, n, start, end);
   }
   mergeBounds(labelled, blockSize, m, n);
 
