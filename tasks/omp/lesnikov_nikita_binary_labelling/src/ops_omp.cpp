@@ -39,7 +39,7 @@ class InfPtr {
   int _value;
 };
 
-std::vector<uint8_t> getRandomVector(int sz) {
+std::vector<uint8_t> getRandomVectorForLab(int sz) {
   std::random_device dev;
   std::mt19937 gen(dev());
   std::vector<uint8_t> vec(sz);

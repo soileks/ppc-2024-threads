@@ -12,7 +12,7 @@ TEST(lesnikov_binary_labelling_perf_test, test_pipeline_run) {
   int n = 500;
   auto serializedM = serializeInt32(m);
   auto serializedN = serializeInt32(n);
-  std::vector<uint8_t> in = getRandomVector(m * n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
   std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -44,7 +44,7 @@ TEST(lesnikov_binary_labelling_perf_test, test_task_run) {
   int n = 500;
   auto serializedM = serializeInt32(m);
   auto serializedN = serializeInt32(n);
-  std::vector<uint8_t> in = getRandomVector(m * n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
   std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
