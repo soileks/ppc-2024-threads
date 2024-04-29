@@ -2,45 +2,46 @@
 
 #include "omp/savotina_v_grahams_alg/include/point.hpp"
 
-SavotinaPoint::SavotinaPoint() {
+SavotinaOmp::SavotinaPoint::SavotinaPoint() {
   x = 0;
   y = 0;
 }
 
-SavotinaPoint::SavotinaPoint(double X, double Y) {
+SavotinaOmp::SavotinaPoint::SavotinaPoint(double X, double Y) {
   x = X;
   y = Y;
 }
 
-SavotinaPoint::SavotinaPoint(const SavotinaPoint& p2) {
+SavotinaOmp::SavotinaPoint::SavotinaPoint(const SavotinaOmp::SavotinaPoint& p2) {
   x = p2.x;
   y = p2.y;
 }
 
-SavotinaPoint& SavotinaPoint::operator=(const SavotinaPoint& p2) {
+SavotinaOmp::SavotinaPoint& SavotinaOmp::SavotinaPoint::operator=(const SavotinaOmp::SavotinaPoint& p2) {
   if (this == &p2) return *this;
   x = p2.x;
   y = p2.y;
   return *this;
 }
 
-bool SavotinaPoint::operator==(const SavotinaPoint& p2) const {
+bool SavotinaOmp::SavotinaPoint::operator==(const SavotinaOmp::SavotinaPoint& p2) const {
   bool res = false;
   if (x == p2.x && y == p2.y) res = true;
   return res;
 }
 
-double SavotinaPoint::Distance(const SavotinaPoint& p) const {
+double SavotinaOmp::SavotinaPoint::Distance(const SavotinaOmp::SavotinaPoint& p) const {
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }
 
-void SavotinaPoint::Replace(SavotinaPoint& p2) {
-  SavotinaPoint tmp = (*this);
+void SavotinaOmp::SavotinaPoint::swap(SavotinaOmp::SavotinaPoint& p2) {
+  SavotinaOmp::SavotinaPoint tmp = (*this);
   (*this) = p2;
   p2 = tmp;
 }
 
-int SavotinaPoint::Compare(const SavotinaPoint& pivot, const SavotinaPoint& P) const {
+int SavotinaOmp::SavotinaPoint::Compare(const SavotinaOmp::SavotinaPoint& pivot,
+                                        const SavotinaOmp::SavotinaPoint& P) const {
   int res = 0;  // ==
   double x1 = pivot.x - x;
   double y1 = pivot.y - y;
@@ -67,9 +68,9 @@ int SavotinaPoint::Compare(const SavotinaPoint& pivot, const SavotinaPoint& P) c
   return res;
 }
 
-SavotinaPoint SavotinaPoint::aRandomPoint(double min, double max) {
+SavotinaOmp::SavotinaPoint SavotinaOmp::SavotinaPoint::aRandomPoint(double min, double max) {
   size_t seed = 1000;
   std::default_random_engine gen(seed);
   std::uniform_real_distribution<double> random(min, max);
-  return SavotinaPoint(random(gen), random(gen));
+  return SavotinaOmp::SavotinaPoint(random(gen), random(gen));
 }

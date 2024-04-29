@@ -7,12 +7,13 @@
 // Points are arranged in a chaotic order (type of x and y is int)
 TEST(savotina_v_grahams_alg_omp, Test1) {
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(-8, 4),   SavotinaPoint(-4, 6),   SavotinaPoint(-12, 2),
-                                       SavotinaPoint(-6, -2),  SavotinaPoint(-10, -4), SavotinaPoint(-4, 2),
-                                       SavotinaPoint(-6, 6),   SavotinaPoint(-8, 8),   SavotinaPoint(-10, 6),
-                                       SavotinaPoint(-8, 2),   SavotinaPoint(-6, 2),   SavotinaPoint(-10, 0),
-                                       SavotinaPoint(-14, -2), SavotinaPoint(-16, -4), SavotinaPoint(-14, -4)};
-  std::vector<SavotinaPoint> mchSeq(7);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {
+      SavotinaOmp::SavotinaPoint(-8, 4),   SavotinaOmp::SavotinaPoint(-4, 6),   SavotinaOmp::SavotinaPoint(-12, 2),
+      SavotinaOmp::SavotinaPoint(-6, -2),  SavotinaOmp::SavotinaPoint(-10, -4), SavotinaOmp::SavotinaPoint(-4, 2),
+      SavotinaOmp::SavotinaPoint(-6, 6),   SavotinaOmp::SavotinaPoint(-8, 8),   SavotinaOmp::SavotinaPoint(-10, 6),
+      SavotinaOmp::SavotinaPoint(-8, 2),   SavotinaOmp::SavotinaPoint(-6, 2),   SavotinaOmp::SavotinaPoint(-10, 0),
+      SavotinaOmp::SavotinaPoint(-14, -2), SavotinaOmp::SavotinaPoint(-16, -4), SavotinaOmp::SavotinaPoint(-14, -4)};
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(7);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -29,7 +30,7 @@ TEST(savotina_v_grahams_alg_omp, Test1) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(7);
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(7);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -53,14 +54,19 @@ TEST(savotina_v_grahams_alg_omp, Test1) {
 // Points are arranged in a chaotic order (type of x and y is double)
 TEST(savotina_v_grahams_alg_omp, Test2) {
   // Create data
-  std::vector<SavotinaPoint> points = {
-      SavotinaPoint(-0.5, 2.2),  SavotinaPoint(1.6, 1.3),  SavotinaPoint(0.3, -0.6),  SavotinaPoint(0.1, 1.3),
-      SavotinaPoint(-1.8, 1.42), SavotinaPoint(-0.3, 0.6), SavotinaPoint(-0.5, -1.2), SavotinaPoint(1.2, -0.8),
-      SavotinaPoint(0.7, 0.4),   SavotinaPoint(1.1, 1.9),  SavotinaPoint(0.4, -1.2),  SavotinaPoint(-1.9, 0.4),
-      SavotinaPoint(-0.6, -0.3), SavotinaPoint(1.8, 0.5),  SavotinaPoint(-1.4, -0.7), SavotinaPoint(-0.9, 1.1),
-      SavotinaPoint(-1.2, 1.9),  SavotinaPoint(0.4, 2.2),  SavotinaPoint(1.7, -0.1)};
+  std::vector<SavotinaOmp::SavotinaPoint> points = {
+      SavotinaOmp::SavotinaPoint(-0.5, 2.2),  SavotinaOmp::SavotinaPoint(1.6, 1.3),
+      SavotinaOmp::SavotinaPoint(0.3, -0.6),  SavotinaOmp::SavotinaPoint(0.1, 1.3),
+      SavotinaOmp::SavotinaPoint(-1.8, 1.42), SavotinaOmp::SavotinaPoint(-0.3, 0.6),
+      SavotinaOmp::SavotinaPoint(-0.5, -1.2), SavotinaOmp::SavotinaPoint(1.2, -0.8),
+      SavotinaOmp::SavotinaPoint(0.7, 0.4),   SavotinaOmp::SavotinaPoint(1.1, 1.9),
+      SavotinaOmp::SavotinaPoint(0.4, -1.2),  SavotinaOmp::SavotinaPoint(-1.9, 0.4),
+      SavotinaOmp::SavotinaPoint(-0.6, -0.3), SavotinaOmp::SavotinaPoint(1.8, 0.5),
+      SavotinaOmp::SavotinaPoint(-1.4, -0.7), SavotinaOmp::SavotinaPoint(-0.9, 1.1),
+      SavotinaOmp::SavotinaPoint(-1.2, 1.9),  SavotinaOmp::SavotinaPoint(0.4, 2.2),
+      SavotinaOmp::SavotinaPoint(1.7, -0.1)};
 
-  std::vector<SavotinaPoint> mchSeq(13);
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(13);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -77,7 +83,7 @@ TEST(savotina_v_grahams_alg_omp, Test2) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(13);
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(13);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -101,11 +107,14 @@ TEST(savotina_v_grahams_alg_omp, Test2) {
 // Points are located on the same straight line
 TEST(savotina_v_grahams_alg_omp, Test3) {
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(-1.4, 2.2), SavotinaPoint(2.2, 2.2),  SavotinaPoint(-0.6, 2.2),
-                                       SavotinaPoint(-2.3, 2.2), SavotinaPoint(2.7, 2.2),  SavotinaPoint(0.6, 2.2),
-                                       SavotinaPoint(1.7, 2.2),  SavotinaPoint(-3.4, 2.2), SavotinaPoint(5.3, 2.2),
-                                       SavotinaPoint(4.4, 2.2),  SavotinaPoint(3.4, 2.2)};
-  std::vector<SavotinaPoint> mchSeq(2);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {
+      SavotinaOmp::SavotinaPoint(-1.4, 2.2), SavotinaOmp::SavotinaPoint(2.2, 2.2),
+      SavotinaOmp::SavotinaPoint(-0.6, 2.2), SavotinaOmp::SavotinaPoint(-2.3, 2.2),
+      SavotinaOmp::SavotinaPoint(2.7, 2.2),  SavotinaOmp::SavotinaPoint(0.6, 2.2),
+      SavotinaOmp::SavotinaPoint(1.7, 2.2),  SavotinaOmp::SavotinaPoint(-3.4, 2.2),
+      SavotinaOmp::SavotinaPoint(5.3, 2.2),  SavotinaOmp::SavotinaPoint(4.4, 2.2),
+      SavotinaOmp::SavotinaPoint(3.4, 2.2)};
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -122,7 +131,7 @@ TEST(savotina_v_grahams_alg_omp, Test3) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(2);
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -146,8 +155,8 @@ TEST(savotina_v_grahams_alg_omp, Test3) {
 // Only one point
 TEST(savotina_v_grahams_alg_omp, Test4) {
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(3.5, 4.7)};
-  std::vector<SavotinaPoint> mchSeq(1);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {SavotinaOmp::SavotinaPoint(3.5, 4.7)};
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(1);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -164,7 +173,7 @@ TEST(savotina_v_grahams_alg_omp, Test4) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(1);
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(1);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -188,8 +197,9 @@ TEST(savotina_v_grahams_alg_omp, Test4) {
 // Only two points
 TEST(savotina_v_grahams_alg_omp, Test5) {
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(2.4, -2.9), SavotinaPoint(-1.8, 4.2)};
-  std::vector<SavotinaPoint> mchSeq(2);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {SavotinaOmp::SavotinaPoint(2.4, -2.9),
+                                                    SavotinaOmp::SavotinaPoint(-1.8, 4.2)};
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -206,7 +216,7 @@ TEST(savotina_v_grahams_alg_omp, Test5) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(2);
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -230,8 +240,8 @@ TEST(savotina_v_grahams_alg_omp, Test5) {
 // No points
 TEST(savotina_v_grahams_alg_omp, Test6) {
   // Create data
-  std::vector<SavotinaPoint> points = {};
-  std::vector<SavotinaPoint> mchSeq(points.size());
+  std::vector<SavotinaOmp::SavotinaPoint> points = {};
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(points.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -248,7 +258,7 @@ TEST(savotina_v_grahams_alg_omp, Test6) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(points.size());
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(points.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -271,11 +281,12 @@ TEST(savotina_v_grahams_alg_omp, Test6) {
 
 TEST(savotina_v_grahams_alg_omp, Test7) {
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(4.4, 1.7), SavotinaPoint(4.4, 1.7), SavotinaPoint(4.4, 1.7),
-                                       SavotinaPoint(4.4, 1.7), SavotinaPoint(4.4, 1.7), SavotinaPoint(4.4, 1.7),
-                                       SavotinaPoint(4.4, 1.7), SavotinaPoint(4.4, 1.7), SavotinaPoint(4.4, 1.7),
-                                       SavotinaPoint(4.4, 1.7)};
-  std::vector<SavotinaPoint> mchSeq(1);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {
+      SavotinaOmp::SavotinaPoint(4.4, 1.7), SavotinaOmp::SavotinaPoint(4.4, 1.7), SavotinaOmp::SavotinaPoint(4.4, 1.7),
+      SavotinaOmp::SavotinaPoint(4.4, 1.7), SavotinaOmp::SavotinaPoint(4.4, 1.7), SavotinaOmp::SavotinaPoint(4.4, 1.7),
+      SavotinaOmp::SavotinaPoint(4.4, 1.7), SavotinaOmp::SavotinaPoint(4.4, 1.7), SavotinaOmp::SavotinaPoint(4.4, 1.7),
+      SavotinaOmp::SavotinaPoint(4.4, 1.7)};
+  std::vector<SavotinaOmp::SavotinaPoint> mchSeq(1);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgSeq = std::make_shared<ppc::core::TaskData>();
@@ -292,7 +303,7 @@ TEST(savotina_v_grahams_alg_omp, Test7) {
   testGrahamsAlgSeq.post_processing();
 
   // Create data
-  std::vector<SavotinaPoint> mchOmp(1);
+  std::vector<SavotinaOmp::SavotinaPoint> mchOmp(1);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();

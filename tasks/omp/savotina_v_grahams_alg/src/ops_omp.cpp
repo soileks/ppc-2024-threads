@@ -27,7 +27,7 @@ void SavotinaQuickSort(std::vector<SavotinaPoint>& pointArr, int left, int right
     while (!(pointArr[0].Compare(pivot, pointArr[R]) <= 0)) --R;
 
     if (L <= R) {
-      pointArr[L].Replace(pointArr[R]);
+      pointArr[L].swap(pointArr[R]);
       ++L;
       --R;
     }
@@ -155,7 +155,7 @@ bool SavotinaGrahamsAlgorithmSequential::run() {
   int p0 = SavotinaOmp::SavotinaPointPositionSeq(P0, pointsArr);
 
   // Step 2: sort all points except P0
-  minConvexHull[0].Replace(minConvexHull[p0]);
+  minConvexHull[0].swap(minConvexHull[p0]);
   SavotinaOmp::SavotinaQuickSort(minConvexHull, 1, minConvexHull.size() - 1);  // Quick Sort
 
   // Step 3: build a minimum convex hull
@@ -221,7 +221,7 @@ bool SavotinaGrahamsAlgorithmOmpParallel::run() {
   int p0 = SavotinaOmp::SavotinaPointPositionOMP(P0, pointsArr);
 
   // Step 2: sort all points except P0
-  minConvexHull[0].Replace(minConvexHull[p0]);
+  minConvexHull[0].swap(minConvexHull[p0]);
   SavotinaOmp::SavotinaQuickSort(minConvexHull, 1, minConvexHull.size() - 1);  // Quick Sort
 
   // Step 3: build a minimum convex hull

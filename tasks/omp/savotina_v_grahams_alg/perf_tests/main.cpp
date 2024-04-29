@@ -8,16 +8,18 @@
 TEST(savotina_v_grahams_alg_omp, test_pipeline_run) {
   double min = 0;
   double max = 100000;
-  size_t size = 1000000;  // size of vector of random points
+  size_t size = 1500000;  // size of vector of random points
 
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(max, min), SavotinaPoint(min, max), SavotinaPoint(max, max),
-                                       SavotinaPoint(min, min)};
-  std::vector<SavotinaPoint> randomPoints = SavotinaOmp::SavotinaRandomPoints(min, max, size);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {
+      SavotinaOmp::SavotinaPoint(max, min), SavotinaOmp::SavotinaPoint(min, max), SavotinaOmp::SavotinaPoint(max, max),
+      SavotinaOmp::SavotinaPoint(min, min)};
+  std::vector<SavotinaOmp::SavotinaPoint> randomPoints = SavotinaOmp::SavotinaRandomPoints(min, max, size);
   points.insert(points.end(), randomPoints.begin(), randomPoints.end());
-  std::vector<SavotinaPoint> res = {SavotinaPoint(min, min), SavotinaPoint(max, min), SavotinaPoint(max, max),
-                                    SavotinaPoint(min, max)};
-  std::vector<SavotinaPoint> mch(res.size());
+  std::vector<SavotinaOmp::SavotinaPoint> res = {
+      SavotinaOmp::SavotinaPoint(min, min), SavotinaOmp::SavotinaPoint(max, min), SavotinaOmp::SavotinaPoint(max, max),
+      SavotinaOmp::SavotinaPoint(min, max)};
+  std::vector<SavotinaOmp::SavotinaPoint> mch(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
@@ -50,16 +52,18 @@ TEST(savotina_v_grahams_alg_omp, test_pipeline_run) {
 TEST(savotina_v_grahams_alg_omp, test_task_run) {
   double min = 0;
   double max = 100000;
-  size_t size = 1000000;  // size of vector of random points
+  size_t size = 1500000;  // size of vector of random points
 
   // Create data
-  std::vector<SavotinaPoint> points = {SavotinaPoint(max, min), SavotinaPoint(min, max), SavotinaPoint(max, max),
-                                       SavotinaPoint(min, min)};
-  std::vector<SavotinaPoint> randomPoints = SavotinaOmp::SavotinaRandomPoints(min, max, size);
+  std::vector<SavotinaOmp::SavotinaPoint> points = {
+      SavotinaOmp::SavotinaPoint(max, min), SavotinaOmp::SavotinaPoint(min, max), SavotinaOmp::SavotinaPoint(max, max),
+      SavotinaOmp::SavotinaPoint(min, min)};
+  std::vector<SavotinaOmp::SavotinaPoint> randomPoints = SavotinaOmp::SavotinaRandomPoints(min, max, size);
   points.insert(points.end(), randomPoints.begin(), randomPoints.end());
-  std::vector<SavotinaPoint> res = {SavotinaPoint(min, min), SavotinaPoint(max, min), SavotinaPoint(max, max),
-                                    SavotinaPoint(min, max)};
-  std::vector<SavotinaPoint> mch(res.size());
+  std::vector<SavotinaOmp::SavotinaPoint> res = {
+      SavotinaOmp::SavotinaPoint(min, min), SavotinaOmp::SavotinaPoint(max, min), SavotinaOmp::SavotinaPoint(max, max),
+      SavotinaOmp::SavotinaPoint(min, max)};
+  std::vector<SavotinaOmp::SavotinaPoint> mch(res.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> dataGrahamsAlgOmp = std::make_shared<ppc::core::TaskData>();
