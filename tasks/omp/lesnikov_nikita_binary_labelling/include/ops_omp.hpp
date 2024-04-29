@@ -13,7 +13,6 @@ std::vector<uint8_t> serializeInt32(uint32_t num);
 uint32_t deserializeInt32(const uint8_t* data);
 std::vector<int> deserializeInt32V(const std::vector<uint8_t> v);
 
-
 class BinaryLabellingSeq : public ppc::core::Task {
  public:
   explicit BinaryLabellingSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
