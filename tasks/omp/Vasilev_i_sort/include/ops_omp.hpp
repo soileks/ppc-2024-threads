@@ -24,7 +24,7 @@ class VasilevTaskOmp : public ppc::core::Task {
   std::vector<int> res;
   void merge(int l, int m, int r);
   void shellSort(std::vector<int>& arr, int n);
-  void  shell_sort_batcher(std::vector<int>& arr, int n);
+  void shell_sort_batcher(std::vector<int>& arr, int n);
   // static void shellort_parallel(std::vector<int>& input);
   void batcherMerge(int l, int r);
 };

@@ -57,7 +57,7 @@ void VasilevTaskOmp::shell_sort_batcher(std::vector<int>& arr, int n) {
           }
       }
   }
-}
+} 
 // Функция для слияния отсортированных массивов
 // void VasilevTaskOmp::merge(int l, int m, int r) {
 //   int n1 = m - l + 1;
