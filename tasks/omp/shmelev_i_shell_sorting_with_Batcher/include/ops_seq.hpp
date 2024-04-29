@@ -1,12 +1,14 @@
 // Copyright 2024 Shmelev Ivan
 #pragma once
+#include <omp.h>
+
 #include <iostream>
 #include <memory>
 #include <random>
 #include <string>
 #include <utility>
 #include <vector>
-#include <omp.h>
+
 
 #include "core/task/include/task.hpp"
 
@@ -28,7 +30,7 @@ class ShmelevTaskOmp : public ppc::core::Task {
   void batcherMerge(int l, int r);
   void sortingShell();
   void merge(int l, int m, int r);
-};    
+};
 
 class ShmelevTaskSequential : public ppc::core::Task {
  public:

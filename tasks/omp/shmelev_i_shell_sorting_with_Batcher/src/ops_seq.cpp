@@ -1,9 +1,9 @@
 // Copyright 2024 Shmelev Ivan
 
 #include "omp/shmelev_i_shell_sorting_with_Batcher/include/ops_seq.hpp"
+#include <omp.h>
 
 #include <algorithm>
-#include <omp.h>
 
 bool shmelev_omp::ShmelevTaskSequential::pre_processing() {
   internal_order_test();
@@ -73,7 +73,9 @@ void shmelev_omp::ShmelevTaskSequential::batcherMerge(int l, int r) {
     merge(l, m, r);
   }
 }
-bool shmelev_omp::ShmelevTaskSequential::sorted(std::vector<int> input) { return std::is_sorted(input.begin(), input.end()); }
+bool shmelev_omp::ShmelevTaskSequential::sorted(std::vector<int> input) { 
+  return std::is_sorted(input.begin(), input.end());
+}
 
 void shmelev_omp::ShmelevTaskSequential::merge(int l, int m, int r) {
   int n1 = m - l + 1;
@@ -129,7 +131,7 @@ bool shmelev_omp::ShmelevTaskOmp::validation() {
 
 bool shmelev_omp::ShmelevTaskOmp::run() {
   internal_order_test();
-  #pragma omp parallel
+#pragma omp parallel
   {
     #pragma omp single nowait
     batcherMerge(0, input_.size() - 1);
@@ -160,7 +162,7 @@ std::vector<int> shmelev_omp::ShmelevTaskOmp::generate_random_vector(int size, i
 void shmelev_omp::ShmelevTaskOmp::sortingShell() {
   int n = input_.size();
   for (int gap = n / 2; gap > 0; gap /= 2) {
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = gap; i < n; i++) {
       int temp = input_[i];
       int j;
@@ -176,11 +178,11 @@ void shmelev_omp::ShmelevTaskOmp::batcherMerge(int l, int r) {
   sortingShell();
   if (r > l) {
     int m = l + (r - l) / 2;
-    #pragma omp task
+#pragma omp task
     batcherMerge(l, m);
-    #pragma omp task
+#pragma omp task
     batcherMerge(m + 1, r);
-    #pragma omp taskwait
+#pragma omp taskwait
     merge(l, m, r);
   }
 }
