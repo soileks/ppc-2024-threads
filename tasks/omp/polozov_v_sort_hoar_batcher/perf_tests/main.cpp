@@ -2,9 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/polozov_v_sort_hoar_batcher/include/ops_seq.hpp"
-
-
+#include "omp/polozov_v_sort_hoar_batcher/include/ops_omp.hpp"
 
 TEST(polozov_v_sort_hoar_batcher_omp, test_pipeline_run) {
   // Create data

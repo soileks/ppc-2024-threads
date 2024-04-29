@@ -1,7 +1,7 @@
 // Copyright 2024 Polozov Vladislav
 #include <gtest/gtest.h>
 
-#include "omp/polozov_v_sort_hoar_batcher/include/ops_seq.hpp"
+#include "omp/polozov_v_sort_hoar_batcher/include/ops_omp.hpp"
 
 TEST(polozov_v_sort_hoar_batcher_omp, array_8) {
   // Create data
@@ -32,7 +32,7 @@ TEST(polozov_v_sort_hoar_batcher_omp, array_8) {
 
 TEST(polozov_v_sort_hoar_batcher_omp, rand_array_16) {
   // Create data
-  std::vector<int> array = generate_data(16,0,16);
+  std::vector<int> array = generate_data(16, 0, 16);
   std::vector<int> out(array.size());
 
   // Create TaskData
@@ -58,7 +58,7 @@ TEST(polozov_v_sort_hoar_batcher_omp, rand_array_16) {
 
 TEST(polozov_v_sort_hoar_batcher_omp, array_negative_16) {
   // Create data
-  std::vector<int> array = generate_data(32,-16,-1);
+  std::vector<int> array = generate_data(32, -16, -1);
   std::vector<int> out(array.size());
 
   // Create TaskData
@@ -84,7 +84,7 @@ TEST(polozov_v_sort_hoar_batcher_omp, array_negative_16) {
 
 TEST(polozov_v_sort_hoar_batcher_omp, array_32) {
   // Create data
-  std::vector<int> array = generate_data(32,-100,100);
+  std::vector<int> array = generate_data(32, -100, 100);
   std::vector<int> out(array.size());
 
   // Create TaskData
@@ -110,7 +110,7 @@ TEST(polozov_v_sort_hoar_batcher_omp, array_32) {
 
 TEST(polozov_v_sort_hoar_batcher_omp, array_4) {
   // Create data
-  std::vector<int> array = generate_data(4,-10,10);
+  std::vector<int> array = generate_data(4, -10, 10);
   std::vector<int> out(array.size());
 
   // Create TaskData
