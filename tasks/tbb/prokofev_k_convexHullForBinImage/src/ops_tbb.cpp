@@ -7,7 +7,6 @@
 #include <cstring>
 #include <iostream>
 #include <set>
-#include <thread>
 
 using namespace std::chrono_literals;
 
