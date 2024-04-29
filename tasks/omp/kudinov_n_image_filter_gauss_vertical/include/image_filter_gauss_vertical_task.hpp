@@ -68,4 +68,4 @@ class ImageFilterGaussVerticalTask : public ppc::core::Task {
   Image _output_image;
 };
 
-} // namespace KudinovOMP
+}  // namespace KudinovOMP
