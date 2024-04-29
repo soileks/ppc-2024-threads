@@ -15,6 +15,28 @@
 
 using namespace std::chrono_literals;
 
+class InfPtr {
+ public:
+  InfPtr() = default;
+  InfPtr(int value) : _value(value), _ptr(nullptr) {}
+  void set(InfPtr* ptr) {
+    if (!_ptr) {
+      _ptr = ptr;
+      return;
+    }
+    _ptr->set(ptr);
+  }
+  int value() {
+    if (!_ptr) {
+      return _value;
+    }
+    return _ptr->value();
+  }
+ private:
+  InfPtr* _ptr = nullptr;
+  int _value = 0;
+};
+
 std::vector<uint8_t> getRandomVector(int sz) {
   std::random_device dev;
   std::mt19937 gen(dev());
@@ -41,6 +63,16 @@ bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) {
       return false;
   }
   return true;
+}
+
+size_t getObjectsNum(const std::vector<int>& map) {
+  std::unordered_set<int> labels;
+  for (int i : map) {
+    if (i) { 
+      labels.insert(i);
+    }
+  }
+  return labels.size();
 }
 
 template <class T>
@@ -91,6 +123,16 @@ void visualize(const std::vector<T>& v, int m, int n) {
 
 std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
   std::vector<int> reduced(labelled.size());
+  for (int i = 0; i < labelled.size(); i++) {
+    reduced[i] = labelled[i].value();
+  }
+  return reduced;
+}
+
+std::vector<int> reducePointersOmp(std::vector<InfPtr>& labelled, int numThreads) {
+  std::vector<int> reduced(labelled.size());
+  int chunk = labelled.size() / static_cast<size_t>(numThreads);
+#pragma omp parallel for schedule(static, chunk)
   for (int i = 0; i < labelled.size(); i++) {
     reduced[i] = labelled[i].value();
   }
@@ -156,7 +198,7 @@ void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v,
   }
 }
 
-std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n) {
+std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n) {
   std::vector<InfPtr> labelled(v.size());
 
   int label = 0;
@@ -169,10 +211,7 @@ std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>&
   processVertical(labelled, v, label, n, 0, m);
   processMedium(labelled, v, label, n, 0, m);
 
-  std::vector<int> reduced = reducePointers(labelled);
-  std::unordered_set<int> labelSet(reduced.begin(), reduced.end());
-
-  return std::pair<std::vector<int>, int>(reduced, static_cast<int>(labelSet.size()));
+  return reducePointers(labelled);
 }
 
 void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) { 
@@ -189,7 +228,7 @@ void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) {
   }
 }
 
-std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
+std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n) {
   std::vector<InfPtr> labelled(v.size());
   const int numThreads = std::min(8, m / 2);
   const int blockSize = m / numThreads;
@@ -213,10 +252,7 @@ std::pair<std::vector<int>, int> getLabelledImageOmp(const std::vector<uint8_t>&
   }
   mergeBounds(labelled, blockSize, m, n);
 
-  std::vector<int> reduced = reducePointers(labelled);
-  std::unordered_set<int> labels(reduced.begin(), reduced.end());
-
-  return std::make_pair(reduced, static_cast<int>(labels.size()));
+  return reducePointersOmp(labelled, numThreads);
 }
 
 bool BinaryLabellingSeq::pre_processing() {
@@ -236,17 +272,15 @@ bool BinaryLabellingSeq::pre_processing() {
 bool BinaryLabellingSeq::validation() {
   internal_order_test();
 
-  return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 2 && taskData->inputs_count[1] == 4 &&
-         taskData->inputs_count[2] == 4 && taskData->outputs_count[1] == 4 &&
-         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
+  return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
+         taskData->inputs_count[2] == 4 && taskData->inputs_count[0] == 
+         deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
 bool BinaryLabellingSeq::run() {
   internal_order_test();
   try {
-    auto res = getLabelledImageSeq(_source, _m, _n);
-    _result = res.first;
-    _numObjects = res.second;
+    _result = getLabelledImageSeq(_source, _m, _n);
   } catch (...) {
     return false;
   }
@@ -259,8 +293,6 @@ bool BinaryLabellingSeq::post_processing() {
   try {
     memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
            _result.size() * static_cast<size_t>(sizeof(int)));
-    auto serializedObjectsNum = serializeInt32(_numObjects);
-    memcpy(taskData->outputs[1], serializedObjectsNum.data(), serializedObjectsNum.size());
   } catch (...) {
     return false;
   }
@@ -284,18 +316,16 @@ bool BinaryLabellingOmp::pre_processing() {
 bool BinaryLabellingOmp::validation() {
   internal_order_test();
 
-  return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 2 && taskData->inputs_count[1] == 4 &&
-         taskData->inputs_count[2] == 4 && taskData->outputs_count[1] == 4 &&
-         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
+  return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
+         taskData->inputs_count[2] == 4 && taskData->inputs_count[0] == 
+         deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
 bool BinaryLabellingOmp::run() {
   internal_order_test();
   double start = omp_get_wtime();
   try {
-    auto res = getLabelledImageOmp(_source, _m, _n);
-    _result = res.first;
-    _numObjects = res.second;
+    _result = getLabelledImageOmp(_source, _m, _n);
   } catch (...) {
     return false;
   }
@@ -309,8 +339,6 @@ bool BinaryLabellingOmp::post_processing() {
   try {
     memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
         _result.size() * static_cast<size_t>(sizeof(int)));
-    auto serializedObjectsNum = serializeInt32(_numObjects);
-    memcpy(taskData->outputs[1], serializedObjectsNum.data(), serializedObjectsNum.size());
   } catch (...) {
     return false;
   }
