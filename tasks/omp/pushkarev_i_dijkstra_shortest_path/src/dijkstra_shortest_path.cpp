@@ -42,20 +42,18 @@ bool DijkstraTask::run() {
   volatile bool end_flag = false;
 #pragma omp parallel for
   for (size_t i = 0; i < n; ++i) {
-    if (end_flag)
-    {
+    if (end_flag) {
       continue;
     }
     size_t u = (size_t)-1, min_dist = std::numeric_limits<int>::max();
     // Find the node with the shortest distance
     for (size_t j = 0; j < n; ++j) {
-      if ((size_t)(!processed[j] && distances_[j] )< min_dist) {
+      if ((size_t)(!processed[j] && distances_[j]) < min_dist) {
         u = j;
         min_dist = distances_[j];
       }
     }
-    if (u == (size_t)-1) 
-    {
+    if (u == (size_t)-1) {
       end_flag = true;
     }
     // Relax adjacent nodes
