@@ -36,7 +36,7 @@ void SavotinaTbb::SavotinaPoint::swap(SavotinaTbb::SavotinaPoint& p2) {
   p2 = tmp;
 }
 
-bool SavotinaTbb::SavotinaPoint::operator()(SavotinaTbb::SavotinaPoint& p0, SavotinaTbb::SavotinaPoint& p1) {
+bool SavotinaTbb::SavotinaPoint::operator()(SavotinaTbb::SavotinaPoint& p0, SavotinaTbb::SavotinaPoint& p1) const {
   bool res = true;
 
   double x1 = x - p0.x;

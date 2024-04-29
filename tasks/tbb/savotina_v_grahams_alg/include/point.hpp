@@ -17,7 +17,7 @@ struct SavotinaPoint {
 
   SavotinaPoint& operator=(const SavotinaPoint& p2);
   bool operator==(const SavotinaPoint& p2) const;
-  bool operator()(SavotinaPoint& p0, SavotinaPoint& p1);
+  bool operator()(SavotinaPoint& p0, SavotinaPoint& p1) const;
 
   double Distance(const SavotinaPoint& p) const;
   void swap(SavotinaPoint& p2);
