@@ -1,10 +1,10 @@
 // Copyright 2024 Smirnov Leonid
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/example/include/ops_omp.hpp"
 #include "omp/smirnov_l_radixsort_omp/include/ops_omp.hpp"
 
 TEST(Smirnov_L_Radix_Sort_Test, test_pipeline_run) {
