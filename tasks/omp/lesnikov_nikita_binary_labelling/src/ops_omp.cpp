@@ -19,7 +19,7 @@ class InfPtr {
  public:
   InfPtr() = default;
   InfPtr(int value) : _value(value), _ptr(nullptr) {}
-  void set(InfPtr* ptr) {
+  void set(std::shared_ptr<InfPtr> ptr) {
     if (!_ptr) {
       _ptr = ptr;
       return;
@@ -33,7 +33,7 @@ class InfPtr {
     return _ptr->value();
   }
  private:
-  InfPtr* _ptr = nullptr;
+  std::shared_ptr<InfPtr> _ptr = nullptr;
   int _value = 0;
 };
 
@@ -145,7 +145,7 @@ void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>
     if (get(v, n, start, j)) {
       continue;
     } else if (!get(labelled, n, start, j - 1).value()) {
-      get(labelled, n, start, j).set(new InfPtr(++label));
+      get(labelled, n, start, j).set(std::make_shared<InfPtr>(++label));
     } else {
       get(labelled, n, start, j) = get(labelled, n, start, j - 1);
     }
@@ -158,7 +158,7 @@ void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& 
     if (get(v, n, i, 0)) {
       continue;
     } else if (!get(labelled, n, i - 1, 0).value()) {
-      get(labelled, n, i, 0).set(new InfPtr(++label));
+      get(labelled, n, i, 0).set(std::make_shared<InfPtr>(++label));
     } else {
       get(labelled, n, i, 0) = get(labelled, n, i - 1, 0);
     }
@@ -167,7 +167,7 @@ void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& 
 
 void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, int j) {
   if (!get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
-    get(labelled, n, i, j).set(new InfPtr(++label));
+    get(labelled, n, i, j).set(std::make_shared<InfPtr>(++label));
   } else if (!get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
     get(labelled, n, i, j) = get(labelled, n, i - 1, j);
   } else if (get(labelled, n, i, j - 1).value() && !get(labelled, n, i - 1, j).value()) {
@@ -178,7 +178,7 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
     }
     else {
       int value = get(labelled, n, i - 1, j).value();
-      InfPtr* ptr = new InfPtr(value);
+      auto ptr = std::make_shared<InfPtr>(value);
       get(labelled, n, i, j - 1).set(ptr);
       get(labelled, n, i - 1, j).set(ptr);
       get(labelled, n, i, j) = get(labelled, n, i - 1, j);
@@ -204,7 +204,7 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
   int label = 0;
 
   if (v.size() && !v[0]) {
-    labelled[0].set(new InfPtr(++label));
+    labelled[0].set(std::make_shared<InfPtr>(++label));
   }
 
   processHorizontal(labelled, v, label, n, 0);
@@ -220,7 +220,7 @@ void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) {
       if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value() 
           && get(labelled, n, i - 1, j).value() != get(labelled, n, i, j).value()) {
         int value = get(labelled, n, i, j).value();
-        InfPtr* ptr = new InfPtr(value);
+        auto ptr = std::make_shared<InfPtr>(value);
         get(labelled, n, i - 1, j).set(ptr);
         get(labelled, n, i, j).set(ptr);
       }
@@ -244,7 +244,7 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
       end += m % numThreads;
     }
     if (!get(v, n, start, 0)) {
-      get(labelled, n, start, 0).set(new InfPtr(++label));
+      get(labelled, n, start, 0).set(std::make_shared<InfPtr>(++label));
     }
     processHorizontal(labelled, v, label, n, start);
     processVertical(labelled, v, label, n, start, end);
@@ -323,14 +323,11 @@ bool BinaryLabellingOmp::validation() {
 
 bool BinaryLabellingOmp::run() {
   internal_order_test();
-  double start = omp_get_wtime();
   try {
     _result = getLabelledImageOmp(_source, _m, _n);
   } catch (...) {
     return false;
   }
-  double finish = omp_get_wtime();
-  std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
   return true;
 }
 
