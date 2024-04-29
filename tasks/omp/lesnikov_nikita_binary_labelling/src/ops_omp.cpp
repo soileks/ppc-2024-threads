@@ -1,23 +1,22 @@
 // Copyright 2024 Lesnikov Nikita
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
 
-#include <omp.h>
-
 #include <iostream>
+#include <list>
 #include <numeric>
 #include <random>
 #include <string>
+#include <unordered_map>
+#include <cstring>
+#include <unordered_set>
 #include <thread>
 #include <vector>
-#include <list>
-#include <unordered_set>
-#include <unordered_map>
 
 using namespace std::chrono_literals;
 
 class InfPtr {
  public:
-  InfPtr() = default;
+  InfPtr() : _ptr(nullptr), _value(0) {}
   InfPtr(int value) : _value(value), _ptr(nullptr) {}
   void set(std::shared_ptr<InfPtr> ptr) {
     if (!_ptr) {
@@ -33,8 +32,8 @@ class InfPtr {
     return _ptr->value();
   }
  private:
-  std::shared_ptr<InfPtr> _ptr = nullptr;
-  int _value = 0;
+  std::shared_ptr<InfPtr> _ptr;
+  int _value;
 };
 
 std::vector<uint8_t> getRandomVector(int sz) {
@@ -47,16 +46,14 @@ std::vector<uint8_t> getRandomVector(int sz) {
   return vec;
 }
 
-bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) { 
+bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) {
   if (map1.size() != map2.size()) {
     return false;
   }
   std::unordered_map<int, int> corresp;
   for (size_t i = 0; i < map1.size(); i++) {
-    if (!map1[i] && !map2[i])
-        continue;
-    if ((map1[i] && !map2[i]) || (map2[i] && !map1[i]))
-      return false;
+    if (!map1[i] && !map2[i]) continue;
+    if ((map1[i] && !map2[i]) || (map2[i] && !map1[i])) return false;
     if (corresp.find(map1[i]) == corresp.end())
       corresp[map1[i]] = map2[i];
     else if (corresp[map1[i]] != map2[i])
@@ -68,7 +65,7 @@ bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2) {
 size_t getObjectsNum(const std::vector<int>& map) {
   std::unordered_set<int> labels;
   for (int i : map) {
-    if (i) { 
+    if (i) {
       labels.insert(i);
     }
   }
@@ -123,7 +120,7 @@ void visualize(const std::vector<T>& v, int m, int n) {
 
 std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
   std::vector<int> reduced(labelled.size());
-  for (int i = 0; i < labelled.size(); i++) {
+  for (size_t i = 0; i < labelled.size(); i++) {
     reduced[i] = labelled[i].value();
   }
   return reduced;
@@ -133,14 +130,14 @@ std::vector<int> reducePointersOmp(std::vector<InfPtr>& labelled, int numThreads
   std::vector<int> reduced(labelled.size());
   int chunk = labelled.size() / static_cast<size_t>(numThreads);
 #pragma omp parallel for schedule(static, chunk)
-  for (int i = 0; i < labelled.size(); i++) {
+  for (size_t i = 0; i < labelled.size(); i++) {
     reduced[i] = labelled[i].value();
   }
   return reduced;
 }
 
 void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
-                       int n, int start) {
+int n, int start) {
   for (int j = 1; j < n; j++) {
     if (get(v, n, start, j)) {
       continue;
@@ -153,7 +150,7 @@ void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>
 }
 
 void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
-    int n, int start, int end) {
+int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     if (get(v, n, i, 0)) {
       continue;
@@ -175,8 +172,7 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
   } else if (get(labelled, n, i, j - 1).value() && get(labelled, n, i - 1, j).value()) {
     if (get(labelled, n, i, j - 1).value() == get(labelled, n, i - 1, j).value()) {
       get(labelled, n, i, j) = get(labelled, n, i - 1, j);
-    }
-    else {
+    } else {
       int value = get(labelled, n, i - 1, j).value();
       auto ptr = std::make_shared<InfPtr>(value);
       get(labelled, n, i, j - 1).set(ptr);
@@ -187,7 +183,7 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
 }
 
 void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label,
-                   int n, int start, int end) {
+int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
       if (get(v, n, i, j)) {
@@ -214,11 +210,11 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
   return reducePointers(labelled);
 }
 
-void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) { 
+void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) {
   for (int i = blockSize; i < m - 1; i += blockSize) {
     for (int j = 0; j < n; j++) {
-      if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value() 
-          && get(labelled, n, i - 1, j).value() != get(labelled, n, i, j).value()) {
+      if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value() &&
+          get(labelled, n, i - 1, j).value() != get(labelled, n, i, j).value()) {
         int value = get(labelled, n, i, j).value();
         auto ptr = std::make_shared<InfPtr>(value);
         get(labelled, n, i - 1, j).set(ptr);
@@ -235,7 +231,7 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
   const int dataSizeForThread = (blockSize + 1) * n;
 
 #pragma omp parallel num_threads(numThreads)
-  { 
+  {
     int tid = omp_get_thread_num();
     int label = dataSizeForThread * tid;
     int start = blockSize * tid;
@@ -273,8 +269,9 @@ bool BinaryLabellingSeq::validation() {
   internal_order_test();
 
   return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
-         taskData->inputs_count[2] == 4 && taskData->inputs_count[0] == 
-         deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
+         taskData->inputs_count[2] == 4 &&
+         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) *
+deserializeInt32(taskData->inputs[2]);
 }
 
 bool BinaryLabellingSeq::run() {
@@ -317,8 +314,9 @@ bool BinaryLabellingOmp::validation() {
   internal_order_test();
 
   return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
-         taskData->inputs_count[2] == 4 && taskData->inputs_count[0] == 
-         deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
+         taskData->inputs_count[2] == 4 &&
+         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) *
+deserializeInt32(taskData->inputs[2]);
 }
 
 bool BinaryLabellingOmp::run() {
@@ -335,7 +333,7 @@ bool BinaryLabellingOmp::post_processing() {
   internal_order_test();
   try {
     memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
-        _result.size() * static_cast<size_t>(sizeof(int)));
+           _result.size() * static_cast<size_t>(sizeof(int)));
   } catch (...) {
     return false;
   }
