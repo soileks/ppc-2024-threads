@@ -58,8 +58,7 @@ TEST(polozov_v_sort_hoar_batcher_omp, rand_array_16) {
 TEST(polozov_v_sort_hoar_batcher_omp, array_negative_32) {
   // Create data
   std::vector<int> array = generate_data(32, 0, 100);
-  for (int i = 0; i < 32; i++)
-      array[i] *= -1;
+  for (int i = 0; i < 32; i++) array[i] *= -1;
   std::vector<int> out(array.size());
 
   // Create TaskData
