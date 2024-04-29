@@ -1,8 +1,9 @@
 // Copyright 2024 Smirnov Leonid
 #include "omp/smirnov_l_radixsort_omp/include/ops_omp.hpp"
 
-#include <cmath>
 #include <omp.h>
+
+#include <cmath>
 #include <random>
 #include <thread>
 #include <utility>
@@ -26,7 +27,7 @@ bool RadixSortOMPSequential::validation() {
   internal_order_test();
   // Check count elements of output
   if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
-    taskData->outputs.size() != 1) {
+      taskData->outputs.size() != 1) {
     return false;
   }
   if (taskData->inputs[0] == nullptr || taskData->outputs[0] == nullptr) {
@@ -113,8 +114,8 @@ bool RadixSortOMPSequential::post_processing() {
 bool RadixSortOMPParallel::validation() {
   internal_order_test();
 
-  if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1
-    || taskData->inputs.size() != 1 || taskData->outputs.size() != 1) {
+  if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
+      taskData->outputs.size() != 1) {
     return false;
   }
 
