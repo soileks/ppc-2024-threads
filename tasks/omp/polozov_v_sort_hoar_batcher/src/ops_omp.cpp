@@ -97,7 +97,7 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   };
 #pragma omp parallel
   {
-    if(omp_get_thread_num() == 0) {
+    if (omp_get_thread_num() == 0) {
       merge(0, n / 2 - 1);
     } else {
       merge(n / 2, n - 1);
