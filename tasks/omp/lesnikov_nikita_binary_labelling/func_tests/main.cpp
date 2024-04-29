@@ -6,8 +6,8 @@
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
 
 TEST(Parallel_Operations_OpenMP, Test_1_bin_lab) {
-  int m = 100;
-  int n = 100;
+  int m = 1000;
+  int n = 1000;
   auto serializedM = serializeInt32(m);
   auto serializedN = serializeInt32(n);
   std::vector<uint8_t> in = getRandomVector(m * n);

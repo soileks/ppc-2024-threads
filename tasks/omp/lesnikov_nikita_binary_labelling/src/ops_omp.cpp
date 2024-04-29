@@ -139,7 +139,7 @@ void processUnlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, 
       InfPtr* ptr = new InfPtr(value);
       get(labelled, n, i, j - 1).set(ptr);
       get(labelled, n, i - 1, j).set(ptr);
-      get(labelled, n, i, j).set(ptr);
+      get(labelled, n, i, j) = get(labelled, n, i - 1, j);
     }
   }
 }
@@ -178,10 +178,12 @@ std::pair<std::vector<int>, int> getLabelledImageSeq(const std::vector<uint8_t>&
 void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) { 
   for (int i = blockSize; i < m - 1; i += blockSize) {
     for (int j = 0; j < n; j++) {
-      if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value()) {
+      if (get(labelled, n, i - 1, j).value() && get(labelled, n, i, j).value() 
+          && get(labelled, n, i - 1, j).value() != get(labelled, n, i, j).value()) {
         int value = get(labelled, n, i, j).value();
-        get(labelled, n, i - 1, j).set(new InfPtr(value));
-        get(labelled, n, i, j).set(new InfPtr(value));
+        InfPtr* ptr = new InfPtr(value);
+        get(labelled, n, i - 1, j).set(ptr);
+        get(labelled, n, i, j).set(ptr);
       }
     }
   }
