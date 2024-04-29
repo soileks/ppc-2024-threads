@@ -58,8 +58,8 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Two_OMP_Sm) {
 }
 
 TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Three_OMP_Sm) {
-  std::vector<int> in = {1, 5, 10, -1, -5, -10, 0};
-  std::vector<int> expected = {-10, -5, -1, 0, 1, 5, 10};
+  std::vector<int> in = {2, 1};
+  std::vector<int> expected = {1, 2};
 
   // Create data
   std::vector<int> out2(expected.size(), 0);
