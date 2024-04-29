@@ -33,7 +33,7 @@ class InfPtr {
     }
     return _ptr->value();
   }
-  bool hasVal() { return static_cast<bool>(value); }
+  bool hasVal() { return static_cast<bool>(value()); }
 
  private:
   std::shared_ptr<InfPtr> _ptr;
@@ -125,7 +125,7 @@ std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
 
 std::vector<int> reducePointersOmp(std::vector<InfPtr>& labelled, int numThreads) {
   std::vector<int> reduced(labelled.size());
-#pragma omp parallel num_threads(numThreads) for schedule(static)
+#pragma omp parallel for schedule(static) num_threads(numThreads)
   for (int i = 0; i < static_cast<int>(labelled.size()); i++) {
     reduced[i] = labelled[i].value();
   }
@@ -134,9 +134,10 @@ std::vector<int> reducePointersOmp(std::vector<InfPtr>& labelled, int numThreads
 
 void processHorizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start) {
   for (int j = 1; j < n; j++) {
-    if (get(v, n, start, j)) {
+    if (static_cast<bool>(get(v, n, start, j))) {
       continue;
-    } else if (!get(labelled, n, start, j - 1).hasVal()) {
+    }
+    if (!get(labelled, n, start, j - 1).hasVal()) {
       get(labelled, n, start, j).set(std::make_shared<InfPtr>(++label));
     } else {
       get(labelled, n, start, j) = get(labelled, n, start, j - 1);
@@ -149,7 +150,8 @@ void processVertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& 
   for (int i = start + 1; i < end; i++) {
     if (get(v, n, i, 0)) {
       continue;
-    } else if (!get(labelled, n, i - 1, 0).hasVal()) {
+    }
+    if (!get(labelled, n, i - 1, 0).hasVal()) {
       get(labelled, n, i, 0).set(std::make_shared<InfPtr>(++label));
     } else {
       get(labelled, n, i, 0) = get(labelled, n, i - 1, 0);
@@ -181,7 +183,7 @@ void processMedium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v,
                    int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
-      if (get(v, n, i, j)) {
+      if (static_cast<int>(get(v, n, i, j))) {
         continue;
       }
       processUnlabelled(labelled, label, n, i, j);

@@ -11,7 +11,7 @@ bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2);
 size_t getObjectsNum(const std::vector<int>& map);
 std::vector<uint8_t> serializeInt32(uint32_t num);
 uint32_t deserializeInt32(const uint8_t* data);
-std::vector<int> deserializeInt32V(const std::vector<uint8_t> v);
+std::vector<int> deserializeInt32V(const std::vector<uint8_t>& v);
 
 class BinaryLabellingSeq : public ppc::core::Task {
  public:
