@@ -279,7 +279,6 @@ void vetoshnikova_omp::ConstructingConvexHullOMP::convexHull(int label) {
 #pragma omp critical
       {
         if (local_minX < minX) {
-          minX = local_minX;
           minIndex = local_minIndex;
         }
       }
