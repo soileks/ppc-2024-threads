@@ -38,25 +38,25 @@ bool KashinDijkstraOmp::Dijkstra::run() {
   internal_order_test();
   const int num_threads = omp_get_max_threads();
 #pragma omp parallel
-{
-  int tid = omp_get_thread_num();
-  std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraOmp::Compare> tpq;
-  // проходимся по сегментам графа для составление предварительной distance
-  while (!tpq.empty()) {
-    std::pair<int, int> vertex = tpq.top();
-    tpq.pop();
-    for (int i = 0 + tid; i < count; i += num_threads) {
-      std::pair<int, int> edge(graph[vertex.second * count + i], i);
-      if (i != vertex.second && edge.first != -1) {
-        int weight = edge.first + vertex.first;
-        if (weight < distance[edge.second]) {
-          distance[edge.second] = weight;
-          tpq.emplace(weight, edge.second);
+  {
+    int tid = omp_get_thread_num();
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraOmp::Compare> tpq;
+    // проходимся по сегментам графа для составление предварительной distance
+    while (!tpq.empty()) {
+      std::pair<int, int> vertex = tpq.top();
+      tpq.pop();
+      for (int i = 0 + tid; i < count; i += num_threads) {
+        std::pair<int, int> edge(graph[vertex.second * count + i], i);
+        if (i != vertex.second && edge.first != -1) {
+          int weight = edge.first + vertex.first;
+          if (weight < distance[edge.second]) {
+            distance[edge.second] = weight;
+            tpq.emplace(weight, edge.second);
+          }
         }
       }
     }
   }
-}
   std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraOmp::Compare> pq;
   pq.emplace(0, start);
   while (!pq.empty()) {
