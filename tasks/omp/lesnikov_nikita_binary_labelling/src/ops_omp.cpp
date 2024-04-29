@@ -2,6 +2,7 @@
 #include "omp/lesnikov_nikita_binary_labelling/include/ops_omp.hpp"
 
 #include <omp.h>
+
 #include <cstring>
 #include <iostream>
 #include <list>
