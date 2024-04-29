@@ -12,7 +12,7 @@ class SystemsGradMethodOmp : public ppc::core::Task {
   std::vector<double> x;
   int rows;
 
-public:
+ public:
   explicit SystemsGradMethodOmp(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
