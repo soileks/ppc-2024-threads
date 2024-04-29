@@ -1,8 +1,6 @@
 // Copyright 2024 Polozov Vladislav
 #include "omp/polozov_v_sort_hoar_batcher/include/ops_omp.hpp"
 
-constexpr int sizeDouble = sizeof(double);
-
 bool SortHoarWithMergeBatcher::pre_processing() {
   internal_order_test();
   // Init value for input and output
@@ -82,6 +80,8 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   }
   auto merge = [&](int l, int r) {
     int n = (r - l + 1);
+    n++;
+    n--;
 #pragma omp parallel for
     for (int i = 0; i < n / 2; i++) {
       CompAndSwap(my_data[l + i], my_data[r - i]);
