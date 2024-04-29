@@ -16,7 +16,7 @@ struct SavotinaPoint {
   bool operator==(const SavotinaPoint& p2) const;
 
   double Distance(const SavotinaPoint& p) const;
-  void Replace(SavotinaPoint& p2);
+  void swap(SavotinaPoint& p2);
   int Compare(const SavotinaPoint& pivot, const SavotinaPoint& P) const;
   static SavotinaPoint aRandomPoint(double min, double max);
 };

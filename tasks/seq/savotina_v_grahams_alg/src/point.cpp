@@ -33,7 +33,7 @@ double SavotinaPoint::Distance(const SavotinaPoint& p) const {
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }
 
-void SavotinaPoint::Replace(SavotinaPoint& p2) {
+void SavotinaPoint::swap(SavotinaPoint& p2) {
   SavotinaPoint tmp = (*this);
   (*this) = p2;
   p2 = tmp;
