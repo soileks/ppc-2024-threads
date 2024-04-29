@@ -70,40 +70,40 @@ inline void CompAndSwap(int& x, int& y) {
 std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   if (my_data.size() < 4) {
     Hoar_sort(my_data, 0, my_data.size() - 1);
-    std:: vector<int>ans = my_data;
+    std:: vector<int> ans = my_data;
     sort(ans.begin(), ans.end());
     return ans;
   }
   int n = my_data.size();
   omp_set_num_threads(4);
 #pragma omp parallel for
-  for(int i = 0;i<4;i++){
+  for(int i = 0; i < 4; i++){
     Hoar_sort(my_data, (i)*n / 4, (i + 1) * n / 4 - 1);
   }
   auto merge = [&](int l, int r) {
-      int n = (r - l + 1);
+    int n = (r - l + 1);
 #pragma omp parallel for
-      for (int i = 0; i < n / 2; i++) {
-        CompAndSwap(my_data[l + i], my_data[r - i]);
-      }
-      for (int k = n / 2; k >= 2; k /= 2) {
-        #pragma omp parallel for
-        for (int i = 0; i < n / k; i++) {
-          for (int j = 0; j < k / 2; j++) {
-            CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
-          }
+    for (int i = 0; i < n / 2; i++) {
+      CompAndSwap(my_data[l + i], my_data[r - i]);
+    }
+    for (int k = n / 2; k >= 2; k /= 2) {
+#pragma omp parallel for
+      for (int i = 0; i < n / k; i++) {
+        for (int j = 0; j < k / 2; j++) {
+          CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
         }
       }
+    }
   };
 #pragma omp parallel
   {
       if(omp_get_thread_num() == 0){
-        merge(0,n/2 - 1);
+        merge(0, n / 2 - 1);
       }
       else{
-        merge(n/2, n-1);
+        merge(n / 2, n - 1);
       }
   }
-  merge(0,n-1);
+  merge(0, n - 1);
   return my_data;
 }

@@ -1,10 +1,10 @@
 // Copyright 2024 Polozov Vladislav
 #pragma once
+#include <omp.h>
 
 #include <algorithm>
 #include <random>
 #include <vector>
-#include <omp.h>
 
 #include "core/task/include/task.hpp"
 
