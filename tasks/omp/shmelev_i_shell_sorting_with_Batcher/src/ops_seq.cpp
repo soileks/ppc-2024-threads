@@ -177,11 +177,13 @@ void shmelev_omp::ShmelevTaskOmp::batcherMerge(int l, int r) {
   sortingShell();
   if (r > l) {
     int m = l + (r - l) / 2;
-#pragma omp task
-    batcherMerge(l, m);
-#pragma omp task
-    batcherMerge(m + 1, r);
-#pragma omp taskwait
+#pragma omp parallel sections
+    {
+#pragma omp section
+      batcherMerge(l, m);
+#pragma omp section
+      batcherMerge(m + 1, r);
+    }
     merge(l, m, r);
   }
 }
