@@ -19,7 +19,7 @@ using namespace std::chrono_literals;
 class InfPtr {
  public:
   InfPtr() : _ptr(nullptr), _value(0) {}
-  InfPtr(int value) : _value(value), _ptr(nullptr) {}
+  InfPtr(int value) : _ptr(nullptr), _value(value) {}
   void set(std::shared_ptr<InfPtr> ptr) {
     if (!_ptr) {
       _ptr = ptr;
