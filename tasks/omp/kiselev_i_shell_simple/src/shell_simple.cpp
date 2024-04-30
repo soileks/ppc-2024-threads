@@ -107,9 +107,6 @@ void KiselevTaskOMP::MergeBlocks(int Index1, int BlockSize1, int Index2, int Blo
     for (int i = 0; i < BlockSize1; i++) {
       pTempArray[curr++] = arr[i1++];
     }
-    for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTempArray[i];
-    delete[] pTempArray;
-    return;
   } else {
     while (i1 < Index1 + BlockSize1 && i2 < Index2 + BlockSize2) {
       if (arr[i1] < arr[i2])
