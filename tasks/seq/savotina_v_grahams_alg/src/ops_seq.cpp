@@ -1,38 +1,6 @@
 // Copyright 2024 Savotina Valeria
+
 #include "seq/savotina_v_grahams_alg/include/ops_seq.hpp"
-
-// Quick Sort
-void SavotinaQuickSort(std::vector<SavotinaPoint>& pointArr, int left, int right) {
-  if (left > right) return;  // Leave recursion
-
-  int piv = 0;
-  int arrSize = right - left + 1;
-  int L = left;
-  int R = right;
-
-  // Index of pivot
-  if ((arrSize % 2) == 0)
-    piv = (arrSize / 2 - 1) + left;
-  else
-    piv = std::trunc(arrSize / 2) + left;
-
-  SavotinaPoint pivot = pointArr[piv];
-
-  while (L <= R) {
-    while (!(pointArr[0].Compare(pivot, pointArr[L]) >= 0)) ++L;
-
-    while (!(pointArr[0].Compare(pivot, pointArr[R]) <= 0)) --R;
-
-    if (L <= R) {
-      pointArr[L].swap(pointArr[R]);
-      ++L;
-      --R;
-    }
-  }
-
-  SavotinaQuickSort(pointArr, left, R);
-  SavotinaQuickSort(pointArr, L, right);
-}
 
 // A search minimum point in point's array (min x, then min y)
 SavotinaPoint SavotinaMinPoint(const std::vector<SavotinaPoint>& pointArr) {
@@ -158,8 +126,9 @@ bool SavotinaGrahamsAlgorithmSequential::run() {
   int p0 = SavotinaPointPosition(P0, pointsArr);
 
   // Step 2: sort all points except P0
-  minConvexHull[0].swap(minConvexHull[p0]);
-  SavotinaQuickSort(minConvexHull, 1, minConvexHull.size() - 1);  // Quick Sort
+  minConvexHull[0].Replace(minConvexHull[p0]);
+  std::sort(minConvexHull.begin() + 1, minConvexHull.end(),
+            [&P0](SavotinaPoint& p1, SavotinaPoint& p2) { return p1(P0, p2); });
 
   // Step 3: build a minimum convex hull
   minConvexHull = SavotinaMinConvexHull(minConvexHull);
