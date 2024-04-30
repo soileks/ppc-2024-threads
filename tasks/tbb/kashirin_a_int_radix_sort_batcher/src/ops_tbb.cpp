@@ -29,7 +29,7 @@ void evenToArr(const std::vector<int>& src, std::vector<int>& res) {
 void radixSort(std::vector<int>& src, size_t left, size_t right) {
   std::vector<std::vector<int>> tmp(10, std::vector<int>((static_cast<int>(right - left)), 0));
   std::vector<int> amount(10, 0);
-  std::vector<int> sz(10, 0); 
+  std::vector<int> sz(10, 0);
   int k = 1;
   while (k <= 3) {
     for (int i = (int)left; i <= (int)right; i++) {
