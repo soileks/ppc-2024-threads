@@ -1,8 +1,8 @@
 // Copyright 2024 Shipilov Artem
 #include <gtest/gtest.h>
 
-#include <vector>
 #include <random>
+#include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "omp/shipilov_dijkstra/include/shipilov_a_ops_omp.hpp"

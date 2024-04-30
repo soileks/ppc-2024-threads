@@ -63,6 +63,7 @@ class graph_t {
 
   std::vector<std::vector<edge_t>> _graph;
 };
+
 class MyDijkstra : public ppc::core::Task {
  public:
   explicit MyDijkstra(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -74,6 +75,7 @@ class MyDijkstra : public ppc::core::Task {
   graph_t graph;
   std::vector<path_data_t> out;
 };
+
 }  // namespace Dijkstra
 
 #endif  // DIJKSTRA_HPP
