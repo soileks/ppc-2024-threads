@@ -30,4 +30,4 @@ class SimpsonMethodOMP : public ppc::core::Task {
   double result{};
   func fn;
 };
-} // namespace vinokurovIvanOMP
+}  // namespace vinokurovIvanOMP
