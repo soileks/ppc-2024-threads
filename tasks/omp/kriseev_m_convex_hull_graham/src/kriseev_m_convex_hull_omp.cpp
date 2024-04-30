@@ -4,18 +4,24 @@
 #include <algorithm>
 #include <limits>
 
-double angle(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp::Point &point) {
+namespace KriseevMTaskOmp {
+
+double angle(const KriseevMTaskOmp::Point &origin,
+             const KriseevMTaskOmp::Point &point) {
   double dx = point.first - origin.first;
   double dy = point.second - origin.second;
   if (dx == 0.0 && dy == 0.0) {
-    // Return this incorrect value to ensure the origin is always first in sorted array
+    // Return this incorrect value to ensure the origin is always first in
+    // sorted array
     return -1.0;
   }
-  // Calculating angle using algorithm from https://stackoverflow.com/a/14675998/14116050
+  // Calculating angle using algorithm from
+  // https://stackoverflow.com/a/14675998/14116050
   return (dy >= 0) ? (dx >= 0 ? dy / (dx + dy) : 1 - dx / (-dx + dy))
                    : (dx < 0 ? 2 - dy / (-dx - dy) : 3 + dx / (dx - dy));
 }
-bool compareForSort(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp::Point &a,
+bool compareForSort(const KriseevMTaskOmp::Point &origin,
+                    const KriseevMTaskOmp::Point &a,
                     const KriseevMTaskOmp::Point &b) {
   double angleA = angle(origin, a);
   double angleB = angle(origin, b);
@@ -34,7 +40,8 @@ bool compareForSort(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp:
   return dxA * dxA + dyA * dyA > dxB * dxB + dyB * dyB;
 }
 
-bool checkOrientation(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp::Point &a,
+bool checkOrientation(const KriseevMTaskOmp::Point &origin,
+                      const KriseevMTaskOmp::Point &a,
                       const KriseevMTaskOmp::Point &b) {
   double dxA = a.first - origin.first;
   double dyA = a.second - origin.second;
@@ -71,22 +78,23 @@ bool KriseevMTaskOmp::ConvexHullTask::validation() {
 
 bool KriseevMTaskOmp::ConvexHullTask::run() {
   internal_order_test();
-  auto originIt =
-      std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
+  auto originIt = std::min_element(
+      points.begin(), points.end(),
+      [](auto &a, auto &b) -> bool { return a.second < b.second; });
   auto origin = *originIt;
 
 #pragma omp parallel
-  for (size_t phase = 0; phase < points.size(); phase++) {
+  for (int phase = 0; phase < points.size(); phase++) {
     if ((phase & 1) == 0) {
 #pragma omp for
-      for (size_t i = 1; i < points.size(); i += 2) {
+      for (int i = 1; i < points.size(); i += 2) {
         if (compareForSort(origin, points[i], points[i - 1])) {
           std::iter_swap(points.begin() + i, points.begin() + i - 1);
         }
       }
     } else {
 #pragma omp for
-      for (size_t i = 1; i < points.size() - 1; i += 2) {
+      for (int i = 1; i < points.size() - 1; i += 2) {
         if (compareForSort(origin, points[i + 1], points[i])) {
           std::iter_swap(points.begin() + i, points.begin() + i + 1);
         }
@@ -101,7 +109,8 @@ bool KriseevMTaskOmp::ConvexHullTask::run() {
   hull.push_back(points[2]);
 
   for (uint32_t i = 3; i < points.size(); ++i) {
-    while (hull.size() > 1 && !checkOrientation(hull.back(), *(hull.end() - 2), points[i])) {
+    while (hull.size() > 1 &&
+           !checkOrientation(hull.back(), *(hull.end() - 2), points[i])) {
       hull.pop_back();
     }
     hull.push_back(points[i]);
@@ -122,3 +131,5 @@ bool KriseevMTaskOmp::ConvexHullTask::post_processing() {
   taskData->outputs_count[1] = finalHull.size();
   return true;
 }
+
+}  // namespace KriseevMTaskOmp
