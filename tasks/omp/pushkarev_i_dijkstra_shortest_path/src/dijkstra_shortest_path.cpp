@@ -54,8 +54,8 @@ bool DijkstraTaskOMP::run() {
           size_t u = INF;
           size_t min_dist = INF;
 
-          // Find the node with shortest distance
-          #pragma omp critical
+// Find the node with shortest distance
+#pragma omp critical
           {
             for (size_t j = 0; j < n; ++j) {
               if (!processed[j] && (distances_[j] < (int)min_dist)) {
