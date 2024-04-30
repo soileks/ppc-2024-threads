@@ -57,17 +57,13 @@ bool MarkingInageOmp::run() {
       } else
         arr[i][0] = arr[i - 1][0];
     }
-#pragma omp parallel for
+
     for (int j = 1; j < width; ++j) {
       if (sourse[i][j] == 0) {
         if (arr[i - 1][j] == arr[i][j - 1]) {
           if (arr[i - 1][j] == nullptr) {
-#pragma omp critical
-            {
-              vec.push_back(++curLabel);
-              arr[i][j] = &vec.back();
-            }
-
+            vec.push_back(++curLabel);
+            arr[i][j] = &vec.back();
           } else
             arr[i][j] = arr[i][j - 1];
         } else {
@@ -76,11 +72,8 @@ bool MarkingInageOmp::run() {
           else if (arr[i][j - 1] == nullptr)
             arr[i][j] = arr[i - 1][j];
           else {
-#pragma omp critical
-            {
-              *(arr[i - 1][j]) = *(arr[i][j - 1]);
-              arr[i][j] = arr[i][j - 1];
-            }
+            *(arr[i - 1][j]) = *(arr[i][j - 1]);
+            arr[i][j] = arr[i][j - 1];
           }
         }
       }
