@@ -1,9 +1,9 @@
 // Copyright 2024 Kashirin Alexander
+#include "tbb/kashirin_a_int_radix_sort_batcher/include/ops_tbb.hpp"
 
 #include <oneapi/tbb.h>
-#include <cmath>
 
-#include "tbb/kashirin_a_int_radix_sort_batcher/include/ops_tbb.hpp"
+#include <cmath>
 using namespace std::chrono_literals;
 
 int remainder(int num, int k) { return (num / static_cast<int>(pow(10, k - 1))) % 10; }
@@ -29,8 +29,8 @@ void evenToArr(const std::vector<int>& src, std::vector<int>& res) {
 void radixSort(std::vector<int>& src, size_t left, size_t right) {
   std::vector<std::vector<int>> tmp(10, std::vector<int>((static_cast<int>(right - left)), 0));
   std::vector<int> amount(10, 0);
-  int k = 1;
   std::vector<int> sz(10, 0); 
+  int k = 1;
   while (k <= 3) {
     for (int i = (int)left; i <= (int)right; i++) {
       int rem = remainder(src[i], k);
@@ -68,7 +68,7 @@ void merge2(std::vector<int>& src1, std::vector<int>& src2, std::vector<int>& re
   }
 }
 
-void oddEvenMergeSort(std::vector<int>& src, std::vector<int>& res, size_t left, size_t right) {
+void oddEvenMergeSort(std::vector<int>& src, std::vector<int>& res) {
   std::vector<int> odd(src.size() / 2 + src.size() % 2);
   std::vector<int> even(src.size() - odd.size());
 
@@ -106,7 +106,7 @@ bool TbbIntRadixSortWithBatcherMerge::validation() {
 bool TbbIntRadixSortWithBatcherMerge::run() {
   internal_order_test();
   try {
-    oddEvenMergeSort(input, result, 0, input.size() - 1);
+    oddEvenMergeSort(input, result);
   } catch (...) {
     return false;
   }
