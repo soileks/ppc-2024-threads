@@ -19,7 +19,7 @@ class edge_t {
 
   const node_id_t &get_target() const noexcept { return target; }
 
-  const weight_t get_weight() const noexcept { return weight; }
+  weight_t get_weight() const noexcept { return weight; }
 
   bool operator<(const edge_t &oth) const noexcept {
     if (target == oth.target) {

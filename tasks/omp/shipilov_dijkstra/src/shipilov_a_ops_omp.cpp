@@ -45,7 +45,7 @@ void graph_t::normalize() {
 std::vector<path_data_t> graph_t::calculate_paths_omp(const node_id_t &start_node) {
   normalize();
 
-  const size_t graph_size = _graph.size();
+  const int graph_size = _graph.size();
   std::vector<bool> calculated(graph_size);
   std::vector<path_data_t> result(graph_size, path_data_t{invalid_node_id, std::numeric_limits<weight_t>::max()});
 
@@ -55,14 +55,14 @@ std::vector<path_data_t> graph_t::calculate_paths_omp(const node_id_t &start_nod
 
   node_id_t current_node = start_node;
 
-  for (size_t i = 0; i < graph_size; i++) {
+  for (int i = 0; i < graph_size; i++) {
     const auto &node_edges = _graph[current_node];
-    const size_t sz = node_edges.size();
+    const int sz = node_edges.size();
     auto current_weight = result[current_node].summary_dist;
 
 #pragma omp parallel for
     for (int j = 0; j < sz; j++) {
-      auto &edge = node_edges[j];
+      const auto &edge = node_edges[j];
       auto dst = edge.get_target();
       auto w = edge.get_weight();
       if (result[dst].summary_dist > current_weight + w) {
