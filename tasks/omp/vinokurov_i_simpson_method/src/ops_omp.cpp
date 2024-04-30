@@ -48,7 +48,7 @@ bool vinokurovIvanOMP::SimpsonMethodOMP::run() {
   double part1 = static_cast<double>(b - a) / n;
   double part2 = static_cast<double>(d - c) / n;
 
- #pragma omp parallel for reduction(+ : res)
+#pragma omp parallel for reduction(+ : res)
   for (int i = 0; i < n; i++) {
     double a1 = c + i * part2;
     double a2 = c + (i + 1) * part2;
@@ -57,7 +57,7 @@ bool vinokurovIvanOMP::SimpsonMethodOMP::run() {
       double b2 = a + (j + 1) * part1;
 
       res += (part1 * part2 / 36) *
-                (fn_simpson(fn, b1, b2, a1) + 4 * fn_simpson(fn, b1, b2, (a1 + a2) / 2) + fn_simpson(fn, b1, b2, a2));
+             (fn_simpson(fn, b1, b2, a1) + 4 * fn_simpson(fn, b1, b2, (a1 + a2) / 2) + fn_simpson(fn, b1, b2, a2));
     }
   }
 
