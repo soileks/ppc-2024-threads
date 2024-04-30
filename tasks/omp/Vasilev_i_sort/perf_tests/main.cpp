@@ -1,6 +1,8 @@
 // Copyright 2024 Vasilev Ivan
 #include <gtest/gtest.h>
+
 #include <vector>
+
 #include "core/perf/include/perf.hpp"
 #include "omp/Vasilev_i_sort/include/ops_omp.hpp"
 
