@@ -89,8 +89,9 @@ Pixel Image::_get_gauss_filtered_pixel(std::size_t y, std::size_t x, const Gauss
 Image Image::gauss_filtered(const GaussKernel& gauss_kernel) const {
   Image out(this->_height, this->_width, std::vector<Pixel>(this->_height * this->_width, 0));
 
+  int w = static_cast<int>(this->_width);
 #pragma omp parallel for
-  for (int x = 0; x < this->_width; x += 1) {
+  for (int x = 0; x < w; x += 1) {
     for (std::size_t y = 0; y < this->_height; y += 1) {
       out.set_pixel(y, x, this->_get_gauss_filtered_pixel(y, static_cast<std::size_t>(x), gauss_kernel));
     }
