@@ -20,8 +20,7 @@ class ConvexHullTask : public ppc::core::Task {
   //   [0]: double * pointsX
   //   [1]: double * pointsY
 
-  explicit ConvexHullTask(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit ConvexHullTask(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

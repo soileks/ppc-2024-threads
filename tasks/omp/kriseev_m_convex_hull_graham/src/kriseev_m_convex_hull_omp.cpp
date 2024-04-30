@@ -6,8 +6,7 @@
 
 namespace KriseevMTaskOmp {
 
-double angle(const KriseevMTaskOmp::Point &origin,
-             const KriseevMTaskOmp::Point &point) {
+double angle(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp::Point &point) {
   double dx = point.first - origin.first;
   double dy = point.second - origin.second;
   if (dx == 0.0 && dy == 0.0) {
@@ -20,8 +19,7 @@ double angle(const KriseevMTaskOmp::Point &origin,
   return (dy >= 0) ? (dx >= 0 ? dy / (dx + dy) : 1 - dx / (-dx + dy))
                    : (dx < 0 ? 2 - dy / (-dx - dy) : 3 + dx / (dx - dy));
 }
-bool compareForSort(const KriseevMTaskOmp::Point &origin,
-                    const KriseevMTaskOmp::Point &a,
+bool compareForSort(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp::Point &a,
                     const KriseevMTaskOmp::Point &b) {
   double angleA = angle(origin, a);
   double angleB = angle(origin, b);
@@ -40,8 +38,7 @@ bool compareForSort(const KriseevMTaskOmp::Point &origin,
   return dxA * dxA + dyA * dyA > dxB * dxB + dyB * dyB;
 }
 
-bool checkOrientation(const KriseevMTaskOmp::Point &origin,
-                      const KriseevMTaskOmp::Point &a,
+bool checkOrientation(const KriseevMTaskOmp::Point &origin, const KriseevMTaskOmp::Point &a,
                       const KriseevMTaskOmp::Point &b) {
   double dxA = a.first - origin.first;
   double dyA = a.second - origin.second;
@@ -78,9 +75,8 @@ bool KriseevMTaskOmp::ConvexHullTask::validation() {
 
 bool KriseevMTaskOmp::ConvexHullTask::run() {
   internal_order_test();
-  auto originIt = std::min_element(
-      points.begin(), points.end(),
-      [](auto &a, auto &b) -> bool { return a.second < b.second; });
+  auto originIt =
+      std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
   auto origin = *originIt;
 
 #pragma omp parallel
@@ -109,8 +105,7 @@ bool KriseevMTaskOmp::ConvexHullTask::run() {
   hull.push_back(points[2]);
 
   for (uint32_t i = 3; i < points.size(); ++i) {
-    while (hull.size() > 1 &&
-           !checkOrientation(hull.back(), *(hull.end() - 2), points[i])) {
+    while (hull.size() > 1 && !checkOrientation(hull.back(), *(hull.end() - 2), points[i])) {
       hull.pop_back();
     }
     hull.push_back(points[i]);

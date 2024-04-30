@@ -16,8 +16,7 @@ TEST(kriseev_m_convex_hull_graham_omp, ThreePoints) {
   std::vector<double> outX(pX.size());
   std::vector<double> outY(pY.size());
 
-  std::shared_ptr<ppc::core::TaskData> data =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
   data->inputs_count.emplace_back(pX.size());
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
@@ -59,8 +58,7 @@ TEST(kriseev_m_convex_hull_graham_omp, Square) {
   std::vector<double> outX(pX.size());
   std::vector<double> outY(pY.size());
 
-  std::shared_ptr<ppc::core::TaskData> data =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
   data->inputs_count.emplace_back(pX.size());
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
@@ -111,8 +109,7 @@ TEST(kriseev_m_convex_hull_graham_omp, SquareWithPointInTheMiddle) {
   std::vector<double> outX(pX.size());
   std::vector<double> outY(pY.size());
 
-  std::shared_ptr<ppc::core::TaskData> data =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
   data->inputs_count.emplace_back(pX.size());
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
@@ -163,8 +160,7 @@ TEST(kriseev_m_convex_hull_graham_omp, SquareWithPointOnEdge) {
   std::vector<double> outX(pX.size());
   std::vector<double> outY(pY.size());
 
-  std::shared_ptr<ppc::core::TaskData> data =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
   data->inputs_count.emplace_back(pX.size());
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
@@ -249,8 +245,7 @@ TEST(kriseev_m_convex_hull_graham_omp, PentagonWithPointsInside) {
   std::vector<double> outX(pX.size());
   std::vector<double> outY(pY.size());
 
-  std::shared_ptr<ppc::core::TaskData> data =
-      std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> data = std::make_shared<ppc::core::TaskData>();
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pX.data()));
   data->inputs_count.emplace_back(pX.size());
   data->inputs.emplace_back(reinterpret_cast<uint8_t *>(pY.data()));
@@ -262,8 +257,7 @@ TEST(kriseev_m_convex_hull_graham_omp, PentagonWithPointsInside) {
   data->outputs_count.emplace_back(outY.size());
 
   std::vector<KriseevMTaskOmp::Point> expectedPoints = {
-      {pX[5], pY[5]},   {pX[8], pY[8]},   {pX[1], pY[1]},
-      {pX[13], pY[13]}, {pX[14], pY[14]},
+      {pX[5], pY[5]}, {pX[8], pY[8]}, {pX[1], pY[1]}, {pX[13], pY[13]}, {pX[14], pY[14]},
   };
 
   KriseevMTaskOmp::ConvexHullTask task(data);
