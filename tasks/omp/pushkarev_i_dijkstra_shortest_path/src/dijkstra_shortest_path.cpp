@@ -43,7 +43,7 @@ bool DijkstraTaskOMP::run() {
   distances_[source] = 0;
 
   // std::atomic<bool> end_flag(false);
-
+  //omp_set_num_threads(4);
 #pragma omp parallel
   {
 #pragma omp single nowait
@@ -61,14 +61,17 @@ bool DijkstraTaskOMP::run() {
               min_dist = distances_[j];
             }
           }
-          if (u != INF) {
-            // The Relax adjacent nodes
-            for (size_t v = 0; v < n; ++v) {
-              if (!processed[v] && (graph[u][v] != 0) && distances_[u] + graph[u][v] < distances_[v]) {
-                distances_[v] = distances_[u] + graph[u][v];
-              }
-            }
 
+          #pragma omp critical
+          {
+            if (u != INF) {
+              // The Relax adjacent nodes
+              for (size_t v = 0; v < n; ++v) {
+                if (!processed[v] && (graph[u][v] != 0) && distances_[u] + graph[u][v] < distances_[v]) {
+                  distances_[v] = distances_[u] + graph[u][v];
+                }
+              }
+          }
             processed[u] = true;
           }
         }
