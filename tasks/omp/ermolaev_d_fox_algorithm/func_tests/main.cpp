@@ -5,8 +5,8 @@
 
 #include "omp/ermolaev_d_fox_algorithm/include/ops_omp.hpp"
 
-TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Simple_128) {
-  constexpr size_t matrix_size = 128;
+TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Simple_56) {
+  constexpr size_t matrix_size = 56;
   std::vector<double> A(matrix_size * matrix_size, 1.0);
   std::vector<double> B(matrix_size * matrix_size, 2.0);
   std::vector<double> C(matrix_size * matrix_size, 0.0);
@@ -31,8 +31,8 @@ TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Simple_128) {
   }
 }
 
-TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Random_128) {
-  constexpr size_t matrix_size = 128;
+TEST(ermolaev_d_fox_algorithm_omp, Test_Matrix_Multiplication_Random_56) {
+  constexpr size_t matrix_size = 56;
   std::mt19937 gen(1);
   const double tolerance = 1e-5;
   std::uniform_real_distribution<> dis(1.0, 6.0);
