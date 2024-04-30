@@ -4,6 +4,7 @@
 
 #include <omp.h>
 
+#include <algorithm>
 #include <stack>
 #include <vector>
 
