@@ -1,6 +1,7 @@
 // Copyright 2024 Ionova Ekatetina
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
