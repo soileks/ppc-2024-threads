@@ -1,8 +1,8 @@
 // Copyright 2023 Kruglov Alexey
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <vector>
-#include <omp.h>
 
 #include "core/perf/include/perf.hpp"
 #include "omp/kruglov_a_components_marking_omp/include/ops_omp.hpp"

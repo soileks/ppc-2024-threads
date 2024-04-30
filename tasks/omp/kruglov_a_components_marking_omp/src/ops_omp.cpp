@@ -16,7 +16,7 @@
 
 using namespace std::chrono_literals;
 
-namespace KruglovOmpTask{
+namespace KruglovOmpTask {
 
 class InfPtr {
  public:
@@ -147,8 +147,7 @@ void Horizontal(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, in
   }
 }
 
-void Vertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start,
-                     int end) {
+void Vertical(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     if (static_cast<bool>(get(v, n, i, 0))) {
       continue;
@@ -181,8 +180,7 @@ void Unlabelled(std::vector<InfPtr>& labelled, int& label, int n, int i, int j) 
   }
 }
 
-void Medium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start,
-                   int end) {
+void Medium(std::vector<InfPtr>& labelled, const std::vector<uint8_t>& v, int& label, int n, int start, int end) {
   for (int i = start + 1; i < end; i++) {
     for (int j = 1; j < n; j++) {
       if (static_cast<bool>(get(v, n, i, j))) {
@@ -335,4 +333,4 @@ bool imgMarkingOmp::post_processing() {
   }
   return true;
 }
-}
+}  // namespace KruglovOmpTask

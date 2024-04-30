@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <vector>
+
 #include "omp/kruglov_a_components_marking_omp/include/ops_omp.hpp"
 
 using namespace KruglovOmpTask;

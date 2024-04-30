@@ -6,7 +6,7 @@
 
 #include "core/task/include/task.hpp"
 
-namespace KruglovOmpTask{
+namespace KruglovOmpTask {
 
 std::vector<uint8_t> getRandomVector(int sz);
 bool isMapsEqual(const std::vector<int>& map1, const std::vector<int>& map2);
@@ -44,4 +44,4 @@ class imgMarkingOmp : public ppc::core::Task {
   uint32_t _m = 0;
   uint32_t _n = 0;
 };
-}
+}  // namespace KruglovOmpTask
