@@ -41,37 +41,28 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
   std::vector<double> p = r;
   std::vector<double> r_old = bb;
 
-  double tol_squared = tol * tol;
-  double r_norm_squared = dotProduct(r, r);
-
-  while (r_norm_squared > tol_squared) {
+  while (true) {
     std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
+    double alpha = dotProduct(r, r) / dotProduct(Ap, p);
 
-#pragma omp parallel
-    {
-      std::vector<double> res_private(n, 0.0);
-      double alpha = r_norm_squared / dotProduct(Ap, p);
-
-#pragma omp for
-      for (int i = 0; i < n; ++i) {
-        res_private[i] += alpha * p[i];
-        r[i] = r_old[i] - alpha * Ap[i];
-      }
-
-#pragma omp critical
-      {
-        for (int i = 0; i < n; ++i) {
-          res[i] += res_private[i];
-        }
-      }
-      double beta = dotProduct(r, r) / r_norm_squared;
-
-#pragma omp for
-      for (int i = 0; i < n; ++i) {
-        p[i] = r[i] + beta * p[i];
-      }
+#pragma omp parallel for
+    for (size_t i = 0; i < res.size(); ++i) {
+      res[i] += alpha * p[i];
     }
-    r_norm_squared = dotProduct(r, r);
+
+#pragma omp parallel for
+    for (size_t i = 0; i < r.size(); ++i) {
+      r[i] = r_old[i] - alpha * Ap[i];
+    }
+    if (sqrt(dotProduct(r, r)) < tol) {
+      break;
+    }
+    double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
+
+#pragma omp parallel for
+    for (size_t i = 0; i < p.size(); ++i) {
+      p[i] = r[i] + beta * p[i];
+    }
     r_old = r;
   }
   return res;
@@ -112,7 +103,7 @@ bool SystemsGradMethodOmp::run() {
 
 bool SystemsGradMethodOmp::post_processing() {
   internal_order_test();
-#pragma omp parallel for
+//#pragma omp parallel for
   for (size_t i = 0; i < x.size(); ++i) {
     reinterpret_cast<double *>(taskData->outputs[0])[i] = x[i];
   }
@@ -140,7 +131,7 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
 std::vector<double> genRandomVector(int size, int maxVal) {
   std::vector<double> res(size);
   std::mt19937 gen(4140);
-#pragma omp parallel for
+//#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     res[i] = static_cast<double>(gen() % maxVal + 1);
   }
@@ -150,13 +141,13 @@ std::vector<double> genRandomVector(int size, int maxVal) {
 std::vector<double> genRandomMatrix(int size, int maxVal) {
   std::vector<double> matrix(size * size);
   std::mt19937 gen(4041);
-#pragma omp parallel for
+//#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     for (int j = i; j < size; ++j) {
       matrix[i * size + j] = static_cast<double>(gen() % maxVal + 1);
     }
   }
-#pragma omp parallel for
+//#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < i; ++j) {
       matrix[i * size + j] = matrix[j * size + i];
