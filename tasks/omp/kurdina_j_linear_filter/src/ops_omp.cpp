@@ -40,10 +40,12 @@ bool HorizontalSplitOMP_seq::pre_processing() {
   // Init value for input and output
   n = reinterpret_cast<int *>(taskData->inputs[1])[0];
   m = reinterpret_cast<int *>(taskData->inputs[1])[1];
-  image.resize(n * m);
-  result_im.resize(n * m);
   for (int i = 0; i < n * m; i++) {
     input_.push_back(reinterpret_cast<uint8_t *>(taskData->inputs[0])[i]);
+    image.push_back(0);
+    result_im.push_back(0);
+  }
+  for (int i = 0; i < ker_size * ker_size; i++) {
     gauss_kernel.push_back(reinterpret_cast<uint8_t *>(taskData->inputs[2])[i]);
   }
   for (int i = 0; i < n * m; i++) {
@@ -74,6 +76,10 @@ bool HorizontalSplitOMP_seq::post_processing() {
   for (int i = 0; i < n * m; i++) {
     reinterpret_cast<uint8_t *>(taskData->outputs[0])[i] = result_im[i];
   }
+  image.clear();
+  result_im.clear();
+  input_.clear();
+  gauss_kernel.clear();
   return true;
 }
 
@@ -109,10 +115,12 @@ bool HorizontalSplitOMP_parallel::pre_processing() {
   // Init value for input and output
   n = reinterpret_cast<int *>(taskData->inputs[1])[0];
   m = reinterpret_cast<int *>(taskData->inputs[1])[1];
-  image.resize(n * m);
-  result_im.resize(n * m);
   for (int i = 0; i < n * m; i++) {
     input_.push_back(reinterpret_cast<uint8_t *>(taskData->inputs[0])[i]);
+    image.push_back(0);
+    result_im.push_back(0);
+  }
+  for (int i = 0; i < ker_size * ker_size; i++) {
     gauss_kernel.push_back(reinterpret_cast<uint8_t *>(taskData->inputs[2])[i]);
   }
   for (int i = 0; i < n * m; i++) {
@@ -143,5 +151,9 @@ bool HorizontalSplitOMP_parallel::post_processing() {
   for (int i = 0; i < n * m; i++) {
     reinterpret_cast<uint8_t *>(taskData->outputs[0])[i] = result_im[i];
   }
+  image.clear();
+  result_im.clear();
+  input_.clear();
+  gauss_kernel.clear();
   return true;
 }

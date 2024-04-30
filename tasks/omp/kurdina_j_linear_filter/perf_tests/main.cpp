@@ -8,8 +8,8 @@
 #include "omp/kurdina_j_linear_filter/include/ops_omp.hpp"
 
 TEST(kurdina_j_linear_filter_omp, test_pipeline_run) {
-  int n = 700;
-  int m = 700;
+  int n = 2000;
+  int m = 2000;
   std::vector<uint8_t> gauss_kernel = {1, 1, 1, 1, 1, 1, 1, 1, 1};
 
   // Create data
@@ -50,14 +50,14 @@ TEST(kurdina_j_linear_filter_omp, test_pipeline_run) {
 }
 
 TEST(kurdina_j_linear_filter_omp, test_task_run) {
-  int n = 700;
-  int m = 700;
+  int n = 2000;
+  int m = 2000;
   std::vector<uint8_t> gauss_kernel = {1, 1, 1, 1, 1, 1, 1, 1, 1};
 
   // Create data
   std::vector<uint8_t> in(n * m, 255);
   std::vector<int> size_m = {n, m};
-  std::vector<uint8_t> out_parallel(n * m);
+  std::vector<uint8_t> out_parallel(n * m, 0);
   std::vector<uint8_t> result(n * m, 255);
 
   // Create TaskData

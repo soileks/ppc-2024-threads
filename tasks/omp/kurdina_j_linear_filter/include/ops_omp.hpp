@@ -16,11 +16,11 @@ class HorizontalSplitOMP_seq : public ppc::core::Task {
   uint8_t NewColor(int i, int j);
 
  private:
-  std::vector<uint8_t> input_ = {};
-  std::vector<uint8_t> image = {};
-  std::vector<uint8_t> result_im = {};
-  std::vector<uint8_t> gauss_kernel = {};
-  int n{}, m{};
+  std::vector<uint8_t> input_;
+  std::vector<uint8_t> image;
+  std::vector<uint8_t> result_im;
+  std::vector<uint8_t> gauss_kernel;
+  int n, m;
   int ker_size = 3;
 };
 
@@ -34,10 +34,10 @@ class HorizontalSplitOMP_parallel : public ppc::core::Task {
   uint8_t NewColor(int i, int j);
 
  private:
-  std::vector<uint8_t> input_ = {};
-  std::vector<uint8_t> image = {};
-  std::vector<uint8_t> result_im = {};
-  std::vector<uint8_t> gauss_kernel = {};
-  int n{}, m{};
+  std::vector<uint8_t> input_;
+  std::vector<uint8_t> image;
+  std::vector<uint8_t> result_im;
+  std::vector<uint8_t> gauss_kernel;
+  int n, m;
   int ker_size = 3;
 };
