@@ -71,7 +71,7 @@ std::vector<double> getRandomSquareMatrix(size_t size, double minVal, double max
 
 bool BorovkovCanMultMatrOmp::pre_processing() {
   internal_order_test();
-  // Init value for input and output
+  // Init value for input and output.
 
   mMatrOne.resize(taskData->inputs_count[MATR_ONE]);
   mMatrTwo.resize(taskData->inputs_count[MATR_TWO]);
