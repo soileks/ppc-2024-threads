@@ -1,4 +1,4 @@
-// Copyright 2024 Platonova Maria
+// Copyright 2024 Platonova Mariya
 #include "omp/platonova_m_jarvis_method/include/ops_omp.hpp"
 
 #include <omp.h>

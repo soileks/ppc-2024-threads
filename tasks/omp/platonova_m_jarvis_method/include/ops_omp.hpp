@@ -1,4 +1,4 @@
-// Copyright 2024 Platonova Maria
+// Copyright 2024 Platonova Mariya
 #pragma once
 
 #include <algorithm>
