@@ -9,7 +9,7 @@
 
 using namespace Dijkstra;
 
-TEST(sequential_example_perf_test, test_pipeline_run) {
+TEST(Dijkstra_Shipilov_seq_test, test_pipeline_run) {
   // Create data
   constexpr size_t n = 12000;
 
@@ -48,7 +48,7 @@ TEST(sequential_example_perf_test, test_pipeline_run) {
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
 
-TEST(sequential_example_perf_test, test_task_run) {
+TEST(Dijkstra_Shipilov_seq_test, test_task_run) {
   // Create data
   constexpr size_t n = 12000;
 

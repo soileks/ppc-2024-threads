@@ -60,7 +60,7 @@ std::vector<path_data_t> graph_t::calculate_paths(const node_id_t &start_node) {
     const size_t sz = node_edges.size();
     auto current_weight = result[current_node].summary_dist;
     for (size_t j = 0; j < sz; j++) {
-      auto &edge = node_edges[j];
+      const auto &edge = node_edges[j];
       auto dst = edge.get_target();
       auto w = edge.get_weight();
       if (result[dst].summary_dist > current_weight + w) {
