@@ -1,11 +1,11 @@
 // Copyright 2024 Shipilov Artem
 #include "seq/shipilov_dijkstra/include/shipilov_a_ops_seq.hpp"
 
-#include <thread>
 #include <algorithm>
 #include <numeric>
-#include <vector>
 #include <random>
+#include <thread>
+#include <vector>
 
 using namespace std::chrono_literals;
 

@@ -3,11 +3,10 @@
 #define DIJKSTRA_HPP
 
 #include <cinttypes>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "core/task/include/task.hpp"
-
 
 namespace Dijkstra {
 using node_id_t = uint64_t;
@@ -41,8 +40,12 @@ struct path_data_t {
   node_id_t parent = invalid_node_id;
   weight_t summary_dist{};
 
-  bool operator==(const path_data_t &oth) const noexcept { return parent == oth.parent && summary_dist == oth.summary_dist; }
-  bool operator!=(const path_data_t &oth) const noexcept { return parent == oth.parent && summary_dist == oth.summary_dist; }
+  bool operator==(const path_data_t &oth) const noexcept {
+    return parent == oth.parent && summary_dist == oth.summary_dist;
+  }
+  bool operator!=(const path_data_t &oth) const noexcept {
+    return parent == oth.parent && summary_dist == oth.summary_dist;
+  }
 };
 
 class graph_t {
@@ -71,6 +74,7 @@ class MyDijkstra : public ppc::core::Task {
   graph_t graph;
   std::vector<path_data_t> out;
 };
-} // namespace Dijkstra
+
+}  // namespace Dijkstra
 
 #endif  // DIJKSTRA_HPP
