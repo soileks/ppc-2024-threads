@@ -58,9 +58,9 @@ bool SparseMatrixComplexMultiSequentialOmp::pre_processing() {
 bool SparseMatrixComplexMultiSequentialOmp::run() {
   internal_order_test();
 
-  // values3.clear();
-  // rowPtr3.clear();
-  // colPtr3.clear();
+  values3.clear();
+  rowPtr3.clear();
+  colPtr3.clear();
   for (int i = 0; i < numRows1; i++) {
     for (int j = rowPtr1[i]; j < rowPtr1[i + 1]; j++) {
       int row1 = i;
@@ -76,17 +76,17 @@ bool SparseMatrixComplexMultiSequentialOmp::run() {
     }
   }
 
-  // for (int i = 0; i < numRows1; i++) {
-  //   rowPtr3.push_back(values3.size());
-  //   for (int j = 0; j < numCols2; j++) {
-  //     int ind = i * numCols2 + j;
-  //     if (result[ind].real != 0.0 || result[ind].imag != 0.0) {
-  //       values3.push_back(result[ind]);
-  //       colPtr3.push_back(j);
-  //     }
-  //   }
-  // }
-  // rowPtr3.push_back(values3.size());
+  for (int i = 0; i < numRows1; i++) {
+    rowPtr3.push_back(values3.size());
+    for (int j = 0; j < numCols2; j++) {
+      int ind = i * numCols2 + j;
+      if (result[ind].real != 0.0 || result[ind].imag != 0.0) {
+        values3.push_back(result[ind]);
+        colPtr3.push_back(j);
+      }
+    }
+  }
+  rowPtr3.push_back(values3.size());
 
   return true;
 }
@@ -157,9 +157,10 @@ bool SparseMatrixComplexMultiParallelOmp::pre_processing() {
 bool SparseMatrixComplexMultiParallelOmp::run() {
   internal_order_test();
 
-  // values3.clear();
-  // rowPtr3.clear();
-  // colPtr3.clear();
+  values3.clear();
+  rowPtr3.clear();
+  colPtr3.clear();
+#pragma omp parallel for
   for (int i = 0; i < numRows1; i++) {
     for (int j = rowPtr1[i]; j < rowPtr1[i + 1]; j++) {
       int row1 = i;
@@ -175,17 +176,17 @@ bool SparseMatrixComplexMultiParallelOmp::run() {
     }
   }
 
-  // for (int i = 0; i < numRows1; i++) {
-  //   rowPtr3.push_back(values3.size());
-  //   for (int j = 0; j < numCols2; j++) {
-  //     int ind = i * numCols2 + j;
-  //     if (result[ind].real != 0.0 || result[ind].imag != 0.0) {
-  //       values3.push_back(result[ind]);
-  //       colPtr3.push_back(j);
-  //     }
-  //   }
-  // }
-  // rowPtr3.push_back(values3.size());
+  for (int i = 0; i < numRows1; i++) {
+    rowPtr3.push_back(values3.size());
+    for (int j = 0; j < numCols2; j++) {
+      int ind = i * numCols2 + j;
+      if (result[ind].real != 0.0 || result[ind].imag != 0.0) {
+        values3.push_back(result[ind]);
+        colPtr3.push_back(j);
+      }
+    }
+  }
+  rowPtr3.push_back(values3.size());
 
   return true;
 }
