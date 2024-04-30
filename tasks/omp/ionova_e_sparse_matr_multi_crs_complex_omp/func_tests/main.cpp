@@ -35,11 +35,11 @@ TEST(ionova_e_sparse_matr_multi_crs_complex_omp, sizes_correct) {
   ASSERT_EQ(sparseMatrixComplexMultiSequentialOmp.validation(), true);
 
   // Create data
-  std::vector<Complex> in1(n1 * m1);
+  std::vector<Complex> in3(n1 * m1);
 
-  std::vector<Complex> in2(n2 * m2);
+  std::vector<Complex> in4(n2 * m2);
 
-  std::vector<Complex> out(n1 * m2);
+  std::vector<Complex> out2(n1 * m2);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataParallel = std::make_shared<ppc::core::TaskData>();
@@ -83,8 +83,8 @@ TEST(ionova_e_sparse_matr_multi_crs_complex_omp, sizes_incorrect) {
   taskDataSeq->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixComplexMultiParallelOmp sparseMatrixComplexMultiParallelOmp(taskDataSeq);
-  ASSERT_FALSE(sparseMatrixComplexMultiParallelOmp.validation());
+  SparseMatrixComplexMultiSequentialOmp sparseMatrixComplexMultiSequentialOmp(taskDataSeq);
+  ASSERT_FALSE(sparseMatrixComplexMultiSequentialOmp.validation());
 
   // Create data
   std::vector<Complex> in3(n1 * m1);
@@ -133,11 +133,11 @@ TEST(ionova_e_sparse_matr_multi_crs_complex_omp, zero_matrix) {
   taskDataSeq->outputs_count.emplace_back(m2);
 
   // Create Task
-  sparseMatrixComplexMultiParallelOmp sparseMatrixComplexMultiParallelOmp(taskDataSeq);
-  sparseMatrixComplexMultiParallelOmp.validation();
-  sparseMatrixComplexMultiParallelOmp.pre_processing();
-  sparseMatrixComplexMultiParallelOmp.run();
-  sparseMatrixComplexMultiParallelOmp.post_processing();
+  SparseMatrixComplexMultiSequentialOmp sparseMatrixComplexMultiSequentialOmp(taskDataSeq);
+  sparseMatrixComplexMultiSequentialOmp.validation();
+  sparseMatrixComplexMultiSequentialOmp.pre_processing();
+  sparseMatrixComplexMultiSequentialOmp.run();
+  sparseMatrixComplexMultiSequentialOmp.post_processing();
 
   size_t k = 0;
 
