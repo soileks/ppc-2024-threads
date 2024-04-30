@@ -62,7 +62,7 @@ TEST(ermolaev_d_fox_algorithm_seq, test_pipline_run) {
   }
 }
 TEST(ermolaev_d_fox_algorithm_seq, test_task_run) {
-  constexpr size_t matrix_size = 256;
+  constexpr size_t matrix_size = 512;
   const double tolerance = 1e-5;
   std::mt19937 gen(1);  // Инициализация генератора случайных чисел с начальным значением 1
   std::uniform_real_distribution<> dis(1.0, 6.0);
