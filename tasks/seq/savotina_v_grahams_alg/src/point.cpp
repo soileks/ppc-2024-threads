@@ -48,7 +48,6 @@ bool SavotinaPoint::operator()(SavotinaPoint& p0, SavotinaPoint& p1) const {
   return res;
 }
 
-
 double SavotinaPoint::Distance(const SavotinaPoint& p) const {
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }
