@@ -1,11 +1,6 @@
 name: Build application
 
-on:
-  push:
-  pull_request:
-  schedule:
-    - cron: '0 12 * * *'
-
+on: [push, pull_request]
 jobs:
   ubuntu-gcc-build:
     runs-on: ubuntu-latest
