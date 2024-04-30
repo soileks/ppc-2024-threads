@@ -1,9 +1,10 @@
 // Copyright 2024 Kurdina Julia
-#include <algorithm>
-#include <thread>
+#include "omp/kurdina_j_linear_filter/include/ops_omp.hpp"
+
 #include <omp.h>
 
-#include "omp/kurdina_j_linear_filter/include/ops_omp.hpp"
+#include <algorithm>
+#include <thread>
 
 using namespace std::chrono_literals;
 
