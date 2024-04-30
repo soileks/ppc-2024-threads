@@ -32,7 +32,7 @@ TEST(kurdina_j_linear_filter_omp, Image_1) {
   horizontalsplit_seq.pre_processing();
   horizontalsplit_seq.run();
   horizontalsplit_seq.post_processing();
-  
+
   // Create data
   std::vector<uint8_t> out_parallel(n * m);
 
