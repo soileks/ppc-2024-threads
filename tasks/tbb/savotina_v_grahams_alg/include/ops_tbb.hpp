@@ -4,6 +4,7 @@
 
 #include <tbb/tbb.h>
 
+#include <algorithm>
 #include <stack>
 #include <vector>
 

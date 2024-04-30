@@ -36,27 +36,22 @@ void SavotinaTbb::SavotinaPoint::swap(SavotinaTbb::SavotinaPoint& p2) {
   p2 = tmp;
 }
 
+double SavotinaTbb::SavotinaPoint::angle(SavotinaPoint p) {
+  double dx = p.x - x;
+  double dy = p.y - y;
+  return atan2(dy, dx);
+}
+
 bool SavotinaTbb::SavotinaPoint::operator()(SavotinaTbb::SavotinaPoint& p0, SavotinaTbb::SavotinaPoint& p1) const {
-  bool res = true;
+  double angle1 = p0.angle((*this));
+  double angle2 = p0.angle(p1);
 
-  double x1 = x - p0.x;
-  double y1 = y - p0.y;
-  double x2 = p1.x - x;
-  double y2 = p1.y - y;
-  double val = x1 * y2 - y1 * x2;
-
-  if (val < 0)
-    res = false;
-  else {
-    float dist1 = (*this).Distance(SavotinaTbb::SavotinaPoint(x, y));
-    float dist2 = (*this).Distance(p1);
-
-    if (dist1 != 0.0 || dist2 != 0.0) {
-      if (dist2 < dist1) res = false;
-    }
-  }
-
-  return res;
+  if (angle1 < angle2)
+    return true;
+  else if (angle1 > angle2)
+    return false;
+  else
+    return (*this).Distance(p0) < p1.Distance(p0);
 }
 
 double SavotinaTbb::SavotinaPoint::Distance(const SavotinaTbb::SavotinaPoint& p) const {
