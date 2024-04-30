@@ -179,8 +179,3 @@ TEST(Dijkstra_Shipilov_seq_test, Test_Correct_Work_Five) {
   testTaskSequential.post_processing();
   ASSERT_EQ(testTaskSequential.out, out);
 }
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

@@ -29,11 +29,6 @@ TEST(sequential_example_perf_test, test_pipeline_run) {
   auto testTaskSequential = std::make_shared<Dijkstra::MyDijkstra>(taskDataSeq);
   testTaskSequential->graph = std::move(graph);
 
-
-  for (auto &elem : testTaskSequential->out) {
-    std::cout << elem.parent << " " << elem.summary_dist << "\n";
-  }
-  std::cout << "\n";
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
@@ -90,9 +85,4 @@ TEST(sequential_example_perf_test, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-}
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }
