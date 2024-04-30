@@ -280,10 +280,10 @@ TEST(ionova_e_sparse_matr_multi_crs_complex_omp, inverse_matrix) {
 
   // Create Task
   SparseMatrixComplexMultiSequentialOmp sparseMatrixComplexMultiSequentialOmp(taskDataSeq);
-  SparseMatrixComplexMultiSequentialOmp.validation();
-  SparseMatrixComplexMultiSequentialOmp.pre_processing();
-  SparseMatrixComplexMultiSequentialOmp.run();
-  SparseMatrixComplexMultiSequentialOmp.post_processing();
+  sparseMatrixComplexMultiSequentialOmp.validation();
+  sparseMatrixComplexMultiSequentialOmp.pre_processing();
+  sparseMatrixComplexMultiSequentialOmp.run();
+  sparseMatrixComplexMultiSequentialOmp.post_processing();
 
   size_t k = 0;
 
