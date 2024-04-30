@@ -22,7 +22,7 @@ class KiselevTaskOMP : public ppc::core::Task {
   std::vector<int> input_;
   int ThreadNum, DimSize;
   bool IsSorted();
-  int exp(int arg, int exp);
+  static int exp(int arg, int exp);
   void FindThreadVariables();
   void MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2);
   void SeqSorter(int start, int end);

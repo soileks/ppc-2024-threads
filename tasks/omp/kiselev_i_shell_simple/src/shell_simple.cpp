@@ -96,29 +96,30 @@ bool KiselevTaskOMP::post_processing() {
 // Can do better
 void KiselevTaskOMP::MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2) {
   int *pTempArray = new int[BlockSize1 + BlockSize2];
-  int i1 = Index1, i2 = Index2, curr = 0;
+  int i1 = Index1;
+  int i2 = Index2;
+  int curr = 0;
   if (BlockSize1 == 0) {
     for (int i = 0; i < BlockSize2; i++) {
       pTempArray[curr++] = arr[i2++];
     }
-    for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTempArray[i];
-    return;
-  }
-  if (BlockSize2 == 0) {
+  } else if (BlockSize2 == 0) {
     for (int i = 0; i < BlockSize1; i++) {
       pTempArray[curr++] = arr[i1++];
     }
     for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTempArray[i];
+    delete[] pTempArray;
     return;
+  } else {
+    while (i1 < Index1 + BlockSize1 && i2 < Index2 + BlockSize2) {
+      if (arr[i1] < arr[i2])
+        pTempArray[curr++] = arr[i1++];
+      else
+        pTempArray[curr++] = arr[i2++];
+    }
+    while (i1 < Index1 + BlockSize1) pTempArray[curr++] = arr[i1++];
+    while (i2 < Index2 + BlockSize2) pTempArray[curr++] = arr[i2++];
   }
-  while (i1 < Index1 + BlockSize1 && i2 < Index2 + BlockSize2) {
-    if (arr[i1] < arr[i2])
-      pTempArray[curr++] = arr[i1++];
-    else
-      pTempArray[curr++] = arr[i2++];
-  }
-  while (i1 < Index1 + BlockSize1) pTempArray[curr++] = arr[i1++];
-  while (i2 < Index2 + BlockSize2) pTempArray[curr++] = arr[i2++];
   for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTempArray[i];
   delete[] pTempArray;
 }
