@@ -110,7 +110,7 @@ TEST(borovkov_s_omp_perf_tests, test_800x800) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  // Create Perf analyzer
+  // Create Perf analyzer.
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOmp);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
