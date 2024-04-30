@@ -96,6 +96,9 @@ bool KiselevTaskOMP::post_processing() {
 // Can do better
 void KiselevTaskOMP::MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2) {
   int *pTempArray = new int[BlockSize1 + BlockSize2];
+  for (int i = BlockSize1 + BlockSize2 - 1; i >= 0; i--) {
+    pTempArray[i] = 0;
+  }
   int i1 = Index1;
   int i2 = Index2;
   int curr = 0;
