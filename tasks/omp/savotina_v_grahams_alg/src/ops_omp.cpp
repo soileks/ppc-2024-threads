@@ -156,7 +156,7 @@ int SavotinaPointPositionOMP(const SavotinaPoint& p, const std::vector<SavotinaP
   return pp;
 }
 
-void SavotinaSortOMP(std::vector<SavotinaPoint>& vec, SavotinaPoint P0) {
+void SavotinaSortOMP(std::vector<SavotinaPoint>& vec, const SavotinaPoint& P0) {
   int num_threads = omp_get_max_threads();
   size_t size = vec.size();
 
