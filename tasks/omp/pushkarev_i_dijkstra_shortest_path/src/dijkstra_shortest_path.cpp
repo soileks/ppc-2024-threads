@@ -42,7 +42,7 @@ bool DijkstraTaskOMP::run() {
   std::vector<bool> processed(n, false);
   distances_[source] = 0;
 
-  //std::atomic<bool> end_flag(false);
+  // std::atomic<bool> end_flag(false);
 
 #pragma omp parallel
   {
