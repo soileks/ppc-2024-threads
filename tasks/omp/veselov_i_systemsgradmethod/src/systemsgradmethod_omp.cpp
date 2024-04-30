@@ -103,7 +103,6 @@ bool SystemsGradMethodOmp::run() {
 
 bool SystemsGradMethodOmp::post_processing() {
   internal_order_test();
-//#pragma omp parallel for
   for (size_t i = 0; i < x.size(); ++i) {
     reinterpret_cast<double *>(taskData->outputs[0])[i] = x[i];
   }
@@ -131,7 +130,6 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
 std::vector<double> genRandomVector(int size, int maxVal) {
   std::vector<double> res(size);
   std::mt19937 gen(4140);
-//#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     res[i] = static_cast<double>(gen() % maxVal + 1);
   }
@@ -141,13 +139,11 @@ std::vector<double> genRandomVector(int size, int maxVal) {
 std::vector<double> genRandomMatrix(int size, int maxVal) {
   std::vector<double> matrix(size * size);
   std::mt19937 gen(4041);
-//#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     for (int j = i; j < size; ++j) {
       matrix[i * size + j] = static_cast<double>(gen() % maxVal + 1);
     }
   }
-//#pragma omp parallel for
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < i; ++j) {
       matrix[i * size + j] = matrix[j * size + i];
