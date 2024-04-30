@@ -118,7 +118,7 @@ TEST(tushentsova_k_marking_bin_image_omp_func, test_func2) {
   std::vector<int> size = {height, width};
   std::vector<uint8_t> in = {1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0};
   std::vector<uint8_t> out(height * width, 0);
-  std::vector<uint8_t> components = {0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 2, 0, 0, 0, 1, 1};
+  std::vector<uint8_t> components = {0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 2, 0, 0, 0, 1, 3};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(size.data()));
