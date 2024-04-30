@@ -15,7 +15,7 @@ struct SavotinaPoint {
 
   SavotinaPoint& operator=(const SavotinaPoint& p2);
   bool operator==(const SavotinaPoint& p2) const;
-  bool operator()(SavotinaPoint& p0, SavotinaPoint& p1) const;
+  bool operator()(const SavotinaPoint& p0, const SavotinaPoint& p1) const;
 
   double angle(const SavotinaPoint& p) const;
   double Distance(const SavotinaPoint& p) const;

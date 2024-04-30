@@ -156,6 +156,26 @@ int SavotinaPointPositionOMP(const SavotinaPoint& p, const std::vector<SavotinaP
   return pp;
 }
 
+void SavotinaSortOMP(std::vector<SavotinaPoint>& vec, SavotinaPoint P0) {
+  int num_threads = omp_get_max_threads();
+  size_t size = vec.size();
+
+#pragma omp parallel for num_threads(num_threads)
+  for (int i = 0; i < num_threads; ++i) {
+    size_t start = (size_t)i * size / num_threads;
+    size_t end = (size_t)(i + 1) * size / num_threads;
+    std::sort(vec.begin() + start, vec.begin() + end,
+              [P0](const SavotinaPoint& p1, const SavotinaPoint& p2) { return p1(P0, p2); });
+  }
+
+  for (int i = 1; i < num_threads; ++i) {
+    size_t start = (size_t)i * size / num_threads;
+    size_t end = (size_t)(i + 1) * size / num_threads;
+    std::inplace_merge(vec.begin(), vec.begin() + start, vec.begin() + end,
+                       [P0](const SavotinaPoint& p1, const SavotinaPoint& p2) { return p1(P0, p2); });
+  }
+}
+
 bool SavotinaGrahamsAlgorithmOmpParallel::pre_processing() {
   internal_order_test();
 
@@ -189,8 +209,10 @@ bool SavotinaGrahamsAlgorithmOmpParallel::run() {
 
   // Step 2: sort all points except P0
   minConvexHull[0].swap(minConvexHull[p0]);
-  std::sort(minConvexHull.begin() + 1, minConvexHull.end(),
-            [&P0](SavotinaPoint& p1, SavotinaPoint& p2) { return p1(P0, p2); });
+
+  minConvexHull.erase(minConvexHull.begin());
+  SavotinaSortOMP(minConvexHull, P0);
+  minConvexHull.insert(minConvexHull.begin(), P0);
 
   // Step 3: build a minimum convex hull
   minConvexHull = SavotinaOmp::SavotinaMinConvexHull(minConvexHull);

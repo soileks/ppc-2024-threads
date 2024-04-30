@@ -36,7 +36,8 @@ double SavotinaOmp::SavotinaPoint::angle(const SavotinaOmp::SavotinaPoint& p) co
   return atan2(dy, dx);
 }
 
-bool SavotinaOmp::SavotinaPoint::operator()(SavotinaOmp::SavotinaPoint& p0, SavotinaOmp::SavotinaPoint& p1) const {
+bool SavotinaOmp::SavotinaPoint::operator()(const SavotinaOmp::SavotinaPoint& p0,
+                                            const SavotinaOmp::SavotinaPoint& p1) const {
   bool res = false;
   double angle1 = p0.angle((*this));
   double angle2 = p0.angle(p1);
