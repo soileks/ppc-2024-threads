@@ -5,25 +5,25 @@
 
 #include "omp/Vasilev_i_sort/include/ops_omp.hpp"
 
-// TEST(vasilev_i_sort_omp, Sort_2) {
-//   std::vector<int> arr = {2, 1};
-//   std::vector<int> rez(2);
-//   std::vector<int> expected = {1, 2};
-//   // Create TaskData
-//   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-//   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&arr));
-//   taskDataSeq->inputs_count.emplace_back(1);
-//   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&rez));
-//   taskDataSeq->outputs_count.emplace_back(1);
+TEST(vasilev_i_sort_omp, Sort_2) {
+  std::vector<int> arr = {2, 1};
+  std::vector<int> rez(2);
+  std::vector<int> expected = {1, 2};
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&arr));
+  taskDataSeq->inputs_count.emplace_back(1);
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&rez));
+  taskDataSeq->outputs_count.emplace_back(1);
 
-//   // Create Task
-//   VasilevTaskOmp testTaskSequential(taskDataSeq);
-//   ASSERT_EQ(testTaskSequential.validation(), true);
-//   testTaskSequential.pre_processing();
-//   testTaskSequential.run();
-//   testTaskSequential.post_processing();
-//   ASSERT_EQ(rez, expected);
-// }
+  // Create Task
+  VasilevTaskOmp testTaskSequential(taskDataSeq);
+  ASSERT_EQ(testTaskSequential.validation(), true);
+  testTaskSequential.pre_processing();
+  testTaskSequential.run();
+  testTaskSequential.post_processing();
+  ASSERT_EQ(rez, expected);
+}
 
 TEST(vasilev_i_sort_omp, Sort_4) {
   std::vector<int> arr = {3, 2, 4, 1};
