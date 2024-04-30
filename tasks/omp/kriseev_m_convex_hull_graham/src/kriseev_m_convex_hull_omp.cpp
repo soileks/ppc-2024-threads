@@ -79,18 +79,21 @@ bool KriseevMTaskOmp::ConvexHullTask::run() {
       std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
   auto origin = *originIt;
 
+  int pointsSize = static_cast<int>(points.size());
+
+
 #pragma omp parallel
-  for (int phase = 0; phase < points.size(); phase++) {
+  for (int phase = 0; phase < pointsSize; phase++) {
     if ((phase & 1) == 0) {
 #pragma omp for
-      for (int i = 1; i < points.size(); i += 2) {
+      for (int i = 1; i < pointsSize; i += 2) {
         if (compareForSort(origin, points[i], points[i - 1])) {
           std::iter_swap(points.begin() + i, points.begin() + i - 1);
         }
       }
     } else {
 #pragma omp for
-      for (int i = 1; i < points.size() - 1; i += 2) {
+      for (int i = 1; i < pointsSize - 1; i += 2) {
         if (compareForSort(origin, points[i + 1], points[i])) {
           std::iter_swap(points.begin() + i, points.begin() + i + 1);
         }
