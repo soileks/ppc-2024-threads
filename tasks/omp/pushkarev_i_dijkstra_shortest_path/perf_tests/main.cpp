@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/pushkarev_i_dijkstra_shortest_path/include/dijkstra_shortest_path.hpp"
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, test_pipeline_run) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, test_pipeline_run) {
   const int count = 1000;
 
   std::vector<std::vector<int>> graph(count, std::vector<int>(count, 1));
@@ -52,7 +52,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, test_pipeline_run) {
   ASSERT_EQ(distances[5], 1);
 }
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, test_task_run) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, test_task_run) {
   const int count = 2000;
 
   std::vector<std::vector<int>> graph(count, std::vector<int>(count, 1));

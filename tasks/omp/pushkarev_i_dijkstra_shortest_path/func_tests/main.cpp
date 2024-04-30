@@ -5,7 +5,7 @@
 
 #include "omp/pushkarev_i_dijkstra_shortest_path/include/dijkstra_shortest_path.hpp"
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_validation_fail) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, Test_validation_fail) {
   const int count = 4;
 
   // Create data
@@ -27,7 +27,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_validation_fail) {
   ASSERT_EQ(DijkstraTask.validation(), false);
 }
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_chain_graph) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, Test_chain_graph) {
   const int count = 4;
 
   // Create data
@@ -57,7 +57,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_chain_graph) {
   ASSERT_EQ(distances[3], 3);
 }
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_trivial_case_N4) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, Test_trivial_case_N4) {
   const int count = 4;
 
   // Create data
@@ -87,7 +87,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_trivial_case_N4) {
   ASSERT_EQ(distances[3], 1);
 }
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_random_graph_N6) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, Test_random_graph_N6) {
   const int count = 6;
 
   // Create data
@@ -123,7 +123,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_random_graph_N6) {
   ASSERT_EQ(distances[5], 6);
 }
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_full_graph_N6) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, Test_full_graph_N6) {
   const int count = 6;
 
   // Create data
@@ -159,7 +159,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_full_graph_N6) {
   ASSERT_EQ(distances[5], 4);
 }
 
-TEST(pushkarev_i_dijkstra_shortest_path_seq, Test_full_graph_N9) {
+TEST(pushkarev_i_dijkstra_shortest_path_omp, Test_full_graph_N9) {
   const int count = 9;
 
   // Create data
