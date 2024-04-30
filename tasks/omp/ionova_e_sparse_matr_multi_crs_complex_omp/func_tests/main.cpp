@@ -246,7 +246,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex_omp, test_multy) {
   size_t ch = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-    if (out[i].real == 0.0 && out[i].imag == 0.0) {
+    if (out[i].real == test[i].real && out[i].imag == test[i].imag) {
       ch++;
     }
   }
@@ -319,7 +319,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex_omp, inverse_matrix) {
   size_t ch = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-    if (out[i].real == 0.0 && out[i].imag == 0.0) {
+    if (out[i].real == test[i].real && out[i].imag == test[i].imag) {
       ch++;
     }
   }
