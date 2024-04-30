@@ -1,4 +1,4 @@
-// Copyright 2024 Vasilev Ivan  
+// Copyright 2024 Vasilev Ivan
 #include <gtest/gtest.h>
 #include <vector>
 #include "core/perf/include/perf.hpp"

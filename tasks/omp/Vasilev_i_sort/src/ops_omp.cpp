@@ -35,10 +35,10 @@ bool VasilevTaskOmp::post_processing() {
   return true;
 }
 void VasilevTaskOmp::shell_sort_batcher(std::vector<int>& arr, int n) {
-    for (int gap = n / 2; gap > 0; gap /= 2) {
-      bool sorted = false;
-      while (!sorted) {
-        sorted = true;
+  for (int gap = n / 2; gap > 0; gap /= 2) {
+    bool sorted = false;
+    while (!sorted) {
+      sorted = true;
 
 #pragma omp parallel for
       for (int i = 0; i < n - gap; i += 2) {
@@ -57,7 +57,7 @@ void VasilevTaskOmp::shell_sort_batcher(std::vector<int>& arr, int n) {
       }
     }
   }
-} 
+}
 // Функция для слияния отсортированных массивов
 // void VasilevTaskOmp::merge(int l, int m, int r) {
 //   int n1 = m - l + 1;
