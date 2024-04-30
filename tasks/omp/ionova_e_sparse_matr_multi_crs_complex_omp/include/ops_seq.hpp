@@ -30,9 +30,9 @@ class SparseMatrixComplexMultiSequentialOmp : public ppc::core::Task {
   std::vector<int> colPtr2{};
   int numRows2{};
   int numCols2{};
-  std::vector<Complex> values3{};
-  std::vector<int> rowPtr3{};
-  std::vector<int> colPtr3{};
+  // std::vector<Complex> values3{};
+  // std::vector<int> rowPtr3{};
+  // std::vector<int> colPtr3{};
   Complex* result{};
 };
 
@@ -56,8 +56,8 @@ class SparseMatrixComplexMultiParallelOmp : public ppc::core::Task {
   std::vector<int> colPtr2{};
   int numRows2{};
   int numCols2{};
-  std::vector<Complex> values3{};
-  std::vector<int> rowPtr3{};
-  std::vector<int> colPtr3{};
+  // std::vector<Complex> values3{};
+  // std::vector<int> rowPtr3{};
+  // std::vector<int> colPtr3{};
   Complex* result{};
 };
