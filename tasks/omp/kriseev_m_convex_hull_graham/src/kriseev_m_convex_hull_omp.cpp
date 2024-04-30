@@ -81,7 +81,6 @@ bool KriseevMTaskOmp::ConvexHullTask::run() {
 
   int pointsSize = static_cast<int>(points.size());
 
-
 #pragma omp parallel
   for (int phase = 0; phase < pointsSize; phase++) {
     if ((phase & 1) == 0) {
