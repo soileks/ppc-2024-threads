@@ -13,8 +13,8 @@ bool MarkingInageOmp::pre_processing() {
   sourse.resize(height);
   destination.resize(height);
 
-  for (size_t i = 0; i < height; ++i) {
-    for (size_t j = 0; j < width; ++j)
+  for (int i = 0; i < height; ++i) {
+    for (int j = 0; j < width; ++j)
       sourse[i].push_back(reinterpret_cast<uint8_t *>(taskData->inputs[1])[i * width + j]);
     destination[i].resize(width, 0);
   }
@@ -108,8 +108,8 @@ bool MarkingInageOmp::run() {
 bool MarkingInageOmp::post_processing() {
   internal_order_test();
 
-  for (size_t i = 0; i < height; ++i)
-    for (size_t j = 0; j < width; ++j)
+  for (int i = 0; i < height; ++i)
+    for (int j = 0; j < width; ++j)
       reinterpret_cast<uint8_t *>(taskData->outputs[0])[i * width + j] = destination[i][j];
   return true;
 }
