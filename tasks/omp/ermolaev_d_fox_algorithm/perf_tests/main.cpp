@@ -94,7 +94,7 @@ TEST(ermolaev_d_fox_algorithm_omp, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTask);
-  perfAnalyzer->pipeline_run(perfAttr, perfResults);
+  perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 
   for (size_t i = 0; i < matrix_size * matrix_size; i++) {
