@@ -30,6 +30,25 @@ bool SavotinaOmp::SavotinaPoint::operator==(const SavotinaOmp::SavotinaPoint& p2
   return res;
 }
 
+double SavotinaOmp::SavotinaPoint::angle(const SavotinaOmp::SavotinaPoint& p) const {
+  double dx = p.x - x;
+  double dy = p.y - y;
+  return atan2(dy, dx);
+}
+
+bool SavotinaOmp::SavotinaPoint::operator()(SavotinaOmp::SavotinaPoint& p0, SavotinaOmp::SavotinaPoint& p1) const {
+  bool res = false;
+  double angle1 = p0.angle((*this));
+  double angle2 = p0.angle(p1);
+
+  if (angle1 < angle2)
+    res = true;
+  else if (angle1 == angle2)
+    res = (*this).Distance(p0) < p1.Distance(p0);
+
+  return res;
+}
+
 double SavotinaOmp::SavotinaPoint::Distance(const SavotinaOmp::SavotinaPoint& p) const {
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }
@@ -69,8 +88,8 @@ int SavotinaOmp::SavotinaPoint::Compare(const SavotinaOmp::SavotinaPoint& pivot,
 }
 
 SavotinaOmp::SavotinaPoint SavotinaOmp::SavotinaPoint::aRandomPoint(double min, double max) {
-  size_t seed = 1000;
-  std::default_random_engine gen(seed);
+  std::random_device rd;
+  std::default_random_engine gen{rd()};
   std::uniform_real_distribution<double> random(min, max);
   return SavotinaOmp::SavotinaPoint(random(gen), random(gen));
 }
