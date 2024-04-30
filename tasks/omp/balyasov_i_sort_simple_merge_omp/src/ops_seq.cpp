@@ -36,8 +36,10 @@ bool RadixSortTaskOMP::validation() {
 std::vector<int> radixSort(std::vector<int> vec) {
   std::vector<int> tempVec;
   tempVec = vec;
-  int numDev, maxNum = 0;
-  int minKey, maxKey;
+  int numDev = 0;
+  int maxNum = 0;
+  int minKey;
+  int maxKey;
 
   for (size_t i = 0; i < tempVec.size(); i++) {
     if (maxNum <= tempVec[i]) {
