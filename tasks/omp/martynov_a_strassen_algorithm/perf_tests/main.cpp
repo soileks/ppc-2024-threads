@@ -28,6 +28,7 @@ TEST(martynov_a_strassen_alg_omp_perf, test_pipeline_run) {
 
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataSeq->outputs_count.emplace_back(result.size());
+
   
   auto testTaskOmp = std::make_shared<Strssn_alg>(taskDataSeq);
   // Create Perf attributes
@@ -70,6 +71,7 @@ TEST(martynov_a_strassen_alg_omp_perf, test_task_run) {
 
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataSeq->outputs_count.emplace_back(result.size());
+
   
   auto testTaskOmp = std::make_shared<Strssn_alg>(taskDataSeq);
   // Create Perf attributes
