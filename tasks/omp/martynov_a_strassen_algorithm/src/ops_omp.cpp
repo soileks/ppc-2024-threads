@@ -1,7 +1,9 @@
 
 // Copyright 2024 Martynov Aleksandr
 #include "omp/martynov_a_strassen_algorithm/include/ops_omp.hpp"
+
 #include <omp.h>
+
 #include <algorithm>
 #include <cmath>
 #include <thread>
