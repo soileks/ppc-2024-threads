@@ -23,7 +23,7 @@ bool sobol::Sobel_seq::pre_processing() {
   internal_order_test();
   input_.resize(width * height);
   res.resize(width * height);
-  sobol::RGB* inputPixels = reinterpret_cast<sobol::RGB*>(taskData->inputs[0]);
+  auto inputPixels = reinterpret_cast<sobol::RGB*>(taskData->inputs[0]);
   for (int i = 0; i < width * height; i++) {
     input_[i] = inputPixels[i];
   }

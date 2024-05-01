@@ -6,7 +6,8 @@
 #include "seq/sobol_l_sobel/include/sobel_seq.hpp"
 
 TEST(sobol_l_sobel_seq, test_handle_empty_image) {
-  int width = 0, height = 0;
+  int width = 0;
+  int height = 0;
   std::vector<sobol::RGB> input(width * height);
   std::vector<sobol::RGB> output(width * height);
 
@@ -25,7 +26,8 @@ TEST(sobol_l_sobel_seq, test_handle_empty_image) {
 }
 
 TEST(sobol_l_sobel_seq, test_handle_one_by_one_image) {
-  int width = 1, height = 1;
+  int width = 1;
+  int height = 1;
 
   std::vector<sobol::RGB> input(width * height);
   std::vector<sobol::RGB> output(width * height);
@@ -47,7 +49,8 @@ TEST(sobol_l_sobel_seq, test_handle_one_by_one_image) {
 }
 
 TEST(sobol_l_sobel_seq, test_handle_three_by_three_image) {
-  int width = 3, height = 3;
+  int width = 3;
+  int height = 3;
 
   std::vector<sobol::RGB> input(width * height);
   std::vector<sobol::RGB> output(width * height);
@@ -69,7 +72,8 @@ TEST(sobol_l_sobel_seq, test_handle_three_by_three_image) {
 }
 
 TEST(sobol_l_sobel_seq, test_handle_standard_image) {
-  int width = 100, height = 100;
+  int width = 100;
+  int height = 100;
 
   std::vector<sobol::RGB> input(width * height);
   std::vector<sobol::RGB> output(width * height);
@@ -91,7 +95,8 @@ TEST(sobol_l_sobel_seq, test_handle_standard_image) {
 }
 
 TEST(sobol_l_sobel_seq, test_handle_wide_image) {
-  int width = 100, height = 10;
+  int width = 100;
+  int height = 10;
 
   std::vector<sobol::RGB> input(width * height);
   std::vector<sobol::RGB> output(width * height);
@@ -113,7 +118,8 @@ TEST(sobol_l_sobel_seq, test_handle_wide_image) {
 }
 
 TEST(sobol_l_sobel_seq, test_handle_gradient_image) {
-  int width = 10, height = 10;
+  int width = 10;
+  int height = 10;
 
   std::vector<sobol::RGB> input(width * height);
   std::vector<sobol::RGB> expected_output(width * height);

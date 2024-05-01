@@ -7,7 +7,8 @@
 #include "seq/sobol_l_sobel/include/sobel_seq.hpp"
 
 TEST(sobol_l_sobel_seq, test_pipeline_run) {
-  int width = 1000, height = 1000;
+  int width = 3000;
+  int height = 3000;
 
   // Создание тестовых данных
   std::vector<sobol::RGB> input = sobol::getRandomRGBPicture(width, height);
@@ -44,7 +45,8 @@ TEST(sobol_l_sobel_seq, test_pipeline_run) {
 }
 
 TEST(sobol_l_sobel_seq, test_task_run) {
-  int width = 3000, height = 3000;
+  int width = 3000;
+  int height = 3000;
 
   // Создание тестовых данных
   std::vector<sobol::RGB> input = sobol::getRandomRGBPicture(width, height);
