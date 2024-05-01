@@ -1,6 +1,7 @@
 // Copyright 2023 Nesterov Alexander
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <algorithm>
 #include <vector>
 
