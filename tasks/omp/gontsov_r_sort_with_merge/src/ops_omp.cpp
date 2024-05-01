@@ -84,7 +84,7 @@ bool RadixSortOMPSequential::run() {
       }
       freq.assign(max - min + 1, 0);
       for (const int num : input_) freq[num % (div * 10) / div - min]++;
-      for (int i = 0, sum = 0; i < freq.size(); i++) sum += freq[i], freq[i] = sum;
+      for (int i = 0, sum = 0; i < static_cast<int>(freq.size()); i++) sum += freq[i], freq[i] = sum;
       for (int i = static_cast<int>(input_.size()) - 1; i >= 0; i--)
         temp[--freq[input_[i] % (div * 10) / div - min]] = input_[i];
       input_ = temp;
