@@ -19,7 +19,8 @@ std::vector<Point> Jarvis(const std::vector<Point>& Points) {
     if (p.x < p0.x || (p.x == p0.x && p.y < p0.y)) p0 = p;
   }
   std::vector<Point> convexHull = {p0};
-  Point prevPoint = p0, nextPoint;
+  Point prevPoint = p0;
+  Point nextPoint;
   do {
     nextPoint = Points[0];
     for (const auto& point : Points) {
