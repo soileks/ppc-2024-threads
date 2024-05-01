@@ -6,10 +6,10 @@
 #include "omp/bakhtiarov_a_matrix_mult_css_omp/include/ccs_mat_multy.hpp"
 
 TEST(bakhtiarov_a_matrix_mult_ccs_omp, test_sizes) {
-  size_t n1 = 4;
-  size_t m1 = 4;
+  size_t n1 = 5;
+  size_t m1 = 6;
   size_t n2 = 4;
-  size_t m2 = 4;
+  size_t m2 = 5;
 
   // Create data
   std::vector<double> in1(n1 * m1);
