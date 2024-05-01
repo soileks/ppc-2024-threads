@@ -9,6 +9,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <algorithm>
 
 using namespace std::chrono_literals;
 
@@ -34,7 +35,7 @@ std::vector<int> radixSort(std::vector<int> vector) {
     }
     freq.assign(max - min + 1, 0);
     for (const int num : vector) freq[num % (div * 10) / div - min]++;
-    for (int i = 0, sum = 0; i < freq.size(); i++) sum += freq[i], freq[i] = sum;
+    for (int i = 0, sum = 0; i < static_cast<int>(freq.size()); i++) sum += freq[i], freq[i] = sum;
     for (int i = static_cast<int>(vector.size()) - 1; i >= 0; i--)
       temp[--freq[vector[i] % (div * 10) / div - min]] = vector[i];
     vector = std::move(temp);
@@ -52,7 +53,7 @@ bool RadixSortOMPSequential::pre_processing() {
   internal_order_test();
   try {
     input_ = std::vector(reinterpret_cast<int*>(taskData->inputs[0]),
-    reinterpret_cast<int*>(taskData->inputs[0]) + taskData->inputs_count[0]);
+                         reinterpret_cast<int*>(taskData->inputs[0]) + taskData->inputs_count[0]);
     return true;
   } catch (...) {
     return false;
@@ -108,7 +109,7 @@ bool RadixSortOMPParallel::pre_processing() {
   try {
     int size = static_cast<int>(taskData->inputs_count[0]);
     input_ = std::vector<int>(reinterpret_cast<int*>(taskData->inputs[0]),
-                                  reinterpret_cast<int*>(taskData->inputs[0]) + size);
+                              reinterpret_cast<int*>(taskData->inputs[0]) + size);
     return true;
   } catch (...) {
     return false;
@@ -136,8 +137,7 @@ bool RadixSortOMPParallel::run() {
         int step = resultSize / threadNum;
         int left = step * currentThread;
         int right = (currentThread == threadNum - 1) ? resultSize : step * (currentThread + 1);
-        std::vector<int> input_Local =
-            radixSort(std::vector<int>(input_.begin() + left, input_.begin() + right));
+        std::vector<int> input_Local = radixSort(std::vector<int>(input_.begin() + left, input_.begin() + right));
 #pragma omp critical
         result = Merge(result, input_Local);
       }
@@ -156,5 +156,3 @@ bool RadixSortOMPParallel::post_processing() {
   }
   return true;
 }
-
-

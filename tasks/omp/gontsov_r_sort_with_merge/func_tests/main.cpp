@@ -31,7 +31,7 @@ TEST(Gontsov_R_Radix_Sort, can_create_task_succseccfully) {
   }
 }
 
-//int main(int argc, char **argv) {
-//  ::testing::InitGoogleTest(&argc, argv);
-//  return RUN_ALL_TESTS();
-//}
+// int main(int argc, char **argv) {
+//   ::testing::InitGoogleTest(&argc, argv);
+//   return RUN_ALL_TESTS();
+// }

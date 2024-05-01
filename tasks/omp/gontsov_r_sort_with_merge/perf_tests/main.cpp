@@ -8,7 +8,7 @@
 #include "omp/gontsov_r_sort_with_merge/include/ops_omp.hpp"
 
 TEST(Gontsov_R_Radix_Sort, test_pipeline_run) {
-  const int count = 4194304; // 2^22
+  const int count = 4194304;  // 2^22
 
   // Create data
   std::vector<int> in = getRandomVector2(count);
@@ -93,7 +93,7 @@ TEST(Smirnov_L_Radix_Sort_Test, test_task_run) {
   }
 }
 
-//int main(int argc, char **argv) {
-//  testing::InitGoogleTest(&argc, argv);
-//  return RUN_ALL_TESTS();
-//}
+// int main(int argc, char **argv) {
+//   testing::InitGoogleTest(&argc, argv);
+//   return RUN_ALL_TESTS();
+// }
