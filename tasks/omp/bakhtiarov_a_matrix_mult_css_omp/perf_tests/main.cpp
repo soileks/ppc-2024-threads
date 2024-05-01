@@ -61,7 +61,7 @@ TEST(bakhtiarov_a_matrix_mult_ccs_omp, test_pipeline_run) {
   for (size_t i = 0; i < z; ++i) {
     for (size_t j = 0; j < c; ++j) {
       if (i % 4 == 0 && j % 5 == 0)
-        EXPECT_DOUBLE_EQ(out[i * c + j], q);
+        EXPECT_DOUBLE_EQ(out[i * c + j], x);
       else
         EXPECT_DOUBLE_EQ(out[i * c + j], 0.0);
     }
