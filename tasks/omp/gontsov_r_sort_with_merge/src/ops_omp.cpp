@@ -3,13 +3,13 @@
 
 #include <omp.h>
 
+#include <algorithm>
 #include <iostream>
 #include <numeric>
 #include <random>
 #include <string>
 #include <thread>
 #include <vector>
-#include <algorithm>
 
 using namespace std::chrono_literals;
 
