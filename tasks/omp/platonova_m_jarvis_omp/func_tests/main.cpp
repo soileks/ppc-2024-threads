@@ -117,7 +117,7 @@ TEST(Platonova_m_jarvis, can_operate_two_points) {
 
 TEST(Platonova_m_jarvis, can_operate_three_points) {
   std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}};
-  std::vector<Point> resHull_seq(2);
+  std::vector<Point> resHull_seq(3);
 
   // Create TaskData for sequential version
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
