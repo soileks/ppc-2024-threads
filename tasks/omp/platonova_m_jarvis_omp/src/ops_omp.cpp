@@ -14,14 +14,16 @@ using namespace std::chrono_literals;
 
 std::vector<Point> Jarvis(const std::vector<Point>& Points) {
   if (Points.size() < 3) return Points;
-  Point p0 = *std::min_element(Points.begin(), Points.end(), [](Point a, Point b){ return a.x < b.x || (a.x == b.x && a.y < b.y); });
+  Point p0 = *std::min_element(Points.begin(), Points.end(), 
+                               [](Point a, Point b){ return a.x < b.x || (a.x == b.x && a.y < b.y); });
   std::vector<Point> convexHull = {p0};
   Point prevPoint = p0, nextPoint;
   do {
     nextPoint = Points[0];
     for (const auto& point : Points) {
       if (point == prevPoint) continue;
-      double crossProduct = (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
+      double crossProduct = 
+          (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
       double distPrevPoint = pow(point.x - prevPoint.x, 2) + pow(point.y - prevPoint.y, 2);
       double distNextPoint = pow(nextPoint.x - prevPoint.x, 2) + pow(nextPoint.y - prevPoint.y, 2);
       if (crossProduct > 0 || (crossProduct == 0 && distPrevPoint > distNextPoint)) nextPoint = point;
@@ -40,7 +42,8 @@ std::vector<Point> Jarvis_omp(const std::vector<Point>& Points, int num_threads)
   {
     int threadNum = omp_get_thread_num();
     int localSize = (threadNum == 0) ? remains + delta : Points.size() / num_threads;
-    std::vector<Point> local(Points.begin() + (localSize * threadNum) + (threadNum == 0 ? 0 : remains), Points.begin() + (localSize * (threadNum + 1)) + (threadNum == 0 ? 0 : remains));
+    std::vector<Point> local(Points.begin() + (localSize * threadNum) + (threadNum == 0 ? 0 : remains),
+                             Points.begin() + (localSize * (threadNum + 1)) + (threadNum == 0 ? 0 : remains));
 #pragma omp critical
     result.insert(result.end(), Jarvis(local).begin(), Jarvis(local).end());
   }
@@ -95,7 +98,7 @@ bool TestOMPJarvisParallel::validation() {
 }
 
 bool TestOMPJarvisParallel::run() {
-   internal_order_test();
+  internal_order_test();
   resPoints = Jarvis_omp(points, 4);
   return true;
 }

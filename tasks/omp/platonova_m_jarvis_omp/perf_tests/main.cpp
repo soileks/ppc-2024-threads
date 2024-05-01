@@ -8,7 +8,7 @@
 #include "omp/platonova_m_jarvis_omp/include/ops_omp.hpp"
 
 TEST(Platonova_m_jarvis, test_pipeline_run) {
-   std::vector<Point> points;
+  std::vector<Point> points;
   const int size = 512000;
   points.reserve(size);
   for (int i = 0; i < size; i++) {
@@ -81,4 +81,3 @@ TEST(Platonova_m_jarvis, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
-
