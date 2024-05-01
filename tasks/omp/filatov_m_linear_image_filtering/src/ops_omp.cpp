@@ -5,9 +5,7 @@
 
 filatov_omp::Color::Color() { R = G = B = 0; }
 
-uint8_t filatov_omp::Color::convert(float var) {
-  return static_cast<uint8_t>(std::ceil(var));
-}
+uint8_t filatov_omp::Color::convert(float var) { return static_cast<uint8_t>(std::ceil(var)); }
 
 void filatov_omp::Color::setAll(ColorF cf) {
   R = convert(cf.R);
@@ -110,12 +108,12 @@ void filatov_omp::GaussFilterHorizontal::applyKernel() {
 }
 
 void filatov_omp::GaussFilterHorizontal::calculateSingleColorComponent(uint8_t neighborColor, float kernelValue,
-                                                          float* newColorComponent) {
+                                                                       float* newColorComponent) {
   *newColorComponent += neighborColor * kernelValue;
 }
 
-void filatov_omp::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l, int64_t halfSize,
-                                                      ColorF* color) {
+void filatov_omp::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l, 
+                                                                   int64_t halfSize, ColorF* color) {
   calculateSingleColorComponent(neighborColor->R, kernel[k + halfSize][l + halfSize], &color->R);
   calculateSingleColorComponent(neighborColor->G, kernel[k + halfSize][l + halfSize], &color->G);
   calculateSingleColorComponent(neighborColor->B, kernel[k + halfSize][l + halfSize], &color->B);
