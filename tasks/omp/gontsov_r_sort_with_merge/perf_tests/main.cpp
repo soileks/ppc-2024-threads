@@ -51,7 +51,7 @@ TEST(Gontsov_R_Radix_Sort, test_pipeline_run) {
   }
 }
 
-TEST(Smirnov_L_Radix_Sort_Test, test_task_run) {
+TEST(Gontsov_R_Radix_Sort, test_task_run) {
   const int count = 3000000;
 
   // Create data
