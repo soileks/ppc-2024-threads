@@ -14,8 +14,8 @@ bool imageMarkingOMP::run() {
   std::list<uint32_t> vectr;
   std::vector<std::vector<uint32_t *>> maparr;
   maparr.resize(ht);
-  for (size_t i = 0; i < ht; ++i) maparr[i].resize(wh, nullptr);
-  for (size_t i = 0; i < wh; ++i) {
+  for (int i = 0; i < ht; ++i) maparr[i].resize(wh, nullptr);
+  for (int i = 0; i < wh; ++i) {
     if (src[0][i] == 0) {
       if (i == 0 || maparr[0][i - 1] == nullptr) {
         vectr.push_back(++scur);
@@ -24,7 +24,7 @@ bool imageMarkingOMP::run() {
         maparr[0][i] = maparr[0][i - 1];
     }
   }
-  for (size_t i = 1; i < ht; ++i) {
+  for (int i = 1; i < ht; ++i) {
     if (src[i][0] == 0) {
       if (maparr[i - 1][0] == nullptr) {
         vectr.push_back(++scur);
@@ -32,7 +32,7 @@ bool imageMarkingOMP::run() {
       } else
         maparr[i][0] = maparr[i - 1][0];
     }
-    for (size_t j = 1; j < wh; ++j) {
+    for (int j = 1; j < wh; ++j) {
       if (src[i][j] == 0) {
         if (maparr[i - 1][j] == maparr[i][j - 1]) {
           if (maparr[i - 1][j] == nullptr) {
@@ -66,8 +66,8 @@ bool imageMarkingOMP::run() {
   }
 
 #pragma omp parallel for
-  for (size_t i = 0; i < ht; ++i)
-    for (size_t j = 0; j < wh; ++j)
+  for (int i = 0; i < ht; ++i)
+    for (int j = 0; j < wh; ++j)
       if (maparr[i][j] != nullptr) dest[i][j] = *(maparr[i][j]);
   return true;
 }
@@ -79,8 +79,8 @@ bool imageMarkingOMP::pre_processing() {
   wh = reinterpret_cast<uint32_t *>(taskData->inputs[0])[1];  // init width
   src.resize(ht);
   dest.resize(ht);
-  for (size_t i = 0; i < ht; ++i) {
-    for (size_t j = 0; j < wh; ++j) {
+  for (int i = 0; i < ht; ++i) {
+    for (int j = 0; j < wh; ++j) {
       src[i].push_back(reinterpret_cast<uint8_t *>(taskData->inputs[1])[i * wh + j]);
       dest[i].resize(wh, 0);
     }
@@ -93,14 +93,15 @@ bool imageMarkingOMP::validation() {
   internal_order_test();
   ht = reinterpret_cast<uint32_t *>(taskData->inputs[0])[0];  // init height
   wh = reinterpret_cast<uint32_t *>(taskData->inputs[0])[1];  // init width
-  return (ht * wh == taskData->inputs_count[1] && taskData->inputs_count[1] == taskData->outputs_count[0]);
+  return ((uint32_t)ht * (uint32_t)wh == taskData->inputs_count[1] &&
+          taskData->inputs_count[1] == taskData->outputs_count[0]);
 }
 
 bool imageMarkingOMP::post_processing() {
   internal_order_test();
-  for (size_t i = 0; i < ht; ++i) {
-    for (size_t j = 0; j < wh; ++j) {
-      reinterpret_cast<uint32_t *>(taskData->outputs[0])[i * wh + j] = dest[i][j];
+  for (int i = 0; i < ht; ++i) {
+    for (int j = 0; j < wh; ++j) {
+      reinterpret_cast<uint8_t *>(taskData->outputs[0])[i * wh + j] = dest[i][j];
     }
   }
   return true;

@@ -19,7 +19,7 @@ class imageMarkingOMP : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  uint32_t ht{}, wh{};
+  int ht{}, wh{};
   std::vector<std::vector<uint32_t>> src = {};
   std::vector<std::vector<uint32_t>> dest = {};
 };

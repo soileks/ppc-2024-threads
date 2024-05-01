@@ -7,9 +7,9 @@
 #include "omp/kokin_marking_component_bin_image/include/ops_omp.hpp"
 
 TEST(kokin_marking_component_bin_image_test, test_run) {
-  uint32_t ht = 1200;
-  uint32_t wh = 1200;
-  std::vector<uint32_t> size = {ht, wh};
+  int ht = 1200;
+  int wh = 1200;
+  std::vector<int> size = {ht, wh};
   std::vector<uint8_t> in(ht * wh, 0);
   std::vector<uint8_t> out(ht * wh, 0);
   std::vector<uint8_t> cmpt(ht * wh, 1);
@@ -42,9 +42,9 @@ TEST(kokin_marking_component_bin_image_test, test_run) {
 }
 
 TEST(kokin_marking_component_bin_image_test, test_task_run) {
-  uint32_t ht = 1200;
-  uint32_t wh = 1200;
-  std::vector<uint32_t> size = {ht, wh};
+  int ht = 1200;
+  int wh = 1200;
+  std::vector<int> size = {ht, wh};
   std::vector<uint8_t> in(ht * wh, 0);
   std::vector<uint8_t> out(ht * wh, 0);
   std::vector<uint8_t> cmpt(ht * wh, 1);
