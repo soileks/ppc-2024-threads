@@ -77,7 +77,7 @@ bool RadixSortOMPSequential::run() {
     std::vector<int> freq;
     for (int d = 0, maxElem = *std::max_element(input_.begin(), input_.end());
          d <= (maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1); d++) {
-      std::vector<int> temp(input_.size())
+      std::vector<int> temp(input_.size());
       int div = static_cast<int>(pow(10, d));
       int min = input_[0] % (div * 10) / div;
       int max = min;
