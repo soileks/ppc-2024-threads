@@ -23,11 +23,15 @@ std::vector<int> getRandomVector2(int sz) {
   return vec;
 }
 
-std::vector<int> radixSort(std::vector<int> vector) {
-  std::vector<int> temp(vector.size()), freq;
+std::vector<int> radixSort2(std::vector<int> vector) {
+  
+  std::vector<int> freq;
   for (int d = 0, maxElem = *max_element(vector.begin(), vector.end());
        d <= (maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1); d++) {
-    int div = static_cast<int>(pow(10, d)), min = vector[0] % (div * 10) / div, max = min;
+    std::vector<int> temp(vector.size());
+    int div = static_cast<int>(pow(10, d));
+    int min = vector[0] % (div * 10) / div;
+    int max = min;
     for (const int num : vector) {
       int curr = num % (div * 10) / div;
       min = min < curr ? min : curr;
@@ -62,10 +66,10 @@ bool RadixSortOMPSequential::pre_processing() {
 
 bool RadixSortOMPSequential::validation() {
   internal_order_test();
-  return !(taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
-           taskData->outputs.size() != 1 || taskData->inputs[0] == nullptr || taskData->outputs[0] == nullptr ||
-           taskData->inputs_count[0] != taskData->outputs_count[0] || taskData->inputs_count[0] < 0 ||
-           taskData->outputs_count[0] < 0);
+  return taskData->inputs_count.size() == 1 && taskData->outputs_count.size() == 1 && taskData->inputs.size() == 1 &&
+         taskData->outputs.size() == 1 && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
+         taskData->inputs_count[0] == taskData->outputs_count[0] && taskData->inputs_count[0] >= 0 &&
+         taskData->outputs_count[0] >= 0;
 }
 
 bool RadixSortOMPSequential::run() {
@@ -118,10 +122,10 @@ bool RadixSortOMPParallel::pre_processing() {
 
 bool RadixSortOMPParallel::validation() {
   internal_order_test();
-  return !(taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
-           taskData->outputs.size() != 1 || taskData->inputs[0] == nullptr || taskData->outputs[0] == nullptr ||
-           taskData->inputs_count[0] != taskData->outputs_count[0] || taskData->inputs_count[0] < 0 ||
-           taskData->outputs_count[0] < 0);
+  return taskData->inputs_count.size() == 1 && taskData->outputs_count.size() == 1 && taskData->inputs.size() == 1 &&
+         taskData->outputs.size() == 1 && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
+         taskData->inputs_count[0] == taskData->outputs_count[0] && taskData->inputs_count[0] >= 0 &&
+         taskData->outputs_count[0] >= 0;
 }
 
 bool RadixSortOMPParallel::run() {
@@ -137,7 +141,7 @@ bool RadixSortOMPParallel::run() {
         int step = resultSize / threadNum;
         int left = step * currentThread;
         int right = (currentThread == threadNum - 1) ? resultSize : step * (currentThread + 1);
-        std::vector<int> input_Local = radixSort(std::vector<int>(input_.begin() + left, input_.begin() + right));
+        std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
 #pragma omp critical
         result = Merge(result, input_Local);
       }
