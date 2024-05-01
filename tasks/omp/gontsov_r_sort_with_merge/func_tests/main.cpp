@@ -36,7 +36,7 @@ TEST(Gontsov_R_Radix_Sort, test2) {
   std::vector<int> exp = {2, 9, 12, 27, 33, 45, 58, 66, 89, 150};
 
   // Create data
-  std::vector<int> out2(expected.size(), 0);
+  std::vector<int> out2(exp.size(), 0);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
@@ -59,10 +59,10 @@ TEST(Gontsov_R_Radix_Sort, test2) {
 
 TEST(Gontsov_R_Radix_Sort, test3) {
   std::vector<int> in = {45, 12};
-  std::vector<int> expected = {12, 45};
+  std::vector<int> exp = {12, 45};
 
   // Create data
-  std::vector<int> out2(expected.size(), 0);
+  std::vector<int> out2(exp.size(), 0);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
@@ -79,16 +79,16 @@ TEST(Gontsov_R_Radix_Sort, test3) {
   ASSERT_TRUE(radixSortOMPParallel.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
-    ASSERT_EQ(out2[i], expected[i]);
+    ASSERT_EQ(out2[i], exp[i]);
   }
 }
 
 TEST(Gontsov_R_Radix_Sort, test4) {
   std::vector<int> in = {45, 12, 89};
-  std::vector<int> expected = {12, 45, 89};
+  std::vector<int> exp = {12, 45, 89};
 
   // Create data
-  std::vector<int> out2(expected.size(), 0);
+  std::vector<int> out2(exp.size(), 0);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
@@ -105,16 +105,16 @@ TEST(Gontsov_R_Radix_Sort, test4) {
   ASSERT_TRUE(radixSortOMPParallel.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
-    ASSERT_EQ(out2[i], expected[i]);
+    ASSERT_EQ(out2[i], exp[i]);
   }
 }
 
 TEST(Gontsov_R_Radix_Sort, test5) {
   std::vector<int> in = {45, 12, 89, 33, 27, -150, -2, 58, 9, 66};
-  std::vector<int> expected = {-150, -2, 9, 12, 27, 33, 45, 58, 66, 89};
+  std::vector<int> exp = {-150, -2, 9, 12, 27, 33, 45, 58, 66, 89};
 
   // Create data
-  std::vector<int> out2(expected.size(), 0);
+  std::vector<int> out2(exp.size(), 0);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
@@ -131,7 +131,7 @@ TEST(Gontsov_R_Radix_Sort, test5) {
   ASSERT_TRUE(radixSortOMPParallel.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
-    ASSERT_EQ(out2[i], expected[i]);
+    ASSERT_EQ(out2[i], exp[i]);
   }
 }
 // int main(int argc, char **argv) {
