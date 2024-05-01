@@ -28,7 +28,7 @@ bool SobelTaskParallel::pre_processing() {
 bool SobelTaskParallel::run() {
   internal_order_test();
   try {
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int j = 0; j < height_; ++j) {
       for (int i = 0; i < width_; ++i) {
         int resultX = 0;
