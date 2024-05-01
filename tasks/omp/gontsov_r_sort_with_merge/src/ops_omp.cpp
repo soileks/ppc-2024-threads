@@ -24,7 +24,6 @@ std::vector<int> getRandomVector2(int sz) {
 }
 
 std::vector<int> radixSort2(std::vector<int> vector) {
-  
   std::vector<int> freq;
   for (int d = 0, maxElem = *max_element(vector.begin(), vector.end());
        d <= (maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1); d++) {
