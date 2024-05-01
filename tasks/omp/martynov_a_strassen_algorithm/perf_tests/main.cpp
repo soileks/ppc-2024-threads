@@ -76,7 +76,6 @@ TEST(martynov_a_strassen_alg_omp_perf, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
