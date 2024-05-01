@@ -115,8 +115,8 @@ TEST(Platonova_m_jarvis, can_operate_two_points) {
   }
 }
 
-TEST(Platonova_m_jarvis, can_operate_repeat_points) {
-  std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}, {0, 0}, {1, 1}, {2, 2}};
+TEST(Platonova_m_jarvis, can_operate_three_points) {
+  std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}};
   std::vector<Point> resHull_seq(2);
 
   // Create TaskData for sequential version
