@@ -20,20 +20,26 @@ std::vector<Point> Jarvis(const std::vector<Point>& Points) {
   }
   std::vector<Point> convexHull = {p0};
   Point prevPoint = p0;
-  Point nextPoint;
-  do {
-    nextPoint = Points[0];
+  while (true) {
+    Point nextPoint = Points[0];
     for (const auto& point : Points) {
       if (point == prevPoint) continue;
       double crossProduct =
           (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
-      double distPrevPoint = pow(point.x - prevPoint.x, 2) + pow(point.y - prevPoint.y, 2);
-      double distNextPoint = pow(nextPoint.x - prevPoint.x, 2) + pow(nextPoint.y - prevPoint.y, 2);
-      if (crossProduct > 0 || (crossProduct == 0 && distPrevPoint > distNextPoint)) nextPoint = point;
+      if (crossProduct > 0 ||
+          (crossProduct == 0 &&
+           ((point.x - prevPoint.x) * (point.x - prevPoint.x) + +(point.y - prevPoint.y) * (point.y - prevPoint.y)) >
+               +((nextPoint.x - prevPoint.x) * (nextPoint.x - prevPoint.x) +
+                 +(nextPoint.y - prevPoint.y) * (nextPoint.y - prevPoint.y)))) {
+        nextPoint = point;
+      }
     }
+
+    if (nextPoint == p0) break;
     convexHull.push_back(nextPoint);
     prevPoint = nextPoint;
-  } while (nextPoint != p0);
+  }
+
   return convexHull;
 }
 
