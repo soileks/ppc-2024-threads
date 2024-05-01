@@ -18,7 +18,7 @@ struct Color {
   uint8_t R, G, B;
   Color();
   void setAll(ColorF cf);
-  uint8_t convert(float var);
+  static uint8_t convert(float var);
 };
 
 struct ColorF {
