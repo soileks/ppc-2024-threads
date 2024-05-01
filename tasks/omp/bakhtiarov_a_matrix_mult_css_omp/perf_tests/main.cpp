@@ -3,7 +3,7 @@
 #include <omp.h>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/bakhtiarov_a_matrix_mult_ccs_omp/include/ccs_mat_multy.hpp"
+#include "omp/bakhtiarov_a_matrix_mult_css_omp/include/ccs_mat_multy.hpp"
 
 using namespace std;
 
