@@ -2,6 +2,7 @@
 // Copyright 2024 Martynov Aleksandr
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
