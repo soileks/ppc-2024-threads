@@ -14,15 +14,17 @@ using namespace std::chrono_literals;
 
 std::vector<Point> Jarvis(const std::vector<Point>& Points) {
   if (Points.size() < 3) return Points;
-  Point p0 = *std::min_element(Points.begin(), Points.end(), 
-                               [](Point a, Point b){ return a.x < b.x || (a.x == b.x && a.y < b.y); });
+  Point p0 = Points[0];
+  for (const auto& p : Points) {
+    if (p.x < p0.x || (p.x == p0.x && p.y < p0.y)) p0 = p;
+  }
   std::vector<Point> convexHull = {p0};
   Point prevPoint = p0, nextPoint;
   do {
     nextPoint = Points[0];
     for (const auto& point : Points) {
       if (point == prevPoint) continue;
-      double crossProduct = 
+      double crossProduct =
           (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
       double distPrevPoint = pow(point.x - prevPoint.x, 2) + pow(point.y - prevPoint.y, 2);
       double distNextPoint = pow(nextPoint.x - prevPoint.x, 2) + pow(nextPoint.y - prevPoint.y, 2);
@@ -37,15 +39,26 @@ std::vector<Point> Jarvis(const std::vector<Point>& Points) {
 std::vector<Point> Jarvis_omp(const std::vector<Point>& Points, int num_threads) {
   std::vector<Point> result;
   omp_set_num_threads(num_threads);
-  int delta = Points.size() / num_threads, remains = Points.size() % num_threads;
+
 #pragma omp parallel
   {
     int threadNum = omp_get_thread_num();
-    int localSize = (threadNum == 0) ? remains + delta : Points.size() / num_threads;
-    std::vector<Point> local(Points.begin() + (localSize * threadNum) + (threadNum == 0 ? 0 : remains),
-                             Points.begin() + (localSize * (threadNum + 1)) + (threadNum == 0 ? 0 : remains));
+    int localSize;
+    int delta = Points.size() / num_threads;
+    int remains = Points.size() % num_threads;
+    std::vector<Point> localVector;
+
+    if (threadNum == 0) {
+      localSize = remains + delta;
+      localVector.assign(Points.begin(), Points.begin() + localSize);
+    } else {
+      localSize = Points.size() / num_threads;
+      localVector.assign(Points.begin() + (localSize * threadNum) + remains,
+                         Points.begin() + (localSize * (threadNum + 1)) + remains);
+    }
+    std::vector<Point> localRes = Jarvis(localVector);
 #pragma omp critical
-    result.insert(result.end(), Jarvis(local).begin(), Jarvis(local).end());
+    { result.insert(result.end(), localRes.begin(), localRes.end()); }
   }
   return Jarvis(result);
 }

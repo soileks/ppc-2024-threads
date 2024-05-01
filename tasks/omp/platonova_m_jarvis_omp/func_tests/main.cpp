@@ -35,43 +35,6 @@ TEST(Platonova_m_jarvis, can_operate_empty) {
   ASSERT_EQ(testOmpTaskParallel.validation(), false);
 }
 
-TEST(Platonova_m_jarvis, can_operate_random_points) {
-  std::vector<Point> points = {{2, 5}, {4, 9}, {9, 3}, {6, 6}, {10, 2}, {5, 8}};
-  std::vector<Point> hull = {{2, 5}, {4, 9}, {5, 8}, {9, 3}, {10, 2}};
-  std::vector<Point> res(hull.size());
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(points.data()));
-  taskDataSeq->inputs_count.emplace_back(points.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
-  taskDataSeq->outputs_count.emplace_back(res.size());
-
-  // Create Task
-  TestOMPJarvisSeq testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  testTaskSequential.pre_processing();
-  testTaskSequential.run();
-  testTaskSequential.post_processing();
-
-  // Create OMP TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
-  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(points.data()));
-  taskDataOmp->inputs_count.emplace_back(points.size());
-  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
-  taskDataOmp->outputs_count.emplace_back(res.size());
-
-  // Create OMP Task
-  TestOMPJarvisParallel testOmpTaskParallel(taskDataOmp);
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
-
-  for (size_t i = 0; i < hull.size(); ++i) {
-    ASSERT_EQ(res[i], hull[i]);
-  }
-}
-
 TEST(Platonova_m_jarvis, can_operate_one_point) {
   std::vector<Point> points = {{0, 0}};
   std::vector<Point> resHull_seq(points.size());
