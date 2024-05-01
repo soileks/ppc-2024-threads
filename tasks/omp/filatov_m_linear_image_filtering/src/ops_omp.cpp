@@ -112,7 +112,7 @@ void filatov_omp::GaussFilterHorizontal::calculateSingleColorComponent(uint8_t n
   *newColorComponent += neighborColor * kernelValue;
 }
 
-void filatov_omp::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l, 
+void filatov_omp::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l,
                                                                    int64_t halfSize, ColorF* color) {
   calculateSingleColorComponent(neighborColor->R, kernel[k + halfSize][l + halfSize], &color->R);
   calculateSingleColorComponent(neighborColor->G, kernel[k + halfSize][l + halfSize], &color->G);
