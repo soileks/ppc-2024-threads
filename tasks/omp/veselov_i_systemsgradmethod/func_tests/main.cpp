@@ -8,8 +8,6 @@
 
 #include "omp/veselov_i_systemsgradmethod/include/systemsgradmethod_omp.hpp"
 
-using namespace veselov_i_omp;
-
 TEST(veslov_i_systems_grad_method_omp, Test_some_matrix) {
   int rows = 2;
   std::vector<double> matrix = {2.0, 1.0, 1.0, 2.0};
