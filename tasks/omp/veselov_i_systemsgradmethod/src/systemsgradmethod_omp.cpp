@@ -16,8 +16,9 @@ using namespace std::chrono_literals;
 namespace veselov_i_omp {
 double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double result = 0.0;
+  int aa_size = aa.size();
 #pragma omp parallel for reduction(+ : result)
-  for (size_t i = 0; i < aa.size(); ++i) {
+  for (int i = 0; i < aa_size; ++i) {
     result += aa[i] * bb[i];
   }
   return result;
@@ -46,12 +47,12 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
     double alpha = dotProduct(r, r) / dotProduct(Ap, p);
 
 #pragma omp parallel for
-    for (size_t i = 0; i < res.size(); ++i) {
+    for (int i = 0; i < n; ++i) {
       res[i] += alpha * p[i];
     }
 
 #pragma omp parallel for
-    for (size_t i = 0; i < r.size(); ++i) {
+    for (int i = 0; i < n; ++i) {
       r[i] = r_old[i] - alpha * Ap[i];
     }
     if (sqrt(dotProduct(r, r)) < tol) {
@@ -60,7 +61,7 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
     double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
 
 #pragma omp parallel for
-    for (size_t i = 0; i < p.size(); ++i) {
+    for (int i = 0; i < n; ++i) {
       p[i] = r[i] + beta * p[i];
     }
     r_old = r;
