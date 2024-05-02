@@ -13,6 +13,7 @@
 
 using namespace std::chrono_literals;
 
+namespace veselov_i_omp {
 double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double result = 0.0;
 #pragma omp parallel for reduction(+ : result)
@@ -150,3 +151,4 @@ std::vector<double> genRandomMatrix(int size, int maxVal) {
   }
   return matrix;
 }
+}  // namespace veselov_i_omp

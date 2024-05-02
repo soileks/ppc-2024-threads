@@ -5,6 +5,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace veselov_i_omp {
 class SystemsGradMethodOmp : public ppc::core::Task {
   std::vector<double> A;
   std::vector<double> b;
@@ -23,3 +24,4 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
                    double tol = 1e-6);
 std::vector<double> genRandomVector(int size, int maxVal);
 std::vector<double> genRandomMatrix(int size, int maxVal);
+}  // namespace veselov_i_omp

@@ -6,6 +6,8 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/veselov_i_systemsgradmethod/include/systemsgradmethod_omp.hpp"
 
+using namespace veselov_i_omp;
+
 TEST(veselov_i_systems_grad_method_omp, test_pipeline) {
   int rows = 200;
 
