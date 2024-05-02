@@ -98,7 +98,7 @@ void filatov_omp::GaussFilterHorizontal::makeKernel(float sigma) {
 }
 
 void filatov_omp::GaussFilterHorizontal::applyKernel() {
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int32_t index = 0; index < image.size(); index++) {
     int32_t i = index / width;
     int32_t j = index % width;
