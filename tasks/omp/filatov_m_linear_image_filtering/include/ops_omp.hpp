@@ -1,6 +1,8 @@
 // Copyright 2024 Filatov Maxim
 #pragma once
 
+#include <omp.h>
+
 #include <cmath>
 #include <cstring>
 #include <memory>
