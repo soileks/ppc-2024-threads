@@ -99,7 +99,7 @@ void filatov_omp::GaussFilterHorizontal::makeKernel(float sigma) {
 
 void filatov_omp::GaussFilterHorizontal::applyKernel() {
 #pragma omp parallel for
-  for (int32_t index = 0; index < image.size(); index++) {
+  for (int32_t index = 0; index < static_cast<int32_t>(image.size()); index++) {
     int32_t i = index / width;
     int32_t j = index % width;
     image[index] = calculateNewPixelColor(i, j);
