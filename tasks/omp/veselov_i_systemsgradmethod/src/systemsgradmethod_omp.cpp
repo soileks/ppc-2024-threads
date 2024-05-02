@@ -16,9 +16,9 @@ using namespace std::chrono_literals;
 namespace veselov_i_omp {
 double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double result = 0.0;
-  int aa_size = aa.size();
+  int aaSize = aa.size();
 #pragma omp parallel for reduction(+ : result)
-  for (int i = 0; i < aa_size; ++i) {
+  for (int i = 0; i < aaSize; ++i) {
     result += aa[i] * bb[i];
   }
   return result;
