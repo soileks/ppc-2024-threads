@@ -1,10 +1,11 @@
-//Copyright 2024 Vyunov Danila
+// Copyright 2024 Vyunov Danila
 #include "omp/vyunov_d_hoar_merge_sort_omp/include/hoar_merge.h"
-#include <vector>
-#include <iostream>
+
 #include <algorithm>
-#include <thread>
+#include <iostream>
 #include <random>
+#include <thread>
+#include <vector>
 
 using namespace std::chrono_literals;
 
@@ -66,8 +67,8 @@ std::vector<int> Getvec(int n) {
   return vec;
 }
 
-void HoarSort(std::vector<int>* arr, int first, int last) {
-  std::vector<int>& s = *arr;
+void HoarSort(std::vector<int> *arr, int first, int last) {
+  std::vector<int> &s = *arr;
   if (s.size() == 0) throw "Empty vector";
   int left = first;
   int right = last;
@@ -141,8 +142,7 @@ bool HoareSortOMP::post_processing() {
   return true;
 }
 
-void HoareSortOMP::HoareSortParallel(std::vector<int> &arr, size_t l,
-                                                                             size_t r) {
+void HoareSortOMP::HoareSortParallel(std::vector<int> &arr, size_t l, size_t r) {
   if (arr.size() <= 1) return;
   int n = r - l + 1;
 

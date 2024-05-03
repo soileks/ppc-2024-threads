@@ -1,15 +1,15 @@
 // Copyright 2024 Vyunov Danila
+#include <gtest/gtest.h>
 #include <omp.h>
 
-#include <gtest/gtest.h>
 #include <algorithm>
 #include <vector>
-#include "core/perf/include/perf.hpp"
 #include "./omp/vyunov_d_hoar_merge_sort_omp/include/hoar_merge.h"
+#include "core/perf/include/perf.hpp"
 
 TEST(vyunov_d_hoare_sort_omp, test_pipeline_run) {
   std::vector<int> inputArray = Getvec(2000);
-  //Seq
+  // Seq
   std::vector<int> outputArraySeq(inputArray.size());
 
   std::shared_ptr<ppc::core::TaskData> hoareSortSeq = std::make_shared<ppc::core::TaskData>();
@@ -24,7 +24,7 @@ TEST(vyunov_d_hoare_sort_omp, test_pipeline_run) {
   hoareSortSequential.run();
   hoareSortSequential.post_processing();
 
-  //OMP
+  // OMP
   std::vector<int> outputArrayOMP(inputArray.size());
 
   std::shared_ptr<ppc::core::TaskData> hoareSortOMP = std::make_shared<ppc::core::TaskData>();
@@ -45,12 +45,11 @@ TEST(vyunov_d_hoare_sort_omp, test_pipeline_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(outputArraySeq, outputArrayOMP);
-
 }
 
 TEST(vyunov_d_hoare_sort_omp, test_task_run) {
   std::vector<int> inputArray = Getvec(2000);
-  //Seq
+  // Seq
   std::vector<int> outputArraySeq(inputArray.size());
 
   std::shared_ptr<ppc::core::TaskData> hoareSortSeq = std::make_shared<ppc::core::TaskData>();
@@ -65,7 +64,7 @@ TEST(vyunov_d_hoare_sort_omp, test_task_run) {
   hoareSortSequential.run();
   hoareSortSequential.post_processing();
 
-  //OMP
+  // OMP
   std::vector<int> outputArrayOMP(inputArray.size());
 
   std::shared_ptr<ppc::core::TaskData> hoareSortOMP = std::make_shared<ppc::core::TaskData>();
@@ -86,5 +85,4 @@ TEST(vyunov_d_hoare_sort_omp, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(outputArraySeq, outputArrayOMP);
-
 }

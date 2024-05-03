@@ -1,6 +1,7 @@
 // Copyright 2024 Vyunov Danila
 #include <algorithm>
 #include <vector>
+
 #include "core/task/include/task.hpp"
 
 class HoareSortSimpleSeq : public ppc::core::Task {
@@ -25,7 +26,7 @@ class HoareSortOMP : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-  static void HoareSortParallel(std::vector<int> &arr, size_t l, size_t r);
+  static void HoareSortParallel(std::vector<int>& arr, size_t l, size_t r);
 
  private:
   std::vector<int> array{};
