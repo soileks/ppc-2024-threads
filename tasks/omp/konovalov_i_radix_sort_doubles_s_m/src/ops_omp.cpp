@@ -1,8 +1,7 @@
 // Copyright 2024 Konovalov Igor
 #include "omp/konovalov_i_radix_sort_doubles_s_m/include/ops_omp.hpp"
-#include<omp.h>
+#include <omp.h>
 #include <thread>
-
 
 using namespace std::chrono_literals;
 
@@ -94,7 +93,6 @@ bool RadixSortOMPTaskParallel::run() {
   internal_order_test();
 
   try {
-    
     double* chunks = reinterpret_cast<double*>(std::malloc(input_size * max_val * sizeof(double)));
     size_t chunk_sizes[max_val];
     for (size_t i = 0; i < max_val; i++) {

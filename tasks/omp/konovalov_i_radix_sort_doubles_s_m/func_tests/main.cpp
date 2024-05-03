@@ -160,7 +160,7 @@ TEST(konovalov_i_double_radix_sort_seq, large_amount_random_test) {
   SUCCEED();
 }
 
-//omp tests
+// omp tests
 TEST(konovalov_i_double_radix_sort_omp, one_value_test_parallel) {
   // Create data
   std::vector<double> in = {0.0};

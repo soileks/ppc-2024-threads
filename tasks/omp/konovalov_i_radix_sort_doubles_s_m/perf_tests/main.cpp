@@ -7,8 +7,6 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/konovalov_i_radix_sort_doubles_s_m/include/ops_omp.hpp"
 
-
-
 TEST(konovalov_i_double_radix_sort_seq, test_pipeline_run) {
   const size_t size = 1e+6;
   std::mt19937 gen(1.0);
