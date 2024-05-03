@@ -16,7 +16,7 @@ class HoareSortSimpleSeq : public ppc::core::Task {
   std::vector<int> array{};
 };
 
-void HoarSort(std::vector<int>* arr, int l, int r);
+void HoarSort(std::vector<int>* arr, int first, int last);
 std::vector<int> Getvec(int n);
 
 class HoareSortOMP : public ppc::core::Task {
@@ -26,7 +26,7 @@ class HoareSortOMP : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-  static void HoareSortParallel(std::vector<int>& arr, size_t l, size_t r);
+  static void HoareSortParallel(std::vector<int>& arr, size_t first, size_t last);
 
  private:
   std::vector<int> array{};
