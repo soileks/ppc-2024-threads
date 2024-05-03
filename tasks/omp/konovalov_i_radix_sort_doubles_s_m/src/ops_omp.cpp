@@ -95,7 +95,7 @@ bool RadixSortOMPTaskParallel::run() {
   internal_order_test();
 
   try {
-    double* chunks = reinterpret_cast<double*>(std::malloc(input_size * max_val * sizeof(double)));
+    auto chunks = reinterpret_cast<double*>(std::malloc(input_size * max_val * sizeof(double)));
     size_t chunk_sizes[max_val];
     for (size_t i = 0; i < max_val; i++) {
       chunk_sizes[i] = 0;
