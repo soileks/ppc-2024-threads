@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <vector>
+
 #include "./omp/vyunov_d_hoar_merge_sort_omp/include/hoar_merge.h"
 #include "core/perf/include/perf.hpp"
 

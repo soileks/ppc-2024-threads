@@ -91,8 +91,6 @@ void HoarSort(std::vector<int> *arr, int first, int last) {
   if (first < right) HoarSort(&s, first, right);
 }
 
-
-
 bool HoareSortOMP::pre_processing() {
   try {
     internal_order_test();
