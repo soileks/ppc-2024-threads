@@ -102,8 +102,8 @@ bool RadixSortOMPTaskParallel::run() {
     }
     for (size_t i = 0; i < input_size; i++) {
       char val = *(reinterpret_cast<char*>(input_ + i) + sizeof(double) - 1);
-      chunks[(uint8_t)val * input_size + chunk_sizes[val]] = input_[i];
-      chunk_sizes[val]++;
+      chunks[(uint8_t)val * input_size + chunk_sizes[(uint8_t)val]] = input_[i];
+      chunk_sizes[(uint8_t)val]++;
     }
 #pragma omp parallel
     {
