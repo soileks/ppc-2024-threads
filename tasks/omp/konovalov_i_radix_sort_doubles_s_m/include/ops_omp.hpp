@@ -29,7 +29,7 @@ class RadixSortOMPTaskParallel : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  void radix_sort_seq(double* input_, size_t input_size);
+  static void radix_sort_seq(double* input_, size_t input_size);
   size_t input_size;
   double* input_;
   std::vector<double> ordered[sizeof(double) * 256];
