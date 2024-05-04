@@ -36,7 +36,7 @@ bool RadixSortTBBMethod::validation() {
   if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
       taskData->outputs.size() != 1) {
     return false;
-      }
+  }
   if (taskData->inputs[0] == nullptr || taskData->outputs[0] == nullptr) {
     return false;
   }
@@ -59,8 +59,8 @@ bool RadixSortTBBMethod::run() {
     int step = workVector.size() / num_threads;
     if (step < 1) step = 1;
 
-    tbb::parallel_reduce(
-        tbb::blocked_range<std::vector<int>::iterator>(workVector.begin(), workVector.end(), step), body);
+    tbb::parallel_reduce(tbb::blocked_range<std::vector<int>::iterator>(workVector.begin(), workVector.end(), step),
+                         body);
     workVector = body.workVectorResult;
   } catch (...) {
     return false;
@@ -125,7 +125,8 @@ std::vector<int> RadixSortTBBBody::radixSortSmirnov(std::vector<int> vector) {
   return vector;
 }
 
-std::vector<int> RadixSortTBBBody::mergeListsSmirnov(const std::vector<int>& firstVector, const std::vector<int>& secondVector) {
+std::vector<int> RadixSortTBBBody::mergeListsSmirnov(const std::vector<int>& firstVector,
+                                                     const std::vector<int>& secondVector) {
   std::vector<int> result(firstVector.size() + secondVector.size());
   std::merge(firstVector.begin(), firstVector.end(), secondVector.begin(), secondVector.end(), result.begin());
   return result;

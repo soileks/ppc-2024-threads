@@ -39,7 +39,5 @@ class RadixSortTBBBody {
     workVectorResult = mergeListsSmirnov(tmp, workVectorResult);
   }
 
-  void join(RadixSortTBBBody& rhs) {
-    workVectorResult = mergeListsSmirnov(rhs.workVectorResult, workVectorResult);
-  }
+  void join(RadixSortTBBBody& rhs) { workVectorResult = mergeListsSmirnov(rhs.workVectorResult, workVectorResult); }
 };
