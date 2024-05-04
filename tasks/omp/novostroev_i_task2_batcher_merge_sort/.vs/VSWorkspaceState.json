@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\func_tests",
+    "\\include",
+    "\\perf_tests",
+    "\\src"
+  ],
+  "SelectedNode": "\\src\\ops_omp.cpp",
+  "PreviewInSolutionExplorer": false
+}
