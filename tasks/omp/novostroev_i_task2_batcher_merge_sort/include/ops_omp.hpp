@@ -9,7 +9,7 @@
 #include <string>
 #include <thread>
 #include <utility>
-#include <vector>
+#include <std::vector>
 
 #include "core/task/include/task.hpp"
 
@@ -26,9 +26,9 @@ class BatcherMergeSortOMP : public ppc::core::Task {
 };
 
 inline std::vector<int> RandomVector(int size) {
-  std::vector<int> vector(size);
+  std::vector<int> vec(size);
   for (int idx = 0; idx < size; idx++) {
-    vector[idx] = rand() % 1000;
+    vec[idx] = rand() % 1000;
   }
-  return vector;
+  return std::vec;
 }
