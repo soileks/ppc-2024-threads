@@ -131,15 +131,13 @@ std::vector<double> StrassenMatMul(const std::vector<double>& a, const std::vect
   splitMatrix(b, b11, b12, b21, b22);
 
   std::vector<double> p1, p2, p3, p4, p5, p6, p7;
-  oneapi::tbb::parallel_invoke(
-    [&] { p1 = StrassenMatMul(summation(a11, a22), summation(b11, b22), size); },
-    [&] { p2 = StrassenMatMul(summation(a21, a22), b11, size); },
-    [&] { p3 = StrassenMatMul(a11, subtraction(b12, b22), size); },
-    [&] { p4 = StrassenMatMul(a22, subtraction(b21, b11), size); },
-    [&] { p5 = StrassenMatMul(summation(a11, a12), b22, size); },
-    [&] { p6 = StrassenMatMul(subtraction(a21, a11), summation(b11, b12), size); },
-    [&] { p7 = StrassenMatMul(subtraction(a12, a22), summation(b21, b22), size); }
-  );
+  oneapi::tbb::parallel_invoke([&] { p1 = StrassenMatMul(summation(a11, a22), summation(b11, b22), size); },
+                               [&] { p2 = StrassenMatMul(summation(a21, a22), b11, size); },
+                               [&] { p3 = StrassenMatMul(a11, subtraction(b12, b22), size); },
+                               [&] { p4 = StrassenMatMul(a22, subtraction(b21, b11), size); },
+                               [&] { p5 = StrassenMatMul(summation(a11, a12), b22, size); },
+                               [&] { p6 = StrassenMatMul(subtraction(a21, a11), summation(b11, b12), size); },
+                               [&] { p7 = StrassenMatMul(subtraction(a12, a22), summation(b21, b22), size); });
 
   std::vector<double> c11 = summation(summation(p1, p4), subtraction(p7, p5));
   std::vector<double> c12 = summation(p3, p5);
