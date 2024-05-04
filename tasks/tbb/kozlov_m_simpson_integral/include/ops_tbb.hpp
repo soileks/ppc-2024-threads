@@ -1,17 +1,17 @@
 // Copyright 2024 Kozlov Mikhail
 #pragma once
 
-#include "oneapi/tbb/parallel_reduce.h"
-#include "oneapi/tbb/blocked_range.h"
+#include <omp.h>
 
 #include <cmath>
-#include <omp.h>
 #include <functional>
 #include <memory>
 #include <utility>
 #include <vector>
 
 #include "core/task/include/task.hpp"
+#include "oneapi/tbb/blocked_range.h"
+#include "oneapi/tbb/parallel_reduce.h"
 namespace kozlov_TBB {
 using FUNC = double (*)(double, double);
 
