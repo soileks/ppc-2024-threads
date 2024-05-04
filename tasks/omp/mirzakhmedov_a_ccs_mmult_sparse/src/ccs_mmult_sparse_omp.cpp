@@ -2,6 +2,7 @@
 #include "omp/mirzakhmedov_a_ccs_mmult_sparse/include/ccs_mmult_sparse_omp.hpp"
 
 #include <omp.h>
+
 #include <iostream>
 
 bool Omp_MatMultCCS::pre_processing() {
