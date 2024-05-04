@@ -130,7 +130,14 @@ std::vector<double> StrassenMatMul(const std::vector<double>& a, const std::vect
   splitMatrix(a, a11, a12, a21, a22);
   splitMatrix(b, b11, b12, b21, b22);
 
-  std::vector<double> p1, p2, p3, p4, p5, p6, p7;
+  std::vector<double> p1;
+  std::vector<double> p2;
+  std::vector<double> p3;
+  std::vector<double> p4;
+  std::vector<double> p5;
+  std::vector<double> p6;
+  std::vector<double> p7;
+
   oneapi::tbb::parallel_invoke([&] { p1 = StrassenMatMul(summation(a11, a22), summation(b11, b22), size); },
                                [&] { p2 = StrassenMatMul(summation(a21, a22), b11, size); },
                                [&] { p3 = StrassenMatMul(a11, subtraction(b12, b22), size); },
