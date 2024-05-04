@@ -6,8 +6,8 @@
 
 using namespace std::chrono_literals;
 
-std::vector<int> mergeElements(std::vector<int>& vec1, std::vector<int>& vec2, size_t& idx1, size_t& idx2, size_t increment,
-                          int threads_count) {
+std::vector<int> mergeElements(std::vector<int>& vec1, std::vector<int>& vec2, size_t& idx1, size_t& idx2,
+                               size_t increment, int threads_count) {
   std::vector<int> mergedVec(vec1.size() / 2 + vec2.size() / 2 + vec1.size() % 2 + vec2.size() % 2);
   size_t idx = 0;
 
