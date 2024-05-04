@@ -26,9 +26,9 @@ class BatcherMergeSortOMP : public ppc::core::Task {
 };
 
 inline std::vector<int> RandomVector(int size) {
-  std::vector<int> vec(size);
-  for (int idx = 0; idx < size; idx++) {
-    vec[idx] = rand() % 1000;
+  std::vector<int> vector(size);
+  for (int i = 0; i < size; i++) {
+    vector[i] = rand() % 1000;
   }
-  return std::vec;
+  return vector;
 }

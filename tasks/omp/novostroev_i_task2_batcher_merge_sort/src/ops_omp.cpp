@@ -112,6 +112,6 @@ bool BatcherMergeSortOMP::run() {
 
 bool BatcherMergeSortOMP::post_processing() {
   internal_order_test();
-  copyOutput(out, taskData->outputs[0]);
+  copyOutput(out, reinterpret_cast<int*>(taskData->outputs[0]));
   return true;
 }
