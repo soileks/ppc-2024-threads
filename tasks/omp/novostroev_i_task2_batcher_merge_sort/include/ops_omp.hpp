@@ -3,20 +3,19 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <random>
 #include <chrono>
+#include <iostream>
+#include <random>
+#include <string>
 #include <thread>
 #include <utility>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
 class BatcherMergeSortOMP : public ppc::core::Task {
  public:
-  explicit BatcherMergeSortOMP(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit BatcherMergeSortOMP(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
