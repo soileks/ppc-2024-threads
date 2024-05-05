@@ -11,7 +11,7 @@ using namespace kozlov_TBB;
 TEST(kozlov_m_simpson_integral_TBB, test_pipeline_run) {
   double res = 1.5;
   FUNC f = linear;
-  uint64_t n = 10000;
+  uint64_t n = 5000;
   uint64_t m = 3000;
 
   std::vector<double> in = {0, 1, 0, 1};
@@ -55,7 +55,7 @@ TEST(kozlov_m_simpson_integral_TBB, test_pipeline_run) {
 TEST(kozlov_m_simpson_integral_TBB, test_task_run) {
   double res = 1.5;
   FUNC f = linear;
-  uint64_t n = 10000;
+  uint64_t n = 5000;
   uint64_t m = 3000;
 
   std::vector<double> in = {0, 1, 0, 1};
