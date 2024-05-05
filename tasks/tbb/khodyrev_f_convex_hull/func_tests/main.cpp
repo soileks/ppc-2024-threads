@@ -34,10 +34,10 @@ TEST(khodyrev_f_convex_hull_tbb, Test_convex_hull_with_small_image) {
   int width_in = 3;
   int height_out = 4;
   int width_out = 3;
-  std::vector<int> in = {0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0};
+  std::vector<int> in = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
   std::vector<int> out(height_out * width_out, 0);
 
-  std::vector<int> true_result = {0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0};
+  std::vector<int> true_result = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
   std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
 
