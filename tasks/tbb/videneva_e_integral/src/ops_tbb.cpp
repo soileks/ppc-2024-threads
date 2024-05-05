@@ -18,18 +18,15 @@ bool VidenevaEIntegralTBB::validation() {
 bool VidenevaEIntegralTBB::pre_processing() {
   internal_order_test();
   auto *inp = reinterpret_cast<double *>(taskData->inputs[0]);
-  xLimL = inp[0], xLimU = inp[1], yLimL = inp[2], yLimU = inp[3],
-  number = inp[4];
+  xLimL = inp[0], xLimU = inp[1], yLimL = inp[2], yLimU = inp[3], number = inp[4];
   result = 0, error = 0;
   return true;
 }
 
 bool VidenevaEIntegralTBB::run() {
   internal_order_test();
-  double x_i =
-      (xLimU >= xLimL) ? (xLimU - xLimL) / number : (xLimL - xLimU) / number;
-  double y_i =
-      (yLimU >= yLimL) ? (yLimU - yLimL) / number : (yLimL - yLimU) / number;
+  double x_i = (xLimU >= xLimL) ? (xLimU - xLimL) / number : (xLimL - xLimU) / number;
+  double y_i = (yLimU >= yLimL) ? (yLimU - yLimL) / number : (yLimL - yLimU) / number;
 
   try {
     result = tbb::parallel_reduce(
@@ -44,8 +41,7 @@ bool VidenevaEIntegralTBB::run() {
         },
         std::plus<>());
     result *= x_i * y_i;
-    error =
-        2 * (xLimU - xLimL) * (yLimU - yLimL) * (x_i * x_i + y_i * y_i) / 24;
+    error = 2 * (xLimU - xLimL) * (yLimU - yLimL) * (x_i * x_i + y_i * y_i) / 24;
   } catch (const std::exception &e) {
     std::cout << e.what() << std::endl;
     return false;
@@ -60,4 +56,4 @@ bool VidenevaEIntegralTBB::post_processing() {
   return true;
 }
 
-} // namespace Videneva_e_tbb_integral
+}  // namespace Videneva_e_tbb_integral
