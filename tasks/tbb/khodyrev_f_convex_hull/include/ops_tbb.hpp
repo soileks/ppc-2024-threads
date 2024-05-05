@@ -37,4 +37,4 @@ class KhodyrevTaskTBB : public ppc::core::Task {
   std::vector<int> convexHull;
   std::vector<int> result;
 };
-}
+}  // namespace khodyrev_tbb

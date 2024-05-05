@@ -39,32 +39,31 @@ bool khodyrev_tbb::KhodyrevTaskTBB::run() {
   internal_order_test();
   try {
     tbb::parallel_for(tbb::blocked_range2d<int>(0, height_in, 0, width_in),
-      [&](const tbb::blocked_range2d<int>& range) {
-        for (int y = range.rows().begin(); y < range.rows().end(); ++y) {
-          for (int x = range.cols().begin(); x < range.cols().end(); ++x) {
-            if (isWhite(image, width_in, x, y)) {
-              Pixel pixel;
-              pixel.x = x;
-              pixel.y = y;
-              pixels.push_back(pixel);
-            }
-          }
-        }
-      }
-    );
+                      [&](const tbb::blocked_range2d<int>& range) {
+                        for (int y = range.rows().begin(); y < range.rows().end(); ++y) {
+                          for (int x = range.cols().begin(); x < range.cols().end(); ++x) {
+                            if (isWhite(image, width_in, x, y)) {
+                              Pixel pixel;
+                              pixel.x = x;
+                              pixel.y = y;
+                              pixels.push_back(pixel);
+                            }
+                          }
+                        }
+                      });
 
     start_point = pixels[0];
     for (const Pixel& pixel : pixels) {
-        if (pixel.y < start_point.y || (pixel.y == start_point.y && pixel.x < start_point.x)) {
-            start_point = pixel;
-        }
+      if (pixel.y < start_point.y || (pixel.y == start_point.y && pixel.x < start_point.x)) {
+        start_point = pixel;
+      }
     }
 
     std::sort(pixels.begin(), pixels.end(), [&](const Pixel& p1, const Pixel& p2) -> bool {
-        int orientation =
-            (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
-        if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
-        return orientation > 0;
+      int orientation =
+        (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
+      if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
+      return orientation > 0;
     });
 
     std::stack<Pixel> hull;
@@ -72,22 +71,22 @@ bool khodyrev_tbb::KhodyrevTaskTBB::run() {
     hull.push(pixels[1]);
 
     for (size_t i = 2; i < pixels.size(); ++i) {
-        while (hull.size() >= 2) {
-            Pixel p1 = hull.top();
-            hull.pop();
-            Pixel p2 = hull.top();
-            if ((p2.x - p1.x) * (pixels[i].y - p1.y) - (p2.y - p1.y) * (pixels[i].x - p1.x) < 0) {
-                hull.push(p1);
-                break;
-            }
+      while (hull.size() >= 2) {
+        Pixel p1 = hull.top();
+        hull.pop();
+        Pixel p2 = hull.top();
+        if ((p2.x - p1.x) * (pixels[i].y - p1.y) - (p2.y - p1.y) * (pixels[i].x - p1.x) < 0) {
+            hull.push(p1);
+            break;
         }
-        hull.push(pixels[i]);
+      }
+      hull.push(pixels[i]);
     }
 
     while (!hull.empty()) {
-        Pixel p = hull.top();
-        hull.pop();
-        result[p.y * width_out + p.x] = 1;
+      Pixel p = hull.top();
+      hull.pop();
+      result[p.y * width_out + p.x] = 1;
     }
   } catch (const std::exception& e) {
       std::cout << e.what() << std::endl;
