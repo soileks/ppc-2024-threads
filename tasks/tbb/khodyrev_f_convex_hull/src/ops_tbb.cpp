@@ -61,7 +61,7 @@ bool khodyrev_tbb::KhodyrevTaskTBB::run() {
 
     std::sort(pixels.begin(), pixels.end(), [&](const Pixel& p1, const Pixel& p2) -> bool {
       int orientation =
-        (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
+          (p1.x - start_point.x) * (p2.y - start_point.y) - (p2.x - start_point.x) * (p1.y - start_point.y);
       if (orientation == 0) return (p1.x + p1.y) < (p2.x + p2.y);
       return orientation > 0;
     });
@@ -76,8 +76,8 @@ bool khodyrev_tbb::KhodyrevTaskTBB::run() {
         hull.pop();
         Pixel p2 = hull.top();
         if ((p2.x - p1.x) * (pixels[i].y - p1.y) - (p2.y - p1.y) * (pixels[i].x - p1.x) < 0) {
-            hull.push(p1);
-            break;
+          hull.push(p1);
+          break;
         }
       }
       hull.push(pixels[i]);
@@ -89,8 +89,8 @@ bool khodyrev_tbb::KhodyrevTaskTBB::run() {
       result[p.y * width_out + p.x] = 1;
     }
   } catch (const std::exception& e) {
-      std::cout << e.what() << std::endl;
-      return false;
+    std::cout << e.what() << std::endl;
+    return false;
   }
   return true;
 }
