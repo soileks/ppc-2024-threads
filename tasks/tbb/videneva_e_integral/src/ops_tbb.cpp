@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-auto g = [](double x, double y) { return std::pow(x, 2) + y; };
+auto videneva_func_g = [](double x, double y) { return std::pow(x, 2) + y; };
 
 namespace Videneva_e_tbb_integral {
 
@@ -34,7 +34,7 @@ bool VidenevaEIntegralTBB::run() {
         [&](const tbb::blocked_range<int> &r, double local_res) {
           for (int i = r.begin(); i != r.end(); ++i) {
             for (int j = 0; j < number; ++j) {
-              local_res += g(xLimL + x_i * (i + 0.5), yLimL + y_i * (j + 0.5));
+              local_res += videneva_func_g(xLimL + x_i * (i + 0.5), yLimL + y_i * (j + 0.5));
             }
           }
           return local_res;
