@@ -28,18 +28,17 @@ bool saratova_tbb::SaratovaTaskTbb::pre_processing() {
 bool saratova_tbb::SaratovaTaskTbb::run() {
   internal_order_test();
   try {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, n, 1),
-                      [&](const tbb::blocked_range<size_t>& range) {
-                        for (size_t i = range.begin(); i != range.end(); ++i) {
-                          for (size_t j = 0; j < n; ++j) {
-                            double c = 0.0;
-                            for (size_t k = 0; k < n; ++k) {
-                              c += A[i * n + k] * B[k * n + j];
-                            }
-                            C[i * n + j] = c;
-                          }
-                        }
-                      });
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, n, 1), [&](const tbb::blocked_range<size_t>& range) {
+      for (size_t i = range.begin(); i != range.end(); ++i) {
+        for (size_t j = 0; j < n; ++j) {
+          double c = 0.0;
+          for (size_t k = 0; k < n; ++k) {
+            c += A[i * n + k] * B[k * n + j];
+          }
+          C[i * n + j] = c;
+        }
+      }
+    });
   } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
     return false;
