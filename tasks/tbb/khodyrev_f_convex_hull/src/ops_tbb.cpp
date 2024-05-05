@@ -66,7 +66,6 @@ bool khodyrev_tbb::KhodyrevTaskTBB::run() {
       return orientation > 0;
     });
 
-    std::stack<Pixel> hull;
     hull.push(pixels[0]);
     hull.push(pixels[1]);
 
