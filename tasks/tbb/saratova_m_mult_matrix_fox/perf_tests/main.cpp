@@ -30,6 +30,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, test_pipeline_run) {
   // Create Task
   auto saratovaTaskTbb = std::make_shared<SaratovaTaskTbb>(taskDataTbb);
 
+
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
