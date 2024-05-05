@@ -21,8 +21,8 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" )
 set( CMAKE_CXX_STANDARD 20 )
 
 if( UNIX )
-   set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -Wall -Wsign-compare -Werror")
-   set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wsign-compare -Werror")
+    set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -Wall -Wsign-compare -Werror")
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wsign-compare -Werror")
 endif( UNIX )
 
 if( MSVC )
@@ -36,14 +36,14 @@ if( MSVC )
 endif( MSVC )
 
 MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-      LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
+    FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+    SET(dirlist "")
+    FOREACH(child ${children})
+        IF(IS_DIRECTORY ${curdir}/${child})
+            LIST(APPEND dirlist ${child})
+        ENDIF()
+    ENDFOREACH()
+    SET(${result} ${dirlist})
 ENDMACRO()
 
 MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
@@ -56,17 +56,31 @@ MACRO(CPPCHECK_TEST ProjectId ALL_SOURCE_FILES)
         endforeach ()
         if (NOT APPLE)
             find_program(CPPCHECK_EXEC /usr/bin/cppcheck)
+            execute_process(COMMAND ${CPPCHECK_EXEC} --version OUTPUT_VARIABLE CPPCHECK_VERSION)
+            if (CPPCHECK_VERSION)
+                string(REGEX REPLACE "Cppcheck ([0-9]+\\.[0-9]+).*" "\\1" CPPCHECK_VERSION ${CPPCHECK_VERSION})
+                if (CPPCHECK_VERSION VERSION_GREATER_EQUAL "2.11")
+                    set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information")
+                    set(CPPCHECK_FLAGS "--disable=missingInclude")
+                    set(CPPCHECK_FLAGS "--language=c++")
+                    set(CPPCHECK_FLAGS "--std=c++11")
+                    set(CPPCHECK_FLAGS "--error-exitcode=1")
+                    set(CPPCHECK_FLAGS "--template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\"")
+                    set(CPPCHECK_FLAGS "--verbose")
+                    set(CPPCHECK_FLAGS "--quiet")
+                else ()
+                    set(CPPCHECK_FLAGS "--enable=warning,performance,portability,information")
+                    set(CPPCHECK_FLAGS "--language=c++")
+                    set(CPPCHECK_FLAGS "--std=c++11")
+                    set(CPPCHECK_FLAGS "--error-exitcode=1")
+                    set(CPPCHECK_FLAGS "--template=\"[{severity}][{id}] {message} {callstack} \\(On {file}:{line}\\)\"")
+                    set(CPPCHECK_FLAGS "--verbose")
+                    set(CPPCHECK_FLAGS "--quiet")
+                endif ()
+            endif ()
             add_custom_target(
                     "${ProjectId}_cppcheck" ALL
-                    COMMAND ${CPPCHECK_EXEC}
-                    --enable=warning,performance,portability,information
-                    --language=c++
-                    --std=c++11
-                    --error-exitcode=1
-                    --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                    --verbose
-                    --quiet
-                    ${ALL_SOURCE_FILES}
+                    COMMAND ${CPPCHECK_EXEC} ${CPPCHECK_FLAGS} ${ALL_SOURCE_FILES}
             )
         ENDIF ()
     endif( UNIX )
