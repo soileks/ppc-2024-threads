@@ -17,7 +17,7 @@ class VidenevaEIntegralTBB : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  double xLimL, xLimU, yLimL, yLimU, result, error, hX, hY;
+  double xLimL, xLimU, yLimL, yLimU, result, error;
   int64_t number;
 };
 
