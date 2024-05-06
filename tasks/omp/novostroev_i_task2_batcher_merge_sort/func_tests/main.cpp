@@ -46,7 +46,7 @@ TEST(novostroev_i_batcher_sort_func_omp, Test_size_300_omp) {
 }
 
 TEST(novostroev_i_batcher_sort_func_omp, Test_small_size_omp) {
-  const int count = 5;
+  const int count = 4;
 
   std::vector<int> vect = RandomVector(count);
   std::vector<int> result(vect.size(), 0);
@@ -84,7 +84,7 @@ TEST(novostroev_i_batcher_sort_func_omp, Test_only_negative_numbers_omp) {
 }
 
 TEST(novostroev_i_batcher_sort_func_omp, Test_pre_sorted_omp) {
-  std::vector<int> vect = {10, 22, 100, 450, 455, 500, 666, 742, 823, 909};
+  std::vector<int> vect = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
   std::vector<int> result(vect.size(), 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();

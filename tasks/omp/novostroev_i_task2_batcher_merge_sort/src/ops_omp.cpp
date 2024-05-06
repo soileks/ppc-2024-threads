@@ -12,9 +12,13 @@ std::vector<int> mergeElements(std::vector<int>& vec1, std::vector<int>& vec2, s
   size_t idx = 0;
 
   while (idx1 < vec1.size() && idx2 < vec2.size()) {
-    mergedVec[idx++] = (vec1[idx1] <= vec2[idx2]) ? vec1[idx1] : vec2[idx2];
-    idx1 += increment;
-    idx2 += increment;
+    if (vec1[idx1] <= vec2[idx2]) {
+      mergedVec[idx++] =  vec1[idx1];
+      idx1 += increment;
+    } else {
+      mergedVec[idx++] =  vec2[idx2];
+      idx2 += increment;
+    }
   }
 
   if (idx1 >= vec1.size()) {
