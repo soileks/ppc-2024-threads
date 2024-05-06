@@ -13,8 +13,7 @@
 
 class DejkstraTaskTBBSequential final : public ppc::core::Task {
  public:
-  explicit DejkstraTaskTBBSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit DejkstraTaskTBBSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -43,8 +42,7 @@ class DejkstraTaskTBBSequential final : public ppc::core::Task {
 
 class DejkstraTaskTBB final : public ppc::core::Task {
  public:
-  explicit DejkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit DejkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
