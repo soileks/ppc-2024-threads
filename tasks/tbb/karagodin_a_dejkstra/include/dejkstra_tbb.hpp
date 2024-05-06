@@ -10,13 +10,12 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "tbb/parallel_for.h"
 
 class DejkstraTaskTBBSequential final : public ppc::core::Task {
-public:
+ public:
   explicit DejkstraTaskTBBSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
-     : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
- bool pre_processing() override;
+      : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
+  bool pre_processing() override;
   bool validation() override;
   bool run() override;
   bool post_processing() override;
@@ -32,7 +31,7 @@ public:
   };
   static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
 
-private:
+ private:
   int size, destNode, entryNode, minScore;
   std::vector<int> pathOutput;
   std::vector<std::vector<int>> graphMap;
@@ -40,10 +39,10 @@ private:
 };
 
 class DejkstraTaskTBB final : public ppc::core::Task {
-public:
+ public:
   explicit DejkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_)
-     : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
- bool pre_processing() override;
+      : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
+  bool pre_processing() override;
   bool validation() override;
   bool run() override;
   bool post_processing() override;
@@ -59,7 +58,7 @@ public:
   };
   static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
 
-private:
+ private:
   int size, destNode, entryNode, minScore;
   std::vector<int> pathOutput;
   std::vector<std::vector<int>> graphMap;

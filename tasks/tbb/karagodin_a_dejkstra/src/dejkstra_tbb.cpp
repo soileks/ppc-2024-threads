@@ -1,10 +1,10 @@
 // Copyright 2024 Karagodin Andrey
+#include "tbb/karagodin_a_dejkstra/include/dejkstra_tbb.hpp"
+
+#include <oneapi/tbb/parallel_for.h>
 
 #include <queue>
 #include <random>
-#include <tbb/parallel_reduce.h>
-
-#include "tbb/karagodin_a_dejkstra/include/dejkstra_tbb.hpp"
 
 void DejkstraTaskTBBSequential::printGraphMap(const std::vector<std::vector<int>>& graphMapInput) {
   for (const auto& row : graphMapInput) {
@@ -145,8 +145,8 @@ void DejkstraTaskTBB::printGraphMap(const std::vector<std::vector<int>>& graphMa
 }
 
 std::pair<std::vector<int>, int> DejkstraTaskTBB::getDejMinPath() {
-  std::vector<int> dist(size, std::numeric_limits<int>::max());
-  std::vector<int> prev(size, -1);
+  std::vector dist(size, std::numeric_limits<int>::max());
+  std::vector prev(size, -1);
   std::priority_queue<Node, std::vector<Node>, CompareNode> pq;
   dist[entryNode] = 0;
   pq.emplace(entryNode, 0);
