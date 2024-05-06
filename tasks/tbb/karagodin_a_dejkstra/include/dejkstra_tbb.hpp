@@ -14,7 +14,7 @@
 class DejkstraTaskTBBSequential final : public ppc::core::Task {
  public:
   explicit DejkstraTaskTBBSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
+      : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -32,7 +32,10 @@ class DejkstraTaskTBBSequential final : public ppc::core::Task {
   static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
 
  private:
-  int size, destNode, entryNode, minScore;
+  int size = 0;
+  int destNode = 0;
+  int entryNode = 0;
+  int minScore = 0;
   std::vector<int> pathOutput;
   std::vector<std::vector<int>> graphMap;
   std::pair<std::vector<int>, int> res;
@@ -41,7 +44,7 @@ class DejkstraTaskTBBSequential final : public ppc::core::Task {
 class DejkstraTaskTBB final : public ppc::core::Task {
  public:
   explicit DejkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
+      : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -59,7 +62,10 @@ class DejkstraTaskTBB final : public ppc::core::Task {
   static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
 
  private:
-  int size, destNode, entryNode, minScore;
+  int size = 0;
+  int destNode = 0;
+  int entryNode = 0;
+  int minScore = 0;
   std::vector<int> pathOutput;
   std::vector<std::vector<int>> graphMap;
   std::pair<std::vector<int>, int> res;
