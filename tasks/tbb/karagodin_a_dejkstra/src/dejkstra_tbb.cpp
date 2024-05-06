@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <random>
+#include <tbb/parallel_reduce.h>
 
 #include "tbb/karagodin_a_dejkstra/include/dejkstra_tbb.hpp"
 
@@ -141,8 +142,8 @@ void DejkstraTaskTBB::printGraphMap(const std::vector<std::vector<int>>& graphMa
 }
 
 std::pair<std::vector<int>, int> DejkstraTaskTBB::getDejMinPath() {
-  std::vector dist(size, std::numeric_limits<int>::max());
-  std::vector prev(size, -1);
+  std::vector<int> dist(size, std::numeric_limits<int>::max());
+  std::vector<int> prev(size, -1);
   std::priority_queue<Node, std::vector<Node>, CompareNode> pq;
   dist[entryNode] = 0;
   pq.emplace(entryNode, 0);
@@ -155,7 +156,7 @@ std::pair<std::vector<int>, int> DejkstraTaskTBB::getDejMinPath() {
 
     if (u == destNode) {
       minScore = dist[u];
-      break; // Exit the loop if destination node is reached
+      break;
     }
 
     for (int v = 0; v < size; ++v) {
@@ -176,9 +177,7 @@ std::pair<std::vector<int>, int> DejkstraTaskTBB::getDejMinPath() {
     current = prev[current];
   }
   std::reverse(pathOutput.begin(), pathOutput.end());
-  res.first = pathOutput;
-  res.second = minScore;
-  return res;
+  return std::make_pair(pathOutput, minScore);
 }
 
 bool DejkstraTaskTBB::validation() {
