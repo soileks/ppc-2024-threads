@@ -20,15 +20,9 @@ bool shmelev_tbb::ShmelevTaskTbb::validation() {
 
 bool shmelev_tbb::ShmelevTaskTbb::run() {
   internal_order_test();
-  tbb::parallel_sort(input_.begin(), input_.end());
+  batcherMerge(0, input_.size() - 1);
   return true;
 }
-
-// bool shmelev_tbb::ShmelevTaskTbb::run() {
-//   internal_order_test();
-//   batcherMerge(0, input_.size() - 1);
-//   return true;
-// }
 
 bool shmelev_tbb::ShmelevTaskTbb::post_processing() {
   internal_order_test();
@@ -68,15 +62,17 @@ void shmelev_tbb::ShmelevTaskTbb::batcherMerge(int l, int r) {
   sortingShell();
   if (r > l) {
     int m = l + (r - l) / 2;
-    for (int i = l; i <= m; i += 2) {
-      if (i + 1 <= m) {
-        if (input_[i] > input_[i + 1]) {
+
+    tbb::parallel_for(tbb::blocked_range<int>(l, m, 2), [&](const tbb::blocked_range<int>& r) {
+      for (int i = r.begin(); i < r.end(); i += 2) {
+        if (i + 1 < r.end() && input_[i] > input_[i + 1]) {
           std::swap(input_[i], input_[i + 1]);
         }
       }
-    }
-    batcherMerge(l, m);
-    batcherMerge(m + 1, r);
+    });
+
+    tbb::parallel_invoke([&] { batcherMerge(l, m); }, [&] { batcherMerge(m + 1, r); });
+
     merge(l, m, r);
   }
 }

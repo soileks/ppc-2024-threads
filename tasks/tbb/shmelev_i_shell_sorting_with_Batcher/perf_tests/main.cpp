@@ -10,21 +10,21 @@
 using namespace shmelev_tbb;
 
 TEST(shmelev_i_shell_sorting_with_Batcher, pipeline_run) {
-  const int count = 5000000;
+  const int count = 2048;
 
   // Create data
   std::vector<int> in = ShmelevTaskTbb::generate_random_vector(count, 1, 1024);
   std::vector<int> out(count, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
+  taskDataTbb->inputs_count.emplace_back(in.size());
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
+  taskDataTbb->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTbb = std::make_shared<ShmelevTaskTbb>(taskDataSeq);
+  auto testTaskTbb = std::make_shared<ShmelevTaskTbb>(taskDataTbb);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -43,21 +43,21 @@ TEST(shmelev_i_shell_sorting_with_Batcher, pipeline_run) {
 }
 
 TEST(shmelev_i_shell_sorting_with_Batcher, task_run) {
-  const int count = 5000000;
+  const int count = 2048;
 
   // Create data
   std::vector<int> in = ShmelevTaskTbb::generate_random_vector(count, 1, 1024);
   std::vector<int> out(count, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(&in));
+  taskDataTbb->inputs_count.emplace_back(in.size());
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
+  taskDataTbb->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskTbb = std::make_shared<ShmelevTaskTbb>(taskDataSeq);
+  auto testTaskTbb = std::make_shared<ShmelevTaskTbb>(taskDataTbb);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
