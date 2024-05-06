@@ -5,22 +5,18 @@
 #define TASKS_TBB_KARAGODIN_A_DEJKSTRA_INCLUDE_DEJKSTRA_TBB_HPP_
 
 #include <algorithm>
-#include <iostream>
 #include <memory>
-#include <queue>
-#include <random>
-#include <string>
 #include <utility>
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "tbb/blocked_range.h"
 #include "tbb/parallel_for.h"
 
-class DejkstraTaskTBB : public ppc::core::Task {
+class DejkstraTaskTBBSequential final : public ppc::core::Task {
 public:
-  explicit DejkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
-  bool pre_processing() override;
+  explicit DejkstraTaskTBBSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
+     : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
+ bool pre_processing() override;
   bool validation() override;
   bool run() override;
   bool post_processing() override;
@@ -28,11 +24,38 @@ public:
   struct Node {
     int vertex;
     int cost;
-    Node(int v, int c) : vertex(v), cost(c) {}
+    Node(const int v, const int c) : vertex(v), cost(c) {}
   };
 
   struct CompareNode {
-    bool operator()(const Node& n1, const Node& n2) { return n1.cost > n2.cost; }
+    bool operator()(const Node& n1, const Node& n2) const { return n1.cost > n2.cost; }
+  };
+  static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
+
+private:
+  int size, destNode, entryNode, minScore;
+  std::vector<int> pathOutput;
+  std::vector<std::vector<int>> graphMap;
+  std::pair<std::vector<int>, int> res;
+};
+
+class DejkstraTaskTBB final : public ppc::core::Task {
+public:
+  explicit DejkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_)
+     : Task(std::move(taskData_)), size(0), destNode(0), entryNode(0), minScore(0) {}
+ bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+  std::pair<std::vector<int>, int> getDejMinPath();
+  struct Node {
+    int vertex;
+    int cost;
+    Node(const int v, const int c) : vertex(v), cost(c) {}
+  };
+
+  struct CompareNode {
+    bool operator()(const Node& n1, const Node& n2) const { return n1.cost > n2.cost; }
   };
   static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
 
