@@ -12,7 +12,7 @@ TEST(karagodin_a_dejkstra_omp, test_correctness) {
   std::pair<std::vector<int>, int> resultSeq;
   std::pair<std::vector<int>, int> resultPar;
   std::vector<std::vector<int>> graphMap = {
-    {0, 7, 5, 0, 0}, {7, 0, 3, 5, 0}, {5, 3, 0, 0, 4}, {0, 5, 0, 0, 6}, {0, 0, 4, 6, 0}};
+      {0, 7, 5, 0, 0}, {7, 0, 3, 5, 0}, {5, 3, 0, 0, 4}, {0, 5, 0, 0, 6}, {0, 0, 4, 6, 0}};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -51,7 +51,7 @@ TEST(karagodin_a_dejkstra_omp, test_correctness) {
 }
 
 TEST(karagodin_a_dejkstra_omp, test_hard_path) {
-   int entryNode = 0;
+  int entryNode = 0;
   int destNode = 8;
   int size = 12;
   std::pair<std::vector<int>, int> resultSeq;

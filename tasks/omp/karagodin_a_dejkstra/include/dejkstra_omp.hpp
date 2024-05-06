@@ -16,7 +16,7 @@
 #include "core/task/include/task.hpp"
 
 class DejkstraTaskOMPSequential final : public ppc::core::Task {
-public:
+ public:
   explicit DejkstraTaskOMPSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
@@ -34,7 +34,7 @@ public:
   };
   static void printGraphMap(const std::vector<std::vector<int>>& graphMapInput);
 
-private:
+ private:
   int size = 0;
   int destNode = 0;
   int entryNode = 0;
