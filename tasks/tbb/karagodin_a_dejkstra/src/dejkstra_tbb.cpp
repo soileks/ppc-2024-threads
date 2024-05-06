@@ -82,6 +82,9 @@ bool DejkstraTaskTBBSequential::pre_processing() {
 bool DejkstraTaskTBBSequential::run() {
   try {
     internal_order_test();
+    if (size != 0 && graphMap.empty()) {
+      graphMap = initGraphMapRandom(size);
+    }
     res = getDejMinPath();
   } catch (...) {
     return false;
@@ -206,6 +209,9 @@ bool DejkstraTaskTBB::pre_processing() {
 bool DejkstraTaskTBB::run() {
   try {
     internal_order_test();
+    if (size != 0 && graphMap.empty()) {
+      graphMap = initGraphMapRandom(size);
+    }
     res = getDejMinPath();
   } catch (...) {
     return false;

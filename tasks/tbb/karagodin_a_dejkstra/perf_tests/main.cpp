@@ -9,8 +9,8 @@
 TEST(karagodin_a_dejkstra_tbb_perf_test, test_pipeline_run) {
   // Create data
   int entryNode = 0;
-  int destNode = 9;
-  int size = 10;
+  int destNode = 499;
+  int size = 500;
   std::pair<std::vector<int>, int> result;
   std::vector<std::vector<int>> graphMap;
   // Create TaskData
@@ -42,8 +42,8 @@ TEST(karagodin_a_dejkstra_tbb_perf_test, test_pipeline_run) {
 TEST(karagodin_a_dejkstra_tbb_perf_test, test_task_run) {
   // Create data
   int entryNode = 0;
-  int destNode = 800;
-  int size = 799;
+  int destNode = 799;
+  int size = 800;
   std::pair<std::vector<int>, int> result;
   std::vector<std::vector<int>> graphMap;
   // Create TaskData
@@ -57,7 +57,7 @@ TEST(karagodin_a_dejkstra_tbb_perf_test, test_task_run) {
   auto dejkstra_tbb = std::make_shared<DejkstraTaskTBB>(taskDataTbb);
 
   // Create Perf attributes
-  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
+  const auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
   perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
