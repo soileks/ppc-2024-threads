@@ -1,12 +1,13 @@
-// Copyright 2023 Nesterov Alexander
+// Copyright 2024 Ionova Ekatetina
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/ionova_e_sparse_matr_multi_crs_complex/include/ops_seq.hpp"
+#include "omp/ionova_e_sparse_matr_multi_crs_complex_omp/include/ops_seq.hpp"
 
-TEST(ionova_e_sparse_matr_multi_crs_complex, test_pipeline_run) {
+TEST(ionova_e_sparse_matr_multi_crs_complex_omp, test_pipeline_run) {
   size_t p = 500;
   size_t q = 500;
   size_t r = 500;
@@ -38,7 +39,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SparseMatrixComplexMultiSequential>(taskDataSeq);
+  auto testTaskOmp = std::make_shared<SparseMatrixComplexMultiSequentialOmp>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -53,7 +54,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex, test_pipeline_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSeq);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOmp);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
@@ -69,7 +70,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex, test_pipeline_run) {
   }
 }
 
-TEST(ionova_e_sparse_matr_multi_crs_complex, test_task_run) {
+TEST(ionova_e_sparse_matr_multi_crs_complex_omp, test_task_run) {
   size_t p = 500;
   size_t q = 500;
   size_t r = 500;
@@ -101,7 +102,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SparseMatrixComplexMultiSequential>(taskDataSeq);
+  auto testTaskOmp = std::make_shared<SparseMatrixComplexMultiSequentialOmp>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -116,7 +117,7 @@ TEST(ionova_e_sparse_matr_multi_crs_complex, test_task_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSeq);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOmp);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
