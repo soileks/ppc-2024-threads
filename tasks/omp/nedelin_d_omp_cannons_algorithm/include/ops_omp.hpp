@@ -47,8 +47,7 @@ class TestTaskOMPParallelNedelinCannon : public ppc::core::Task {
 };
 
 std::vector<double> cannonMtrxMultiplication_omp(const std::vector<double>& A, const std::vector<double>& B, int n,
-                                                   int m);
+                                                 int m);
 
-std::vector<double> cannonMtrxMultiplication(const std::vector<double>& A, const std::vector<double>& B, int n,
-                                               int m);
+std::vector<double> cannonMtrxMultiplication(const std::vector<double>& A, const std::vector<double>& B, int n, int m);
 #endif  // TASKS_OMP_NEDELIN_D_OMP_CANNONS_ALGORITHM_INCLUDE_OPS_OMP_HPP

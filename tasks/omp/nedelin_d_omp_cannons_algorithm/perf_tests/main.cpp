@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 #include <omp.h>
 
-
 #include "core/perf/include/perf.hpp"
 #include "omp/nedelin_d_omp_cannons_algorithm/include/ops_omp.hpp"
 

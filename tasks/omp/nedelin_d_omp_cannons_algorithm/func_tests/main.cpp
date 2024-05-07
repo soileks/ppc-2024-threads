@@ -49,7 +49,6 @@ TEST(nedelin_d_block_cannons_omp, Multiply_3x3) {
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
 
-
   for (size_t i = 0; i < seq_block_result.size(); ++i) {
     ASSERT_EQ(parallel_res[i], seq_block_result[i]);
   }
@@ -247,7 +246,7 @@ TEST(nedelin_d_block_cannons_omp, Multiply_100x100) {
   testOmpTaskParallel.pre_processing();
   testOmpTaskParallel.run();
   testOmpTaskParallel.post_processing();
-  
+
   for (size_t i = 0; i < seq_block_result.size(); ++i) {
     ASSERT_EQ(parallel_res[i], seq_block_result[i]);
   }

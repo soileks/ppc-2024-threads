@@ -6,8 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-std::vector<double> cannonMtrxMultiplication(const std::vector<double>& A, const std::vector<double>& B, int n,
-                                               int m) {
+std::vector<double> cannonMtrxMultiplication(const std::vector<double>& A, const std::vector<double>& B, int n, int m) {
   int SizeBlock = std::min(n, m);
 
   std::vector<double> mtrx_C(n * m, 0.0);
@@ -39,7 +38,7 @@ std::vector<double> cannonMtrxMultiplication(const std::vector<double>& A, const
 }
 
 std::vector<double> cannonMtrxMultiplication_omp(const std::vector<double>& A, const std::vector<double>& B, int n,
-                                                   int m) {
+                                                 int m) {
   int SizeBlock = std::min(n, m);
 
   std::vector<double> mtrx_C(n * m, 0.0);
