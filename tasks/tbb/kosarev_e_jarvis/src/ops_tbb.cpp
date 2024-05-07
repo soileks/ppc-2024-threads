@@ -60,69 +60,7 @@ std::vector<Point> JarvisAlgo(const std::vector<Point>& arrPoints) {
   return convexHull;
 }
 
-// std::vector<Point> kosarev_tbb_jarvis(const std::vector<Point>& points) {
-//   size_t numberOfPoints = points.size();
-//   if (numberOfPoints < 3) return points;
-//   Point start = tbb::parallel_reduce(
-//       tbb::blocked_range<size_t>(1, numberOfPoints), points[0],
-//       [&points](const tbb::blocked_range<size_t>& r, Point localStart) -> Point {
-//         auto begin = r.begin();
-//         auto end = r.end();
-//         for (auto i = begin; i != end; i++) {
-//           if (points[i] < localStart) localStart = points[i];
-//         }
-//         return localStart;
-//       },
-//       [](const Point& localStart, const Point& start) -> Point { return localStart < start ? localStart : start; });
-//   std::vector<Point> result;
-//   result.push_back(start);
-//   Point currentPoint = start;
-//   Point nextPoint;
 
-//   do {
-//     if (currentPoint == points[0]) {
-//       nextPoint = points[1];
-//     } else {
-//       nextPoint = points[0];
-//     }
-//     currentPoint = tbb::parallel_reduce(
-//         tbb::blocked_range<size_t>(0, numberOfPoints), nextPoint,
-//         [&currentPoint, &points](const tbb::blocked_range<size_t>& r, Point localNext) -> Point {
-//           auto begin = r.begin();
-//           auto end = r.end();
-//           for (auto i = begin; i != end; i++) {
-//             int direction = (points[i].y - currentPoint.y) * (localNext.x - currentPoint.x) -
-//                             (points[i].x - currentPoint.x) * (localNext.y - currentPoint.y);
-//             if (direction > 0 ||
-//                 (direction == 0 && ((points[i].x - currentPoint.x) * (points[i].x - currentPoint.x) +
-//                                     (points[i].y - currentPoint.y) * (points[i].y - currentPoint.y)) >
-//                                        ((localNext.x - currentPoint.x) * (localNext.x - currentPoint.x) +
-//                                         (localNext.y - currentPoint.y) * (localNext.y - currentPoint.y)))) {
-//               localNext = points[i];
-//             }
-//           }
-//           return localNext;
-//         },
-//         [&currentPoint](const Point& nextPoint, const Point& localNext) -> Point {
-//           int direction = (localNext.y - currentPoint.y) * (nextPoint.x - currentPoint.x) -
-//                           (localNext.x - currentPoint.x) * (nextPoint.y - currentPoint.y);
-//           if (direction > 0 ||
-//               (direction == 0 && ((localNext.x - currentPoint.x) * (localNext.x - currentPoint.x) +
-//                                   (localNext.y - currentPoint.y) * (localNext.y - currentPoint.y)) >
-//                                      ((nextPoint.x - currentPoint.x) * (nextPoint.x - currentPoint.x) +
-//                                       (nextPoint.y - currentPoint.y) * (nextPoint.y - currentPoint.y)))) {
-//             return localNext;
-//           }
-//           return nextPoint;
-//         });
-
-//     nextPoint = currentPoint;
-//     result.push_back(nextPoint);
-//   } while (currentPoint != start);
-
-//   result.pop_back();
-//   return result;
-// }
 std::vector<Point> JarvisAlgo_tbb(const std::vector<Point>& arrPoints, int threadsNom) {
   std::vector<std::vector<Point>> localResults(threadsNom);
 
@@ -151,36 +89,6 @@ std::vector<Point> JarvisAlgo_tbb(const std::vector<Point>& arrPoints, int threa
 
   return JarvisAlgo(res);
 }
-// bool TestTaskTbbKosarevJarvisHull::pre_processing() {
-//   internal_order_test();
-//   points.resize(taskData->inputs_count[0]);
-//   auto* tmp_ptr_A = reinterpret_cast<Point*>(taskData->inputs[0]);
-//   std::copy_n(tmp_ptr_A, taskData->inputs_count[0], points.begin());
-//   return true;
-// }
-
-// bool TestTaskTbbKosarevJarvisHull::validation() {
-//   internal_order_test();
-//   if (taskData->inputs_count[0] == 0) {
-//     return false;
-//   }
-//   std::vector<Point> expectedConvexHull = kosarev_tbb_jarvis(points);
-//   std::sort(expectedConvexHull.begin(), expectedConvexHull.end());
-//   return std::unique(expectedConvexHull.begin(), expectedConvexHull.end()) == expectedConvexHull.end();
-// }
-
-// bool TestTaskTbbKosarevJarvisHull::run() {
-//   internal_order_test();
-//   convexHullPoints = kosarev_tbb_jarvis(points);
-//   return true;
-// }
-
-// bool TestTaskTbbKosarevJarvisHull::post_processing() {
-//   internal_order_test();
-//   auto* output_ptr = reinterpret_cast<Point*>(taskData->outputs[0]);
-//   std::copy_n(convexHullPoints.begin(), convexHullPoints.size(), output_ptr);
-//   return true;
-// }
 
 bool TestTaskTbbKosarevJarvisHull::pre_processing() {
   internal_order_test();
