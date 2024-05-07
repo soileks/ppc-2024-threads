@@ -1,10 +1,11 @@
 // Copyright 2024 Lapin Dmitriy
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/lapin_d_image_filter_block/include/ops_seq.hpp"
+#include "omp/lapin_d_image_filter_block/include/ops_omp.hpp"
 
 TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   // Create TaskData
@@ -30,23 +31,23 @@ TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  auto testTaskSequential = std::make_shared<BlockFilterSeq>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<BlockFilterOMPTaskParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
+  const auto t0 = omp_get_wtime();
   perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
+    auto current_time_point = omp_get_wtime();
+    auto duration = current_time_point - t0;
+    return duration;
   };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
@@ -75,23 +76,23 @@ TEST(lapin_d_image_filter_block, test_task_run_run4000x4000) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  auto testTaskSequential = std::make_shared<BlockFilterSeq>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<BlockFilterOMPTaskParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
+  const auto t0 = omp_get_wtime();
   perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
+    auto current_time_point = omp_get_wtime();
+    auto duration = current_time_point - t0;
+    return duration;
   };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }

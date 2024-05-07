@@ -1,5 +1,7 @@
 // Copyright 2024 Lapin Dmitriy
-#include "seq/lapin_d_image_filter_block/include/ops_seq.hpp"
+#include "omp/lapin_d_image_filter_block/include/ops_omp.hpp"
+
+#include <omp.h>
 
 #include <cmath>
 #include <iostream>
@@ -31,7 +33,7 @@ std::vector<std::vector<double>> create2DFilter(int n, double sigma) {
   return filter;
 }
 
-bool BlockFilterSeq::pre_processing() {
+bool BlockFilterOMPTaskSequential::pre_processing() {
   internal_order_test();
   height = taskData->inputs_count[0];
   width = taskData->inputs_count[1];
@@ -40,12 +42,12 @@ bool BlockFilterSeq::pre_processing() {
   return true;
 }
 
-bool BlockFilterSeq::validation() {
+bool BlockFilterOMPTaskSequential::validation() {
   internal_order_test();
   return taskData->inputs_count[0] > 0 && taskData->inputs_count[1] > 0;
 }
 
-bool BlockFilterSeq::run() {
+bool BlockFilterOMPTaskSequential::run() {
   internal_order_test();
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
   for (int i = 0; i < height; i++) {
@@ -64,7 +66,46 @@ bool BlockFilterSeq::run() {
   return true;
 }
 
-bool BlockFilterSeq::post_processing() {
+bool BlockFilterOMPTaskSequential::post_processing() {
+  internal_order_test();
+  return true;
+}
+
+bool BlockFilterOMPTaskParallel::pre_processing() {
+  internal_order_test();
+  height = taskData->inputs_count[0];
+  width = taskData->inputs_count[1];
+  mas_in = reinterpret_cast<std::vector<std::vector<int>> *>(taskData->inputs[0]);
+  mas_out = reinterpret_cast<std::vector<std::vector<int>> *>(taskData->outputs[0]);
+  return true;
+}
+
+bool BlockFilterOMPTaskParallel::validation() {
+  internal_order_test();
+  return taskData->inputs_count[0] > 0 && taskData->inputs_count[1] > 0;
+}
+
+bool BlockFilterOMPTaskParallel::run() {
+  internal_order_test();
+  std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
+#pragma omp parallel for
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      double result = 0;
+      for (int l = -1; l <= 1; l++) {
+        for (int k = -1; k <= 1; k++) {
+          int idX = Clamp(i + k, 0, height - 1);
+          int idY = Clamp(j + l, 0, width - 1);
+          result += (*mas_in)[idX][idY] * kernel[k + 1][l + 1];
+        }
+      }
+      (*mas_out)[i][j] = Clamp((int)result, 0, 255);
+    }
+  }
+  return true;
+}
+
+bool BlockFilterOMPTaskParallel::post_processing() {
   internal_order_test();
   return true;
 }
