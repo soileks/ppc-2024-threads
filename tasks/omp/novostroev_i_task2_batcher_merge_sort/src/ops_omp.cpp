@@ -79,12 +79,6 @@ std::vector<int> mergeVectors(std::vector<int> vec1, std::vector<int> vec2, int 
   return mergeElements(mergedVec, vec1, vec2, idx1, idx2, 1, 2, threads_count);
 }
 
-// std::vector<int> sortBatcher(const std::vector<int>& leftHalf, const std::vector<int>& rightHalf) {
-//   std::vector<int> mergedVec(leftHalf.size() + rightHalf.size());
-//   merge(leftHalf.begin(), leftHalf.end(), rightHalf.begin(), rightHalf.end(), mergedVec.begin());
-//   return mergedVec;
-// }
-
 std::vector<int> batcherSort(const std::vector<int>& vec1, const std::vector<int>& vec2) {
   std::vector<int> oddElements = getOddElements(vec1, vec2);
   std::vector<int> evenElements = getEvenElements(vec1, vec2);
