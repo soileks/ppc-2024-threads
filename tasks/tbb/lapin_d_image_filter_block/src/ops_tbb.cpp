@@ -1,7 +1,8 @@
 // Copyright 2024 Lapin Dmitriy
-#include "omp/lapin_d_image_filter_block/include/ops_omp.hpp"
+#include "tbb/lapin_d_image_filter_block/include/ops_tbb.hpp"
 
-#include <omp.h>
+#include <tbb/parallel_for.h>
+#include <tbb/tbb.h>
 
 #include <cmath>
 #include <iostream>
@@ -33,7 +34,7 @@ std::vector<std::vector<double>> create2DFilter(int n, double sigma) {
   return filter;
 }
 
-bool BlockFilterOMPTaskSequential::pre_processing() {
+bool BlockFilterTBBTaskSequential::pre_processing() {
   internal_order_test();
   height = taskData->inputs_count[0];
   width = taskData->inputs_count[1];
@@ -42,12 +43,12 @@ bool BlockFilterOMPTaskSequential::pre_processing() {
   return true;
 }
 
-bool BlockFilterOMPTaskSequential::validation() {
+bool BlockFilterTBBTaskSequential::validation() {
   internal_order_test();
   return taskData->inputs_count[0] > 0 && taskData->inputs_count[1] > 0;
 }
 
-bool BlockFilterOMPTaskSequential::run() {
+bool BlockFilterTBBTaskSequential::run() {
   internal_order_test();
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
   for (int i = 0; i < height; i++) {
@@ -66,12 +67,12 @@ bool BlockFilterOMPTaskSequential::run() {
   return true;
 }
 
-bool BlockFilterOMPTaskSequential::post_processing() {
+bool BlockFilterTBBTaskSequential::post_processing() {
   internal_order_test();
   return true;
 }
 
-bool BlockFilterOMPTaskParallel::pre_processing() {
+bool BlockFilterTBBTaskParallel::pre_processing() {
   internal_order_test();
   height = taskData->inputs_count[0];
   width = taskData->inputs_count[1];
@@ -80,32 +81,34 @@ bool BlockFilterOMPTaskParallel::pre_processing() {
   return true;
 }
 
-bool BlockFilterOMPTaskParallel::validation() {
+bool BlockFilterTBBTaskParallel::validation() {
   internal_order_test();
   return taskData->inputs_count[0] > 0 && taskData->inputs_count[1] > 0;
 }
 
-bool BlockFilterOMPTaskParallel::run() {
+bool BlockFilterTBBTaskParallel::run() {
   internal_order_test();
   std::vector<std::vector<double>> kernel = create2DFilter(3, 1);
-#pragma omp parallel for
-  for (int i = 0; i < height; i++) {
-    for (int j = 0; j < width; j++) {
-      double result = 0;
-      for (int l = -1; l <= 1; l++) {
-        for (int k = -1; k <= 1; k++) {
-          int idX = Clamp(i + k, 0, height - 1);
-          int idY = Clamp(j + l, 0, width - 1);
-          result += (*mas_in)[idX][idY] * kernel[k + 1][l + 1];
-        }
-      }
-      (*mas_out)[i][j] = Clamp((int)result, 0, 255);
-    }
-  }
+  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int, int>(0, height, 0, width),
+                            [&](oneapi::tbb::blocked_range2d<int, int> &r) {
+                              for (int i = r.rows().begin(), i_end = r.rows().end(); i < i_end; i++) {
+                                for (int j = r.cols().begin(), j_end = r.cols().end(); j < j_end; j++) {
+                                  double result = 0;
+                                  for (int l = -1; l <= 1; l++) {
+                                    for (int k = -1; k <= 1; k++) {
+                                      int idX = Clamp(i + k, 0, height - 1);
+                                      int idY = Clamp(j + l, 0, width - 1);
+                                      result += (*mas_in)[idX][idY] * kernel[k + 1][l + 1];
+                                    }
+                                  }
+                                  (*mas_out)[i][j] = Clamp((int)result, 0, 255);
+                                }
+                              }
+                            });
   return true;
 }
 
-bool BlockFilterOMPTaskParallel::post_processing() {
+bool BlockFilterTBBTaskParallel::post_processing() {
   internal_order_test();
   return true;
 }

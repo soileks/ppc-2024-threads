@@ -4,9 +4,9 @@
 
 #include "core/task/include/task.hpp"
 
-class BlockFilterOMPTaskSequential : public ppc::core::Task {
+class BlockFilterTBBTaskSequential : public ppc::core::Task {
  public:
-  explicit BlockFilterOMPTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit BlockFilterTBBTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -19,9 +19,9 @@ class BlockFilterOMPTaskSequential : public ppc::core::Task {
   std::vector<std::vector<int>> *mas_out;
 };
 
-class BlockFilterOMPTaskParallel : public ppc::core::Task {
+class BlockFilterTBBTaskParallel : public ppc::core::Task {
  public:
-  explicit BlockFilterOMPTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit BlockFilterTBBTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

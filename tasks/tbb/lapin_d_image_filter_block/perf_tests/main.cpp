@@ -1,11 +1,11 @@
 // Copyright 2024 Lapin Dmitriy
 #include <gtest/gtest.h>
-#include <omp.h>
+#include <oneapi/tbb.h>
 
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/lapin_d_image_filter_block/include/ops_omp.hpp"
+#include "tbb/lapin_d_image_filter_block/include/ops_tbb.hpp"
 
 TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   // Create TaskData
@@ -31,23 +31,19 @@ TEST(lapin_d_image_filter_block, test_pipeline_run_4000x4000) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  auto testTaskOMP = std::make_shared<BlockFilterOMPTaskParallel>(taskDataSeq);
+  auto testTaskTBB = std::make_shared<BlockFilterTBBTaskParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = omp_get_wtime();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = omp_get_wtime();
-    auto duration = current_time_point - t0;
-    return duration;
-  };
+  const auto t0 = oneapi::tbb::tick_count::now();
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
@@ -76,23 +72,19 @@ TEST(lapin_d_image_filter_block, test_task_run_run4000x4000) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  auto testTaskOMP = std::make_shared<BlockFilterOMPTaskParallel>(taskDataSeq);
+  auto testTaskTBB = std::make_shared<BlockFilterTBBTaskParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = omp_get_wtime();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = omp_get_wtime();
-    auto duration = current_time_point - t0;
-    return duration;
-  };
+  const auto t0 = oneapi::tbb::tick_count::now();
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }

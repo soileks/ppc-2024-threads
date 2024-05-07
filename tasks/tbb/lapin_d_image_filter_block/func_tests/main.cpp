@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-#include "omp/lapin_d_image_filter_block/include/ops_omp.hpp"
+#include "tbb/lapin_d_image_filter_block/include/ops_tbb.hpp"
 
 TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   // Create data
@@ -36,11 +36,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  BlockFilterOMPTaskSequential blockFilterOMPTaskSequential(taskDataSeq);
-  ASSERT_EQ(blockFilterOMPTaskSequential.validation(), true);
-  blockFilterOMPTaskSequential.pre_processing();
-  blockFilterOMPTaskSequential.run();
-  blockFilterOMPTaskSequential.post_processing();
+  BlockFilterTBBTaskSequential blockFilterTBBTaskSequential(taskDataSeq);
+  ASSERT_EQ(blockFilterTBBTaskSequential.validation(), true);
+  blockFilterTBBTaskSequential.pre_processing();
+  blockFilterTBBTaskSequential.run();
+  blockFilterTBBTaskSequential.post_processing();
 
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
@@ -55,11 +55,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_6x8) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
-  BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
-  ASSERT_EQ(blockFilterOMPTaskParallel.validation(), true);
-  blockFilterOMPTaskParallel.pre_processing();
-  blockFilterOMPTaskParallel.run();
-  blockFilterOMPTaskParallel.post_processing();
+  BlockFilterTBBTaskParallel blockFilterTBBTaskParallel(taskDataPar);
+  ASSERT_EQ(blockFilterTBBTaskParallel.validation(), true);
+  blockFilterTBBTaskParallel.pre_processing();
+  blockFilterTBBTaskParallel.run();
+  blockFilterTBBTaskParallel.post_processing();
   ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
@@ -91,11 +91,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  BlockFilterOMPTaskSequential blockFilterOMPTaskSequential(taskDataSeq);
-  ASSERT_EQ(blockFilterOMPTaskSequential.validation(), true);
-  blockFilterOMPTaskSequential.pre_processing();
-  blockFilterOMPTaskSequential.run();
-  blockFilterOMPTaskSequential.post_processing();
+  BlockFilterTBBTaskSequential blockFilterTBBTaskSequential(taskDataSeq);
+  ASSERT_EQ(blockFilterTBBTaskSequential.validation(), true);
+  blockFilterTBBTaskSequential.pre_processing();
+  blockFilterTBBTaskSequential.run();
+  blockFilterTBBTaskSequential.post_processing();
 
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
@@ -110,11 +110,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_60x80) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
-  BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
-  ASSERT_EQ(blockFilterOMPTaskParallel.validation(), true);
-  blockFilterOMPTaskParallel.pre_processing();
-  blockFilterOMPTaskParallel.run();
-  blockFilterOMPTaskParallel.post_processing();
+  BlockFilterTBBTaskParallel blockFilterTBBTaskParallel(taskDataPar);
+  ASSERT_EQ(blockFilterTBBTaskParallel.validation(), true);
+  blockFilterTBBTaskParallel.pre_processing();
+  blockFilterTBBTaskParallel.run();
+  blockFilterTBBTaskParallel.post_processing();
   ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
@@ -146,11 +146,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  BlockFilterOMPTaskSequential blockFilterOMPTaskSequential(taskDataSeq);
-  ASSERT_EQ(blockFilterOMPTaskSequential.validation(), true);
-  blockFilterOMPTaskSequential.pre_processing();
-  blockFilterOMPTaskSequential.run();
-  blockFilterOMPTaskSequential.post_processing();
+  BlockFilterTBBTaskSequential blockFilterTBBTaskSequential(taskDataSeq);
+  ASSERT_EQ(blockFilterTBBTaskSequential.validation(), true);
+  blockFilterTBBTaskSequential.pre_processing();
+  blockFilterTBBTaskSequential.run();
+  blockFilterTBBTaskSequential.post_processing();
 
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
@@ -165,11 +165,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_100x200) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
-  BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
-  ASSERT_EQ(blockFilterOMPTaskParallel.validation(), true);
-  blockFilterOMPTaskParallel.pre_processing();
-  blockFilterOMPTaskParallel.run();
-  blockFilterOMPTaskParallel.post_processing();
+  BlockFilterTBBTaskParallel blockFilterTBBTaskParallel(taskDataPar);
+  ASSERT_EQ(blockFilterTBBTaskParallel.validation(), true);
+  blockFilterTBBTaskParallel.pre_processing();
+  blockFilterTBBTaskParallel.run();
+  blockFilterTBBTaskParallel.post_processing();
   ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
@@ -201,11 +201,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  BlockFilterOMPTaskSequential blockFilterOMPTaskSequential(taskDataSeq);
-  ASSERT_EQ(blockFilterOMPTaskSequential.validation(), true);
-  blockFilterOMPTaskSequential.pre_processing();
-  blockFilterOMPTaskSequential.run();
-  blockFilterOMPTaskSequential.post_processing();
+  BlockFilterTBBTaskSequential blockFilterTBBTaskSequential(taskDataSeq);
+  ASSERT_EQ(blockFilterTBBTaskSequential.validation(), true);
+  blockFilterTBBTaskSequential.pre_processing();
+  blockFilterTBBTaskSequential.run();
+  blockFilterTBBTaskSequential.post_processing();
 
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
@@ -220,11 +220,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_200x200) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
-  BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
-  ASSERT_EQ(blockFilterOMPTaskParallel.validation(), true);
-  blockFilterOMPTaskParallel.pre_processing();
-  blockFilterOMPTaskParallel.run();
-  blockFilterOMPTaskParallel.post_processing();
+  BlockFilterTBBTaskParallel blockFilterTBBTaskParallel(taskDataPar);
+  ASSERT_EQ(blockFilterTBBTaskParallel.validation(), true);
+  blockFilterTBBTaskParallel.pre_processing();
+  blockFilterTBBTaskParallel.run();
+  blockFilterTBBTaskParallel.post_processing();
   ASSERT_EQ(out[0][0], out_2[0][0]);
 }
 
@@ -256,11 +256,11 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out));
 
   // Create Task
-  BlockFilterOMPTaskSequential blockFilterOMPTaskSequential(taskDataSeq);
-  ASSERT_EQ(blockFilterOMPTaskSequential.validation(), true);
-  blockFilterOMPTaskSequential.pre_processing();
-  blockFilterOMPTaskSequential.run();
-  blockFilterOMPTaskSequential.post_processing();
+  BlockFilterTBBTaskSequential blockFilterTBBTaskSequential(taskDataSeq);
+  ASSERT_EQ(blockFilterTBBTaskSequential.validation(), true);
+  blockFilterTBBTaskSequential.pre_processing();
+  blockFilterTBBTaskSequential.run();
+  blockFilterTBBTaskSequential.post_processing();
 
   std::vector<std::vector<int>> out_2(height);
   for (int i = 0; i < height; i++) {
@@ -275,10 +275,10 @@ TEST(lapin_d_image_filter_block_parallel, Test_Lapin_test_300x300) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&out_2));
 
   // Create Task
-  BlockFilterOMPTaskParallel blockFilterOMPTaskParallel(taskDataPar);
-  ASSERT_EQ(blockFilterOMPTaskParallel.validation(), true);
-  blockFilterOMPTaskParallel.pre_processing();
-  blockFilterOMPTaskParallel.run();
-  blockFilterOMPTaskParallel.post_processing();
+  BlockFilterTBBTaskParallel blockFilterTBBTaskParallel(taskDataPar);
+  ASSERT_EQ(blockFilterTBBTaskParallel.validation(), true);
+  blockFilterTBBTaskParallel.pre_processing();
+  blockFilterTBBTaskParallel.run();
+  blockFilterTBBTaskParallel.post_processing();
   ASSERT_EQ(out[0][0], out_2[0][0]);
 }
