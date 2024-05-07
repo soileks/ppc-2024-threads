@@ -60,7 +60,6 @@ std::vector<Point> JarvisAlgo(const std::vector<Point>& arrPoints) {
   return convexHull;
 }
 
-
 std::vector<Point> JarvisAlgo_tbb(const std::vector<Point>& arrPoints, int threadsNom) {
   std::vector<std::vector<Point>> localResults(threadsNom);
 
