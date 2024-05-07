@@ -1,8 +1,6 @@
 // Copyright 2024 Kosarev Egor
 #include <gtest/gtest.h>
 
-
-
 #include "tbb/kosarev_e_jarvis/include/ops_tbb.hpp"
 
 TEST(Kosarev_e_jarvis_tbb, Test_hull_one) {

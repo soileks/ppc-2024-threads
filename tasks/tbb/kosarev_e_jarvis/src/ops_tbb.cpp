@@ -1,7 +1,6 @@
 // Copyright 2024 Kosarev Egor
 #include "tbb/kosarev_e_jarvis/include/ops_tbb.hpp"
 
-
 namespace Kosarev_e_tbb_KosarevJarvisHull {
 
 int orientation(const Point& p, const Point& q, const Point& r) {

@@ -1,13 +1,13 @@
 // Copyright 2024 Kosarev Egor
 #pragma once
 #include <tbb/tbb.h>
+
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <random>
 #include <string>
 #include <utility>
-
 #include <vector>
 
 #include "core/task/include/task.hpp"
