@@ -109,12 +109,12 @@ bool TestTaskTbbKosarevJarvisHull::validation() {
 
 bool TestTaskTbbKosarevJarvisHull::run() {
   internal_order_test();
-  convexHullPoints = JarvisAlgo_tbb(points, 5);
+  pointsHull = JarvisAlgo_tbb(points, 5);
   return true;
 }
 bool TestTaskTbbKosarevJarvisHull::post_processing() {
   internal_order_test();
-  std::copy(convexHullPoints.begin(), convexHullPoints.end(), reinterpret_cast<Point*>(taskData->outputs[0]));
+  std::copy(pointsHull.begin(), pointsHull.end(), reinterpret_cast<Point*>(taskData->outputs[0]));
   return true;
 }
 

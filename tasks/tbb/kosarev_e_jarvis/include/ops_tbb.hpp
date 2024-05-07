@@ -44,7 +44,7 @@ class TestTaskTbbKosarevJarvisHull : public ppc::core::Task {
 
  private:
   std::vector<Point> points;
-  std::vector<Point> convexHullPoints;
+  std::vector<Point> pointsHull;
 };
 
 std::vector<Point> generateRandomPoints(int numPoints, int minX, int maxX, int minY, int maxY);

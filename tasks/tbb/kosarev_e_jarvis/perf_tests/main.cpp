@@ -51,7 +51,7 @@ TEST(kosarev_e_jarvis_hull_tbb, test_pipeline_run) {
   }
 }
 
-TEST(kosarev_e_jarvis_hull_omp, test_task_run) {
+TEST(kosarev_e_jarvis_hull_tbb, test_task_run) {
   std::vector<Kosarev_e_tbb_KosarevJarvisHull::Point> points =
       Kosarev_e_tbb_KosarevJarvisHull::generateRandomPoints(120000, -1400, 1400, -1400, 1400);
   std::vector<Kosarev_e_tbb_KosarevJarvisHull::Point> resHull = points;
