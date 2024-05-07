@@ -1,4 +1,4 @@
-// Copyright 2024 Nedelin Dmitry
+//  Copyright 2024 Nedelin Dmitry
 #pragma once
 
 #ifndef TASKS_OMP_NEDELIN_D_OMP_CANNONS_ALGORITHM_INCLUDE_OPS_OMP_HPP
