@@ -9,6 +9,7 @@
 #include "tbb/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
 
 TEST(KashinDijkstraTbbTest, test_pipeline_run) {
+
   const int vertexCount = 5000;
   const int edgeWeight = 100;
   const int start = 0;
