@@ -29,4 +29,4 @@ class Dijkstra : public ppc::core::Task {
   int start{};
   int count{};
 };
-}  // namespace KashinDijkstraOmp
+}  // namespace KashinDijkstraTbb
