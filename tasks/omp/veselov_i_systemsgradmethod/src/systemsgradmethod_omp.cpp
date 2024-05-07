@@ -1,6 +1,6 @@
 // Copyright 2024 Veselov Ilya
 
-#include "seq/veselov_i_systemsgradmethod/include/systemsgradmethod_seq.hpp"
+#include "omp/veselov_i_systemsgradmethod/include/systemsgradmethod_omp.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -9,11 +9,16 @@
 #include <random>
 #include <thread>
 
+#include "omp.h"
+
 using namespace std::chrono_literals;
 
+namespace veselov_i_omp {
 double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double result = 0.0;
-  for (size_t i = 0; i < aa.size(); ++i) {
+  int aaSize = aa.size();
+#pragma omp parallel for reduction(+ : result)
+  for (int i = 0; i < aaSize; ++i) {
     result += aa[i] * bb[i];
   }
   return result;
@@ -21,6 +26,7 @@ double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) 
 
 std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n) {
   std::vector<double> result(n, 0.0);
+#pragma omp parallel for
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
       result[i] += Aa[i * n + j] * xx[j];
@@ -39,17 +45,23 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
   while (true) {
     std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
     double alpha = dotProduct(r, r) / dotProduct(Ap, p);
-    for (size_t i = 0; i < res.size(); ++i) {
+
+#pragma omp parallel for
+    for (int i = 0; i < n; ++i) {
       res[i] += alpha * p[i];
     }
-    for (size_t i = 0; i < r.size(); ++i) {
+
+#pragma omp parallel for
+    for (int i = 0; i < n; ++i) {
       r[i] = r_old[i] - alpha * Ap[i];
     }
     if (sqrt(dotProduct(r, r)) < tol) {
       break;
     }
     double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
-    for (size_t i = 0; i < p.size(); ++i) {
+
+#pragma omp parallel for
+    for (int i = 0; i < n; ++i) {
       p[i] = r[i] + beta * p[i];
     }
     r_old = r;
@@ -57,7 +69,7 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
   return res;
 }
 
-bool SystemsGradMethodSeq::pre_processing() {
+bool SystemsGradMethodOmp::pre_processing() {
   try {
     internal_order_test();
     A = std::vector<double>(taskData->inputs_count[0]);
@@ -74,13 +86,13 @@ bool SystemsGradMethodSeq::pre_processing() {
   return true;
 }
 
-bool SystemsGradMethodSeq::validation() {
+bool SystemsGradMethodOmp::validation() {
   internal_order_test();
   return taskData->inputs_count[0] == taskData->inputs_count[1] * taskData->inputs_count[1] &&
          taskData->inputs_count[1] == taskData->outputs_count[0];
 }
 
-bool SystemsGradMethodSeq::run() {
+bool SystemsGradMethodOmp::run() {
   try {
     internal_order_test();
     x = SLEgradSolver(A, b, rows);
@@ -90,7 +102,7 @@ bool SystemsGradMethodSeq::run() {
   return true;
 }
 
-bool SystemsGradMethodSeq::post_processing() {
+bool SystemsGradMethodOmp::post_processing() {
   internal_order_test();
   for (size_t i = 0; i < x.size(); ++i) {
     reinterpret_cast<double *>(taskData->outputs[0])[i] = x[i];
@@ -102,6 +114,7 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
                    double tol) {
   int n = bb.size();
   std::vector<double> Ax(n, 0.0);
+#pragma omp parallel for
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
       Ax[i] += Aa[i * n + j] * xx[j];
@@ -139,3 +152,4 @@ std::vector<double> genRandomMatrix(int size, int maxVal) {
   }
   return matrix;
 }
+}  // namespace veselov_i_omp

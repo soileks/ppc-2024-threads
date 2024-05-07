@@ -5,14 +5,15 @@
 
 #include "core/task/include/task.hpp"
 
-class SystemsGradMethodSeq : public ppc::core::Task {
+namespace veselov_i_omp {
+class SystemsGradMethodOmp : public ppc::core::Task {
   std::vector<double> A;
   std::vector<double> b;
   std::vector<double> x;
   int rows;
 
  public:
-  explicit SystemsGradMethodSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit SystemsGradMethodOmp(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -23,3 +24,4 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
                    double tol = 1e-6);
 std::vector<double> genRandomVector(int size, int maxVal);
 std::vector<double> genRandomMatrix(int size, int maxVal);
+}  // namespace veselov_i_omp
