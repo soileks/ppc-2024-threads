@@ -89,7 +89,6 @@ std::vector<Point> JarvisAlgo_tbb(const std::vector<Point>& arrPoints, int threa
   return JarvisAlgo(res);
 }
 
-
 bool TestTaskTbbKosarevJarvisHull::pre_processing() {
   internal_order_test();
   // Init value for input and output
