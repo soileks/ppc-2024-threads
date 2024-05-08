@@ -14,7 +14,7 @@ TEST(shemiakina_a_ShellSort_OMP, pipeline_run) {
   std::vector<int> out(count, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataOMP = std::make_shared<ppc::core::TaskData>();  // NOLINT
+  std::shared_ptr<ppc::core::TaskData> taskDataOMP = std::make_shared<ppc::core::TaskData>();
   taskDataOMP->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataOMP->inputs_count.emplace_back(in.size());
   taskDataOMP->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));

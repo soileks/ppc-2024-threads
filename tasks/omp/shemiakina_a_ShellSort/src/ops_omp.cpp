@@ -76,18 +76,18 @@ std::vector<int> ShellTaskOMP::merge(const std::vector<std::vector<int>>& chunks
 }
 
 void ShellTaskOMP::ShellSort_Parallel(std::vector<int>& input) {
-  int numProcs = omp_get_num_procs();
+  int num_procs = omp_get_num_procs();
   int size = static_cast<int>(input.size());
-  int chunkSize = size / numProcs;
-  int remainder = size % numProcs;
+  int chunk_size = size / num_procs;
+  int remainder = size % num_procs;
 
-  std::vector<std::vector<int>> chunks(numProcs);
+  std::vector<std::vector<int>> chunks(num_procs);
 
 #pragma omp parallel for
-  for (int i = 0; i < numProcs; ++i) {
-    int startIdx = i * chunkSize;
-    int endIdx = startIdx + chunkSize;
-    if (i == numProcs - 1) {
+  for (int i = 0; i < num_procs; ++i) {
+    int startIdx = i * chunk_size;
+    int endIdx = startIdx + chunk_size;
+    if (i == num_procs - 1) {
       endIdx += remainder;  // Add remaining elements to the last chunk
     }
     chunks[i].assign(input.begin() + startIdx, input.begin() + endIdx);
