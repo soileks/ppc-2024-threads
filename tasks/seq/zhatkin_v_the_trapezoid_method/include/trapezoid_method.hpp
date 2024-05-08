@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+
 #include "core/task/include/task.hpp"
 
 class ZhatkinTaskSequential : public ppc::core::Task {

@@ -4,7 +4,6 @@
 
 double trapezoidal_integral(std::function<double(double, double)> f, double lowerx, double upperx, int nx,
                             double lowery, double uppery, int ny) {
-
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
   double sum = 0.5 * (f(lowerx, lowery) + f(upperx, uppery));
@@ -19,8 +18,6 @@ double trapezoidal_integral(std::function<double(double, double)> f, double lowe
 
   return hx * hy * sum;
 }
-
-
 
 bool ZhatkinTaskSequential::pre_processing() {
   internal_order_test();
