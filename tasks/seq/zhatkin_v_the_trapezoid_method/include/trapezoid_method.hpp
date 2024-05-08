@@ -2,17 +2,17 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
 #include <functional>
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 #include "core/task/include/task.hpp"
 
 class ZhatkinTaskSequential : public ppc::core::Task {
  public:
   explicit ZhatkinTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_,
-      std::function<double(double, double)> func)
+                                 std::function<double(double, double)> func)
       : Task(std::move(taskData_)), f(std::move(func)) {}
   bool pre_processing() override;
   bool validation() override;
@@ -25,6 +25,5 @@ class ZhatkinTaskSequential : public ppc::core::Task {
   int nx{}, ny{};
 };
 
-double trapezoidal_integral(std::function<double(double, double)> f,
-    double lowerx, double upperx, int nx,
-    double lowery, double uppery, int ny);
+double trapezoidal_integral(std::function<double(double, double)> f, double lowerx, double upperx, int nx,
+                            double lowery, double uppery, int ny);

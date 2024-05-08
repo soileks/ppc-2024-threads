@@ -2,9 +2,8 @@
 
 #include "seq/zhatkin_v_the_trapezoid_method/include/trapezoid_method.hpp"
 
-double trapezoidal_integral(std::function<double(double, double)> f,
-    double lowerx, double upperx, int nx,
-    double lowery, double uppery, int ny) {
+double trapezoidal_integral(std::function<double(double, double)> f, double lowerx, double upperx, int nx,
+                            double lowery, double uppery, int ny) {
 
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
@@ -33,8 +32,7 @@ bool ZhatkinTaskSequential::pre_processing() {
     uppery = reinterpret_cast<double*>(taskData->inputs[0])[3];
     nx = reinterpret_cast<int*>(taskData->inputs[1])[0];
     ny = reinterpret_cast<int*>(taskData->inputs[1])[1];
-  }
-  catch (...) {
+  } catch (...) {
     return false;
   }
 
@@ -42,15 +40,14 @@ bool ZhatkinTaskSequential::pre_processing() {
 }
 
 bool ZhatkinTaskSequential::post_processing() {
-    internal_order_test();
-    reinterpret_cast<double*>(taskData->outputs[0])[0] = res;
-    return true;
+  internal_order_test();
+  reinterpret_cast<double*>(taskData->outputs[0])[0] = res;
+  return true;
 }
 
 bool ZhatkinTaskSequential::validation() {
   internal_order_test();
-  return taskData->inputs_count[0] == 4 && taskData->inputs_count[1] == 2
-      && taskData->outputs_count[0] == 1;
+  return taskData->inputs_count[0] == 4 && taskData->inputs_count[1] == 2 && taskData->outputs_count[0] == 1;
 }
 
 bool ZhatkinTaskSequential::run() {
