@@ -38,8 +38,7 @@ bool KashinDijkstraTbb::Dijkstra::validation() {
 bool KashinDijkstraTbb::Dijkstra::run() {
   internal_order_test();
   const int num_threads = tbb::task_scheduler_init::default_num_threads();
-  tbb::parallel_for(tbb::blocked_range<int>(0, count, 1),
-    [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, count, 1), [&](const tbb::blocked_range<int>& r) {
       for (int i = r.begin(); i < r.end(); ++i) {
         std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, KashinDijkstraTbb::Compare> tpq;
         // Process graph segments to build initial distance
@@ -83,8 +82,7 @@ bool KashinDijkstraTbb::Dijkstra::run() {
 bool KashinDijkstraTbb::Dijkstra::post_processing() {
   internal_order_test();
   int* out_ptr = reinterpret_cast<int*>(taskData->outputs[0]);
-  tbb::parallel_for(tbb::blocked_range<int>(0, count, 1),
-    [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, count, 1), [&](const tbb::blocked_range<int>& r) {
       for (int i = r.begin(); i < r.end(); ++i) {
         out_ptr[i] = distance[i];
       }
