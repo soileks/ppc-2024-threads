@@ -100,7 +100,6 @@ void ShellTaskOMP::ShellSort_Parallel(std::vector<int>& input) {
 }
 
 void ShellTaskOMP::ShellSort(std::vector<int>& vec) {
-
   for (int interval = static_cast<int>(vec.size()) / 2; interval > 0; interval /= 2) {
     for (int i = interval; i < static_cast<int>(vec.size()); i++) {
       int tmp = vec[i];
