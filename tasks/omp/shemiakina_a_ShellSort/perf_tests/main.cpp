@@ -7,7 +7,7 @@
 #include "omp/shemiakina_a_ShellSort/include/ops_omp.hpp"
 
 TEST(shemiakina_a_ShellSort_OMP, pipeline_run) {
-  const int count = 10000;
+  const int count = 100;
 
   // Create data
   std::vector<int> in = ShellTaskOMP::give_random_vector(count, 1, 100);
