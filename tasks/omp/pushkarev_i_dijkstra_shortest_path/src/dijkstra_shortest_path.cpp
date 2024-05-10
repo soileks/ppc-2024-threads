@@ -60,9 +60,12 @@ bool DijkstraTaskOMP::run() {
         }
 
         int weight = e.cost + v.cost;
-        if (weight < distances_[e.vertex]) {
-          distances_[e.vertex] = weight;
-          pq.emplace(e.vertex, weight);
+#pragma omp critical
+        {
+          if (weight < distances_[e.vertex]) {
+            distances_[e.vertex] = weight;
+            pq.emplace(e.vertex, weight);
+          }
         }
       }
     }
