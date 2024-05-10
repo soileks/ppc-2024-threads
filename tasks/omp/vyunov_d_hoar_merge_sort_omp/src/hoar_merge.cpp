@@ -36,7 +36,6 @@ bool HoareSortSimpleSeq::run() {
   try {
     internal_order_test();
     HoarSort(&array, 0, array.size() - 1);
-    std::this_thread::sleep_for(20ms);
   } catch (...) {
     return false;
   }
