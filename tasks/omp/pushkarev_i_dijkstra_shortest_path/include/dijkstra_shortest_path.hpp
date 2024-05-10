@@ -19,8 +19,8 @@ class DijkstraTaskOMP : public ppc::core::Task {
     int cost;
 
     Node(const int v, const int c) : vertex(v), cost(c) {}
-    bool operator>(Node const& n) const { return cost > n.cost; }
-    bool operator<(Node const& n) const { return cost < n.cost; }
+    // bool operator>(Node const& n) const { return cost > n.cost; }
+    // bool operator<(Node const& n) const { return cost < n.cost; }
     friend bool operator<(Node const& n1, Node const& n2) { return n1.cost < n2.cost; }
   };
 
