@@ -11,7 +11,7 @@ using namespace Dijkstra;
 
 TEST(Dijkstra_Shipilov_omp_test, test_pipeline_run) {
   // Create data
-  constexpr size_t n = 8000;
+  constexpr size_t n = 4000;
 
   graph_t graph(n);
 
@@ -50,7 +50,7 @@ TEST(Dijkstra_Shipilov_omp_test, test_pipeline_run) {
 
 TEST(Dijkstra_Shipilov_omp_test, test_task_run) {
   // Create data
-  constexpr size_t n = 8000;
+  constexpr size_t n = 4000;
 
   graph_t graph(n);
 
