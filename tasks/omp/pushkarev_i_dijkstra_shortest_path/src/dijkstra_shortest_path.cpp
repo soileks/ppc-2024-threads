@@ -68,7 +68,6 @@ void DijkstraTaskOMP::relaxVertex(size_t u, size_t v) {
   distances_[v] = std::min(distances_[v], distances_[u] + graph[u][v]);
 }
 
-
 bool DijkstraTaskOMP::post_processing() {
   internal_order_test();
 
