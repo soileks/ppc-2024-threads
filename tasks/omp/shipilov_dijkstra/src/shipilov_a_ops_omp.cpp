@@ -7,6 +7,8 @@
 #include <thread>
 #include <vector>
 
+#include "omp.h"
+
 using namespace std::chrono_literals;
 
 using namespace Dijkstra;
@@ -51,11 +53,11 @@ std::vector<path_data_t> graph_t::calculate_paths_omp(const node_id_t &start_nod
 
   result[start_node].parent = start_node;
   result[start_node].summary_dist = 0;
-  calculated[start_node] = true;
 
   node_id_t current_node = start_node;
 
   for (int i = 0; i < graph_size; i++) {
+    calculated[current_node] = true;
     const auto &node_edges = _graph[current_node];
     const int sz = node_edges.size();
     auto current_weight = result[current_node].summary_dist;
@@ -71,17 +73,27 @@ std::vector<path_data_t> graph_t::calculate_paths_omp(const node_id_t &start_nod
       }
     }
 
-    node_id_t nearest_node{};
-    weight_t minimal_dist = std::numeric_limits<weight_t>::max();
-#pragma omp parallel for
-    for (int k = 0; k < graph_size; k++) {
-      if (!calculated[k] && result[k].summary_dist < minimal_dist) {
-        minimal_dist = result[k].summary_dist;
-        nearest_node = k;
+    std::vector<node_id_t> thread_nearest_node(omp_get_max_threads(), invalid_node_id);
+#pragma omp parallel
+    {
+      int thread_id = omp_get_thread_num();
+      node_id_t &nearest_node = thread_nearest_node[thread_id];
+#pragma omp for
+      for (int k = 0; k < graph_size; k++) {
+        if (!calculated[k] &&
+            (nearest_node == invalid_node_id || result[k].summary_dist < result[nearest_node].summary_dist)) {
+          nearest_node = k;
+        }
       }
     }
 
-    calculated[nearest_node] = true;
+    node_id_t nearest_node = thread_nearest_node[0];
+    for (int thread_id = 1; thread_id < omp_get_max_threads(); ++thread_id)
+      if (thread_nearest_node[thread_id] != invalid_node_id &&
+          (nearest_node == invalid_node_id ||
+           result[thread_nearest_node[thread_id]].summary_dist < result[nearest_node].summary_dist))
+        nearest_node = thread_nearest_node[thread_id];
+
     current_node = nearest_node;
   }
 
