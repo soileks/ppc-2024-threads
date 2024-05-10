@@ -6,13 +6,19 @@
 #include <atomic>
 #include <limits>
 #include <memory>
+#include <queue>
 #include <thread>
+#include <utility>
 
 bool DijkstraTaskOMP::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
   source = *reinterpret_cast<int*>(taskData->inputs[1]);
   distances_ = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
+  for (size_t i = 0; i < distances_.size(); ++i) {
+    distances_[i] = std::numeric_limits<int>::max();
+  }
+  distances_[source] = 0;
   return true;
 }
 
@@ -31,30 +37,43 @@ bool DijkstraTaskOMP::validation() {
 
 bool DijkstraTaskOMP::run() {
   internal_order_test();
-  size_t n = distances_.size();
-  for (size_t i = 0; i < n; i++) {
-    distances_[i] = std::numeric_limits<int>::max();
-  }
-  distances_[source] = 0;
-  std::vector<bool> processed(n, false);
 
-  for (size_t count = 0; count < n; count++) {
-    size_t u = getMinDistanceVertex(processed);
-    processed[u] = true;
-    for (size_t v = 0; v < n; v++) {
-      if (!processed[v] && (graph[u][v] != 0) && (distances_[u] != std::numeric_limits<int>::max()) &&
-          distances_[u] + graph[u][v] < distances_[v]) {
-        relaxVertex(u, v);
+  int n = distances_.size();
+
+#pragma omp parallel
+  {
+    std::priority_queue<Node, std::vector<Node>> pq;
+    pq.emplace(source, 0);
+    while (!pq.empty()) {
+      // debug();
+      Node v = pq.top();
+      pq.pop();
+
+      for (int i = 0; i < n; i++) {
+        if (i == v.vertex) {
+          continue;
+        }
+
+        Node e(i, graph[v.vertex][i]);
+        if (e.cost == 0) {
+          continue;
+        }
+
+        int weight = e.cost + v.cost;
+        if (weight < distances_[e.vertex]) {
+          distances_[e.vertex] = weight;
+          pq.emplace(e.vertex, weight);
+        }
       }
     }
   }
   return true;
 }
 
-size_t DijkstraTaskOMP::getMinDistanceVertex(const std::vector<bool>& processed) {
+size_t DijkstraTaskOMP::getMinDistanceVertexOMP(const std::vector<bool>& processed) {
   size_t min_dist = std::numeric_limits<size_t>::max();
   size_t min_index = 0;
-
+#pragma omp parallel for
   for (size_t v = 0; v < distances_.size(); v++) {
     if (!processed[v] && (size_t)distances_[v] <= min_dist) {
       min_dist = distances_[v];

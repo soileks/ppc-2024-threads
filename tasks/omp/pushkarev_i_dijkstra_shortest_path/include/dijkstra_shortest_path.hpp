@@ -14,6 +14,16 @@ class DijkstraTaskOMP : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
+  struct Node {
+    int vertex;
+    int cost;
+
+    Node(const int v, const int c) : vertex(v), cost(c) {}
+    bool operator>(Node const& n) { return cost > n.cost; }
+    bool operator<(Node const& n) { return cost < n.cost; }
+    friend bool operator<(Node const& n1, Node const& n2) { return n1.cost < n2.cost; }
+  };
+
  private:
   std::vector<int> distances_;
 
@@ -21,8 +31,18 @@ class DijkstraTaskOMP : public ppc::core::Task {
   int source;
 
   void initializeDistances();
-  size_t getMinDistanceVertex(const std::vector<bool>& processed);
+  size_t getMinDistanceVertexOMP(const std::vector<bool>& processed);
   void relaxVertex(size_t u, size_t v);
+
+  // void debug()
+  // {
+  //   std::cout<<"\n";
+  //   for (int i =0;i<(int)distances_.size(); ++i)
+  //   {
+  //     std::cout<< '['<<i<<"] "<<distances_[i]<<"; ";
+  //   }
+  //   std::cout<<"\n";
+  // }
 };
 
 class DijkstraTask : public ppc::core::Task {
