@@ -41,7 +41,8 @@ TEST(kostanyan_a_sobel_seq, Test_EdgeDetection) {
                2 * pict[i * m + j + 1] - pict[(i + 1) * m + j - 1] + pict[(i + 1) * m + j + 1];
       int gy = pict[(i - 1) * m + j - 1] + 2 * pict[(i - 1) * m + j] + pict[(i - 1) * m + j + 1] -
                pict[(i + 1) * m + j - 1] - 2 * pict[(i + 1) * m + j] - pict[(i + 1) * m + j + 1];
-      uint8_t expected = sqrt(gx * gx + gy * gy);
+      double edge_strength = sqrt(gx * gx + gy * gy);
+      uint8_t expected = edge_strength > 255 ? 255 : static_cast<uint8_t>(edge_strength);
       ASSERT_EQ(expected, out[i * m + j]);
     }
   }
@@ -169,13 +170,15 @@ TEST(kostanyan_a_sobel_seq, Test_Large_Image) {
   kostanyan_EdgeDetectionSequential.run();
   kostanyan_EdgeDetectionSequential.post_processing();
 
+  // Check result
   for (int i = 1; i < n - 1; i++) {
     for (int j = 1; j < m - 1; j++) {
       int gx = -pict[(i - 1) * m + j - 1] + pict[(i - 1) * m + j + 1] - 2 * pict[i * m + j - 1] +
                2 * pict[i * m + j + 1] - pict[(i + 1) * m + j - 1] + pict[(i + 1) * m + j + 1];
       int gy = pict[(i - 1) * m + j - 1] + 2 * pict[(i - 1) * m + j] + pict[(i - 1) * m + j + 1] -
                pict[(i + 1) * m + j - 1] - 2 * pict[(i + 1) * m + j] - pict[(i + 1) * m + j + 1];
-      uint8_t expected = sqrt(gx * gx + gy * gy);
+      double edge_strength = sqrt(gx * gx + gy * gy);
+      uint8_t expected = edge_strength > 255 ? 255 : static_cast<uint8_t>(edge_strength);
       ASSERT_EQ(expected, out[i * m + j]);
     }
   }

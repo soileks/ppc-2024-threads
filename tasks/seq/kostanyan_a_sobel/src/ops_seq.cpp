@@ -56,6 +56,7 @@ bool kostanyan_EdgeDetectionSequential::run() {
     }
   }
 
+
   return true;
 }
 
