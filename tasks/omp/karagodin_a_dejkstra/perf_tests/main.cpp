@@ -1,11 +1,12 @@
 // Copyright Andrey Karagodin 2024
 #include <gtest/gtest.h>
+#include <omp.h>
 
-#include <seq/karagodin_a_dejkstra/include/dejkstra_seq.hpp>
+#include <omp/karagodin_a_dejkstra/include/dejkstra_omp.hpp>
 
 #include "core/perf/include/perf.hpp"
 
-TEST(karagodin_a_dejkstra_seq_perf_test, test_pipeline_run) {
+TEST(karagodin_a_dejkstra_omp_perf_test, test_pipeline_run) {
   // Create data
   int entryNode = 0;
   int destNode = 999;
@@ -19,18 +20,15 @@ TEST(karagodin_a_dejkstra_seq_perf_test, test_pipeline_run) {
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&graphMap));
   taskDataSeq->inputs_count.emplace_back(size);
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&result));
+
   // Create Task
-  auto dejkstra_seq = std::make_shared<DejkstraTaskSequential>(taskDataSeq);
+  auto dejkstra_seq = std::make_shared<DejkstraTaskOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
@@ -41,7 +39,7 @@ TEST(karagodin_a_dejkstra_seq_perf_test, test_pipeline_run) {
   ASSERT_EQ(result, result);
 }
 
-TEST(karagodin_a_dejkstra_seq_perf_test, test_task_run) {
+TEST(karagodin_a_dejkstra_omp_perf_test, test_task_run) {
   // Create data
   int entryNode = 0;
   int destNode = 1199;
@@ -57,23 +55,18 @@ TEST(karagodin_a_dejkstra_seq_perf_test, test_task_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&result));
 
   // Create Task
-  auto dejkstra_seq = std::make_shared<DejkstraTaskSequential>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<DejkstraTaskOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(dejkstra_seq);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(result, result);
