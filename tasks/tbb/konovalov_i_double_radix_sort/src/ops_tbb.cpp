@@ -1,9 +1,9 @@
 // Copyright 2024 Konovalov Igor
+#include "tbb/konovalov_i_double_radix_sort/include/ops_tbb.hpp"
+
 #include <tbb/parallel_for.h>
 
 #include <thread>
-
-#include "tbb/konovalov_i_double_radix_sort/include/ops_tbb.hpp"
 
 using namespace std::chrono_literals;
 
@@ -59,8 +59,7 @@ bool RadixSortTBBTaskParallel::run() {
       chunks[(uint8_t)val * input_size + chunk_sizes[(uint8_t)val]] = input_[i];
       chunk_sizes[(uint8_t)val]++;
     }
-    tbb::parallel_for(
-      tbb::blocked_range<size_t>(0, max_val), [=, this](const tbb::blocked_range<size_t>& r) {
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, max_val), [=, this](const tbb::blocked_range<size_t>& r) {
       std::vector<double> local_ordered_chunks[sizeof(double) * max_val];
       for (size_t i = r.begin(); i < r.end(); i++) {
         radix_sort_seq(chunks + i * input_size, chunk_sizes[i], local_ordered_chunks);
