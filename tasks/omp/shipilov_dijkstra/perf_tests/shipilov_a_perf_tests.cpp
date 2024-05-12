@@ -22,7 +22,7 @@ TEST(Dijkstra_Shipilov_omp_test, test_pipeline_run) {
       graph.add_edge(j, edge_t(i, w));
     }
   }
-  // Create TaskData 
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
 
   // Create Task
