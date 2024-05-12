@@ -10,7 +10,7 @@
 using namespace Dijkstra;
 
 TEST(Dijkstra_Shipilov_seq_test, test_pipeline_run) {
-  // Create data
+  // Create data 
   constexpr size_t n = 4000;
 
   graph_t graph(n);
