@@ -1,7 +1,6 @@
 // Copyright 2024 Soloninko Andrey
 #include "tbb/soloninko_a_radix_int_batcher/include/ops_tbb.hpp"
 
-#include <omp.h>
 #include <tbb/tbb.h>
 
 namespace SoloninkoTBBBatcher {
