@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/lebedeva_ksenia_radix_double_with_batcher/include/ops_omp.hpp"
+#include "omp/lebedeva_ksenia_bitwise_sort_double_batcher/include/ops_omp.hpp"
 
 TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_pipeline_run) {
   // Create data

@@ -50,5 +50,5 @@ std::vector<double> batchersMergeOmp(std::vector<std::vector<double>>& subvector
 void partSortOmp(std::vector<std::vector<double>>& parts, std::vector<double>& side);
 std::vector<double> radixSortWithBatcherOmp(std::vector<double> vec);
 
-std::vector<double> randomVector(int size_vec, double min_value, double max_value);
+std::vector<double> randomVector(int sizeVec, double minValue, double maxValue);
 }  // namespace LebedevaKOmp
