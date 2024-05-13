@@ -6,7 +6,7 @@
 
 TEST(lebedeva_k_bitwise_sort_double_batcher, arr) {
   // Create data
-  std::vector<double> arr = {3.587, 7.924, 0.315, 5.871, 2.108, 9.736, 4.269, 6.482, 1.593, 8.175};
+  std::vector<double> arr = {3.587, 7.924, 0.315, 5.871, 2.108, 9.736, 4.269, 6.482, 1.593, 8.176};
   // Create data
   std::vector<double> out_seq(arr.size());
 
