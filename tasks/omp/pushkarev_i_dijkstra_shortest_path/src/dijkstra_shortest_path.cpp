@@ -45,7 +45,6 @@ bool DijkstraTaskOMP::run() {
     std::priority_queue<Node, std::vector<Node>> pq;
     pq.emplace(source, 0);
     while (!pq.empty()) {
-      // debug();
       Node v = pq.top();
       pq.pop();
 
