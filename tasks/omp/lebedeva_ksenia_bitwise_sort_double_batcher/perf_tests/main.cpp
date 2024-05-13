@@ -11,12 +11,12 @@ TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_pipeline_run) {
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array .data()));
-  RSDBDataOmp->inputs_count.emplace_back(array .size());
+  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataOmp->inputs_count.emplace_back(array.size());
   RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   RSDBDataOmp->outputs_count.emplace_back(out.size());
 
-  std::vector<double> result (array);
+  std::vector<double> result(array);
   std::sort(result.begin(), result.end());
 
   // Create Task
@@ -42,17 +42,17 @@ TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_pipeline_run) {
 TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_task_run) {
   // Create data
   std::vector<double> array  = LebedevaK::randomVector(1000000, -1000000, 1000000);
-  std::vector<double> out(array .size());
+  std::vector<double> out(array.size());
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> RSDBDataOmp = std::make_shared<ppc::core::TaskData>();
-  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array .data()));
-  RSDBDataOmp->inputs_count.emplace_back(array .size());
+  RSDBDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(array.data()));
+  RSDBDataOmp->inputs_count.emplace_back(array.size());
   RSDBDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   RSDBDataOmp->outputs_count.emplace_back(out.size());
 
   std::vector<double> result(array);
-  std::sort(result.begin(), result.end());
+  std::sort(result.begin(),result.end());
 
   // Create Task
   auto testRSDBompParallel = std::make_shared<LebedevaKOmp::RadixSortDoubleWithBatcherOmpParallel>(RSDBDataOmp);
