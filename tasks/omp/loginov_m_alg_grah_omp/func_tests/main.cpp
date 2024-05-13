@@ -55,15 +55,12 @@ TEST(loginov_m_alg_grah_omp, Test1) {
 TEST(loginov_m_alg_grah_omp, Test2) {
   // Create data
   std::vector<LoginovOmp::LoginovPoint> points = {
-      LoginovOmp::LoginovPoint(-0.7, 2.4),  LoginovOmp::LoginovPoint(1.8, 1.1),
-      LoginovOmp::LoginovPoint(0.5, -0.8),  LoginovOmp::LoginovPoint(0.3, 1.6),
-      LoginovOmp::LoginovPoint(-1.7, 1.43), LoginovOmp::LoginovPoint(-0.2, 0.4),
-      LoginovOmp::LoginovPoint(-0.3, -1.5), LoginovOmp::LoginovPoint(1.4, -0.6),
-      LoginovOmp::LoginovPoint(0.8, 0.5),   LoginovOmp::LoginovPoint(1.3, 1.5),
-      LoginovOmp::LoginovPoint(0.3, -1.1),  LoginovOmp::LoginovPoint(-1.7, 0.6),
-      LoginovOmp::LoginovPoint(-0.7, -0.5), LoginovOmp::LoginovPoint(1.5, 0.7),
-      LoginovOmp::LoginovPoint(-1.7, -0.5), LoginovOmp::LoginovPoint(-0.7, 1.3),
-      LoginovOmp::LoginovPoint(-1.3, 1.5),  LoginovOmp::LoginovPoint(0.2, 2.4),
+      LoginovOmp::LoginovPoint(-0.7, 2.4),  LoginovOmp::LoginovPoint(1.8, 1.1),   LoginovOmp::LoginovPoint(0.5, -0.8),
+      LoginovOmp::LoginovPoint(0.3, 1.6),   LoginovOmp::LoginovPoint(-1.7, 1.43), LoginovOmp::LoginovPoint(-0.2, 0.4),
+      LoginovOmp::LoginovPoint(-0.3, -1.5), LoginovOmp::LoginovPoint(1.4, -0.6),  LoginovOmp::LoginovPoint(0.8, 0.5),
+      LoginovOmp::LoginovPoint(1.3, 1.5),   LoginovOmp::LoginovPoint(0.3, -1.1),  LoginovOmp::LoginovPoint(-1.7, 0.6),
+      LoginovOmp::LoginovPoint(-0.7, -0.5), LoginovOmp::LoginovPoint(1.5, 0.7),   LoginovOmp::LoginovPoint(-1.7, -0.5),
+      LoginovOmp::LoginovPoint(-0.7, 1.3),  LoginovOmp::LoginovPoint(-1.3, 1.5),  LoginovOmp::LoginovPoint(0.2, 2.4),
       LoginovOmp::LoginovPoint(1.9, -0.3)};
 
   std::vector<LoginovOmp::LoginovPoint> mchSeq(13);
@@ -108,12 +105,10 @@ TEST(loginov_m_alg_grah_omp, Test2) {
 TEST(loginov_m_alg_grah_omp, Test3) {
   // Create data
   std::vector<LoginovOmp::LoginovPoint> points = {
-      LoginovOmp::LoginovPoint(-1.4, 2.2), LoginovOmp::LoginovPoint(2.2, 2.2),
-      LoginovOmp::LoginovPoint(-0.6, 2.2), LoginovOmp::LoginovPoint(-2.3, 2.2),
-      LoginovOmp::LoginovPoint(2.7, 2.2),  LoginovOmp::LoginovPoint(0.6, 2.2),
-      LoginovOmp::LoginovPoint(1.7, 2.2),  LoginovOmp::LoginovPoint(-3.4, 2.2),
-      LoginovOmp::LoginovPoint(5.3, 2.2),  LoginovOmp::LoginovPoint(4.4, 2.2),
-      LoginovOmp::LoginovPoint(3.4, 2.2)};
+      LoginovOmp::LoginovPoint(-1.4, 2.2), LoginovOmp::LoginovPoint(2.2, 2.2),  LoginovOmp::LoginovPoint(-0.6, 2.2),
+      LoginovOmp::LoginovPoint(-2.3, 2.2), LoginovOmp::LoginovPoint(2.7, 2.2),  LoginovOmp::LoginovPoint(0.6, 2.2),
+      LoginovOmp::LoginovPoint(1.7, 2.2),  LoginovOmp::LoginovPoint(-3.4, 2.2), LoginovOmp::LoginovPoint(5.3, 2.2),
+      LoginovOmp::LoginovPoint(4.4, 2.2),  LoginovOmp::LoginovPoint(3.4, 2.2)};
   std::vector<LoginovOmp::LoginovPoint> mchSeq(2);
 
   // Create TaskData
@@ -198,7 +193,7 @@ TEST(loginov_m_alg_grah_omp, Test4) {
 TEST(loginov_m_alg_grah_omp, Test5) {
   // Create data
   std::vector<LoginovOmp::LoginovPoint> points = {LoginovOmp::LoginovPoint(2.4, -2.9),
-                                                    LoginovOmp::LoginovPoint(-1.8, 4.2)};
+                                                  LoginovOmp::LoginovPoint(-1.8, 4.2)};
   std::vector<LoginovOmp::LoginovPoint> mchSeq(2);
 
   // Create TaskData

@@ -37,7 +37,7 @@ double LoginovOmp::LoginovPoint::angle(const LoginovOmp::LoginovPoint& p) const 
 }
 
 bool LoginovOmp::LoginovPoint::operator()(const LoginovOmp::LoginovPoint& p0,
-                                            const LoginovOmp::LoginovPoint& p1) const {
+                                          const LoginovOmp::LoginovPoint& p1) const {
   bool res = false;
   double angle1 = p0.angle((*this));
   double angle2 = p0.angle(p1);
@@ -60,8 +60,7 @@ void LoginovOmp::LoginovPoint::swap(LoginovOmp::LoginovPoint& p2) {
   p2 = tmp;
 }
 
-int LoginovOmp::LoginovPoint::Compare(const LoginovOmp::LoginovPoint& pivot,
-                                        const LoginovOmp::LoginovPoint& P) const {
+int LoginovOmp::LoginovPoint::Compare(const LoginovOmp::LoginovPoint& pivot, const LoginovOmp::LoginovPoint& P) const {
   int res = 0;  // ==
   double x1 = pivot.x - x;
   double y1 = pivot.y - y;

@@ -16,9 +16,8 @@ TEST(loginov_m_alg_grah_omp, test_pipeline_run) {
       LoginovOmp::LoginovPoint(min, min)};
   std::vector<LoginovOmp::LoginovPoint> randomPoints = LoginovOmp::LoginovRandomPoints(min, max, size);
   points.insert(points.end(), randomPoints.begin(), randomPoints.end());
-  std::vector<LoginovOmp::LoginovPoint> res = {
-      LoginovOmp::LoginovPoint(min, min), LoginovOmp::LoginovPoint(max, min), LoginovOmp::LoginovPoint(max, max),
-      LoginovOmp::LoginovPoint(min, max)};
+  std::vector<LoginovOmp::LoginovPoint> res = {LoginovOmp::LoginovPoint(min, min), LoginovOmp::LoginovPoint(max, min),
+                                               LoginovOmp::LoginovPoint(max, max), LoginovOmp::LoginovPoint(min, max)};
   std::vector<LoginovOmp::LoginovPoint> mch(res.size());
 
   // Create TaskData
@@ -60,9 +59,8 @@ TEST(loginov_m_alg_grah_omp, test_task_run) {
       LoginovOmp::LoginovPoint(min, min)};
   std::vector<LoginovOmp::LoginovPoint> randomPoints = LoginovOmp::LoginovRandomPoints(min, max, size);
   points.insert(points.end(), randomPoints.begin(), randomPoints.end());
-  std::vector<LoginovOmp::LoginovPoint> res = {
-      LoginovOmp::LoginovPoint(min, min), LoginovOmp::LoginovPoint(max, min), LoginovOmp::LoginovPoint(max, max),
-      LoginovOmp::LoginovPoint(min, max)};
+  std::vector<LoginovOmp::LoginovPoint> res = {LoginovOmp::LoginovPoint(min, min), LoginovOmp::LoginovPoint(max, min),
+                                               LoginovOmp::LoginovPoint(max, max), LoginovOmp::LoginovPoint(min, max)};
   std::vector<LoginovOmp::LoginovPoint> mch(res.size());
 
   // Create TaskData
