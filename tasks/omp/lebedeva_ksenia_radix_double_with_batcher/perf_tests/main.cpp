@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/lebedeva_k_radix_double_with_batcher/include/ops_omp.hpp"
+#include "omp/lebedeva_ksenia_radix_double_with_batcher/include/ops_omp.hpp"
 
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_pipeline_run) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_pipeline_run) {
   // Create data
   std::vector<double> arr = LebedevaKOmp::randomVector(1000000, -1000000, 1000000);
   std::vector<double> out(arr.size());
@@ -39,7 +39,7 @@ TEST(lebedeva_k_bitwise_sort_double_batcher, test_pipeline_run) {
   }
 }
 
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_task_run) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_task_run) {
   // Create data
   std::vector<double> arr = LebedevaK::randomVector(1000000, -1000000, 1000000);
   std::vector<double> out(arr.size());

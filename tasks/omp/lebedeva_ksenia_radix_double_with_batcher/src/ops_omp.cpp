@@ -1,5 +1,5 @@
 // Copyright 2024 Lebedeva Ksenia
-#include "omp/lebedeva_k_bitwise_sort_double_batcher/include/ops_omp.hpp"
+#include "omp/lebedeva_ksenia_bitwise_sort_double_batcher/include/ops_omp.hpp"
 
 namespace LebedevaKOmp {
 

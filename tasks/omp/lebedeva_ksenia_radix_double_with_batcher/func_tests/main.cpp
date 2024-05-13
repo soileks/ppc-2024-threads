@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include "omp/lebedeva_k_bitwise_sort_double_batcher/include/ops_omp.hpp"
+#include "omp/lebedeva_ksenia_bitwise_sort_double_batcher/include/ops_omp.hpp"
 
-TEST(lebedeva_k_bitwise_sort_double_batcher, arr) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, arr) {
   // Create data
   std::vector<double> arr = {3.587, 7.924, 0.315, 5.871, 2.108, 9.736, 4.269, 6.482, 1.593, 8.176};
   // Create data
@@ -90,7 +90,7 @@ TEST(lebedeva_k_bitwise_sort_double_batcher, test_arr_2) {
     ASSERT_EQ(out_seq[i], out_par[i]);
   }
 }
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_empty) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_empty) {
   // Create data
   std::vector<double> arr = {};
   // Create data
@@ -131,7 +131,7 @@ TEST(lebedeva_k_bitwise_sort_double_batcher, test_empty) {
     ASSERT_EQ(out_seq[i], out_par[i]);
   }
 }
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_one_number) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_one_number) {
   // Create data
   std::vector<double> arr = {1};
   // Create data
@@ -172,7 +172,7 @@ TEST(lebedeva_k_bitwise_sort_double_batcher, test_one_number) {
     ASSERT_EQ(out_seq[i], out_par[i]);
   }
 }
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_with_negative) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_with_negative) {
   // Create data
   std::vector<double> arr = {-3.217, 5.678, -1.234, 8.901, -2.345, 6.789, 4.321,
                              -7.654, 2.109, -9.876, 0.543, 3.456,  -8.765};
@@ -215,7 +215,7 @@ TEST(lebedeva_k_bitwise_sort_double_batcher, test_with_negative) {
   }
 }
 
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_random) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_random) {
   // Create data
   std::vector<double> arr = LebedevaKOmp::randomVector(1000, -1000000, 1000000);
   // Create data
