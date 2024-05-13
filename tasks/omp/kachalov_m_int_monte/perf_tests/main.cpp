@@ -13,7 +13,6 @@
 using integ_func = double (*)(double, double);
 double Integral_sum(double x, double y) { return x + y; }
 
-
 TEST(kachalov_m_int_monte_omp, test_omp_monte_carlo) {
   double res = 8;
   integ_func f = Integral_sum;
