@@ -3,10 +3,10 @@
 
 #include <omp.h>
 
-#include <vector>
 #include <algorithm>
-#include <random>
 #include <cstdint>
+#include <random>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
