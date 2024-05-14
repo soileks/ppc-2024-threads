@@ -94,7 +94,7 @@ void CalculateTempAnsAdams(uint32_t start, uint32_t end, int16_t stepCount, uint
 
 void CalculateAdams(uint32_t start, uint32_t end, uint32_t resSize, double h, uint32_t i, uint32_t ind, uint32_t offset,
                     uint16_t numberOfSteps, const std::vector<double>& equation,
-                    const std::vector<std::vector<double>> res, std::vector<std::vector<double>>& tempAns) {
+                    const std::vector<std::vector<double>>& res, std::vector<std::vector<double>>& tempAns) {
   if (start >= end) {
     return;
   }
