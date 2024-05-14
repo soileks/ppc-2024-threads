@@ -1,4 +1,4 @@
-// Copyright 2024 Novostroev Ivan
+// Copyright 2024 Novostroev Ivan I
 
 #include "omp/novostroev_i_task2_batcher_merge_sort/include/ops_omp.hpp"
 
