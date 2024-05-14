@@ -46,7 +46,7 @@ TEST(lebedeva_ksenia_bitwise_sort_double_batcher, arr) {
   }
 }
 
-TEST(lebedeva_k_bitwise_sort_double_batcher, test_arr_2) {
+TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_arr_2) {
   // Create data
   std::vector<double> arr = {1.345, 5.672, 8.943, 3.219, 6.785, 9.234, 2.109, 4.567, 7.890, 0.123, 2.456, 6.789, 3.456,
                              8.901, 1.234, 9.876, 5.432, 0.987, 4.321, 7.654, 2.109, 8.765, 3.098, 9.876, 0.543, 6.789,

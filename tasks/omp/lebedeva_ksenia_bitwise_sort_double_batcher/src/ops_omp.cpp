@@ -8,11 +8,11 @@ constexpr int sizeDouble = sizeof(double);
 bool RadixSortDoubleWithBatcherSequential::pre_processing() {
   internal_order_test();
   // Init value for input and output
-  arr = std::vector<double>(taskData->inputs_count[0]);
+  array = std::vector<double>(taskData->inputs_count[0]);
 
   auto *temp_arr = reinterpret_cast<double *>(taskData->inputs[0]);
   for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
-    arr[i] = temp_arr[i];
+    array[i] = temp_arr[i];
   }
   return true;
 }
@@ -25,13 +25,13 @@ bool RadixSortDoubleWithBatcherSequential::validation() {
 
 bool RadixSortDoubleWithBatcherSequential::run() {
   internal_order_test();
-  res = radixSortBatcherSeq(arr);
+  result = radixSortWithBatcherSeq(array);
   return true;
 }
 
 bool RadixSortDoubleWithBatcherSequential::post_processing() {
   internal_order_test();
-  std::copy(res.begin(), res.end(), reinterpret_cast<double *>(taskData->outputs[0]));
+  std::copy(result.begin(), result.end(), reinterpret_cast<double *>(taskData->outputs[0]));
   return true;
 }
 
@@ -105,11 +105,11 @@ std::vector<double> radixSortWithBatcherSeq(std::vector<double> vec) {
 bool RadixSortDoubleWithBatcherOmpParallel::pre_processing() {
   internal_order_test();
   // Init value for input and output
-  arr = std::vector<double>(taskData->inputs_count[0]);
+  array = std::vector<double>(taskData->inputs_count[0]);
 
   auto *temp_arr = reinterpret_cast<double *>(taskData->inputs[0]);
   for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
-    arr[i] = temp_arr[i];
+    array[i] = temp_arr[i];
   }
   return true;
 }
@@ -122,13 +122,13 @@ bool RadixSortDoubleWithBatcherOmpParallel::validation() {
 
 bool RadixSortDoubleWithBatcherOmpParallel::run() {
   internal_order_test();
-  res = radixSortWithBatcherOmp(arr);
+  result = radixSortWithBatcherOmp(array);
   return true;
 }
 
 bool RadixSortDoubleWithBatcherOmpParallel::post_processing() {
   internal_order_test();
-  std::copy(res.begin(), res.end(), reinterpret_cast<double *>(taskData->outputs[0]));
+  std::copy(result.begin(), result.end(), reinterpret_cast<double *>(taskData->outputs[0]));
   return true;
 }
 
