@@ -51,7 +51,6 @@ std::vector<Point> JarvisAlgo(const std::vector<Point>& arrPoints) {
         nextPoint = point;
       }
     }
-
     if (nextPoint == startPoint) break;
     convexHull.push_back(nextPoint);
     prevPoint = nextPoint;
