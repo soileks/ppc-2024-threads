@@ -1,11 +1,11 @@
 // Copyright 2024 Kriseev Mikhail
 #include <gtest/gtest.h>
+#include <tbb/tbb.h>
 
 #include <random>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include <tbb/tbb.h>
 #include "tbb/kriseev_m_convex_hull_graham/include/kriseev_m_convex_hull_tbb.hpp"
 
 TEST(kriseev_m_convex_hull_graham_tbb, test_pipeline_run) {
@@ -55,9 +55,7 @@ TEST(kriseev_m_convex_hull_graham_tbb, test_pipeline_run) {
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
-  perfAttr->current_timer = [&] {
-    return (oneapi::tbb::tick_count::now() - t0).seconds();
-  };
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -123,9 +121,7 @@ TEST(kriseev_m_convex_hull_graham_tbb, test_task_run) {
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
-  perfAttr->current_timer = [&] {
-    return (oneapi::tbb::tick_count::now() - t0).seconds();
-  };
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();

@@ -80,31 +80,33 @@ bool KriseevMTaskTbb::ConvexHullTask::run() {
   auto origin = *originIt;
   for (size_t phase = 0; phase < points.size(); phase++) {
     if ((phase & 1) == 0) {
-      tbb::parallel_for(tbb::blocked_range<size_t>(1, points.size(), points.size() / grainSizeDenominator), [origin, this](const tbb::blocked_range<size_t> &r) {
-        size_t begin = r.begin();
-        const size_t end = r.end();
-        if ((begin & 1) == 0) {
-          begin++;
-        }
-        for (size_t i = begin; i < end; i += 2) {
-          if (compareForSort1(origin, points[i], points[i - 1])) {
-            std::iter_swap(points.begin() + i, points.begin() + i - 1);
-          }
-        }
-      });
+      tbb::parallel_for(tbb::blocked_range<size_t>(1, points.size(), points.size() / grainSizeDenominator),
+                        [origin, this](const tbb::blocked_range<size_t> &r) {
+                          size_t begin = r.begin();
+                          const size_t end = r.end();
+                          if ((begin & 1) == 0) {
+                            begin++;
+                          }
+                          for (size_t i = begin; i < end; i += 2) {
+                            if (compareForSort1(origin, points[i], points[i - 1])) {
+                              std::iter_swap(points.begin() + i, points.begin() + i - 1);
+                            }
+                          }
+                        });
     } else {
-      tbb::parallel_for(tbb::blocked_range<size_t>(1, points.size() - 1, points.size() / grainSizeDenominator), [origin, this](const tbb::blocked_range<size_t> &r) {
-        size_t begin = r.begin();
-        const size_t end = r.end();
-        if ((begin & 1) == 0) {
-          begin++;
-        }
-        for (size_t i = begin; i < end; i += 2) {
-          if (compareForSort1(origin, points[i + 1], points[i])) {
-            std::iter_swap(points.begin() + i, points.begin() + i + 1);
-          }
-        }
-      });
+      tbb::parallel_for(tbb::blocked_range<size_t>(1, points.size() - 1, points.size() / grainSizeDenominator),
+                        [origin, this](const tbb::blocked_range<size_t> &r) {
+                          size_t begin = r.begin();
+                          const size_t end = r.end();
+                          if ((begin & 1) == 0) {
+                            begin++;
+                          }
+                          for (size_t i = begin; i < end; i += 2) {
+                            if (compareForSort1(origin, points[i + 1], points[i])) {
+                              std::iter_swap(points.begin() + i, points.begin() + i + 1);
+                            }
+                          }
+                        });
     }
   }
 
