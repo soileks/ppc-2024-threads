@@ -8,6 +8,7 @@
 
 #include "core/task/include/task.hpp"
 
+namespace BorisovSaveliySEQ {
 struct Point {
   int x, y;
 
@@ -50,3 +51,4 @@ class ConvexHullSequential : public ppc::core::Task {
   static bool isInside(const std::vector<Point>& convexHull, const Point& point);
   static bool pointIsToTheRight(const Point& previous, const Point& current, const Point& potential);
 };
+}  // namespace BorisovSaveliySEQ
