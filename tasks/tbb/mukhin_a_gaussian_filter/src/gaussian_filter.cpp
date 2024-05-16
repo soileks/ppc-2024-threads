@@ -54,33 +54,19 @@ void mukhin_i_tbb::GaussianFilterTBB::filter_to_image() {
   int BlockSize = width_input / GridSize;
   tbb::task_arena arena(4);
   arena.execute([&]{
-    tbb::parallel_for(tbb::blocked_range2d<uint32_t>(0, static_cast<uint32_t>(BlockSize), 0, static_cast<uint32_t>(BlockSize)), [&](const tbb::blocked_range2d<uint32_t>& r){
-      auto thread_id = tbb::this_task_arena::current_thread_index();
-      auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
-      auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
-      for (uint32_t i = r.rows().begin(); i < r.rows().end(); i++) { 
-        for (uint32_t j = r.cols().begin(); j < r.cols().end(); j++) {
-          image.get_pixel(i + i_start, j + j_start) = get_new_pixel(i + i_start, j + j_start);
-        }
+    tbb::parallel_for(tbb::blocked_range<uint32_t>(0, 3), [&](const tbb::blocked_range<uint32_t>& r){
+      for (uint32_t i = r.begin(); i < r.end(); i++) {
+        auto thread_id = tbb::this_task_arena::current_thread_index();
+        auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
+        auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
+        for (int i = 0; i < BlockSize; i++) { 
+          for (int j = 0; j < BlockSize; j++) {
+            image.get_pixel(i + i_start, j + j_start) = get_new_pixel(i + i_start, j + j_start);
+          }
+        }  
       }
     });  
   });
-  //tbb::parallel_for(tbb::blocked_range<uint32_t>(0, static_cast<uint32_t>(BlockSize)), [&](const tbb::blocked_range<uint32_t>& r){
-  //  auto thread_id = tbb::this_task_arena::current_thread_index();
-  //  auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
-  //  auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
-  //  for (uint32_t i = r.begin(); i < r.end(); i++) {
-  //    for (uint32_t j = r.begin(); j < r.end(); j++) {
-  //      std::cout << i << " " << j << std::endl;
-  //      image.get_pixel(i+ i_start, j+ j_start) = get_new_pixel(i+ i_start, j+ j_start);
-  //    }
-  //  }
-  //});
-  //for (uint32_t i = 0; i < width_input; i++) {
-  //  for (uint32_t j = 0; j < height_input; j++) {
-  //    image.get_pixel(i, j) = get_new_pixel(i, j);
-  //  }
-  //}
 }
 
 Pixel mukhin_i_tbb::GaussianFilterTBB::get_new_pixel(uint32_t w, uint32_t h) {
