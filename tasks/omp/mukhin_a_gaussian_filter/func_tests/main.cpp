@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <vector>
 
-#include "seq/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
-#include "seq/mukhin_a_gaussian_filter/include/pixel_map.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/pixel_map.hpp"
 
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_black_pixel_map) {
   // Create data
@@ -26,7 +26,7 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_black_pixel_map) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  GaussianFilterSeq testTaskSequential(taskDataSeq);
+  mukhin_i_omp::GaussianFilterOMP testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -52,7 +52,7 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_white_pixel_map) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  GaussianFilterSeq testTaskSequential(taskDataSeq);
+  mukhin_i_omp::GaussianFilterOMP testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   ASSERT_EQ(testTaskSequential.run(), true);
@@ -77,7 +77,7 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_middle_pixel_map) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  GaussianFilterSeq testTaskSequential(taskDataSeq);
+  mukhin_i_omp::GaussianFilterOMP testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -103,7 +103,7 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_small_pixel_map) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  GaussianFilterSeq testTaskSequential(taskDataSeq);
+  mukhin_i_omp::GaussianFilterOMP testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
@@ -129,7 +129,7 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_big_pixel_map) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  GaussianFilterSeq testTaskSequential(taskDataSeq);
+  mukhin_i_omp::GaussianFilterOMP testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();

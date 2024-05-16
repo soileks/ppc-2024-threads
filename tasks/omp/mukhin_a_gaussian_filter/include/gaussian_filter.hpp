@@ -5,11 +5,12 @@
 #include <cstdint>
 
 #include "core/task/include/task.hpp"
-#include "seq/mukhin_a_gaussian_filter/include/pixel_map.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/pixel_map.hpp"
 
-class GaussianFilterSeq : public ppc::core::Task {
+namespace mukhin_i_omp {
+class GaussianFilterOMP : public ppc::core::Task {
  public:
-  explicit GaussianFilterSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit GaussianFilterOMP(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -31,3 +32,4 @@ class GaussianFilterSeq : public ppc::core::Task {
 
   Pixel get_new_pixel(uint32_t w, uint32_t h);
 };
+}  // namespace mukhin_i_omp

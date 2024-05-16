@@ -1,5 +1,5 @@
 // Copyright 2024 Mukhin Ivan
-#include "seq/mukhin_a_gaussian_filter/include/pixel_map.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/pixel_map.hpp"
 
 #include <cstdint>
 

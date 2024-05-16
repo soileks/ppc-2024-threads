@@ -1,13 +1,15 @@
 // Copyright 2024 Mukhin Ivan
-#include "seq/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+
+#include <omp.h>
 
 #include <cmath>
 #include <cstdint>
 #include <cstring>
 
-#include "seq/mukhin_a_gaussian_filter/include/pixel_map.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/pixel_map.hpp"
 
-bool GaussianFilterSeq::pre_processing() {
+bool mukhin_i_omp::GaussianFilterOMP::pre_processing() {
   internal_order_test();
   input = taskData->inputs[0];
   output = taskData->outputs[0];
@@ -20,34 +22,48 @@ bool GaussianFilterSeq::pre_processing() {
   return true;
 }
 
-bool GaussianFilterSeq::validation() {
+bool mukhin_i_omp::GaussianFilterOMP::validation() {
   internal_order_test();
   return taskData->inputs_count[0] >= 3 && taskData->inputs_count[1] >= 3 &&
          taskData->outputs_count[0] == taskData->inputs_count[0] &&
          taskData->outputs_count[1] == taskData->inputs_count[1];
 }
 
-bool GaussianFilterSeq::post_processing() {
+bool mukhin_i_omp::GaussianFilterOMP::post_processing() {
   internal_order_test();
   std::memcpy(output, image.data.data(), width_input * height_input * 3);
   return true;
 }
 
-bool GaussianFilterSeq::run() {
+bool mukhin_i_omp::GaussianFilterOMP::run() {
   internal_order_test();
   filter_to_image();
   return true;
 }
 
-void GaussianFilterSeq::filter_to_image() {
-  for (uint32_t i = 0; i < width_input; i++) {
-    for (uint32_t j = 0; j < height_input; j++) {
-      image.get_pixel(i, j) = get_new_pixel(i, j);
+void mukhin_i_omp::GaussianFilterOMP::filter_to_image() {
+  int Size = static_cast<int>(width_input);
+  int GridThreadsNum = 4;
+  int ThreadID;
+  int GridSize = static_cast<int>(std::sqrt(static_cast<double>(GridThreadsNum)));
+  int BlockSize = Size / GridSize;
+  omp_set_num_threads(GridThreadsNum);
+#pragma omp parallel private(ThreadID)
+  {
+    ThreadID = omp_get_thread_num();
+    int i_start = static_cast<uint32_t>((ThreadID / GridSize) * BlockSize);
+    int j_start = static_cast<uint32_t>((ThreadID % GridSize) * BlockSize);
+    for (int i = 0; i < BlockSize; i++) {
+      for (int j = 0; j < BlockSize; j++) {
+        auto ii = static_cast<uint32_t>(i);
+        auto jj = static_cast<uint32_t>(j);
+        image.get_pixel(ii + i_start, jj + j_start) = get_new_pixel(ii + i_start, jj + j_start);
+      }
     }
   }
 }
 
-Pixel GaussianFilterSeq::get_new_pixel(uint32_t w, uint32_t h) {
+Pixel mukhin_i_omp::GaussianFilterOMP::get_new_pixel(uint32_t w, uint32_t h) {
   double result_r = 0;
   double result_b = 0;
   double result_g = 0;
@@ -65,13 +81,13 @@ Pixel GaussianFilterSeq::get_new_pixel(uint32_t w, uint32_t h) {
   return Pixel({(uint8_t)std::round(result_r), (uint8_t)std::round(result_g), (uint8_t)std::round(result_b)});
 }
 
-uint32_t GaussianFilterSeq::clamp(uint32_t value, uint32_t max) {
+uint32_t mukhin_i_omp::GaussianFilterOMP::clamp(uint32_t value, uint32_t max) {
   if (value < 0) return 0;
   if (value >= max) return max - 1;
   return value;
 }
 
-void GaussianFilterSeq::create_gaussian_kernel() {
+void mukhin_i_omp::GaussianFilterOMP::create_gaussian_kernel() {
   double sigm = 2.0;
   double norm = 0.0;
   for (int i = -rad; i <= rad; i++) {

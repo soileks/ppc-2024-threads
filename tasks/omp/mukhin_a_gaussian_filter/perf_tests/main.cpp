@@ -1,10 +1,11 @@
 // Copyright 2024 Mukhin Ivan
 #include <gtest/gtest.h>
+#include <omp.h>
 
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
+#include "omp/mukhin_a_gaussian_filter/include/gaussian_filter.hpp"
 
 TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
   // Create data
@@ -24,23 +25,18 @@ TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<GaussianFilterSeq>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<mukhin_i_omp::GaussianFilterOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(out, expected);
@@ -64,23 +60,18 @@ TEST(mukhin_i_a_gaussian_filter_block, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  auto testTaskSequential = std::make_shared<GaussianFilterSeq>(taskDataSeq);
+  auto testTaskOMP = std::make_shared<mukhin_i_omp::GaussianFilterOMP>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
+  perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(out, expected);
