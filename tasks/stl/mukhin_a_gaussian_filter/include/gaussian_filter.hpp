@@ -32,4 +32,4 @@ class GaussianFilterSTL : public ppc::core::Task {
 
   Pixel get_new_pixel(uint32_t w, uint32_t h);
 };
-}  // namespace mukhin_i_stl 
+}  // namespace mukhin_i_stl

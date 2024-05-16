@@ -51,6 +51,7 @@ void mukhin_i_stl::GaussianFilterSTL::filter_to_image() {
       for (uint32_t i = 0; i < static_cast<uint32_t>(BlockSize); i++) {
         for (uint32_t j = 0; j < static_cast<uint32_t>(BlockSize); j++) {
           image.get_pixel(i + i_start, j + j_start) = get_new_pixel(i + i_start, j + j_start);
+
         } 
       }
     });
