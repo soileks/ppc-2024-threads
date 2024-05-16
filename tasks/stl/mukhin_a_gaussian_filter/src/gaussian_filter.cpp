@@ -59,17 +59,6 @@ void mukhin_i_stl::GaussianFilterSTL::filter_to_image() {
     threads[i].join();
   }
   delete[] threads;
-    //for (uint32_t i = 0; i < width_input; i++) {
-    //  for (uint32_t j = 0; j < height_input; j++) {
-    //    image.get_pixel(i, j) = get_new_pixel(i, j);
-    //  }
-  //}
-  //}
-  //for (uint32_t i = 0; i < width_input; i++) {
-  //  for (uint32_t j = 0; j < height_input; j++) {
-  //    image.get_pixel(i, j) = get_new_pixel(i, j);
-  //  }
-  //}
 }
 
 Pixel mukhin_i_stl::GaussianFilterSTL::get_new_pixel(uint32_t w, uint32_t h) {
