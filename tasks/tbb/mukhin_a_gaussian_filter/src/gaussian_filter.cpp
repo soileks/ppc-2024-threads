@@ -54,7 +54,7 @@ void mukhin_i_tbb::GaussianFilterTBB::filter_to_image() {
   tbb::task_arena arena(4);
   arena.execute([&] {
     tbb::parallel_for(tbb::blocked_range<uint32_t>(0, 3), [&](const tbb::blocked_range<uint32_t>& r) {
-      for (uint32_t i = r.begin(); i < r.end(); i++) {
+      for (uint32_t k = r.begin(); k < r.end(); k++) {
         auto thread_id = tbb::this_task_arena::current_thread_index();
         auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
         auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
