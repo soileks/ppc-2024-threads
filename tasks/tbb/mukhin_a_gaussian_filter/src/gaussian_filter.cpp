@@ -49,7 +49,6 @@ bool mukhin_i_tbb::GaussianFilterTBB::run() {
 }
 
 void mukhin_i_tbb::GaussianFilterTBB::filter_to_image() {
-  //int GridSize = 2;
   int GridSize = static_cast<int>(std::sqrt(static_cast<double>(4)));
   int BlockSize = width_input / GridSize;
   tbb::task_arena arena(4);
