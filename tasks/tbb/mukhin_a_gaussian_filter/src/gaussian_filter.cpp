@@ -53,19 +53,19 @@ void mukhin_i_tbb::GaussianFilterTBB::filter_to_image() {
   int GridSize = static_cast<int>(std::sqrt(static_cast<double>(4)));
   int BlockSize = width_input / GridSize;
   tbb::task_arena arena(4);
-  arena.execute([&]{
-    tbb::parallel_for(tbb::blocked_range<uint32_t>(0, 3), [&](const tbb::blocked_range<uint32_t>& r){
+  arena.execute([&] {
+    tbb::parallel_for(tbb::blocked_range<uint32_t>(0, 3), [&](const tbb::blocked_range<uint32_t>& r) {
       for (uint32_t i = r.begin(); i < r.end(); i++) {
         auto thread_id = tbb::this_task_arena::current_thread_index();
         auto i_start = static_cast<uint32_t>((thread_id / GridSize) * BlockSize);
         auto j_start = static_cast<uint32_t>((thread_id % GridSize) * BlockSize);
-        for (int i = 0; i < BlockSize; i++) { 
+        for (int i = 0; i < BlockSize; i++) {
           for (int j = 0; j < BlockSize; j++) {
             image.get_pixel(i + i_start, j + j_start) = get_new_pixel(i + i_start, j + j_start);
           }
-        }  
+        }
       }
-    });  
+    });
   });
 }
 
