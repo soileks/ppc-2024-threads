@@ -97,9 +97,6 @@ bool DejkstraTaskSequential::pre_processing() {
     destNode = *reinterpret_cast<int*>(taskData->inputs[1]);
     graphMap = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[2]);
     size = (taskData->inputs_count[0]);
-    if (size != 0 && graphMap.data() == nullptr) {
-      graphMap = initGraphMapRandom(size);
-    }
   } catch (...) {
     return false;
   }
@@ -109,6 +106,9 @@ bool DejkstraTaskSequential::pre_processing() {
 bool DejkstraTaskSequential::run() {
   try {
     internal_order_test();
+    if (size != 0 && graphMap.empty()) {
+      graphMap = initGraphMapRandom(size);
+    }
     res = getDejMinPath();
   } catch (...) {
     return false;

@@ -9,8 +9,8 @@
 
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_black_pixel_map) {
   // Create data
-  uint64_t width = 32;
-  uint64_t height = 32;
+  uint32_t width = 32;
+  uint32_t height = 32;
 
   PixelMap in(width, height);
   PixelMap out(width, height);
@@ -36,8 +36,8 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_black_pixel_map) {
 
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_white_pixel_map) {
   // Create data
-  uint64_t width = 32;
-  uint64_t height = 32;
+  uint32_t width = 32;
+  uint32_t height = 32;
   PixelMap in(width, height, 255, 255, 255);
   PixelMap out(width, height, 255, 255, 255);
   PixelMap expected(width, height, 255, 255, 255);
@@ -61,8 +61,8 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_white_pixel_map) {
 
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_middle_pixel_map) {
   // Create data
-  uint64_t width = 32;
-  uint64_t height = 32;
+  uint32_t width = 32;
+  uint32_t height = 32;
   PixelMap in(width, height, 128, 128, 128);
   PixelMap out(width, height, 128, 128, 128);
   PixelMap expected(width, height, 128, 128, 128);
@@ -87,8 +87,8 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_middle_pixel_map) {
 
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_small_pixel_map) {
   // Create data
-  uint64_t width = 6;
-  uint64_t height = 6;
+  uint32_t width = 6;
+  uint32_t height = 6;
   PixelMap in(width, height);
   PixelMap out(width, height);
   PixelMap expected(width, height);
@@ -113,8 +113,8 @@ TEST(mukhin_i_a_gaussian_filter_block, can_work_with_small_pixel_map) {
 
 TEST(mukhin_i_a_gaussian_filter_block, can_work_with_big_pixel_map) {
   // Create data
-  uint64_t width = 300;
-  uint64_t height = 300;
+  uint32_t width = 300;
+  uint32_t height = 300;
   PixelMap in(width, height);
   PixelMap out(width, height);
   PixelMap expected(width, height);

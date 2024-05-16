@@ -7,8 +7,8 @@
 #include "seq/borisov_s_convex_hull/include/ops_seq.hpp"
 
 TEST(borisov_s_convex_hull_sequential, test_pipeline_run) {
-  size_t width = 50;
-  size_t height = 50;
+  size_t width = 2000;
+  size_t height = 3;
 
   // Create data
   std::vector<uint8_t> in(height * width, 0);
@@ -33,7 +33,7 @@ TEST(borisov_s_convex_hull_sequential, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  auto convexHullSequential = std::make_shared<ConvexHullSequential>(taskDataSeq);
+  auto convexHullSequential = std::make_shared<BorisovSaveliySEQ::ConvexHullSequential>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -56,8 +56,8 @@ TEST(borisov_s_convex_hull_sequential, test_pipeline_run) {
 }
 
 TEST(borisov_s_convex_hull_sequential, test_task_run) {
-  size_t width = 50;
-  size_t height = 50;
+  size_t width = 2000;
+  size_t height = 3;
 
   // Create data
   std::vector<uint8_t> in(height * width, 0);
@@ -82,7 +82,7 @@ TEST(borisov_s_convex_hull_sequential, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  auto convexHullSequential = std::make_shared<ConvexHullSequential>(taskDataSeq);
+  auto convexHullSequential = std::make_shared<BorisovSaveliySEQ::ConvexHullSequential>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

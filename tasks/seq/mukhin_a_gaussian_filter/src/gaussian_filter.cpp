@@ -40,21 +40,21 @@ bool GaussianFilterSeq::run() {
 }
 
 void GaussianFilterSeq::filter_to_image() {
-  for (uint64_t i = 0; i < width_input; i++) {
-    for (uint64_t j = 0; j < height_input; j++) {
+  for (uint32_t i = 0; i < width_input; i++) {
+    for (uint32_t j = 0; j < height_input; j++) {
       image.get_pixel(i, j) = get_new_pixel(i, j);
     }
   }
 }
 
-Pixel GaussianFilterSeq::get_new_pixel(uint64_t w, uint64_t h) {
+Pixel GaussianFilterSeq::get_new_pixel(uint32_t w, uint32_t h) {
   double result_r = 0;
   double result_b = 0;
   double result_g = 0;
   for (int i = -rad; i <= rad; i++) {
     for (int j = -rad; j <= rad; j++) {
-      uint64_t new_h = h + j;
-      uint64_t new_w = w + i;
+      uint32_t new_h = h + j;
+      uint32_t new_w = w + i;
       new_h = clamp(new_h, width_input);
       Pixel neighborColor = image.get_pixel(new_w, new_h);
       result_r += neighborColor.r * kernel[i + rad][j + rad];
@@ -65,7 +65,7 @@ Pixel GaussianFilterSeq::get_new_pixel(uint64_t w, uint64_t h) {
   return Pixel({(uint8_t)std::round(result_r), (uint8_t)std::round(result_g), (uint8_t)std::round(result_b)});
 }
 
-uint64_t GaussianFilterSeq::clamp(uint64_t value, uint64_t max) {
+uint32_t GaussianFilterSeq::clamp(uint32_t value, uint32_t max) {
   if (value < 0) return 0;
   if (value >= max) return max - 1;
   return value;
@@ -80,8 +80,8 @@ void GaussianFilterSeq::create_gaussian_kernel() {
       norm += kernel[i + rad][j + rad];
     }
   }
-  for (uint64_t i = 0; i < kern_size; i++) {
-    for (uint64_t j = 0; j < kern_size; j++) {
+  for (uint32_t i = 0; i < kern_size; i++) {
+    for (uint32_t j = 0; j < kern_size; j++) {
       kernel[i][j] /= norm;
     }
   }
