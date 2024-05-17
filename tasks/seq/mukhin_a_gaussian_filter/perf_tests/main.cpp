@@ -8,8 +8,8 @@
 
 TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
   // Create data
-  uint64_t width = 512;
-  uint64_t height = 512;
+  uint32_t width = 3200;
+  uint32_t height = 3200;
   PixelMap in(width, height);
   PixelMap out(width, height);
   PixelMap expected(width, height);
@@ -48,8 +48,8 @@ TEST(mukhin_i_a_gaussian_filter_block, test_pipeline_run) {
 
 TEST(mukhin_i_a_gaussian_filter_block, test_task_run) {
   // Create data
-  uint64_t width = 512;
-  uint64_t height = 512;
+  uint32_t width = 3200;
+  uint32_t height = 3200;
   PixelMap in(width, height);
   PixelMap out(width, height);
   PixelMap expected(width, height);

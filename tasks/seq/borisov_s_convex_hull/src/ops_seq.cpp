@@ -5,6 +5,7 @@
 
 using namespace std::chrono_literals;
 
+namespace BorisovSaveliySEQ {
 bool ConvexHullSequential::pre_processing() {
   internal_order_test();
   // Init value for input and output
@@ -171,3 +172,4 @@ void ConvexHullSequential::convexHullImage() {
 
   convertToImageVector(convexHull, height, width);
 }
+}  // namespace BorisovSaveliySEQ
