@@ -58,7 +58,7 @@ TEST(lesnikov_binary_labelling_func_test_tbb, Test10_10) {
   EXPECT_TRUE(isMapsEqual(outVD_Tbb, outVD_seq));
 }
 
-TEST(lesnikov_binary_labelling_func_test, Test100_100) {
+TEST(lesnikov_binary_labelling_func_test_tbb, Test100_100) {
   int m = 100;
   int n = 100;
   auto serializedM = serializeInt32(m);
@@ -111,7 +111,7 @@ TEST(lesnikov_binary_labelling_func_test, Test100_100) {
   EXPECT_TRUE(isMapsEqual(outVD_Tbb, outVD_seq));
 }
 
-TEST(lesnikov_binary_labelling_func_test, Test200_200) {
+TEST(lesnikov_binary_labelling_func_test_tbb, Test200_200) {
   int m = 200;
   int n = 200;
   auto serializedM = serializeInt32(m);
@@ -164,7 +164,7 @@ TEST(lesnikov_binary_labelling_func_test, Test200_200) {
   EXPECT_TRUE(isMapsEqual(outVD_Tbb, outVD_seq));
 }
 
-TEST(lesnikov_binary_labelling_func_test, Test300_300) {
+TEST(lesnikov_binary_labelling_func_test_tbb, Test300_300) {
   int m = 300;
   int n = 300;
   auto serializedM = serializeInt32(m);
@@ -217,7 +217,7 @@ TEST(lesnikov_binary_labelling_func_test, Test300_300) {
   EXPECT_TRUE(isMapsEqual(outVD_Tbb, outVD_seq));
 }
 
-TEST(lesnikov_binary_labelling_func_test, Test400_400) {
+TEST(lesnikov_binary_labelling_func_test_tbb, Test400_400) {
   int m = 400;
   int n = 400;
   auto serializedM = serializeInt32(m);
