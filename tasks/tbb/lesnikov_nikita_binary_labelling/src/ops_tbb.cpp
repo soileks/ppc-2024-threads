@@ -46,7 +46,7 @@ std::vector<uint8_t> getRandomVectorForLab(int sz) {
   std::mt19937 gen(dev());
   std::vector<uint8_t> vec(sz);
   for (int i = 0; i < sz; i++) {
-    vec[i] = static_cast<uint8_t>(gen() > std::mt19937::max() / 2);
+    vec[i] = static_cast<uint8_t>(gen() > UINT_MAX / 2);
   }
   return vec;
 }
@@ -121,6 +121,16 @@ std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
   for (size_t i = 0; i < labelled.size(); i++) {
     reduced[i] = labelled[i].value();
   }
+  return reduced;
+}
+
+std::vector<int> reducePointersTbb(std::vector<InfPtr>& labelled) {
+  std::vector<int> reduced(labelled.size());
+  tbb::parallel_for(tbb::blocked_range<size_t>(0, labelled.size(), 10), [&reduced, &labelled] (const tbb::blocked_range<size_t>& range) {
+    for (size_t i = range.begin(); i < range.end(); i++) {
+      reduced[i] = labelled[i].value();
+    }
+  });
   return reduced;
 }
 
@@ -213,6 +223,29 @@ std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n
   return reducePointers(labelled);
 }
 
+std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n) {
+  std::vector<InfPtr> labelled(v.size());
+  int num_useful_threads = 8 < m / 2 ? 8 : m / 2;
+  const int blockSize = m / num_useful_threads;
+  const int dataSizeForThread = (blockSize + 1) * n;
+
+  tbb::parallel_for(tbb::blocked_range<int>(0, m, blockSize), [&] (const tbb::blocked_range<int>& range) {
+    int start = range.begin();
+    int end = range.end();
+    int label = start * dataSizeForThread;
+    if (!static_cast<bool>(get(v, n, start, 0))) {
+      get(labelled, n, start, 0).set(std::make_shared<InfPtr>(++label));
+    }
+    processHorizontal(labelled, v, label, n, start);
+    processVertical(labelled, v, label, n, start, end);
+    processMedium(labelled, v, label, n, start, end);
+  });
+
+  mergeBounds(labelled, blockSize, m, n);
+
+  return reducePointersTbb(labelled);
+}
+
 bool BinaryLabellingSeq::pre_processing() {
   internal_order_test();
   try {
@@ -270,44 +303,31 @@ bool BinaryLabellingTbb::pre_processing() {
   return true;
 }
 
-bool TestTBBTaskParallel::validation() {
+bool BinaryLabellingTbb::validation() {
   internal_order_test();
-  // Check count elements of output
-  return taskData->outputs_count[0] == 1;
+
+  return taskData->inputs_count.size() == 3 && taskData->outputs_count.size() == 1 && taskData->inputs_count[1] == 4 &&
+         taskData->inputs_count[2] == 4 &&
+         taskData->inputs_count[0] == deserializeInt32(taskData->inputs[1]) * deserializeInt32(taskData->inputs[2]);
 }
 
-bool TestTBBTaskParallel::run() {
+bool BinaryLabellingTbb::run() {
   internal_order_test();
-  if (ops == "+") {
-    res += oneapi::tbb::parallel_reduce(
-        oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 0,
-        [](tbb::blocked_range<std::vector<int>::iterator> r, int running_total) {
-          running_total += std::accumulate(r.begin(), r.end(), 0);
-          return running_total;
-        },
-        std::plus<>());
-  } else if (ops == "-") {
-    res -= oneapi::tbb::parallel_reduce(
-        oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 0,
-        [](tbb::blocked_range<std::vector<int>::iterator> r, int running_total) {
-          running_total += std::accumulate(r.begin(), r.end(), 0);
-          return running_total;
-        },
-        std::plus<>());
-  } else if (ops == "*") {
-    res *= oneapi::tbb::parallel_reduce(
-        oneapi::tbb::blocked_range<std::vector<int>::iterator>(input_.begin(), input_.end()), 1,
-        [](tbb::blocked_range<std::vector<int>::iterator> r, int running_total) {
-          running_total *= std::accumulate(r.begin(), r.end(), 1, std::multiplies<>());
-          return running_total;
-        },
-        std::multiplies<>());
+  try {
+    _result = getLabelledImageTbb(_source, _m, _n);
+  } catch (...) {
+    return false;
   }
   return true;
 }
 
-bool TestTBBTaskParallel::post_processing() {
+bool BinaryLabellingTbb::post_processing() {
   internal_order_test();
-  reinterpret_cast<int*>(taskData->outputs[0])[0] = res;
+  try {
+    memcpy(taskData->outputs[0], reinterpret_cast<uint8_t*>(_result.data()),
+           _result.size() * static_cast<size_t>(sizeof(int)));
+  } catch (...) {
+    return false;
+  }
   return true;
 }
