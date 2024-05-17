@@ -207,6 +207,20 @@ void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) {
   }
 }
 
+void mergeBounds(std::vector<InfPtr>& labelled, const std::unordered_set<int>& bounds, int m, int n) {
+  for (const int i : bounds) {
+    for (int j = 0; j < n; j++) {
+      if (get(labelled, n, i - 1, j).hasVal() && get(labelled, n, i, j).hasVal() &&
+          get(labelled, n, i - 1, j).value() != get(labelled, n, i, j).value()) {
+        int value = get(labelled, n, i, j).value();
+        auto ptr = std::make_shared<InfPtr>(value);
+        get(labelled, n, i - 1, j).set(ptr);
+        get(labelled, n, i, j).set(ptr);
+      }
+    }
+  }
+}
+
 std::vector<int> getLabelledImageSeq(const std::vector<uint8_t>& v, int m, int n) {
   std::vector<InfPtr> labelled(v.size());
 
@@ -229,9 +243,17 @@ std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n
   const int blockSize = m / num_useful_threads;
   const int dataSizeForThread = (blockSize + 1) * n;
 
+  std::unordered_set<int> bounds;
+
   tbb::parallel_for(tbb::blocked_range<int>(0, m, blockSize), [&] (const tbb::blocked_range<int>& range) {
     int start = range.begin();
     int end = range.end();
+    tbb::mutex mtx;
+    mtx.lock();
+    if (start > 0) {
+        bounds.insert(start);
+    }
+    mtx.unlock();
     int label = start * dataSizeForThread;
     if (!static_cast<bool>(get(v, n, start, 0))) {
       get(labelled, n, start, 0).set(std::make_shared<InfPtr>(++label));
@@ -241,7 +263,7 @@ std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n
     processMedium(labelled, v, label, n, start, end);
   });
 
-  mergeBounds(labelled, blockSize, m, n);
+  mergeBounds(labelled, bounds, m, n);
 
   return reducePointersTbb(labelled);
 }
