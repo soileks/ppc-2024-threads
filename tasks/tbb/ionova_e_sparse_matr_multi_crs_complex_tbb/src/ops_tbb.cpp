@@ -1,7 +1,7 @@
 // Copyright 2024 Ionova Ekatetina
 #include "tbb/ionova_e_sparse_matr_multi_crs_complex_tbb/include/ops_tbb.hpp"
 
-#include <thread>
+#include <tbb/tbb.h>
 
 using namespace std::chrono_literals;
 
@@ -104,7 +104,7 @@ bool SparseMatrixComplexMultiSequentialTbb::post_processing() {
   return true;
 }
 
-bool SparseMatrixComplexMultiSequentialTbb::validation() {
+bool SparseMatrixComplexMultiParallelTbb::validation() {
   internal_order_test();
   return taskData->inputs_count[1] == taskData->inputs_count[2] &&
          taskData->outputs_count[0] == taskData->inputs_count[0] &&
@@ -174,7 +174,7 @@ bool SparseMatrixComplexMultiParallelTbb::run() {
         result[index].imag += val1.imag * val2.real + val1.real * val2.imag;
       }
     }
-  }
+  });
 
   for (int i = 0; i < numRows1; i++) {
     rowPtr3.push_back(values3.size());
