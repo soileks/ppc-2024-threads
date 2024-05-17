@@ -10,6 +10,8 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
 
+using namespace bodrov_omp;
+
 SparseMatrixBodrovOMP generate_random_matrix_bodrov_omp(int n, int m, double proba, int seed) {
   std::mt19937 gen(seed);
   std::uniform_real_distribution<double> random(-2.0, 2.0);

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
+using namespace bodrov_omp;
 
 TEST(bodrov_d_crs_matr_omp, test_invalid_matrices) {
   SparseMatrixBodrovOMP A;

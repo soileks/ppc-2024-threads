@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std::chrono_literals;
+using namespace bodrov_omp;
 
 SparseMatrixBodrovOMP T(const SparseMatrixBodrovOMP& M) {
   SparseMatrixBodrovOMP temp_matrix{M.n_cols, M.n_rows, {}, {}, {}};

@@ -8,6 +8,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace bodrov_omp {
+
 struct SparseMatrixBodrovOMP {
   int n_rows{};
   int n_cols{};
@@ -27,3 +29,4 @@ class SparseMatrixSolverBodrovOMP : public ppc::core::Task {
  private:
   SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
 };
+}  // namespace bodrov_omp
