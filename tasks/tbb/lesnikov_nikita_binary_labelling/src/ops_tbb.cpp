@@ -2,6 +2,7 @@
 #include "tbb/lesnikov_nikita_binary_labelling/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
+
 #include <cstring>
 #include <functional>
 #include <iostream>
