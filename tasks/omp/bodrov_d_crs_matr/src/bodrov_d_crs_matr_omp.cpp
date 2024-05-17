@@ -212,8 +212,6 @@ std::complex<double> computeDotProductParallel(const SparseMatrixBodrovOMP& A_M,
   return result;
 }
 
-bool isNonZero(const std::complex<double>& value) { return std::norm(value) > 1e-6; }
-
 bool SparseMatrixSolverBodrovOMPParallel::run() {
   internal_order_test();
   double start = omp_get_wtime();
