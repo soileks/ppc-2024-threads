@@ -2,9 +2,8 @@
 #include "tbb/lesnikov_nikita_binary_labelling/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
-
-#include <functional>
 #include <cstring>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <numeric>
@@ -126,11 +125,12 @@ std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
 
 std::vector<int> reducePointersTbb(std::vector<InfPtr>& labelled) {
   std::vector<int> reduced(labelled.size());
-  tbb::parallel_for(tbb::blocked_range<size_t>(0, labelled.size(), 10), [&reduced, &labelled] (const tbb::blocked_range<size_t>& range) {
-    for (size_t i = range.begin(); i < range.end(); i++) {
-      reduced[i] = labelled[i].value();
-    }
-  });
+   tbb::parallel_for(tbb::blocked_range<size_t>(0, labelled.size(), 10),
+                    [&reduced, &labelled](const tbb::blocked_range<size_t>& range) {
+                      for (size_t i = range.begin(); i < range.end(); i++) {
+                        reduced[i] = labelled[i].value();
+                      }
+                    });
   return reduced;
 }
 
@@ -245,13 +245,13 @@ std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n
 
   std::unordered_set<int> bounds;
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, m, blockSize), [&] (const tbb::blocked_range<int>& range) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, m, blockSize), [&](const tbb::blocked_range<int>& range) {
     int start = range.begin();
     int end = range.end();
     tbb::mutex mtx;
     mtx.lock();
     if (start > 0) {
-        bounds.insert(start);
+      bounds.insert(start);
     }
     mtx.unlock();
     int label = start * dataSizeForThread;
