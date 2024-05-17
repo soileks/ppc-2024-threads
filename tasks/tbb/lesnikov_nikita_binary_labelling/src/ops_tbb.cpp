@@ -208,7 +208,7 @@ void mergeBounds(std::vector<InfPtr>& labelled, int blockSize, int m, int n) {
   }
 }
 
-void mergeBounds(std::vector<InfPtr>& labelled, const std::unordered_set<int>& bounds, int m, int n) {
+void mergeBounds(std::vector<InfPtr>& labelled, const std::unordered_set<int>& bounds, int n) {
   for (const int i : bounds) {
     for (int j = 0; j < n; j++) {
       if (get(labelled, n, i - 1, j).hasVal() && get(labelled, n, i, j).hasVal() &&
@@ -267,7 +267,7 @@ std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n
     processMedium(labelled, v, label, n, start, end);
   });
 
-  mergeBounds(labelled, bounds, m, n);
+  mergeBounds(labelled, bounds, n);
 
   return reducePointersTbb(labelled);
 }
