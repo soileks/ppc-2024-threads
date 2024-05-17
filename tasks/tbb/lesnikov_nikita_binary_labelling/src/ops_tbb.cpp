@@ -246,6 +246,8 @@ std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n
 
   std::unordered_set<int> bounds;
 
+  tbb::task_arena arena(num_useful_threads);
+
   tbb::parallel_for(tbb::blocked_range<int>(0, m, blockSize), [&](const tbb::blocked_range<int>& range) {
     int start = range.begin();
     int end = range.end();
