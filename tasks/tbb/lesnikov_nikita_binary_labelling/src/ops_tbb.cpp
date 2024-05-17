@@ -23,7 +23,7 @@ class InfPtr {
   InfPtr(int value) : _ptr(nullptr), _value(value) {}
   void set(const std::shared_ptr<InfPtr>& ptr) {
     if (!_ptr) {
-      _ptr = ptr;
+      _ptr = std::shared_ptr<InfPtr>(ptr);
       return;
     }
     _ptr->set(ptr);
