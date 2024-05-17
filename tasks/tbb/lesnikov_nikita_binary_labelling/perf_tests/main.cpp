@@ -7,73 +7,68 @@
 #include "core/perf/include/perf.hpp"
 #include "tbb/lesnikov_nikita_binary_labelling/include/ops_tbb.hpp"
 
-TEST(tbb_example_perf_test, test_pipeline_run) {
-  const int count = 100;
+TEST(lesnikov_binary_labelling_perf_test_tbb, test_pipeline_run) {
+  int m = 500;
+  int n = 500;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
+  std::vector<uint8_t> outV_Tbb(in.size() * sizeof(int));
 
-  // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataTbb->inputs.push_back(in.data());
+  taskDataTbb->inputs.push_back(serializedM.data());
+  taskDataTbb->inputs.push_back(serializedN.data());
+  taskDataTbb->inputs_count.push_back(in.size());
+  taskDataTbb->inputs_count.push_back(4);
+  taskDataTbb->inputs_count.push_back(4);
+  taskDataTbb->outputs.push_back(outV_Tbb.data());
+  taskDataTbb->outputs_count.push_back(outV_Tbb.size());
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  auto testTaskTbb = std::make_shared<BinaryLabellingTbb>(taskDataTbb);
 
-  // Create Task
-  auto testTaskTBB = std::make_shared<TestTBBTaskSequential>(taskDataSeq, "+");
-
-  // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
   perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
-  // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTbb);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count + 1, out[0]);
 }
 
-TEST(tbb_example_perf_test, test_task_run) {
-  const int count = 100;
+TEST(lesnikov_binary_labelling_perf_test_tbb, test_task_run) {
+  int m = 500;
+  int n = 500;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
+  std::vector<uint8_t> outV_Tbb(in.size() * sizeof(int));
 
-  // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataTbb->inputs.push_back(in.data());
+  taskDataTbb->inputs.push_back(serializedM.data());
+  taskDataTbb->inputs.push_back(serializedN.data());
+  taskDataTbb->inputs_count.push_back(in.size());
+  taskDataTbb->inputs_count.push_back(4);
+  taskDataTbb->inputs_count.push_back(4);
+  taskDataTbb->outputs.push_back(outV_Tbb.data());
+  taskDataTbb->outputs_count.push_back(outV_Tbb.size());
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  auto testTaskTbb = std::make_shared<BinaryLabellingTbb>(taskDataTbb);
 
-  // Create Task
-  auto testTaskTBB = std::make_shared<TestTBBTaskSequential>(taskDataSeq, "+");
-
-  // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
   perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
-  // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTbb);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count + 1, out[0]);
-}
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }
