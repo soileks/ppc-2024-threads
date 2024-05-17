@@ -3,199 +3,269 @@
 
 #include <vector>
 
-#include "tbb/example/include/ops_tbb.hpp"
+#include "tbb/lesnikov_nikita_binary_labelling/include/ops_tbb.hpp"
 
-TEST(Parallel_Operations_TBB, Test_Sum) {
-  std::vector<int> vec = getRandomVector(100);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test_tbb, Test10_10) {
+  int m = 10;
+  int n = 10;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
-  // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataOmp->inputs.push_back(in.data());
+  taskDataOmp->inputs.push_back(serializedM.data());
+  taskDataOmp->inputs.push_back(serializedN.data());
+  taskDataOmp->inputs_count.push_back(in.size());
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->outputs.push_back(outV_omp.data());
+  taskDataOmp->outputs_count.push_back(outV_omp.size());
+
+  BinaryLabellingTbb testTaskOmp(taskDataOmp);
+  ASSERT_TRUE(testTaskOmp.validation());
+  ASSERT_TRUE(testTaskOmp.pre_processing());
+  ASSERT_TRUE(testTaskOmp.run());
+  ASSERT_TRUE(testTaskOmp.post_processing());
+
+  std::vector<int> outVD_omp = deserializeInt32V(outV_omp);
+
+  EXPECT_EQ(getObjectsNum(outVD_omp), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_TBB, Test_Diff) {
-  std::vector<int> vec = getRandomVector(100);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test100_100) {
+  int m = 100;
+  int n = 100;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
-  // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataOmp->inputs.push_back(in.data());
+  taskDataOmp->inputs.push_back(serializedM.data());
+  taskDataOmp->inputs.push_back(serializedN.data());
+  taskDataOmp->inputs_count.push_back(in.size());
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->outputs.push_back(outV_omp.data());
+  taskDataOmp->outputs_count.push_back(outV_omp.size());
+
+  BinaryLabellingTbb testTaskOmp(taskDataOmp);
+  ASSERT_TRUE(testTaskOmp.validation());
+  ASSERT_TRUE(testTaskOmp.pre_processing());
+  ASSERT_TRUE(testTaskOmp.run());
+  ASSERT_TRUE(testTaskOmp.post_processing());
+
+  std::vector<int> outVD_omp = deserializeInt32V(outV_omp);
+
+  EXPECT_EQ(getObjectsNum(outVD_omp), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_TBB, Test_Diff_2) {
-  std::vector<int> vec = getRandomVector(50);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test200_200) {
+  int m = 100;
+  int n = 100;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
-  // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataOmp->inputs.push_back(in.data());
+  taskDataOmp->inputs.push_back(serializedM.data());
+  taskDataOmp->inputs.push_back(serializedN.data());
+  taskDataOmp->inputs_count.push_back(in.size());
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->outputs.push_back(outV_omp.data());
+  taskDataOmp->outputs_count.push_back(outV_omp.size());
+
+  BinaryLabellingTbb testTaskOmp(taskDataOmp);
+  ASSERT_TRUE(testTaskOmp.validation());
+  ASSERT_TRUE(testTaskOmp.pre_processing());
+  ASSERT_TRUE(testTaskOmp.run());
+  ASSERT_TRUE(testTaskOmp.post_processing());
+
+  std::vector<int> outVD_omp = deserializeInt32V(outV_omp);
+
+  EXPECT_EQ(getObjectsNum(outVD_omp), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_TBB, Test_Mult) {
-  std::vector<int> vec = getRandomVector(10);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test300_300) {
+  int m = 300;
+  int n = 300;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
-  // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataOmp->inputs.push_back(in.data());
+  taskDataOmp->inputs.push_back(serializedM.data());
+  taskDataOmp->inputs.push_back(serializedN.data());
+  taskDataOmp->inputs_count.push_back(in.size());
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->outputs.push_back(outV_omp.data());
+  taskDataOmp->outputs_count.push_back(outV_omp.size());
+
+  BinaryLabellingTbb testTaskOmp(taskDataOmp);
+  ASSERT_TRUE(testTaskOmp.validation());
+  ASSERT_TRUE(testTaskOmp.pre_processing());
+  ASSERT_TRUE(testTaskOmp.run());
+  ASSERT_TRUE(testTaskOmp.post_processing());
+
+  std::vector<int> outVD_omp = deserializeInt32V(outV_omp);
+
+  EXPECT_EQ(getObjectsNum(outVD_omp), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }
 
-TEST(Parallel_Operations_TBB, Test_Mult_2) {
-  std::vector<int> vec = getRandomVector(5);
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test400_400) {
+  int m = 300;
+  int n = 300;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestTBBTaskSequential testTbbTaskSequential(taskDataSeq, "*");
-  ASSERT_EQ(testTbbTaskSequential.validation(), true);
-  testTbbTaskSequential.pre_processing();
-  testTbbTaskSequential.run();
-  testTbbTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_omp(in.size() * sizeof(int));
 
-  // Create Task
-  TestTBBTaskParallel testTbbTaskParallel(taskDataPar, "*");
-  ASSERT_EQ(testTbbTaskParallel.validation(), true);
-  testTbbTaskParallel.pre_processing();
-  testTbbTaskParallel.run();
-  testTbbTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataOmp->inputs.push_back(in.data());
+  taskDataOmp->inputs.push_back(serializedM.data());
+  taskDataOmp->inputs.push_back(serializedN.data());
+  taskDataOmp->inputs_count.push_back(in.size());
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->inputs_count.push_back(4);
+  taskDataOmp->outputs.push_back(outV_omp.data());
+  taskDataOmp->outputs_count.push_back(outV_omp.size());
 
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  BinaryLabellingTbb testTaskOmp(taskDataOmp);
+  ASSERT_TRUE(testTaskOmp.validation());
+  ASSERT_TRUE(testTaskOmp.pre_processing());
+  ASSERT_TRUE(testTaskOmp.run());
+  ASSERT_TRUE(testTaskOmp.post_processing());
+
+  std::vector<int> outVD_omp = deserializeInt32V(outV_omp);
+
+  EXPECT_EQ(getObjectsNum(outVD_omp), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_omp, outVD_seq));
 }

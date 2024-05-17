@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/example/include/ops_tbb.hpp"
+#include "tbb/lesnikov_nikita_binary_labelling/include/ops_tbb.hpp"
 
 TEST(tbb_example_perf_test, test_pipeline_run) {
   const int count = 100;
