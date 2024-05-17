@@ -159,11 +159,7 @@ bool SparseMatrixSolverBodrovOMP::post_processing() {
 bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
   internal_order_test();
 
-#pragma omp parallel
-  {
-#pragma omp single
-    { *B_M = T(*B_M); }
-  }
+  *B_M = T(*B_M);
 
   return true;
 }
@@ -222,6 +218,7 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
 
   std::vector<std::vector<std::pair<int, std::complex<double>>>> temp(Result->n_rows);
 
+  omp_set_num_threads(4);
 #pragma omp parallel for
   for (int i = 0; i < Result->n_rows; ++i) {
     for (int j = 0; j < B_M->n_rows; ++j) {
@@ -233,6 +230,7 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
     }
   }
 
+  omp_set_num_threads(4);
 #pragma omp parallel for
   for (int i = 0; i < Result->n_rows; ++i) {
     Result->pointer[i + 1] = Result->pointer[i];
