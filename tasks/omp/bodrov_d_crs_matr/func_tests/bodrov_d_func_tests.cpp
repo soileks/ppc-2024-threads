@@ -25,14 +25,28 @@ TEST(bodrov_d_crs_matr_omp, test_invalid_matrices) {
   SparseMatrixBodrovOMP Result;
 
   // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
+
+  // Create Task
+  SparseMatrixSolverBodrovOMP taskSeq(taskDataSeq);
+  ASSERT_EQ(taskSeq.validation(), false);
+
+  SparseMatrixBodrovOMP ResultOMP;
+
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
   taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
-  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&ResultOMP));
 
   // Create Task
-  SparseMatrixSolverBodrovOMP taskOmp(taskDataOmp);
+  SparseMatrixSolverBodrovOMPParallel taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), false);
+
+  EXPECT_EQ(Result, ResultOMP);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
@@ -51,6 +65,7 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
   B.non_zero_values = {1, 1, 1};
 
   SparseMatrixBodrovOMP Result;
+  SparseMatrixBodrovOMP ResultPar;
 
   SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 3;
@@ -77,6 +92,27 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
   ASSERT_EQ(Result.pointer, Expected.pointer);
   ASSERT_EQ(Result.col_indexes, Expected.col_indexes);
   ASSERT_EQ(Result.non_zero_values.size(), Expected.non_zero_values.size());
+
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataOmpPar = std::make_shared<ppc::core::TaskData>();
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
+  taskDataOmpPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&ResultPar));
+
+  // Create Task
+  SparseMatrixSolverBodrovOMPParallel taskOmpPar(taskDataOmpPar);
+  ASSERT_EQ(taskOmpPar.validation(), true);
+  ASSERT_EQ(taskOmpPar.pre_processing(), true);
+  ASSERT_EQ(taskOmpPar.run(), true);
+  ASSERT_EQ(taskOmpPar.post_processing(), true);
+
+  ASSERT_EQ(ResultPar.n_rows, Expected.n_rows);
+  ASSERT_EQ(ResultPar.n_cols, Expected.n_cols);
+  ASSERT_EQ(ResultPar.pointer, Expected.pointer);
+  ASSERT_EQ(ResultPar.col_indexes, Expected.col_indexes);
+  ASSERT_EQ(ResultPar.non_zero_values.size(), Expected.non_zero_values.size());
+
+  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
@@ -95,6 +131,7 @@ TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
   B.non_zero_values = {1, 2, 3, 4};
 
   SparseMatrixBodrovOMP Result;
+  SparseMatrixBodrovOMP ResultPar;
 
   SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 3;
@@ -126,6 +163,32 @@ TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
+
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataOmpPar = std::make_shared<ppc::core::TaskData>();
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
+  taskDataOmpPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&ResultPar));
+
+  // Create Task
+  SparseMatrixSolverBodrovOMPParallel taskOmpPar(taskDataOmpPar);
+  ASSERT_EQ(taskOmpPar.validation(), true);
+  ASSERT_EQ(taskOmpPar.pre_processing(), true);
+  ASSERT_EQ(taskOmpPar.run(), true);
+  ASSERT_EQ(taskOmpPar.post_processing(), true);
+
+  ASSERT_EQ(ResultPar.n_rows, Expected.n_rows);
+  ASSERT_EQ(ResultPar.n_cols, Expected.n_cols);
+  ASSERT_EQ(ResultPar.pointer, Expected.pointer);
+  ASSERT_EQ(ResultPar.col_indexes, Expected.col_indexes);
+  ASSERT_EQ(ResultPar.non_zero_values.size(), Expected.non_zero_values.size());
+  for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
+    std::complex<double> t = Expected.non_zero_values[i] - ResultPar.non_zero_values[i];
+    ASSERT_NEAR(0.0f, t.imag(), 1e-3);
+    ASSERT_NEAR(0.0f, t.real(), 1e-3);
+  }
+
+  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
@@ -145,6 +208,7 @@ TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
                        {0.5, -0.5}, {1, -1}, {-1.5, -1.5}, {-0.5, 0.5}};
 
   SparseMatrixBodrovOMP Result;
+  SparseMatrixBodrovOMP ResultPar;
   SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 4;
   Expected.n_cols = 4;
@@ -175,6 +239,32 @@ TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
+
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataOmpPar = std::make_shared<ppc::core::TaskData>();
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
+  taskDataOmpPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&ResultPar));
+
+  // Create Task
+  SparseMatrixSolverBodrovOMPParallel taskOmpPar(taskDataOmpPar);
+  ASSERT_EQ(taskOmpPar.validation(), true);
+  ASSERT_EQ(taskOmpPar.pre_processing(), true);
+  ASSERT_EQ(taskOmpPar.run(), true);
+  ASSERT_EQ(taskOmpPar.post_processing(), true);
+
+  ASSERT_EQ(ResultPar.n_rows, Expected.n_rows);
+  ASSERT_EQ(ResultPar.n_cols, Expected.n_cols);
+  ASSERT_EQ(ResultPar.pointer, Expected.pointer);
+  ASSERT_EQ(ResultPar.col_indexes, Expected.col_indexes);
+  ASSERT_EQ(ResultPar.non_zero_values.size(), Expected.non_zero_values.size());
+  for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
+    std::complex<double> t = Expected.non_zero_values[i] - ResultPar.non_zero_values[i];
+    ASSERT_NEAR(0.0f, t.imag(), 1e-3);
+    ASSERT_NEAR(0.0f, t.real(), 1e-3);
+  }
+
+  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
@@ -193,6 +283,7 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
   B.non_zero_values = {{1, 1}, {4, 1}, {1, 2}, {3, 0}, {7, 7}, {2, 1}, {3, 2}};
 
   SparseMatrixBodrovOMP Result;
+  SparseMatrixBodrovOMP ResultPar;
 
   SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 5;
@@ -224,6 +315,31 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
+
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataOmpPar = std::make_shared<ppc::core::TaskData>();
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
+  taskDataOmpPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&ResultPar));
+
+  // Create Task
+  SparseMatrixSolverBodrovOMPParallel taskOmpPar(taskDataOmpPar);
+  ASSERT_EQ(taskOmpPar.validation(), true);
+  ASSERT_EQ(taskOmpPar.pre_processing(), true);
+  ASSERT_EQ(taskOmpPar.run(), true);
+  ASSERT_EQ(taskOmpPar.post_processing(), true);
+
+  ASSERT_EQ(ResultPar.n_rows, Expected.n_rows);
+  ASSERT_EQ(ResultPar.n_cols, Expected.n_cols);
+  ASSERT_EQ(ResultPar.pointer, Expected.pointer);
+  ASSERT_EQ(ResultPar.col_indexes, Expected.col_indexes);
+  ASSERT_EQ(ResultPar.non_zero_values.size(), Expected.non_zero_values.size());
+  for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
+    std::complex<double> t = Expected.non_zero_values[i] - ResultPar.non_zero_values[i];
+    ASSERT_NEAR(0.0f, t.imag(), 1e-3);
+    ASSERT_NEAR(0.0f, t.real(), 1e-3);
+  }
+  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
@@ -242,6 +358,7 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
   B.non_zero_values = {{3, 0}, {7, 7}, {2, 1}};
 
   SparseMatrixBodrovOMP Result;
+  SparseMatrixBodrovOMP ResultPar;
 
   SparseMatrixBodrovOMP Expected;
   Expected.n_rows = 3;
@@ -273,4 +390,29 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
+
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataOmpPar = std::make_shared<ppc::core::TaskData>();
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
+  taskDataOmpPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
+  taskDataOmpPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&ResultPar));
+
+  // Create Task
+  SparseMatrixSolverBodrovOMPParallel taskOmpPar(taskDataOmpPar);
+  ASSERT_EQ(taskOmpPar.validation(), true);
+  ASSERT_EQ(taskOmpPar.pre_processing(), true);
+  ASSERT_EQ(taskOmpPar.run(), true);
+  ASSERT_EQ(taskOmpPar.post_processing(), true);
+
+  ASSERT_EQ(ResultPar.n_rows, Expected.n_rows);
+  ASSERT_EQ(ResultPar.n_cols, Expected.n_cols);
+  ASSERT_EQ(ResultPar.pointer, Expected.pointer);
+  ASSERT_EQ(ResultPar.col_indexes, Expected.col_indexes);
+  ASSERT_EQ(ResultPar.non_zero_values.size(), Expected.non_zero_values.size());
+  for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
+    std::complex<double> t = Expected.non_zero_values[i] - ResultPar.non_zero_values[i];
+    ASSERT_NEAR(0.0f, t.imag(), 1e-3);
+    ASSERT_NEAR(0.0f, t.real(), 1e-3);
+  }
+  EXPECT_EQ(Result, ResultPar);
 }

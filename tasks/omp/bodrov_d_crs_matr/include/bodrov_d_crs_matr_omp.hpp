@@ -29,4 +29,16 @@ class SparseMatrixSolverBodrovOMP : public ppc::core::Task {
  private:
   SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
 };
+
+class SparseMatrixSolverBodrovOMPParallel : public ppc::core::Task {
+ public:
+  explicit SparseMatrixSolverBodrovOMPParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+
+ private:
+  SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
+};
 }  // namespace bodrov_omp

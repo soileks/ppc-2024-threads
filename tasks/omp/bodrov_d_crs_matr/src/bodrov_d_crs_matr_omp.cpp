@@ -1,6 +1,8 @@
 // Copyright 2024 Bodrov Daniil
 #include "omp/bodrov_d_crs_matr/include/bodrov_d_crs_matr_omp.hpp"
 
+#include <omp.h>
+
 #include <algorithm>
 #include <complex>
 #include <utility>
@@ -150,6 +152,111 @@ bool SparseMatrixSolverBodrovOMP::run() {
 }
 
 bool SparseMatrixSolverBodrovOMP::post_processing() {
+  internal_order_test();
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
+  internal_order_test();
+
+  #pragma omp parallel
+  {
+    #pragma omp single
+    {
+      *B_M = T(*B_M);
+    }
+  }
+
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::validation() {
+  internal_order_test();
+
+  if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
+      !taskData->outputs_count.empty())
+    return false;
+
+  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
+
+  if (A_M == nullptr || B_M == nullptr || Result == nullptr) return false;
+
+  if (!IsCRS(*A_M) || !IsCRS(*B_M)) return false;
+
+  if (A_M->n_cols != B_M->n_rows) return false;
+
+  return true;
+}
+
+std::complex<double> computeDotProductParallel(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M, int row_A,
+                                               int row_B) {
+  std::complex<double> result;
+  int k_A = A_M.pointer[row_A];
+  int k_B = B_M.pointer[row_B];
+
+  while (k_A < A_M.pointer[row_A + 1] && k_B < B_M.pointer[row_B + 1]) {
+    int col_A = A_M.col_indexes[k_A];
+    int col_B = B_M.col_indexes[k_B];
+
+    if (col_A == col_B) {
+      result += A_M.non_zero_values[k_A] * B_M.non_zero_values[k_B];
+      ++k_A;
+      ++k_B;
+    } else if (col_A < col_B) {
+      ++k_A;
+    } else {
+      ++k_B;
+    }
+  }
+
+  return result;
+}
+
+bool isNonZero(const std::complex<double>& value) { return std::norm(value) > 1e-6; }
+
+bool SparseMatrixSolverBodrovOMPParallel::run() {
+  internal_order_test();
+  double start = omp_get_wtime();
+
+  Result->n_rows = A_M->n_rows;
+  Result->n_cols = B_M->n_rows;
+  Result->pointer.assign(Result->n_rows + 1, 0);
+
+  std::vector<std::vector<std::pair<int, std::complex<double>>>> temp(Result->n_rows);
+
+  #pragma omp parallel for
+  for (int i = 0; i < Result->n_rows; ++i) {
+    for (int j = 0; j < B_M->n_rows; ++j) {
+      std::complex<double> product = computeDotProductParallel(*A_M, *B_M, i, j);
+      if (isNonZero(product)) {
+        #pragma omp critical
+        {
+          temp[i].emplace_back(j, product);
+        }
+      }
+    }
+  }
+
+  #pragma omp parallel for
+  for (int i = 0; i < Result->n_rows; ++i) {
+    Result->pointer[i + 1] = Result->pointer[i];
+    for (const auto& pair : temp[i]) {
+      #pragma omp critical
+      {
+        Result->col_indexes.push_back(pair.first);
+        Result->non_zero_values.push_back(pair.second);
+        Result->pointer[i + 1]++;
+      }
+    }
+  }
+  double finish = omp_get_wtime();
+  std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::post_processing() {
   internal_order_test();
   return true;
 }
