@@ -125,7 +125,7 @@ std::vector<int> reducePointers(std::vector<InfPtr>& labelled) {
 
 std::vector<int> reducePointersTbb(std::vector<InfPtr>& labelled) {
   std::vector<int> reduced(labelled.size());
-   tbb::parallel_for(tbb::blocked_range<size_t>(0, labelled.size(), 10),
+  tbb::parallel_for(tbb::blocked_range<size_t>(0, labelled.size(), 100),
                     [&reduced, &labelled](const tbb::blocked_range<size_t>& range) {
                       for (size_t i = range.begin(); i < range.end(); i++) {
                         reduced[i] = labelled[i].value();
