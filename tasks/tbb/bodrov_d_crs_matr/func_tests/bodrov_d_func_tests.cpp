@@ -26,8 +26,7 @@ TEST(bodrov_d_crs_matr_tbb, test_invalid_matrices) {
   SparseMatrix Result;
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-    std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
@@ -62,8 +61,7 @@ TEST(bodrov_d_crs_matr_tbb, test_identity_matrices) {
   Expected.non_zero_values = {1, 1, 1};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-    std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
@@ -107,8 +105,7 @@ TEST(bodrov_d_crs_matr_tbb, test_sparse_matrices) {
   Expected.non_zero_values = {1, 2, 6, 16};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-    std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
@@ -126,8 +123,7 @@ TEST(bodrov_d_crs_matr_tbb, test_sparse_matrices) {
   ASSERT_EQ(Result.col_indexes, Expected.col_indexes);
   ASSERT_EQ(Result.non_zero_values.size(), Expected.non_zero_values.size());
   for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
-    std::complex<double> t =
-      Expected.non_zero_values[i] - Result.non_zero_values[i];
+    std::complex<double> t = Expected.non_zero_values[i] - Result.non_zero_values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -146,7 +142,7 @@ TEST(bodrov_d_crs_matr_tbb, test_inverse_matrix) {
   B.n_cols = 4;
   B.pointer = {0, 1, 4, 6, 9};
   B.col_indexes = {0, 0, 1, 3, 0, 2, 0, 1, 3};
-  B.non_zero_values = {1, {-1, 1}, {1.5, 0.5}, {0.5, -0.5}, {-0.5, 0.5},
+  B.non_zero_values = {1,           {-1, 1}, {1.5, 0.5},   {0.5, -0.5}, {-0.5, 0.5},
                        {0.5, -0.5}, {1, -1}, {-1.5, -1.5}, {-0.5, 0.5}};
 
   SparseMatrix Result;
@@ -158,8 +154,7 @@ TEST(bodrov_d_crs_matr_tbb, test_inverse_matrix) {
   Expected.non_zero_values = {1, 1, 1, 1};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-    std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
@@ -177,8 +172,7 @@ TEST(bodrov_d_crs_matr_tbb, test_inverse_matrix) {
   ASSERT_EQ(Result.col_indexes, Expected.col_indexes);
   ASSERT_EQ(Result.non_zero_values.size(), Expected.non_zero_values.size());
   for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
-    std::complex<double> t =
-      Expected.non_zero_values[i] - Result.non_zero_values[i];
+    std::complex<double> t = Expected.non_zero_values[i] - Result.non_zero_values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -206,12 +200,10 @@ TEST(bodrov_d_crs_matr_tbb, test_complex_matrix) {
   Expected.n_cols = 5;
   Expected.pointer = {0, 3, 4, 6, 8, 10};
   Expected.col_indexes = {0, 1, 3, 2, 0, 3, 1, 3, 2, 4};
-  Expected.non_zero_values = {{-1, 1}, {6, 9}, {-8, 39}, {-1, 3}, {3, 5},
-    {15, 8}, {3, 6}, {-7, 21}, {2, 6}, {2, 10}};
+  Expected.non_zero_values = {{-1, 1}, {6, 9}, {-8, 39}, {-1, 3}, {3, 5}, {15, 8}, {3, 6}, {-7, 21}, {2, 6}, {2, 10}};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-    std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
@@ -229,8 +221,7 @@ TEST(bodrov_d_crs_matr_tbb, test_complex_matrix) {
   ASSERT_EQ(Result.col_indexes, Expected.col_indexes);
   ASSERT_EQ(Result.non_zero_values.size(), Expected.non_zero_values.size());
   for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
-    std::complex<double> t =
-      Expected.non_zero_values[i] - Result.non_zero_values[i];
+    std::complex<double> t = Expected.non_zero_values[i] - Result.non_zero_values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -261,8 +252,7 @@ TEST(bodrov_d_crs_matr_tbb, test_complex_matrix_diagonal) {
   Expected.non_zero_values = {{6, 9}, {0, 14}, {7, 6}};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq =
-    std::make_shared<ppc::core::TaskData>();
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&B));
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
@@ -280,8 +270,7 @@ TEST(bodrov_d_crs_matr_tbb, test_complex_matrix_diagonal) {
   ASSERT_EQ(Result.col_indexes, Expected.col_indexes);
   ASSERT_EQ(Result.non_zero_values.size(), Expected.non_zero_values.size());
   for (size_t i = 0; i < Expected.non_zero_values.size(); i++) {
-    std::complex<double> t =
-      Expected.non_zero_values[i] - Result.non_zero_values[i];
+    std::complex<double> t = Expected.non_zero_values[i] - Result.non_zero_values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }

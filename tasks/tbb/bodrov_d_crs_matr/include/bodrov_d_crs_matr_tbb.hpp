@@ -21,8 +21,7 @@ struct SparseMatrix {
 
 class SparseMatrixSolver : public ppc::core::Task {
  public:
-  explicit SparseMatrixSolver(std::shared_ptr<ppc::core::TaskData> taskData_)
-    : Task(std::move(taskData_)) {}
+  explicit SparseMatrixSolver(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

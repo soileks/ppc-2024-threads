@@ -11,8 +11,7 @@ using namespace std::chrono_literals;
 bodrov_tbb::SparseMatrix T(const bodrov_tbb::SparseMatrix& M) {
   bodrov_tbb::SparseMatrix temp_matrix{M.n_cols, M.n_rows, {}, {}, {}};
 
-  std::vector<std::vector<std::pair<int, std::complex<double>>>>
-    columns(M.n_cols);
+  std::vector<std::vector<std::pair<int, std::complex<double>>>> columns(M.n_cols);
 
   for (int i = 0; i < M.n_rows; ++i) {
     for (int k = M.pointer[i]; k < M.pointer[i + 1]; ++k) {
@@ -22,15 +21,13 @@ bodrov_tbb::SparseMatrix T(const bodrov_tbb::SparseMatrix& M) {
   }
 
   for (int i = 0; i < M.n_cols; ++i) {
-    temp_matrix.pointer.push_back(
-      static_cast<int>(temp_matrix.non_zero_values.size()));
+    temp_matrix.pointer.push_back(static_cast<int>(temp_matrix.non_zero_values.size()));
     for (const auto& item : columns[i]) {
       temp_matrix.col_indexes.push_back(item.first);
       temp_matrix.non_zero_values.push_back(item.second);
     }
   }
-  temp_matrix.pointer.push_back(
-    static_cast<int>(temp_matrix.non_zero_values.size()));
+  temp_matrix.pointer.push_back(static_cast<int>(temp_matrix.non_zero_values.size()));
 
   return temp_matrix;
 }
@@ -48,8 +45,7 @@ bool isValidPointer(const bodrov_tbb::SparseMatrix& M) {
 bool isValidColumnIndexes(const bodrov_tbb::SparseMatrix& M) {
   int non_zero_elems_count = M.non_zero_values.size();
 
-  if (M.col_indexes.size() != static_cast<size_t>(non_zero_elems_count))
-    return false;
+  if (M.col_indexes.size() != static_cast<size_t>(non_zero_elems_count)) return false;
 
   for (int i = 0; i < non_zero_elems_count; i++) {
     if (M.col_indexes[i] < 0 || M.col_indexes[i] >= M.n_cols) return false;
@@ -61,9 +57,7 @@ bool isValidColumnIndexes(const bodrov_tbb::SparseMatrix& M) {
 bool IsCRS(const bodrov_tbb::SparseMatrix& M) {
   if (!isValidPointer(M)) return false;
 
-  if (M.pointer[0] != 0 ||
-    M.pointer[M.n_rows] != static_cast<int>(M.non_zero_values.size()))
-    return false;
+  if (M.pointer[0] != 0 || M.pointer[M.n_rows] != static_cast<int>(M.non_zero_values.size())) return false;
 
   if (!isValidColumnIndexes(M)) return false;
 
@@ -81,8 +75,7 @@ bool bodrov_tbb::SparseMatrixSolver::pre_processing() {
 bool bodrov_tbb::SparseMatrixSolver::validation() {
   internal_order_test();
 
-  if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1
-      || !taskData->inputs_count.empty() ||
+  if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
       !taskData->outputs_count.empty())
     return false;
 
@@ -99,8 +92,8 @@ bool bodrov_tbb::SparseMatrixSolver::validation() {
   return true;
 }
 
-std::complex<double> computeDotProduct(const bodrov_tbb::SparseMatrix& A_M,
-    const bodrov_tbb::SparseMatrix& B_M, int row_A, int row_B) {
+std::complex<double> computeDotProduct(const bodrov_tbb::SparseMatrix& A_M, const bodrov_tbb::SparseMatrix& B_M,
+                                       int row_A, int row_B) {
   std::complex<double> result;
   int k_A = A_M.pointer[row_A];
   int k_B = B_M.pointer[row_B];
@@ -123,9 +116,7 @@ std::complex<double> computeDotProduct(const bodrov_tbb::SparseMatrix& A_M,
   return result;
 }
 
-bool isNonZero(const std::complex<double>& value) {
-  return std::norm(value) > 1e-6;
-}
+bool isNonZero(const std::complex<double>& value) { return std::norm(value) > 1e-6; }
 
 bool bodrov_tbb::SparseMatrixSolver::run() {
   internal_order_test();
@@ -134,8 +125,7 @@ bool bodrov_tbb::SparseMatrixSolver::run() {
   Result->n_cols = B_M->n_rows;
   Result->pointer.assign(Result->n_rows + 1, 0);
 
-  std::vector<std::vector<std::pair<int, std::complex<double>>>>
-    temp(Result->n_rows);
+  std::vector<std::vector<std::pair<int, std::complex<double>>>> temp(Result->n_rows);
 
   for (int i = 0; i < Result->n_rows; ++i) {
     for (int j = 0; j < B_M->n_rows; ++j) {
