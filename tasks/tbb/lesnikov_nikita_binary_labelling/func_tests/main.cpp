@@ -112,8 +112,8 @@ TEST(lesnikov_binary_labelling_func_test, Test100_100) {
 }
 
 TEST(lesnikov_binary_labelling_func_test, Test200_200) {
-  int m = 100;
-  int n = 100;
+  int m = 200;
+  int n = 200;
   auto serializedM = serializeInt32(m);
   auto serializedN = serializeInt32(n);
   std::vector<uint8_t> in = getRandomVectorForLab(m * n);
@@ -218,8 +218,8 @@ TEST(lesnikov_binary_labelling_func_test, Test300_300) {
 }
 
 TEST(lesnikov_binary_labelling_func_test, Test400_400) {
-  int m = 300;
-  int n = 300;
+  int m = 400;
+  int n = 400;
   auto serializedM = serializeInt32(m);
   auto serializedN = serializeInt32(n);
   std::vector<uint8_t> in = getRandomVectorForLab(m * n);
