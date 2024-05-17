@@ -159,12 +159,10 @@ bool SparseMatrixSolverBodrovOMP::post_processing() {
 bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
   internal_order_test();
 
-  #pragma omp parallel
+#pragma omp parallel
   {
-    #pragma omp single
-    {
-      *B_M = T(*B_M);
-    }
+#pragma omp single
+    { *B_M = T(*B_M); }
   }
 
   return true;
@@ -190,8 +188,8 @@ bool SparseMatrixSolverBodrovOMPParallel::validation() {
   return true;
 }
 
-std::complex<double> computeDotProductParallel(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M, int row_A,
-                                               int row_B) {
+std::complex<double> computeDotProductParallel(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M,
+                                               int row_A, int row_B) {
   std::complex<double> result;
   int k_A = A_M.pointer[row_A];
   int k_B = B_M.pointer[row_B];
@@ -226,24 +224,22 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
 
   std::vector<std::vector<std::pair<int, std::complex<double>>>> temp(Result->n_rows);
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < Result->n_rows; ++i) {
     for (int j = 0; j < B_M->n_rows; ++j) {
       std::complex<double> product = computeDotProductParallel(*A_M, *B_M, i, j);
       if (isNonZero(product)) {
-        #pragma omp critical
-        {
-          temp[i].emplace_back(j, product);
-        }
+#pragma omp critical
+        { temp[i].emplace_back(j, product); }
       }
     }
   }
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < Result->n_rows; ++i) {
     Result->pointer[i + 1] = Result->pointer[i];
     for (const auto& pair : temp[i]) {
-      #pragma omp critical
+#pragma omp critical
       {
         Result->col_indexes.push_back(pair.first);
         Result->non_zero_values.push_back(pair.second);
