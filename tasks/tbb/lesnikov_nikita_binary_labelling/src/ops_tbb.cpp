@@ -248,11 +248,11 @@ std::vector<int> getLabelledImageTbb(const std::vector<uint8_t>& v, int m, int n
 
   tbb::task_arena arena(num_useful_threads);
 
+  tbb::mutex mtx;
+
   tbb::parallel_for(tbb::blocked_range<int>(0, m, blockSize), [&](const tbb::blocked_range<int>& range) {
     int start = range.begin();
     int end = range.end();
-    //tbb::mutex mtx;
-    std::mutex mtx;
     mtx.lock();
     if (start > 0) {
       bounds.insert(start);
