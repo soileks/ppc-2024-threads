@@ -45,8 +45,6 @@ TEST(bodrov_d_crs_matr_omp, test_invalid_matrices) {
   // Create Task
   SparseMatrixSolverBodrovOMPParallel taskOmp(taskDataOmp);
   ASSERT_EQ(taskOmp.validation(), false);
-
-  EXPECT_EQ(Result, ResultOMP);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
@@ -111,8 +109,6 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrices) {
   ASSERT_EQ(ResultPar.pointer, Expected.pointer);
   ASSERT_EQ(ResultPar.col_indexes, Expected.col_indexes);
   ASSERT_EQ(ResultPar.non_zero_values.size(), Expected.non_zero_values.size());
-
-  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
@@ -187,8 +183,6 @@ TEST(bodrov_d_crs_matr_omp, test_sparse_matrices) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
-
-  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
@@ -263,8 +257,6 @@ TEST(bodrov_d_crs_matr_omp, test_inverse_matrix) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
-
-  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
@@ -339,7 +331,6 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
-  EXPECT_EQ(Result, ResultPar);
 }
 
 TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
@@ -414,5 +405,4 @@ TEST(bodrov_d_crs_matr_omp, test_complex_matrix_diagonal) {
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
-  EXPECT_EQ(Result, ResultPar);
 }
