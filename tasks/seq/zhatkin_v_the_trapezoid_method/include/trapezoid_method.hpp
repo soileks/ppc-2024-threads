@@ -26,4 +26,4 @@ class ZhatkinTaskSequential : public ppc::core::Task {
 };
 
 double trapezoidal_integral(const std::function<double(double, double)>& f, double lowerx, double upperx, double lowery,
-                            double uppery, int nx, int ny) {
+                            double uppery, int nx, int ny);
