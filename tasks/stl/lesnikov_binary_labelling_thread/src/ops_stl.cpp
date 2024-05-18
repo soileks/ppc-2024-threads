@@ -139,8 +139,7 @@ std::vector<int> reducePointersThread(std::vector<InfPtr>& labelled, int numThre
   futures[0] = std::async(std::launch::async, reduce, 0, blockSize + remainder);
 
   for (size_t i = 1; i < static_cast<size_t>(numThreads); i++) {
-    futures[i] = 
-      std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize);
+    futures[i] = std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize);
   }
 
   for (auto& fut : futures) {
