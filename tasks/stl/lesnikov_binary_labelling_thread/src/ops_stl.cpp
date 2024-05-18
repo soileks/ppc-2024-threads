@@ -21,7 +21,7 @@ class InfPtr {
   InfPtr(int value) : _ptr(nullptr), _value(value) {}
   void set(const std::shared_ptr<InfPtr>& ptr) {
     if (!_ptr) {
-      _ptr = ptr;
+      _ptr = std::shared_ptr<InfPtr>(ptr);
       return;
     }
     _ptr->set(ptr);
@@ -129,7 +129,7 @@ std::vector<int> reducePointersThread(std::vector<InfPtr>& labelled, int numThre
   size_t remainder = labelled.size() % numThreads;
 
   auto reduce = [&labelled, &reduced](size_t start, size_t end) {
-    for (int i = start; i < end; i++) {
+    for (size_t i = start; i < end; i++) {
       reduced[i] = labelled[i].value();
     }
   };
@@ -138,7 +138,7 @@ std::vector<int> reducePointersThread(std::vector<InfPtr>& labelled, int numThre
 
   futures.push_back(std::async(std::launch::async, reduce, 0, blockSize + remainder));
 
-  for (size_t i = 1; i < numThreads; i++) {
+  for (size_t i = 1; i < static_cast<size_t>(numThreads); i++) {
     futures.push_back(
         std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize));
   }
