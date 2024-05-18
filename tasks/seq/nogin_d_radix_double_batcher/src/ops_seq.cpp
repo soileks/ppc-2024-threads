@@ -1,6 +1,8 @@
 // Copyright 2024 Nogin Denis
 #include "seq/nogin_d_radix_double_batcher/include/ops_seq.hpp"
 
+namespace NoginDenisSeq {
+
 constexpr int sizeDouble = sizeof(double);
 
 bool RadixSortDoubleBatcherSequential::pre_processing() {
@@ -59,12 +61,14 @@ std::vector<double> batchersMerge(std::vector<std::vector<double>>& subvectors) 
 void partSort(std::vector<std::vector<double>>& parts, std::vector<double>& side) {
   for (int i = 0; i < sizeDouble; ++i) {
     for (auto& j : side) {
-      uint64_t temp = *reinterpret_cast<uint64_t*>(reinterpret_cast<void*>(&j));
+      auto temp = static_cast<uint64_t>(j);
       temp >>= i * 8;
       temp &= 255;
       parts[temp].push_back(j);
     }
+
     side = batchersMerge(parts);
+
     for (auto& part : parts) {
       part.clear();
     }
@@ -75,8 +79,10 @@ std::vector<double> radixSortBatcher(std::vector<double> vec) {
   uint64_t mask = static_cast<uint64_t>(1) << (sizeDouble * 8 - 1);
   std::vector<double> positive;
   std::vector<double> negative;
+
   for (auto& i : vec) {
-    uint64_t temp = *reinterpret_cast<uint64_t*>(reinterpret_cast<void*>(&i));
+    auto temp = static_cast<uint64_t>(i);
+
     if ((temp & mask) != 0) {
       negative.push_back(i);
     } else {
@@ -107,3 +113,4 @@ std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) 
 
   return vec;
 }
+}  // namespace NoginDenisSeq
