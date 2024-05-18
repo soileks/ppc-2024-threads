@@ -2,6 +2,7 @@
 #include "stl/lesnikov_binary_labelling_thread/include/ops_stl.hpp"
 
 #include <cstring>
+#include <future>
 #include <iostream>
 #include <list>
 #include <numeric>
@@ -11,7 +12,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <future>
 
 using namespace std::chrono_literals;
 
@@ -129,9 +129,9 @@ std::vector<int> reducePointersThread(std::vector<InfPtr>& labelled, int numThre
   size_t remainder = labelled.size() % numThreads;
 
   auto reduce = [&labelled, &reduced](size_t start, size_t end) {
-                for (int i = start; i < end; i++) {
-                  reduced[i] = labelled[i].value();
-                }
+    for (int i = start; i < end; i++) {
+      reduced[i] = labelled[i].value();
+    }
   };
 
   std::vector<std::future<void>> futures;
@@ -139,7 +139,8 @@ std::vector<int> reducePointersThread(std::vector<InfPtr>& labelled, int numThre
   futures.push_back(std::async(std::launch::async, reduce, 0, blockSize + remainder));
 
   for (size_t i = 1; i < numThreads; i++) {
-    futures.push_back(std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize));
+    futures.push_back(
+        std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize));
   }
 
   for (auto& fut : futures) {
@@ -245,32 +246,27 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
   const int dataSizeForThread = (blockSize + 1) * n;
 
   auto process = [&] (int tid) {
-                 int label = dataSizeForThread * tid;
-                 int start = blockSize * tid;
-                 int end = blockSize * (tid + 1);
-                 if (tid == numThreads - 1 && m % numThreads != 0) {
-                   end += m % numThreads;
-                 }
-                 if (!static_cast<bool>(get(v, n, start, 0))) {
-                   get(labelled, n, start, 0).set(std::make_shared<InfPtr>(++label));
-                 }
-                 processHorizontal(labelled, v, label, n, start);
-                 processVertical(labelled, v, label, n, start, end);
-                 processMedium(labelled, v, label, n, start, end);  
+    int label = dataSizeForThread * tid;
+    int start = blockSize * tid;
+    int end = blockSize * (tid + 1);
+    if (tid == numThreads - 1 && m % numThreads != 0) {
+      end += m % numThreads;
+    }
+    if (!static_cast<bool>(get(v, n, start, 0))) {
+      get(labelled, n, start, 0).set(std::make_shared<InfPtr>(++label));
+    }
+    processHorizontal(labelled, v, label, n, start);
+    processVertical(labelled, v, label, n, start, end);
+    processMedium(labelled, v, label, n, start, end);  
   };
-
   std::vector<std::future<void>> futures;
-
   for (int i = 0; i < numThreads; i++) {
-      futures.push_back(std::async(std::launch::async, process, i));
+    futures.push_back(std::async(std::launch::async, process, i));
   }
-
   for (auto& fut : futures) {
     fut.get();
   }
-
   mergeBounds(labelled, blockSize, m, n);
-
   return reducePointersThread(labelled, numThreads);
 }
 
@@ -284,7 +280,6 @@ bool BinaryLabellingSeq::pre_processing() {
   } catch (...) {
     return false;
   }
-
   return true;
 }
 
@@ -359,4 +354,3 @@ bool BinaryLabellingThread::post_processing() {
   }
   return true;
 }
-

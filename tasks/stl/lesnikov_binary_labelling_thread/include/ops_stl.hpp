@@ -42,4 +42,3 @@ class BinaryLabellingThread : public ppc::core::Task {
   uint32_t _m = 0;
   uint32_t _n = 0;
 };
-
