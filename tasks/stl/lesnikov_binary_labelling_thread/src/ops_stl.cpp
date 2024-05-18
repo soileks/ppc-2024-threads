@@ -134,13 +134,13 @@ std::vector<int> reducePointersThread(std::vector<InfPtr>& labelled, int numThre
     }
   };
 
-  std::vector<std::future<void>> futures;
+  std::vector<std::future<void>> futures(static_cast<size_t>(numThreads));
 
-  futures.push_back(std::async(std::launch::async, reduce, 0, blockSize + remainder));
+  futures[0] = std::async(std::launch::async, reduce, 0, blockSize + remainder);
 
   for (size_t i = 1; i < static_cast<size_t>(numThreads); i++) {
-    futures.push_back(
-        std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize));
+    futures[i] = 
+      std::async(std::launch::async, reduce, remainder + i * blockSize, remainder + (i + 1) * blockSize);
   }
 
   for (auto& fut : futures) {
@@ -259,9 +259,9 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
     processVertical(labelled, v, label, n, start, end);
     processMedium(labelled, v, label, n, start, end);
   };
-  std::vector<std::future<void>> futures;
+  std::vector<std::future<void>> futures(static_cast<size_t>(numThreads));
   for (int i = 0; i < numThreads; i++) {
-    futures.push_back(std::async(std::launch::async, process, i));
+    futures[i] = std::async(std::launch::async, process, i);
   }
   for (auto& fut : futures) {
     fut.get();
