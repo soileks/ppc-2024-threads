@@ -4,26 +4,29 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "stl/example/include/ops_stl.hpp"
+#include "stl/lesnikov_binary_labelling_thread/include/ops_stl.hpp"
 
-TEST(stl_example_perf_test, test_pipeline_run) {
-  const int count = 100;
+TEST(lesnikov_binary_labelling_perf_test, test_pipeline_run) {
+  int m = 500;
+  int n = 500;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  auto testTaskThread = std::make_shared<BinaryLabellingThread>(taskDataThread);
 
-  // Create Task
-  auto testTaskSTL = std::make_shared<TestSTLTaskSequential>(taskDataSeq, "+");
-
-  // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
@@ -33,34 +36,34 @@ TEST(stl_example_perf_test, test_pipeline_run) {
     return static_cast<double>(duration) * 1e-9;
   };
 
-  // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskThread);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count, out[0]);
 }
 
-TEST(stl_example_perf_test, test_task_run) {
-  const int count = 100;
+TEST(lesnikov_binary_labelling_perf_test, test_task_run) {
+  int m = 500;
+  int n = 500;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create data
-  std::vector<int> in(1, count);
-  std::vector<int> out(1, 0);
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
+  auto testTaskThread = std::make_shared<BinaryLabellingThread>(taskDataThread);
 
-  // Create Task
-  auto testTaskSTL = std::make_shared<TestSTLTaskSequential>(taskDataSeq, "+");
-
-  // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
@@ -70,17 +73,9 @@ TEST(stl_example_perf_test, test_task_run) {
     return static_cast<double>(duration) * 1e-9;
   };
 
-  // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskThread);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count, out[0]);
-}
-
-int main(int argc, char **argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

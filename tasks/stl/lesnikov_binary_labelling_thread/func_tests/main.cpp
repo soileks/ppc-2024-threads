@@ -4,204 +4,269 @@
 #include <thread>
 #include <vector>
 
-#include "stl/example/include/ops_stl.hpp"
+#include "stl/lesnikov_binary_labelling_thread/include/ops_stl.hpp"
 
-TEST(Parallel_Operations_STL_Threads, Test_Sum) {
-  auto nthreads = std::thread::hardware_concurrency() * 10;
-  std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test10_10) {
+  int m = 10;
+  int n = 10;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
-  TestSTLTaskSequential.pre_processing();
-  TestSTLTaskSequential.run();
-  TestSTLTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create Task
-  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
-  TestSTLTaskParallel.pre_processing();
-  TestSTLTaskParallel.run();
-  TestSTLTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
+
+  BinaryLabellingThread testTaskThread(taskDataThread);
+  ASSERT_TRUE(testTaskThread.validation());
+  ASSERT_TRUE(testTaskThread.pre_processing());
+  ASSERT_TRUE(testTaskThread.run());
+  ASSERT_TRUE(testTaskThread.post_processing());
+
+  std::vector<int> outVD_Thread = deserializeInt32V(outV_Thread);
+
+  EXPECT_EQ(getObjectsNum(outVD_Thread), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_Thread, outVD_seq));
 }
 
-TEST(Parallel_Operations_STL_Threads, Test_Sum_2) {
-  auto nthreads = std::thread::hardware_concurrency() * 11;
-  std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test100_100) {
+  int m = 100;
+  int n = 100;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
-  TestSTLTaskSequential.pre_processing();
-  TestSTLTaskSequential.run();
-  TestSTLTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create Task
-  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
-  TestSTLTaskParallel.pre_processing();
-  TestSTLTaskParallel.run();
-  TestSTLTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
+
+  BinaryLabellingThread testTaskThread(taskDataThread);
+  ASSERT_TRUE(testTaskThread.validation());
+  ASSERT_TRUE(testTaskThread.pre_processing());
+  ASSERT_TRUE(testTaskThread.run());
+  ASSERT_TRUE(testTaskThread.post_processing());
+
+  std::vector<int> outVD_Thread = deserializeInt32V(outV_Thread);
+
+  EXPECT_EQ(getObjectsNum(outVD_Thread), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_Thread, outVD_seq));
 }
 
-TEST(Parallel_Operations_STL_Threads, Test_Sum_3) {
-  auto nthreads = std::thread::hardware_concurrency() * 13;
-  std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test200_200) {
+  int m = 200;
+  int n = 200;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "+");
-  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
-  TestSTLTaskSequential.pre_processing();
-  TestSTLTaskSequential.run();
-  TestSTLTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create Task
-  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "+");
-  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
-  TestSTLTaskParallel.pre_processing();
-  TestSTLTaskParallel.run();
-  TestSTLTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
+
+  BinaryLabellingThread testTaskThread(taskDataThread);
+  ASSERT_TRUE(testTaskThread.validation());
+  ASSERT_TRUE(testTaskThread.pre_processing());
+  ASSERT_TRUE(testTaskThread.run());
+  ASSERT_TRUE(testTaskThread.post_processing());
+
+  std::vector<int> outVD_Thread = deserializeInt32V(outV_Thread);
+
+  EXPECT_EQ(getObjectsNum(outVD_Thread), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_Thread, outVD_seq));
 }
 
-TEST(Parallel_Operations_STL_Threads, Test_Diff) {
-  auto nthreads = std::thread::hardware_concurrency() * 14;
-  std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test300_300) {
+  int m = 300;
+  int n = 300;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
-  TestSTLTaskSequential.pre_processing();
-  TestSTLTaskSequential.run();
-  TestSTLTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create Task
-  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
-  TestSTLTaskParallel.pre_processing();
-  TestSTLTaskParallel.run();
-  TestSTLTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
+
+  BinaryLabellingThread testTaskThread(taskDataThread);
+  ASSERT_TRUE(testTaskThread.validation());
+  ASSERT_TRUE(testTaskThread.pre_processing());
+  ASSERT_TRUE(testTaskThread.run());
+  ASSERT_TRUE(testTaskThread.post_processing());
+
+  std::vector<int> outVD_Thread = deserializeInt32V(outV_Thread);
+
+  EXPECT_EQ(getObjectsNum(outVD_Thread), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_Thread, outVD_seq));
 }
 
-TEST(Parallel_Operations_STL_Threads, Test_Diff_2) {
-  auto nthreads = std::thread::hardware_concurrency() * 15;
-  std::vector<int> vec = getRandomVector(static_cast<int>(nthreads));
-  // Create data
-  std::vector<int> ref_res(1, 0);
+TEST(lesnikov_binary_labelling_func_test, Test400_400) {
+  int m = 400;
+  int n = 400;
+  auto serializedM = serializeInt32(m);
+  auto serializedN = serializeInt32(n);
+  std::vector<uint8_t> in = getRandomVectorForLab(m * n);
 
-  // Create TaskData
+  std::vector<uint8_t> outV_seq(in.size() * sizeof(int));
+
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataSeq->inputs_count.emplace_back(vec.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(ref_res.data()));
-  taskDataSeq->outputs_count.emplace_back(ref_res.size());
+  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataSeq->inputs.push_back(in.data());
+  taskDataSeq->inputs.push_back(serializedM.data());
+  taskDataSeq->inputs.push_back(serializedN.data());
+  taskDataSeq->inputs_count.push_back(in.size());
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->inputs_count.push_back(4);
+  taskDataSeq->outputs.push_back(outV_seq.data());
+  taskDataSeq->outputs_count.push_back(outV_seq.size());
 
-  // Create Task
-  TestSTLTaskSequential TestSTLTaskSequential(taskDataSeq, "-");
-  ASSERT_EQ(TestSTLTaskSequential.validation(), true);
-  TestSTLTaskSequential.pre_processing();
-  TestSTLTaskSequential.run();
-  TestSTLTaskSequential.post_processing();
+  BinaryLabellingSeq testTaskSequential(taskDataSeq);
+  ASSERT_TRUE(testTaskSequential.validation());
+  ASSERT_TRUE(testTaskSequential.pre_processing());
+  ASSERT_TRUE(testTaskSequential.run());
+  ASSERT_TRUE(testTaskSequential.post_processing());
 
-  // Create data
-  std::vector<int> par_res(1, 0);
+  std::vector<int> outVD_seq = deserializeInt32V(outV_seq);
 
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
-  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(vec.data()));
-  taskDataPar->inputs_count.emplace_back(vec.size());
-  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(par_res.data()));
-  taskDataPar->outputs_count.emplace_back(par_res.size());
+  std::vector<uint8_t> outV_Thread(in.size() * sizeof(int));
 
-  // Create Task
-  TestSTLTaskParallel TestSTLTaskParallel(taskDataPar, "-");
-  ASSERT_EQ(TestSTLTaskParallel.validation(), true);
-  TestSTLTaskParallel.pre_processing();
-  TestSTLTaskParallel.run();
-  TestSTLTaskParallel.post_processing();
-  ASSERT_EQ(ref_res[0], par_res[0]);
-}
+  std::shared_ptr<ppc::core::TaskData> taskDataThread = std::make_shared<ppc::core::TaskData>();
+  taskDataThread->state_of_testing = ppc::core::TaskData::FUNC;
+  taskDataThread->inputs.push_back(in.data());
+  taskDataThread->inputs.push_back(serializedM.data());
+  taskDataThread->inputs.push_back(serializedN.data());
+  taskDataThread->inputs_count.push_back(in.size());
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->inputs_count.push_back(4);
+  taskDataThread->outputs.push_back(outV_Thread.data());
+  taskDataThread->outputs_count.push_back(outV_Thread.size());
 
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  BinaryLabellingThread testTaskThread(taskDataThread);
+  ASSERT_TRUE(testTaskThread.validation());
+  ASSERT_TRUE(testTaskThread.pre_processing());
+  ASSERT_TRUE(testTaskThread.run());
+  ASSERT_TRUE(testTaskThread.post_processing());
+
+  std::vector<int> outVD_Thread = deserializeInt32V(outV_Thread);
+
+  EXPECT_EQ(getObjectsNum(outVD_Thread), getObjectsNum(outVD_seq));
+  EXPECT_TRUE(isMapsEqual(outVD_Thread, outVD_seq));
 }
