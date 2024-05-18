@@ -245,7 +245,7 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
   const int blockSize = m / numThreads;
   const int dataSizeForThread = (blockSize + 1) * n;
 
-  auto process = [&] (int tid) {
+  auto process = [&](int tid) {
     int label = dataSizeForThread * tid;
     int start = blockSize * tid;
     int end = blockSize * (tid + 1);
@@ -257,7 +257,7 @@ std::vector<int> getLabelledImageOmp(const std::vector<uint8_t>& v, int m, int n
     }
     processHorizontal(labelled, v, label, n, start);
     processVertical(labelled, v, label, n, start, end);
-    processMedium(labelled, v, label, n, start, end);  
+    processMedium(labelled, v, label, n, start, end);
   };
   std::vector<std::future<void>> futures;
   for (int i = 0; i < numThreads; i++) {
