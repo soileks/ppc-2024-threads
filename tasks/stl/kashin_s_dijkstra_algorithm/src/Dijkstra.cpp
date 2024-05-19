@@ -45,22 +45,22 @@ bool KashinDijkstraStl::Dijkstra::run() {
 
   std::vector<std::thread> threads;
   for (int tid = 0; tid < num_threads; ++tid) {
-    threads.emplace_back([this, tid, num_threads]() {
-      auto& tpq = tpqs[tid];
-      while (!tpq.empty()) {
-        std::pair<int, int> vertex = tpq.top();
-        tpq.pop();
-        for (int i = tid; i < count; i += num_threads) {
-          std::pair<int, int> edge(graph[vertex.second * count + i], i);
-          if (i != vertex.second && edge.first != -1) {
-            int weight = edge.first + vertex.first;
-            if (weight < distance[edge.second]) {
-              distance[edge.second] = weight;
-              tpqs[tid].emplace(weight, edge.second);
-            }
+    threads.emplace_back([this, tid, num_threads, &tpqs]() { // Добавить tpqs в список захвата
+        auto& tpq = tpqs[tid];
+        while (!tpq.empty()) {
+          std::pair<int, int> vertex = tpq.top();
+          tpq.pop();
+          for (int i = tid; i < count; i += num_threads) {
+            std::pair<int, int> edge(graph[vertex.second * count + i], i);
+            if (i != vertex.second && edge.first != -1) {
+              int weight = edge.first + vertex.first;
+              if (weight < distance[edge.second]) {
+                distance[edge.second] = weight;
+                tpqs[tid].emplace(weight, edge.second);
+              }
+          }
           }
         }
-      }
     });
   }
 
