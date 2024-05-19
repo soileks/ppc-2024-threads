@@ -23,10 +23,11 @@ double trapezoidal_integralOMP(const std::function<double(double, double)>& f, d
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
   double sum = 0.5 * (f(lowerx, lowery) + f(upperx, uppery));
+  double x;
 
 #pragma omp parallel for reduction(+ : sum) collapse(2)
   for (int i = 1; i < nx; ++i) {
-    double x = lowerx + hx * i;
+    x = lowerx + hx * i;
     for (int j = 1; j < ny; ++j) {
       double y = lowery + hy * j;
       sum += f(x, y);
