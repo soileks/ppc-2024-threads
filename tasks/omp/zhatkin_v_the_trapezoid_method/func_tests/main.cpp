@@ -223,7 +223,7 @@ TEST(zhatkin_v_trapezoid_omp, Test4) {
   ASSERT_EQ(par_res[0], out[0]);
 }
 
-TEST(zhatkin_v_trapezoid_seq, Test5) {
+TEST(zhatkin_v_trapezoid_omp, Test5) {
   double lowerx = 1.0;
   double upperx = 2.0;
   double lowery = 1.0;
