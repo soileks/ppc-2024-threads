@@ -13,7 +13,7 @@ const std::vector<int> TEST_CHECKS = {522, 1074, 3507, 6345};
 const std::vector<int> TEST_CHECKS = {299, 987, 3831, 6411};
 #endif
 
-TEST(KashinDijkstraSTLTest, TestGraph10) {
+TEST(KashinDijkstraStlTest, TestGraph10) {
   const int vertexCount = 10;
   const int edgeWeight = 100;
   const int start = 0;
@@ -41,7 +41,7 @@ TEST(KashinDijkstraSTLTest, TestGraph10) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSTL::Dijkstra dijkstra(taskDataStl);
+  KashinDijkstraStl::Dijkstra dijkstra(taskDataStl);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();
@@ -49,7 +49,7 @@ TEST(KashinDijkstraSTLTest, TestGraph10) {
   ASSERT_EQ(TEST_CHECKS[0], std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSTLTest, CheckingIncorrectInputData) {
+TEST(KashinDijkstraStlTest, CheckingIncorrectInputData) {
   const int vertexCount = 10;
   const int edgeWeight = 10000;
   const int start = -1;
@@ -77,11 +77,11 @@ TEST(KashinDijkstraSTLTest, CheckingIncorrectInputData) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSTL::Dijkstra dijkstra(taskDataStl);
+  KashinDijkstraStl::Dijkstra dijkstra(taskDataStl);
   ASSERT_EQ(dijkstra.validation(), false);
 }
 
-TEST(KashinDijkstraSTLTest, TestGraph100) {
+TEST(KashinDijkstraStlTest, TestGraph100) {
   const int vertexCount = 100;
   const int edgeWeight = 100;
   const int start = 0;
@@ -109,7 +109,7 @@ TEST(KashinDijkstraSTLTest, TestGraph100) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSTL::Dijkstra dijkstra(taskDataStl);
+  KashinDijkstraStl::Dijkstra dijkstra(taskDataStl);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();
@@ -117,7 +117,7 @@ TEST(KashinDijkstraSTLTest, TestGraph100) {
   ASSERT_EQ(TEST_CHECKS[1], std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSTLTest, TestGraph1000) {
+TEST(KashinDijkstraStlTest, TestGraph1000) {
   const int vertexCount = 1000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -145,7 +145,7 @@ TEST(KashinDijkstraSTLTest, TestGraph1000) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSTL::Dijkstra dijkstra(taskDataStl);
+  KashinDijkstraStl::Dijkstra dijkstra(taskDataStl);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();
@@ -153,7 +153,7 @@ TEST(KashinDijkstraSTLTest, TestGraph1000) {
   ASSERT_EQ(TEST_CHECKS[2], std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSTLTest, TestGraph10000) {
+TEST(KashinDijkstraStlTest, TestGraph10000) {
   const int vertexCount = 2000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -181,7 +181,7 @@ TEST(KashinDijkstraSTLTest, TestGraph10000) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  KashinDijkstraSTL::Dijkstra dijkstra(taskDataStl);
+  KashinDijkstraStl::Dijkstra dijkstra(taskDataStl);
   ASSERT_EQ(dijkstra.validation(), true);
   dijkstra.pre_processing();
   dijkstra.run();

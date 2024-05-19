@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-namespace KashinDijkstraSTL {
+namespace KashinDijkstraStl {
 
 struct Compare {
   bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) { return a > b; }
@@ -29,4 +29,4 @@ class Dijkstra : public ppc::core::Task {
   int start{};
   int count{};
 };
-}  // namespace KashinDijkstraSTL
+}  // namespace KashinDijkstraStl

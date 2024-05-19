@@ -8,7 +8,7 @@
 #include "core/perf/include/perf.hpp"
 #include "stl/kashin_s_dijkstra_algorithm/include/Dijkstra.hpp"
 
-TEST(KashinDijkstraSTLTest, test_pipeline_run) {
+TEST(KashinDijkstraStlTest, test_pipeline_run) {
   const int vertexCount = 5000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -36,7 +36,7 @@ TEST(KashinDijkstraSTLTest, test_pipeline_run) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testDijkstraOmpuential = std::make_shared<KashinDijkstraSTL::Dijkstra>(taskDataStl);
+  auto testDijkstraOmpuential = std::make_shared<KashinDijkstraStl::Dijkstra>(taskDataStl);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -58,7 +58,7 @@ TEST(KashinDijkstraSTLTest, test_pipeline_run) {
   ASSERT_EQ(13716, std::accumulate(out.begin(), out.end(), 0));
 }
 
-TEST(KashinDijkstraSTLTest, test_task_run) {
+TEST(KashinDijkstraStlTest, test_task_run) {
   const int vertexCount = 5000;
   const int edgeWeight = 100;
   const int start = 0;
@@ -86,7 +86,7 @@ TEST(KashinDijkstraSTLTest, test_task_run) {
   taskDataStl->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testDijkstraOmpuential = std::make_shared<KashinDijkstraSTL::Dijkstra>(taskDataStl);
+  auto testDijkstraOmpuential = std::make_shared<KashinDijkstraStl::Dijkstra>(taskDataStl);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
