@@ -1,4 +1,5 @@
 // Copyright 2024 Pushkarev Ilya
+// abc
 #include "omp/pushkarev_i_dijkstra_shortest_path/include/dijkstra_shortest_path.hpp"
 
 #include <omp.h>
