@@ -184,67 +184,36 @@ bool SparseMatrixSolverBodrovOMPParallel::validation() {
   return true;
 }
 
-std::complex<double> computeDotProductParallel(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M,
-                                               int row_A, int row_B) {
-  std::complex<double> result;
-  int k_A = A_M.pointer[row_A];
-  int k_B = B_M.pointer[row_B];
-
-  while (k_A < A_M.pointer[row_A + 1] && k_B < B_M.pointer[row_B + 1]) {
-    int col_A = A_M.col_indexes[k_A];
-    int col_B = B_M.col_indexes[k_B];
-
-    if (col_A == col_B) {
-      result += A_M.non_zero_values[k_A] * B_M.non_zero_values[k_B];
-      ++k_A;
-      ++k_B;
-    } else if (col_A < col_B) {
-      ++k_A;
-    } else {
-      ++k_B;
-    }
-  }
-
-  return result;
-}
-
 bool SparseMatrixSolverBodrovOMPParallel::run() {
   internal_order_test();
-  double start = omp_get_wtime();
 
   Result->n_rows = A_M->n_rows;
   Result->n_cols = B_M->n_rows;
   Result->pointer.assign(Result->n_rows + 1, 0);
 
-  std::vector<std::vector<std::pair<int, std::complex<double>>>> temp(Result->n_rows);
+  // Объявляем вектор для параллельного накопления значений и индексов
+  std::vector<std::vector<int>> col_indices(Result->n_rows);
+  std::vector<std::vector<std::complex<double>>> values(Result->n_rows);
 
-  omp_set_num_threads(4);
+// Параллельное выполнение цикла по строкам матрицы
 #pragma omp parallel for
   for (int i = 0; i < Result->n_rows; ++i) {
     for (int j = 0; j < B_M->n_rows; ++j) {
-      std::complex<double> product = computeDotProductParallel(*A_M, *B_M, i, j);
+      std::complex<double> product = computeDotProduct(*A_M, *B_M, i, j);
       if (isNonZero(product)) {
-#pragma omp critical
-        { temp[i].emplace_back(j, product); }
+        col_indices[i].push_back(j);
+        values[i].push_back(product);
       }
     }
   }
 
-  omp_set_num_threads(4);
-#pragma omp parallel for
+  // Обновляем указатели и добавляем значения в результирующую матрицу
   for (int i = 0; i < Result->n_rows; ++i) {
-    Result->pointer[i + 1] = Result->pointer[i];
-    for (const auto& pair : temp[i]) {
-#pragma omp critical
-      {
-        Result->col_indexes.push_back(pair.first);
-        Result->non_zero_values.push_back(pair.second);
-        Result->pointer[i + 1]++;
-      }
-    }
+    Result->pointer[i + 1] = Result->pointer[i] + col_indices[i].size();
+    Result->col_indexes.insert(Result->col_indexes.end(), col_indices[i].begin(), col_indices[i].end());
+    Result->non_zero_values.insert(Result->non_zero_values.end(), values[i].begin(), values[i].end());
   }
-  double finish = omp_get_wtime();
-  std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
+
   return true;
 }
 
