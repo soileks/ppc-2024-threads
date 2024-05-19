@@ -77,7 +77,7 @@ size_t DijkstraTaskOMP::getMinDistanceVertexOMP(const std::vector<bool>& process
   size_t min_dist = std::numeric_limits<size_t>::max();
   size_t min_index = 0;
 #pragma omp parallel for
-  for (size_t v = 0; v < distances_.size(); v++) {
+  for (int v = 0; v < (int)distances_.size(); v++) {
     if (!processed[v] && (size_t)distances_[v] <= min_dist) {
       min_dist = distances_[v];
       min_index = v;
