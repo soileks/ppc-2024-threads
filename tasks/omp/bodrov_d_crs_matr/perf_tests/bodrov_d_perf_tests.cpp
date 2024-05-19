@@ -53,7 +53,7 @@ TEST(bodrov_d_crs_matr_omp, test_pipeline_run) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  auto taskOmp = std::make_shared<SparseMatrixSolverBodrovOMP>(taskDataOmp);
+  auto taskOmp = std::make_shared<SparseMatrixSolverBodrovOMPParallel>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -82,7 +82,7 @@ TEST(bodrov_d_crs_matr_omp, test_task_run) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(&Result));
 
   // Create Task
-  auto taskOmp = std::make_shared<SparseMatrixSolverBodrovOMP>(taskDataOmp);
+  auto taskOmp = std::make_shared<SparseMatrixSolverBodrovOMPParallel>(taskDataOmp);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
