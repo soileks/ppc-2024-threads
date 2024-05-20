@@ -74,37 +74,33 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   }
   int n = my_data.size();
   oneapi::tbb::task_group g;
-  g.run([&] {Hoar_sort(my_data, 0*n / 4, (1) * n / 4 - 1);});
-  g.run([&] {Hoar_sort(my_data, 1*n / 4, (2) * n / 4 - 1);});
-  g.run([&] {Hoar_sort(my_data, 2*n / 4, (3) * n / 4 - 1);});
-  g.run([&] {Hoar_sort(my_data, 3*n / 4, (4) * n / 4 - 1);});
+  g.run([&] { Hoar_sort(my_data, 0 * n / 4, (1) * n / 4 - 1); });
+  g.run([&] { Hoar_sort(my_data, 1 * n / 4, (2) * n / 4 - 1); });
+  g.run([&] { Hoar_sort(my_data, 2 * n / 4, (3) * n / 4 - 1); });
+  g.run([&] { Hoar_sort(my_data, 3 * n / 4, (4) * n / 4 - 1); });
   g.wait();
 
   auto merge = [&](int l, int r) {
     int n = (r - l + 1);
-    oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0,n/2),
-                [&](oneapi::tbb::blocked_range<int>& R) {
-                    for(int i = R.begin(); i < R.end(); i++){
-                        CompAndSwap(my_data[l + i], my_data[r - i]);
-                    }
-        }
-    );
+    oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0,n/2), [&](oneapi::tbb::blocked_range<int>& R) {
+      for(int i = R.begin(); i < R.end(); i++){
+        CompAndSwap(my_data[l + i], my_data[r - i]);
+      }
+    });
     for (int k = n / 2; k >= 2; k /= 2) {
-          oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, n / k, 0, k / 2),
-                                    [&](oneapi::tbb::blocked_range2d<int> &R) {
-                                        for (int i = R.rows().begin(); i < R.rows().end(); i++) {
-                                            for (int j = R.cols().begin(); j < R.cols().end(); j++) {
-                                                CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
-                                            }
-                                        }
+      oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, n / k, 0, k / 2),
+                                [&](oneapi::tbb::blocked_range2d<int> &R) {
+                                  for (int i = R.rows().begin(); i < R.rows().end(); i++) {
+                                    for (int j = R.cols().begin(); j < R.cols().end(); j++) {
+                                      CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
                                     }
-          );
+                                  }
+                                });
     }
   };
-
   oneapi::tbb::task_group g2;
-  g2.run([&] { merge(0,n/2 - 1); });
-  g2.run([&] { merge(n/2,n - 1); });
+  g2.run([&] { merge(0, n / 2 - 1); });
+  g2.run([&] { merge(n / 2, n - 1); });
   g2.wait();
   merge(0, n - 1);
   return my_data;
