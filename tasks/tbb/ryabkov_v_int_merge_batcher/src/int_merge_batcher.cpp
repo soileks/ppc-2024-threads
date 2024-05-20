@@ -3,6 +3,28 @@
 
 namespace ryabkov_batcher {
 
+void odd_even_merge(std::vector<int>& arr, std::size_t lo, std::size_t n, std::size_t r) {
+  if (n > 1) {
+    std::size_t m = n / 2;
+    odd_even_merge(arr, lo, m, r);
+    odd_even_merge(arr, lo + r * m, m, r);
+    for (std::size_t i = lo + r; i + r < lo + r * n; i += r * 2) {
+      if (arr[i] > arr[i + r]) {
+        std::swap(arr[i], arr[i + r]);
+      }
+    }
+  }
+}
+
+void batcher_sort(std::vector<int>& arr, std::size_t lo, std::size_t n) {
+  if (n > 1) {
+    std::size_t m = n / 2;
+    batcher_sort(arr, lo, m);
+    batcher_sort(arr, lo + m, m);
+    odd_even_merge(arr, lo, n, 1);
+  }
+}
+
 void parallel_radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
@@ -66,7 +88,7 @@ std::vector<int> parallel_batch_merge(const std::vector<int>& a1, const std::vec
 std::vector<int> ParallelBatchSort(std::vector<int>& a1, std::vector<int>& a2) {
   std::vector<int> merged = parallel_batch_merge(a1, a2);
 
-  parallel_radix_sort(merged);
+  batcher_sort(merged, 0, merged.size());
 
   std::size_t n = merged.size() / 2;
   a1.assign(merged.begin(), merged.begin() + n);
