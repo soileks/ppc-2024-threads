@@ -1,4 +1,3 @@
-// Copyright 2024 Ryabkov Vladislav
 #include "tbb/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
 namespace ryabkov_batcher {
@@ -7,7 +6,7 @@ void odd_even_merge(std::vector<int>& arr, std::size_t lo, std::size_t n, std::s
   if (n > 1) {
     std::size_t m = n / 2;
     tbb::parallel_invoke([&] { odd_even_merge(arr, lo, m, r); }, [&] { odd_even_merge(arr, lo + r * m, m, r); });
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * n, r * 2),
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * (n - 1), r * 2),
                       [&](const tbb::blocked_range<std::size_t>& range) {
                         for (std::size_t i = range.begin(); i < range.end(); i += r * 2) {
                           if (arr[i] > arr[i + r]) {
@@ -30,6 +29,7 @@ void parallel_radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
+  tbb::mutex count_mutex;
 
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
     std::vector<int> local_count(10, 0);
@@ -37,8 +37,8 @@ void parallel_radix_sort(std::vector<int>& arr, int exp) {
       local_count[(arr[i] / exp) % 10]++;
     }
     for (int i = 0; i < 10; ++i) {
-      tbb::parallel_for(tbb::blocked_range<int>(0, n),
-                        [&](const tbb::blocked_range<int>& r) { count[i] += local_count[i]; });
+      tbb::mutex::scoped_lock lock(count_mutex);
+      count[i] += local_count[i];
     }
   });
 

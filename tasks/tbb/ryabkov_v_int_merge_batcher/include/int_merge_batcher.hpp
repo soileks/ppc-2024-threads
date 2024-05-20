@@ -3,7 +3,9 @@
 #pragma once
 
 #include <tbb/parallel_for.h>
+#include <tbb/parallel_invoke.h>
 #include <tbb/blocked_range.h>
+#include <tbb/mutex.h>
 
 #include <algorithm>
 #include <chrono>
