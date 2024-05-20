@@ -4,9 +4,9 @@
 #ifndef TASKS_OMP_ZHATKIN_V_TRAPEZOID_METHOD_INCLUDETRAPEZOID_METHOD_TBB_HPP_
 #define TASKS_OMP_ZHATKIN_V_TRAPEZOID_METHOD_INCLUDETRAPEZOID_METHOD_TBB_HPP_
 
-#include <oneapi/tbb/parallel_for.h>
 #include <oneapi/tbb/blocked_range.h>
 #include <oneapi/tbb/combinable.h>
+#include <oneapi/tbb/parallel_for.h>
 
 #include <cmath>
 #include <functional>
@@ -14,7 +14,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-
 
 #include "core/task/include/task.hpp"
 
