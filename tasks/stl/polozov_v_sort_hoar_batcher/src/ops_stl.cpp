@@ -89,6 +89,7 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   as2.wait();
   as3.wait();
   as4.wait();
+  constexpr int num_max_thread = 4;
   std::vector<int> sizes(num_max_thread);
   auto merge = [&](int l, int r) {
     int n = (r - l + 1);
