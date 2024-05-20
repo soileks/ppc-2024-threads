@@ -81,7 +81,6 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
     sort(ans.begin(), ans.end());
     return ans;
   }
-//  std::vector<std::thread> thr(4);
   int n = my_data.size();
   auto as1 = std::async([&] { Hoar_sort(my_data, 0 * n / 4, (1) * n / 4 - 1); });
   auto as2 = std::async([&] { Hoar_sort(my_data, 1 * n / 4, (2) * n / 4 - 1); });
@@ -98,14 +97,13 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
       CompAndSwap(my_data[l + i], my_data[r - i]);
     }
     for (int k = n / 2; k >= 2; k /= 2) {
-      // табличка h = n/k , w = k/2, каждому потоку получается n/(4 * k) строчек
       int each = (n / k) / (num_max_thread);
       sizes.assign(num_max_thread, each);
       sizes.back() += (n / k) % (num_max_thread);
-      auto a1 = std::async([&] {Calc(my_data, k / 2, 0, sizes[0] - 1, l);});
-      auto a2 = std::async([&] {Calc(my_data, k / 2, sizes[0], sizes[0] + sizes[1] - 1, l);});
-      auto a3 = std::async([&] {Calc(my_data, k / 2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l);});
-      auto a4 = std::async([&] {Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n/k - 1, l);});
+      auto a1 = std::async([&] { Calc(my_data, k / 2, 0, sizes[0] - 1, l);});
+      auto a2 = std::async([&] { Calc(my_data, k / 2, sizes[0], sizes[0] + sizes[1] - 1, l);});
+      auto a3 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l);});
+      auto a4 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n/k - 1, l);});
       a1.wait();
       a2.wait();
       a3.wait();
