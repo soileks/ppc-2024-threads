@@ -1,44 +1,17 @@
+// Copyright 2024 Ryabkov Vladislav
+
 #include "tbb/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
 namespace ryabkov_batcher {
 
-void odd_even_merge(std::vector<int>& arr, std::size_t lo, std::size_t n, std::size_t r) {
-  if (n > 1) {
-    std::size_t m = n / 2;
-    tbb::parallel_invoke([&] { odd_even_merge(arr, lo, m, r); }, [&] { odd_even_merge(arr, lo + r * m, m, r); });
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * n - r, r * 2),
-                      [&](const tbb::blocked_range<std::size_t>& range) {
-                        for (std::size_t i = range.begin(); i < range.end(); i += r * 2) {
-                          if (arr[i] > arr[i + r]) {
-                            std::swap(arr[i], arr[i + r]);
-                          }
-                        }
-                      });
-  }
-}
-
-void batcher_sort(std::vector<int>& arr, std::size_t lo, std::size_t n) {
-  if (n > 1) {
-    std::size_t m = n / 2;
-    tbb::parallel_invoke([&] { batcher_sort(arr, lo, m); }, [&] { batcher_sort(arr, lo + m, m); });
-    odd_even_merge(arr, lo, n, 1);
-  }
-}
-
-void parallel_radix_sort(std::vector<int>& arr, int exp) {
+void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
-  tbb::mutex count_mutex;
 
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
-    std::vector<int> local_count(10, 0);
-    for (std::size_t i = r.begin(); i != r.end(); ++i) {
-      local_count[(arr[i] / exp) % 10]++;
-    }
-    for (int i = 0; i < 10; ++i) {
-      tbb::mutex::scoped_lock lock(count_mutex);
-      count[i] += local_count[i];
+    for (std::size_t i = r.begin(); i < r.end(); ++i) {
+      count[(arr[i] / exp) % 10]++;
     }
   });
 
@@ -46,57 +19,63 @@ void parallel_radix_sort(std::vector<int>& arr, int exp) {
     count[i] += count[i - 1];
   }
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, n, 1), [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, static_cast<int>(n), 1), [&](const tbb::blocked_range<int>& r) {
     for (int i = r.end() - 1; i >= r.begin(); --i) {
-      output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-      count[(arr[i] / exp) % 10]--;
+      output[--count[(arr[i] / exp) % 10]] = arr[i];
     }
   });
 
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
-    for (std::size_t i = r.begin(); i != r.end(); ++i) {
+    for (std::size_t i = r.begin(); i < r.end(); ++i) {
       arr[i] = output[i];
     }
   });
 }
 
-void parallel_radix_sort(std::vector<int>& arr) {
+void radix_sort(std::vector<int>& arr) {
   const int max_element = *std::max_element(arr.begin(), arr.end());
 
   for (int exp = 1; max_element / exp > 0; exp *= 10) {
-    parallel_radix_sort(arr, exp);
+    radix_sort(arr, exp);
   }
 }
 
-std::vector<int> parallel_batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
+std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
   std::size_t i = 0;
   std::size_t j = 0;
-  std::size_t k = 0;
 
-  while (i < a1.size() && j < a2.size()) {
-    if (a1[i] < a2[j]) {
-      merged[k++] = a1[i++];
-    } else {
-      merged[k++] = a2[j++];
+  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, merged.size()), [&](const tbb::blocked_range<std::size_t>& r) {
+    for (std::size_t k = r.begin(); k < r.end(); ++k) {
+      if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
+        merged[k] = a1[i++];
+      } else {
+        merged[k] = a2[j++];
+      }
     }
-  }
-
-  while (i < a1.size()) {
-    merged[k++] = a1[i++];
-  }
-
-  while (j < a2.size()) {
-    merged[k++] = a2[j++];
-  }
+  });
 
   return merged;
 }
 
-std::vector<int> ParallelBatchSort(std::vector<int>& a1, std::vector<int>& a2) {
-  std::vector<int> merged = parallel_batch_merge(a1, a2);
+std::vector<int> BatchSort(std::vector<int>& a1, std::vector<int>& a2) {
+  std::vector<int> merged = batch_merge(a1, a2);
 
-  batcher_sort(merged, 0, merged.size());
+  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, sizeof(int) * 8), [&](const tbb::blocked_range<std::size_t>& r) {
+    for (std::size_t bit = r.begin(); bit < r.end(); ++bit) {
+      tbb::parallel_for(tbb::blocked_range<std::size_t>(0, merged.size() / 2),
+                        [&](const tbb::blocked_range<std::size_t>& r2) {
+                          for (std::size_t i = r2.begin(); i < r2.end(); ++i) {
+                            if (((i % 2 == 0) && ((merged[2 * i] >> bit) & 1) != 0) ||
+                                ((i % 2 != 0) && ((merged[2 * i + 1] >> bit) & 1) != 0)) {
+                              std::swap(merged[2 * i], merged[2 * i + 1]);
+                            }
+                          }
+                        });
+    }
+  });
+
+  radix_sort(merged);
 
   std::size_t n = merged.size() / 2;
   a1.assign(merged.begin(), merged.begin() + n);
@@ -105,7 +84,9 @@ std::vector<int> ParallelBatchSort(std::vector<int>& a1, std::vector<int>& a2) {
   return merged;
 }
 
-bool SeqBatcher::pre_processing() {
+}  // namespace ryabkov_batcher
+
+bool ryabkov_batcher::SeqBatcher::pre_processing() {
   internal_order_test();
 
   if (!taskData) return false;
@@ -125,24 +106,22 @@ bool SeqBatcher::pre_processing() {
   return true;
 }
 
-bool SeqBatcher::validation() {
+bool ryabkov_batcher::SeqBatcher::validation() {
   internal_order_test();
 
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool SeqBatcher::run() {
+bool ryabkov_batcher::SeqBatcher::run() {
   internal_order_test();
 
-  result = ParallelBatchSort(a1, a2);
+  result = ryabkov_batcher::BatchSort(a1, a2);
   return true;
 }
 
-bool SeqBatcher::post_processing() {
+bool ryabkov_batcher::SeqBatcher::post_processing() {
   internal_order_test();
 
   std::copy(result.begin(), result.end(), reinterpret_cast<int*>(taskData->outputs[0]));
   return true;
 }
-
-}  // namespace ryabkov_batcher
