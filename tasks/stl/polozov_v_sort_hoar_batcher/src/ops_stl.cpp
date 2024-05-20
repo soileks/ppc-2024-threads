@@ -1,5 +1,5 @@
 // Copyright 2024 Polozov Vladislav
-#include "tbb/polozov_v_sort_hoar_batcher/include/ops_tbb.hpp"
+#include "stl/polozov_v_sort_hoar_batcher/include/ops_stl.hpp"
 
 bool SortHoarWithMergeBatcher::pre_processing() {
   internal_order_test();
@@ -65,6 +65,15 @@ inline void CompAndSwap(int& x, int& y) {
   if (x > y) std::swap(x, y);
 }
 
+void Calc(std::vector<int>& my_data, int k, int L, int R, int l) {
+  for(int i = L; i <= R; i++){
+    for (int j = 0;j < k; j++){
+        CompAndSwap(my_data[l + 2 * k * i + j], my_data[l + 2 * k * i + j + k]);
+    }
+  }
+
+}
+
 std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   if (my_data.size() <= 8) {
     Hoar_sort(my_data, 0, my_data.size() - 1);
@@ -72,36 +81,45 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
     sort(ans.begin(), ans.end());
     return ans;
   }
+//  std::vector<std::thread> thr(4);
   int n = my_data.size();
-  oneapi::tbb::task_group g;
-  g.run([&] { Hoar_sort(my_data, 0 * n / 4, (1) * n / 4 - 1); });
-  g.run([&] { Hoar_sort(my_data, 1 * n / 4, (2) * n / 4 - 1); });
-  g.run([&] { Hoar_sort(my_data, 2 * n / 4, (3) * n / 4 - 1); });
-  g.run([&] { Hoar_sort(my_data, 3 * n / 4, (4) * n / 4 - 1); });
-  g.wait();
+  auto as1 = std::async([&] { Hoar_sort(my_data, 0 * n / 4, (1) * n / 4 - 1); });
+  auto as2 = std::async([&] { Hoar_sort(my_data, 1 * n / 4, (2) * n / 4 - 1); });
+  auto as3 = std::async([&] { Hoar_sort(my_data, 2 * n / 4, (3) * n / 4 - 1); });
+  auto as4 = std::async([&] { Hoar_sort(my_data, 3 * n / 4, (4) * n / 4 - 1); });
+  as1.wait();
+  as2.wait();
+  as3.wait();
+  as4.wait();
+
+  const auto num_max_thread = 4;
+  std::vector<std::thread> thr(num_max_thread);
+  std::vector<int> sizes(num_max_thread);
 
   auto merge = [&](int l, int r) {
     int n = (r - l + 1);
-    oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0, n / 2), [&](oneapi::tbb::blocked_range<int>& R) {
-      for (int i = R.begin(); i < R.end(); i++) {
-        CompAndSwap(my_data[l + i], my_data[r - i]);
-      }
-    });
+    for (int i = 0; i < n / 2; i++) {
+      CompAndSwap(my_data[l + i], my_data[r - i]);
+    }
     for (int k = n / 2; k >= 2; k /= 2) {
-      oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, n / k, 0, k / 2),
-                                [&](oneapi::tbb::blocked_range2d<int>& R) {
-                                  for (int i = R.rows().begin(); i < R.rows().end(); i++) {
-                                    for (int j = R.cols().begin(); j < R.cols().end(); j++) {
-                                      CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
-                                    }
-                                  }
-                                });
+      // табличка h = n/k , w = k/2, каждому потоку получается n/(4 * k) строчек
+      sizes.clear();
+      int each = (n/k) / (num_max_thread);
+      sizes.assign(num_max_thread, each);
+      sizes.back() += (n/k) % (num_max_thread);
+      auto a1 = std::async([&] {Calc(my_data, k/2, 0, sizes[0] - 1, l);});
+      auto a2 = std::async([&] {Calc(my_data, k/2, sizes[0], sizes[0] + sizes[1] - 1, l);});
+      auto a3 = std::async([&] {Calc(my_data, k/2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l);});
+      auto a4 = std::async([&] {Calc(my_data, k/2, sizes[0] + sizes[1] + sizes[2], n/k - 1, l);});
+      a1.wait();
+      a2.wait();
+      a3.wait();
+      a4.wait();
     }
   };
-  oneapi::tbb::task_group g2;
-  g2.run([&] { merge(0, n / 2 - 1); });
-  g2.run([&] { merge(n / 2, n - 1); });
-  g2.wait();
+
+  merge(0, n / 2 - 1);
+  merge(n / 2, n - 1);
   merge(0, n - 1);
   return my_data;
 }

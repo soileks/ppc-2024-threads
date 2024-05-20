@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/polozov_v_sort_hoar_batcher/include/ops_tbb.hpp"
+#include "stl/polozov_v_sort_hoar_batcher/include/ops_stl.hpp"
 
-TEST(polozov_v_sort_hoar_batcher_tbb, test_pipeline_run) {
+TEST(polozov_v_sort_hoar_batcher_stl, test_pipeline_run) {
   // Create data
   constexpr int size = (1 << 20);
   std::vector<int> array = generate_data(size, -1000000, 1000000);
@@ -45,7 +45,7 @@ TEST(polozov_v_sort_hoar_batcher_tbb, test_pipeline_run) {
   }
 }
 
-TEST(polozov_v_sort_hoar_batcher_tbb, test_task_run) {
+TEST(polozov_v_sort_hoar_batcher_stl, test_task_run) {
   // Create data
   constexpr int size = (1 << 20);
   std::vector<int> array = generate_data(size, -1000000, 1000000);

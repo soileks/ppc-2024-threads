@@ -1,9 +1,9 @@
 // Copyright 2024 Polozov Vladislav
 #include <gtest/gtest.h>
 
-#include "tbb/polozov_v_sort_hoar_batcher/include/ops_tbb.hpp"
+#include "stl/polozov_v_sort_hoar_batcher/include/ops_stl.hpp"
 
-TEST(polozov_v_sort_hoar_batcher_tbb, array_8) {
+TEST(polozov_v_sort_hoar_batcher_stl, array_8) {
   // Create data
   std::vector<int> array = {4, 8, 1, 2, 9, 6, 5, 3};
   std::vector<int> out(array.size());
@@ -29,7 +29,7 @@ TEST(polozov_v_sort_hoar_batcher_tbb, array_8) {
   }
 }
 
-TEST(polozov_v_sort_hoar_batcher_tbb, rand_array_16) {
+TEST(polozov_v_sort_hoar_batcher_stl, rand_array_16) {
   // Create data
   std::vector<int> array = generate_data(16, 0, 16);
   std::vector<int> out(array.size());
@@ -55,7 +55,7 @@ TEST(polozov_v_sort_hoar_batcher_tbb, rand_array_16) {
   }
 }
 
-TEST(polozov_v_sort_hoar_batcher_tbb, array_negative_64) {
+TEST(polozov_v_sort_hoar_batcher_stl, array_negative_64) {
   // Create data
   std::vector<int> array = {-50, -72, -47, -55, -20, -44, -46, -83, -78, -76, -97, -14, -50, -51, -27, -96,
                             -1,  -27, -28, -19, -15, -17, -43, -63, -1,  -92, -48, -70, -87, -28, -97, -79,
@@ -84,7 +84,7 @@ TEST(polozov_v_sort_hoar_batcher_tbb, array_negative_64) {
   }
 }
 
-TEST(polozov_v_sort_hoar_batcher_tbb, array_64) {
+TEST(polozov_v_sort_hoar_batcher_stl, array_64) {
   // Create data
   std::vector<int> array = {-50, -72, -47, -55, -20, -44, -46, -83, -78, -76, -97, -14, -50, -51, -27, -96,
                             -1,  -27, -28, -19, -15, -17, -43, -63, -1,  -92, -48, -70, -87, -28, -97, -79,
@@ -113,7 +113,7 @@ TEST(polozov_v_sort_hoar_batcher_tbb, array_64) {
   }
 }
 
-TEST(polozov_v_sort_hoar_batcher_tbb, array_4) {
+TEST(polozov_v_sort_hoar_batcher_stl, array_4) {
   // Create data
   std::vector<int> array = generate_data(4, -10, 10);
   std::vector<int> out(array.size());

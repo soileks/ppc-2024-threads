@@ -1,7 +1,7 @@
 // Copyright 2024 Polozov Vladislav
 #pragma once
-#include <tbb/tbb.h>
-
+#include <thread>
+#include <future>
 #include <algorithm>
 #include <random>
 #include <vector>
