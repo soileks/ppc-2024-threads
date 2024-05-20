@@ -37,7 +37,7 @@ double trapezoidal_integralTBB(const std::function<double(double, double)>& f, d
     }
   });
 
-  sum += localSums.combine(std::plus<double>());
+  sum += localSums.combine(std::plus<>());
 
   return hx * hy * sum;
 }
