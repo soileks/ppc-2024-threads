@@ -1,9 +1,9 @@
 // Copyright 2024 Polozov Vladislav
 #pragma once
-#include <thread>
-#include <future>
 #include <algorithm>
+#include <future>
 #include <random>
+#include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"
