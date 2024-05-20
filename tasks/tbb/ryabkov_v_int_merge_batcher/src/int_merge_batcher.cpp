@@ -6,21 +6,22 @@ namespace ryabkov_batcher {
 void odd_even_merge(std::vector<int>& arr, std::size_t lo, std::size_t n, std::size_t r) {
   if (n > 1) {
     std::size_t m = n / 2;
-    odd_even_merge(arr, lo, m, r);
-    odd_even_merge(arr, lo + r * m, m, r);
-    for (std::size_t i = lo + r; i + r < lo + r * n; i += r * 2) {
-      if (arr[i] > arr[i + r]) {
-        std::swap(arr[i], arr[i + r]);
-      }
-    }
+    tbb::parallel_invoke([&] { odd_even_merge(arr, lo, m, r); }, [&] { odd_even_merge(arr, lo + r * m, m, r); });
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * n, r * 2),
+                      [&](const tbb::blocked_range<std::size_t>& range) {
+                        for (std::size_t i = range.begin(); i < range.end(); i += r * 2) {
+                          if (arr[i] > arr[i + r]) {
+                            std::swap(arr[i], arr[i + r]);
+                          }
+                        }
+                      });
   }
 }
 
 void batcher_sort(std::vector<int>& arr, std::size_t lo, std::size_t n) {
   if (n > 1) {
     std::size_t m = n / 2;
-    batcher_sort(arr, lo, m);
-    batcher_sort(arr, lo + m, m);
+    tbb::parallel_invoke([&] { batcher_sort(arr, lo, m); }, [&] { batcher_sort(arr, lo + m, m); });
     odd_even_merge(arr, lo, n, 1);
   }
 }
@@ -30,9 +31,14 @@ void parallel_radix_sort(std::vector<int>& arr, int exp) {
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
 
-  tbb::parallel_for(tbb::blocked_range<size_t>(0, n), [&](const tbb::blocked_range<size_t>& r) {
+  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
+    std::vector<int> local_count(10, 0);
     for (std::size_t i = r.begin(); i != r.end(); ++i) {
-      count[(arr[i] / exp) % 10]++;
+      local_count[(arr[i] / exp) % 10]++;
+    }
+    for (int i = 0; i < 10; ++i) {
+      tbb::parallel_for(tbb::blocked_range<int>(0, n),
+                        [&](const tbb::blocked_range<int>& r) { count[i] += local_count[i]; });
     }
   });
 
@@ -40,12 +46,14 @@ void parallel_radix_sort(std::vector<int>& arr, int exp) {
     count[i] += count[i - 1];
   }
 
-  for (int i = n - 1; i >= 0; --i) {
-    output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-    count[(arr[i] / exp) % 10]--;
-  }
+  tbb::parallel_for(tbb::blocked_range<int>(0, n, 1), [&](const tbb::blocked_range<int>& r) {
+    for (int i = r.end() - 1; i >= r.begin(); --i) {
+      output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+      count[(arr[i] / exp) % 10]--;
+    }
+  });
 
-  tbb::parallel_for(tbb::blocked_range<size_t>(0, n), [&](const tbb::blocked_range<size_t>& r) {
+  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
     for (std::size_t i = r.begin(); i != r.end(); ++i) {
       arr[i] = output[i];
     }
