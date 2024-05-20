@@ -5,14 +5,15 @@
 
 #include <algorithm>
 #include <chrono>
+#include <iterator>
 #include <random>
 #include <vector>
-#include <iterator>
 
 #include "tbb/parallel_for.h"
 #include "tbb/parallel_invoke.h"
 #include "tbb/mutex.h"
 #include "tbb/blocked_range.h"
+#include "tbb/task_group.h"
 
 namespace ryabkov_batcher {
 class SeqBatcher : public ppc::core::Task {

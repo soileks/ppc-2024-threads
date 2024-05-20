@@ -3,31 +3,24 @@
 
 namespace ryabkov_batcher {
 
-void parallel_radix_sort(std::vector<int>& arr, int exp) {
+void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
-  tbb::mutex count_mutex;
-
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
-    std::vector<int> local_count(10, 0);
     for (std::size_t i = r.begin(); i != r.end(); ++i) {
-      local_count[(arr[i] / exp) % 10]++;
-    }
-    for (int i = 0; i < 10; ++i) {
-      tbb::mutex::scoped_lock lock(count_mutex);
-      count[i] += local_count[i];
+      tbb::mutex m;
+      tbb::mutex::scoped_lock lock(m);
+      count[(arr[i] / exp) % 10]++;
     }
   });
 
-  for (int i = 1; i < 10; i++) {
-    count[i] += count[i - 1];
-  }
+  for (int i = 1; i < 10; i++) count[i] += count[i - 1];
 
-  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
-    for (std::size_t i = r.end(); i > r.begin(); --i) {
-      output[count[(arr[i - 1] / exp) % 10] - 1] = arr[i - 1];
-      count[(arr[i - 1] / exp) % 10]--;
+  tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& r) {
+    for (int i = r.end() - 1; i >= r.begin(); --i) {
+      output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+      count[(arr[i] / exp) % 10]--;
     }
   });
 
@@ -38,55 +31,46 @@ void parallel_radix_sort(std::vector<int>& arr, int exp) {
   });
 }
 
-void parallel_radix_sort(std::vector<int>& arr) {
+void radix_sort(std::vector<int>& arr) {
   const int max_element = *std::max_element(arr.begin(), arr.end());
+
   for (int exp = 1; max_element / exp > 0; exp *= 10) {
-    parallel_radix_sort(arr, exp);
+    radix_sort(arr, exp);
   }
 }
 
-std::vector<int> parallel_batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
+std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
-  std::size_t i = 0, j = 0, k = 0;
-
-  while (i < a1.size() && j < a2.size()) {
-    if (a1[i] < a2[j]) {
-      merged[k++] = a1[i++];
-    } else {
-      merged[k++] = a2[j++];
+  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, merged.size()), [&](const tbb::blocked_range<std::size_t>& r) {
+    std::size_t i = 0;
+    std::size_t j = 0;
+    for (std::size_t k = r.begin(); k != r.end(); ++k) {
+      if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
+        merged[k] = a1[i++];
+      } else {
+        merged[k] = a2[j++];
+      }
     }
-  }
-  while (i < a1.size()) {
-    merged[k++] = a1[i++];
-  }
-  while (j < a2.size()) {
-    merged[k++] = a2[j++];
-  }
+  });
   return merged;
 }
 
-void odd_even_merge_sort(std::vector<int>& arr, std::size_t lo, std::size_t n, std::size_t r) {
-  if (n > 1) {
-    std::size_t m = n / 2;
-    tbb::parallel_invoke([&] { odd_even_merge_sort(arr, lo, m, r); },
-                         [&] { odd_even_merge_sort(arr, lo + r * m, m, r); });
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * (n - 1), r * 2),
-                      [&](const tbb::blocked_range<std::size_t>& range) {
-                        for (std::size_t i = range.begin(); i < range.end(); i += r * 2) {
-                          if (arr[i] > arr[i + r]) {
-                            std::swap(arr[i], arr[i + r]);
+std::vector<int> BatchSort(std::vector<int>& a1, std::vector<int>& a2) {
+  std::vector<int> merged = batch_merge(a1, a2);
+
+  for (size_t bit = 0; bit < sizeof(int) * 8; bit++) {
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, merged.size() / 2),
+                      [&](const tbb::blocked_range<std::size_t>& r) {
+                        for (std::size_t i = r.begin(); i != r.end(); ++i) {
+                          if (((i % 2 == 0) && ((merged[2 * i] >> bit) & 1) != 0) ||
+                              ((i % 2 != 0) && ((merged[2 * i + 1] >> bit) & 1) != 0)) {
+                            std::swap(merged[2 * i], merged[2 * i + 1]);
                           }
                         }
                       });
   }
-}
 
-void parallel_odd_even_merge_sort(std::vector<int>& arr) { odd_even_merge_sort(arr, 0, arr.size(), 1); }
-
-std::vector<int> ParallelBatchSort(std::vector<int>& a1, std::vector<int>& a2) {
-  std::vector<int> merged = parallel_batch_merge(a1, a2);
-
-  parallel_odd_even_merge_sort(merged);
+  radix_sort(merged);
 
   std::size_t n = merged.size() / 2;
   a1.assign(merged.begin(), merged.begin() + n);
@@ -117,17 +101,20 @@ bool SeqBatcher::pre_processing() {
 
 bool SeqBatcher::validation() {
   internal_order_test();
+
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
 bool SeqBatcher::run() {
   internal_order_test();
-  result = ParallelBatchSort(a1, a2);
+
+  result = BatchSort(a1, a2);
   return true;
 }
 
 bool SeqBatcher::post_processing() {
   internal_order_test();
+
   std::copy(result.begin(), result.end(), reinterpret_cast<int*>(taskData->outputs[0]));
   return true;
 }
