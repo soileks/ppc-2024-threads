@@ -26,8 +26,7 @@ double trapezoidal_integralTBB(const std::function<double(double, double)>& f, d
 
   oneapi::tbb::combinable<double> localSums;
 
-  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(1, nx),
-                            [&](const oneapi::tbb::blocked_range<int>& range) {
+  oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(1, nx), [&](const oneapi::tbb::blocked_range<int>& range) {
     auto& localSum = localSums.local();
     for (int i = range.begin(); i < range.end(); ++i) {
       double x = lowerx + hx * i;
