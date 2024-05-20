@@ -2,12 +2,13 @@
 
 #pragma once
 
+#include <tbb/parallel_for.h>
+#include <tbb/parallel_sort.h>
+
 #include <algorithm>
 #include <chrono>
 #include <random>
 #include <vector>
-#include <tbb/parallel_for.h>
-#include <tbb/parallel_sort.h>
 
 #include "core/task/include/task.hpp"
 namespace ryabkov_batcher {
