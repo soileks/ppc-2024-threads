@@ -1,6 +1,5 @@
 // Copyright 2024 Zhatkin Vyacheslav
 #include <gtest/gtest.h>
-#include <omp.h>
 
 #include "core/perf/include/perf.hpp"
 #include "tbb/zhatkin_v_the_trapezoid_method/include/trapezoid_method_tbb.hpp"
@@ -38,7 +37,9 @@ TEST(zhatkin_v_trapezoid_tbb, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+  perfAttr->current_timer = [&] {
+    return std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -82,7 +83,9 @@ TEST(zhatkin_v_trapezoid_tbb, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+  perfAttr->current_timer = [&] {
+    return std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
