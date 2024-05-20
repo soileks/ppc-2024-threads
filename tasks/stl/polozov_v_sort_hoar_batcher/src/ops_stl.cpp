@@ -71,7 +71,6 @@ void Calc(std::vector<int>& my_data, int k, int L, int R, int l) {
       CompAndSwap(my_data[l + 2 * k * i + j], my_data[l + 2 * k * i + j + k]);
     }
   }
-
 }
 
 std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
