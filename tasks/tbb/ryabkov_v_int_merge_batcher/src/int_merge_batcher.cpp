@@ -7,30 +7,35 @@ void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
+  tbb::mutex count_mutex;
 
+  // Count occurrences of digits
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
     std::vector<int> local_count(10, 0);
     for (std::size_t i = r.begin(); i != r.end(); ++i) {
       local_count[(arr[i] / exp) % 10]++;
     }
-    tbb::mutex::scoped_lock lock;
+    tbb::mutex::scoped_lock lock(count_mutex);
     for (int i = 0; i < 10; ++i) {
-      lock.acquire();
       count[i] += local_count[i];
-      lock.release();
     }
   });
 
-  for (int i = 1; i < 10; i++) count[i] += count[i - 1];
+  // Accumulate the counts
+  for (int i = 1; i < 10; i++) {
+    count[i] += count[i - 1];
+  }
 
+  // Sort based on current digit
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
     for (std::size_t i = r.end(); i-- > r.begin();) {
       int index = (arr[i] / exp) % 10;
-      tbb::mutex::scoped_lock lock;
+      tbb::mutex::scoped_lock lock(count_mutex);
       output[--count[index]] = arr[i];
     }
   });
 
+  // Copy the sorted elements back to the original array
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
     for (std::size_t i = r.begin(); i != r.end(); ++i) {
       arr[i] = output[i];
@@ -48,8 +53,8 @@ void radix_sort(std::vector<int>& arr) {
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, merged.size()), [&](const tbb::blocked_range<std::size_t>& r) {
-    std::size_t i = r.begin();
-    std::size_t j = r.begin();
+    std::size_t i = 0;
+    std::size_t j = 0;
     for (std::size_t k = r.begin(); k != r.end(); ++k) {
       if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
         merged[k] = a1[i++];
