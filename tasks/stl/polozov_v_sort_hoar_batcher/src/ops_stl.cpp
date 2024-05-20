@@ -103,7 +103,7 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
       auto a1 = std::async([&] { Calc(my_data, k / 2, 0, sizes[0] - 1, l); });
       auto a2 = std::async([&] { Calc(my_data, k / 2, sizes[0], sizes[0] + sizes[1] - 1, l); });
       auto a3 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l); });
-      auto a4 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n/k - 1, l); });
+      auto a4 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n / k - 1, l); });
       a1.wait();
       a2.wait();
       a3.wait();
