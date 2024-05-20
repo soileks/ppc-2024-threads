@@ -66,9 +66,9 @@ inline void CompAndSwap(int& x, int& y) {
 }
 
 void Calc(std::vector<int>& my_data, int k, int L, int R, int l) {
-  for(int i = L; i <= R; i++){
-    for (int j = 0;j < k; j++){
-        CompAndSwap(my_data[l + 2 * k * i + j], my_data[l + 2 * k * i + j + k]);
+  for (int i = L; i <= R; i++) {
+    for (int j = 0; j < k; j++) {
+      CompAndSwap(my_data[l + 2 * k * i + j], my_data[l + 2 * k * i + j + k]);
     }
   }
 
@@ -100,10 +100,10 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
       int each = (n / k) / (num_max_thread);
       sizes.assign(num_max_thread, each);
       sizes.back() += (n / k) % (num_max_thread);
-      auto a1 = std::async([&] { Calc(my_data, k / 2, 0, sizes[0] - 1, l);});
-      auto a2 = std::async([&] { Calc(my_data, k / 2, sizes[0], sizes[0] + sizes[1] - 1, l);});
-      auto a3 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l);});
-      auto a4 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n/k - 1, l);});
+      auto a1 = std::async([&] { Calc(my_data, k / 2, 0, sizes[0] - 1, l) ;});
+      auto a2 = std::async([&] { Calc(my_data, k / 2, sizes[0], sizes[0] + sizes[1] - 1, l) ;});
+      auto a3 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l) ;});
+      auto a4 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n/k - 1, l) ;});
       a1.wait();
       a2.wait();
       a3.wait();
