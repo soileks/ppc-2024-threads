@@ -7,20 +7,27 @@ void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
+
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
+    std::vector<int> local_count(10, 0);
     for (std::size_t i = r.begin(); i != r.end(); ++i) {
-      tbb::mutex m;
-      tbb::mutex::scoped_lock lock(m);
-      count[(arr[i] / exp) % 10]++;
+      local_count[(arr[i] / exp) % 10]++;
+    }
+    tbb::mutex::scoped_lock lock;
+    for (int i = 0; i < 10; ++i) {
+      lock.acquire();
+      count[i] += local_count[i];
+      lock.release();
     }
   });
 
   for (int i = 1; i < 10; i++) count[i] += count[i - 1];
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& r) {
-    for (int i = r.end() - 1; i >= r.begin(); --i) {
-      output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-      count[(arr[i] / exp) % 10]--;
+  tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n), [&](const tbb::blocked_range<std::size_t>& r) {
+    for (std::size_t i = r.end(); i-- > r.begin();) {
+      int index = (arr[i] / exp) % 10;
+      tbb::mutex::scoped_lock lock;
+      output[--count[index]] = arr[i];
     }
   });
 
@@ -33,7 +40,6 @@ void radix_sort(std::vector<int>& arr, int exp) {
 
 void radix_sort(std::vector<int>& arr) {
   const int max_element = *std::max_element(arr.begin(), arr.end());
-
   for (int exp = 1; max_element / exp > 0; exp *= 10) {
     radix_sort(arr, exp);
   }
@@ -42,8 +48,8 @@ void radix_sort(std::vector<int>& arr) {
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
   tbb::parallel_for(tbb::blocked_range<std::size_t>(0, merged.size()), [&](const tbb::blocked_range<std::size_t>& r) {
-    std::size_t i = 0;
-    std::size_t j = 0;
+    std::size_t i = r.begin();
+    std::size_t j = r.begin();
     for (std::size_t k = r.begin(); k != r.end(); ++k) {
       if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
         merged[k] = a1[i++];
