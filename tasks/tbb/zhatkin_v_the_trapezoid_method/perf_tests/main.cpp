@@ -37,8 +37,11 @@ TEST(zhatkin_v_trapezoid_tbb, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
+  const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
-    return std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
   };
 
   // Create and init perf results
@@ -83,8 +86,11 @@ TEST(zhatkin_v_trapezoid_tbb, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
+  const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
-    return std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
   };
 
   // Create and init perf results
