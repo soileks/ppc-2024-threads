@@ -82,14 +82,14 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
 
   auto merge = [&](int l, int r) {
     int n = (r - l + 1);
-    oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0,n/2), [&](oneapi::tbb::blocked_range<int>& R) {
-      for(int i = R.begin(); i < R.end(); i++){
+    oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0, n / 2), [&](oneapi::tbb::blocked_range<int>& R) {
+      for (int i = R.begin(); i < R.end(); i++) {
         CompAndSwap(my_data[l + i], my_data[r - i]);
       }
     });
     for (int k = n / 2; k >= 2; k /= 2) {
       oneapi::tbb::parallel_for(oneapi::tbb::blocked_range2d<int>(0, n / k, 0, k / 2),
-                                [&](oneapi::tbb::blocked_range2d<int> &R) {
+                                [&](oneapi::tbb::blocked_range2d<int>& R) {
                                   for (int i = R.rows().begin(); i < R.rows().end(); i++) {
                                     for (int j = R.cols().begin(); j < R.cols().end(); j++) {
                                       CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
