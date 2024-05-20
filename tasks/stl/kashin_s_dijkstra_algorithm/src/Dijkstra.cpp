@@ -44,6 +44,7 @@ bool KashinDijkstraStl::Dijkstra::run() {
   std::vector<std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, Compare>> tpqs(num_threads);
 
   std::vector<std::thread> threads;
+  threads.reserve(num_threads);
   for (int tid = 0; tid < num_threads; ++tid) {
     threads.emplace_back([this, tid, num_threads, &tpqs]() {  // Добавить tpqs в список захвата
       auto& tpq = tpqs[tid];
