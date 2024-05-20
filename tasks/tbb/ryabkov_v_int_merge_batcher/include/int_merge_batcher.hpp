@@ -2,16 +2,18 @@
 
 #pragma once
 
-#include "tbb/parallel_for.h"
-#include "tbb/parallel_invoke.h"
-#include "tbb/tbb.h"
 
 #include <algorithm>
 #include <chrono>
 #include <random>
 #include <vector>
+#include <iterator>
 
-#include "core/task/include/task.hpp"
+#include "tbb/parallel_for.h"
+#include "tbb/parallel_invoke.h"
+#include "tbb/mutex.h"
+#include "tbb/blocked_range.h"
+
 namespace ryabkov_batcher {
 class SeqBatcher : public ppc::core::Task {
  public:
