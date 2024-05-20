@@ -6,7 +6,7 @@ void odd_even_merge(std::vector<int>& arr, std::size_t lo, std::size_t n, std::s
   if (n > 1) {
     std::size_t m = n / 2;
     tbb::parallel_invoke([&] { odd_even_merge(arr, lo, m, r); }, [&] { odd_even_merge(arr, lo + r * m, m, r); });
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * (n - 1), r * 2),
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(lo + r, lo + r * n - r, r * 2),
                       [&](const tbb::blocked_range<std::size_t>& range) {
                         for (std::size_t i = range.begin(); i < range.end(); i += r * 2) {
                           if (arr[i] > arr[i + r]) {
