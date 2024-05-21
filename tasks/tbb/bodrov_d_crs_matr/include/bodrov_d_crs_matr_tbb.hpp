@@ -4,14 +4,13 @@
 #include <complex>
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "core/task/include/task.hpp"
 
 namespace bodrov_tbb {
 
-struct SparseMatrix {
+struct SparseMatrixBodrovOMP {
   int n_rows{};
   int n_cols{};
   std::vector<std::complex<double>> non_zero_values{};
@@ -19,16 +18,28 @@ struct SparseMatrix {
   std::vector<int> col_indexes{};
 };
 
-class SparseMatrixSolver : public ppc::core::Task {
+class SparseMatrixSolverBodrovOMP : public ppc::core::Task {
  public:
-  explicit SparseMatrixSolver(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit SparseMatrixSolverBodrovOMP(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
   bool post_processing() override;
 
  private:
-  SparseMatrix *A_M{}, *B_M{}, *Result{};
+  SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
 };
 
-}  // namespace bodrov_tbb
+class SparseMatrixSolverBodrovOMPParallel : public ppc::core::Task {
+ public:
+  explicit SparseMatrixSolverBodrovOMPParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
+      : Task(std::move(taskData_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+
+ private:
+  SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
+};
+}  // namespace bodrov_omp

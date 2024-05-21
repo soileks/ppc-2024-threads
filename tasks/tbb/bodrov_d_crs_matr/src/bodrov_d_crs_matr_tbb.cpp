@@ -1,15 +1,18 @@
 // Copyright 2024 Bodrov Daniil
 #include "tbb/bodrov_d_crs_matr/include/bodrov_d_crs_matr_tbb.hpp"
 
+#include <oneapi/tbb.h>
+
 #include <algorithm>
 #include <complex>
 #include <utility>
 #include <vector>
 
 using namespace std::chrono_literals;
+using namespace bodrov_tbb;
 
-bodrov_tbb::SparseMatrix T(const bodrov_tbb::SparseMatrix& M) {
-  bodrov_tbb::SparseMatrix temp_matrix{M.n_cols, M.n_rows, {}, {}, {}};
+SparseMatrixBodrovOMP T(const SparseMatrixBodrovOMP& M) {
+  SparseMatrixBodrovOMP temp_matrix{M.n_cols, M.n_rows, {}, {}, {}};
 
   std::vector<std::vector<std::pair<int, std::complex<double>>>> columns(M.n_cols);
 
@@ -32,7 +35,7 @@ bodrov_tbb::SparseMatrix T(const bodrov_tbb::SparseMatrix& M) {
   return temp_matrix;
 }
 
-bool isValidPointer(const bodrov_tbb::SparseMatrix& M) {
+bool isValidPointer(const SparseMatrixBodrovOMP& M) {
   if (M.pointer.size() != static_cast<size_t>(M.n_rows + 1)) return false;
 
   for (int i = 1; i <= M.n_rows; i++) {
@@ -42,7 +45,7 @@ bool isValidPointer(const bodrov_tbb::SparseMatrix& M) {
   return true;
 }
 
-bool isValidColumnIndexes(const bodrov_tbb::SparseMatrix& M) {
+bool isValidColumnIndexes(const SparseMatrixBodrovOMP& M) {
   int non_zero_elems_count = M.non_zero_values.size();
 
   if (M.col_indexes.size() != static_cast<size_t>(non_zero_elems_count)) return false;
@@ -54,7 +57,7 @@ bool isValidColumnIndexes(const bodrov_tbb::SparseMatrix& M) {
   return true;
 }
 
-bool IsCRS(const bodrov_tbb::SparseMatrix& M) {
+bool IsCRS(const SparseMatrixBodrovOMP& M) {
   if (!isValidPointer(M)) return false;
 
   if (M.pointer[0] != 0 || M.pointer[M.n_rows] != static_cast<int>(M.non_zero_values.size())) return false;
@@ -64,7 +67,7 @@ bool IsCRS(const bodrov_tbb::SparseMatrix& M) {
   return true;
 }
 
-bool bodrov_tbb::SparseMatrixSolver::pre_processing() {
+bool SparseMatrixSolverBodrovOMP::pre_processing() {
   internal_order_test();
 
   *B_M = T(*B_M);
@@ -72,16 +75,16 @@ bool bodrov_tbb::SparseMatrixSolver::pre_processing() {
   return true;
 }
 
-bool bodrov_tbb::SparseMatrixSolver::validation() {
+bool SparseMatrixSolverBodrovOMP::validation() {
   internal_order_test();
 
   if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
       !taskData->outputs_count.empty())
     return false;
 
-  A_M = reinterpret_cast<bodrov_tbb::SparseMatrix*>(taskData->inputs[0]);
-  B_M = reinterpret_cast<bodrov_tbb::SparseMatrix*>(taskData->inputs[1]);
-  Result = reinterpret_cast<bodrov_tbb::SparseMatrix*>(taskData->outputs[0]);
+  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
 
   if (A_M == nullptr || B_M == nullptr || Result == nullptr) return false;
 
@@ -92,8 +95,8 @@ bool bodrov_tbb::SparseMatrixSolver::validation() {
   return true;
 }
 
-std::complex<double> computeDotProduct(const bodrov_tbb::SparseMatrix& A_M, const bodrov_tbb::SparseMatrix& B_M,
-                                       int row_A, int row_B) {
+std::complex<double> computeDotProduct(const SparseMatrixBodrovOMP& A_M, const SparseMatrixBodrovOMP& B_M, int row_A,
+                                       int row_B) {
   std::complex<double> result;
   int k_A = A_M.pointer[row_A];
   int k_B = B_M.pointer[row_B];
@@ -118,7 +121,7 @@ std::complex<double> computeDotProduct(const bodrov_tbb::SparseMatrix& A_M, cons
 
 bool isNonZero(const std::complex<double>& value) { return std::norm(value) > 1e-6; }
 
-bool bodrov_tbb::SparseMatrixSolver::run() {
+bool SparseMatrixSolverBodrovOMP::run() {
   internal_order_test();
 
   Result->n_rows = A_M->n_rows;
@@ -148,7 +151,73 @@ bool bodrov_tbb::SparseMatrixSolver::run() {
   return true;
 }
 
-bool bodrov_tbb::SparseMatrixSolver::post_processing() {
+bool SparseMatrixSolverBodrovOMP::post_processing() {
+  internal_order_test();
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
+  internal_order_test();
+
+  *B_M = T(*B_M);
+
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::validation() {
+  internal_order_test();
+
+  if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
+      !taskData->outputs_count.empty())
+    return false;
+
+  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
+
+  if (A_M == nullptr || B_M == nullptr || Result == nullptr) return false;
+
+  if (!IsCRS(*A_M) || !IsCRS(*B_M)) return false;
+
+  if (A_M->n_cols != B_M->n_rows) return false;
+
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::run() {
+  internal_order_test();
+
+  Result->n_rows = A_M->n_rows;
+  Result->n_cols = B_M->n_rows;
+  Result->pointer.assign(Result->n_rows + 1, 0);
+
+  // Объявляем вектор для параллельного накопления значений и индексов
+  std::vector<std::vector<int>> col_indices(Result->n_rows);
+  std::vector<std::vector<std::complex<double>>> values(Result->n_rows);
+
+  // Параллельное выполнение цикла по строкам матрицы
+  oneapi::tbb::parallel_for(0, Result->n_rows, [&](const int& i) {
+  for (int i = 0; i < Result->n_rows; ++i) {
+    for (int j = 0; j < B_M->n_rows; ++j) {
+      std::complex<double> product = computeDotProduct(*A_M, *B_M, i, j);
+      if (isNonZero(product)) {
+        col_indices[i].push_back(j);
+        values[i].push_back(product);
+      }
+    }
+  }}
+
+  // Обновляем указатели и добавляем значения в результирующую матрицу
+  for (int i = 0; i < Result->n_rows; ++i) {
+    Result->pointer[i + 1] = Result->pointer[i] + col_indices[i].size();
+    Result->col_indexes.insert(Result->col_indexes.end(), col_indices[i].begin(), col_indices[i].end());
+    Result->non_zero_values.insert(Result->non_zero_values.end(), values[i].begin(), values[i].end());
+  }
+
+  return true;
+}
+
+bool SparseMatrixSolverBodrovOMPParallel::post_processing() {
   internal_order_test();
   return true;
 }
