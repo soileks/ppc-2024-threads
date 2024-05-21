@@ -1,10 +1,9 @@
 // Copyright 2024 Sadikov Damir
 #include "stl/sadikov_d_crs_mult/include/sadikov_d_stl.hpp"
 
-#include <thread>
-
 #include <algorithm>
 #include <complex>
+#include <thread>
 #include <utility>
 #include <vector>
 
