@@ -65,14 +65,6 @@ inline void CompAndSwap(int& x, int& y) {
   if (x > y) std::swap(x, y);
 }
 
-void Calc(std::vector<int>& my_data, int k, int L, int R, int l) {
-  for (int i = L; i <= R; i++) {
-    for (int j = 0; j < k; j++) {
-      CompAndSwap(my_data[l + 2 * k * i + j], my_data[l + 2 * k * i + j + k]);
-    }
-  }
-}
-
 std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   if (my_data.size() <= 8) {
     Hoar_sort(my_data, 0, my_data.size() - 1);
@@ -85,34 +77,28 @@ std::vector<int> odd_even_merge_with_hoar(std::vector<int> my_data) {
   auto as2 = std::async([&] { Hoar_sort(my_data, 1 * n / 4, (2) * n / 4 - 1); });
   auto as3 = std::async([&] { Hoar_sort(my_data, 2 * n / 4, (3) * n / 4 - 1); });
   auto as4 = std::async([&] { Hoar_sort(my_data, 3 * n / 4, (4) * n / 4 - 1); });
-  as1.wait();
-  as2.wait();
-  as3.wait();
-  as4.wait();
-  constexpr int num_max_thread = 4;
-  std::vector<int> sizes(num_max_thread);
+  as1.get();
+  as2.get();
+  as3.get();
+  as4.get();
   auto merge = [&](int l, int r) {
     int n = (r - l + 1);
     for (int i = 0; i < n / 2; i++) {
       CompAndSwap(my_data[l + i], my_data[r - i]);
     }
     for (int k = n / 2; k >= 2; k /= 2) {
-      int each = (n / k) / (num_max_thread);
-      sizes.assign(num_max_thread, each);
-      sizes.back() += (n / k) % (num_max_thread);
-      auto a1 = std::async([&] { Calc(my_data, k / 2, 0, sizes[0] - 1, l); });
-      auto a2 = std::async([&] { Calc(my_data, k / 2, sizes[0], sizes[0] + sizes[1] - 1, l); });
-      auto a3 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1], sizes[0] + sizes[1] + sizes[2] - 1, l); });
-      auto a4 = std::async([&] { Calc(my_data, k / 2, sizes[0] + sizes[1] + sizes[2], n / k - 1, l); });
-      a1.wait();
-      a2.wait();
-      a3.wait();
-      a4.wait();
+      for (int i = 0; i < n / k; i++) {
+        for (int j = 0; j < k / 2; j++) {
+          CompAndSwap(my_data[l + k * i + j], my_data[l + k * i + j + k / 2]);
+        }
+      }
     }
   };
 
-  merge(0, n / 2 - 1);
-  merge(n / 2, n - 1);
+  auto a1 = std::async([&] { merge(0, n / 2 - 1); });
+  auto a2 = std::async([&] { merge(n / 2, n - 1); });
+  a1.get();
+  a2.get();
   merge(0, n - 1);
   return my_data;
 }
