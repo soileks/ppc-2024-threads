@@ -197,13 +197,11 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
 
   // Параллельное выполнение цикла по строкам матрицы
   oneapi::tbb::parallel_for(0, Result->n_rows, [&](const int& i) {
-    for (int i = 0; i < Result->n_rows; ++i) {
-      for (int j = 0; j < B_M->n_rows; ++j) {
-        std::complex<double> product = computeDotProduct(*A_M, *B_M, i, j);
-        if (isNonZero(product)) {
-          col_indices[i].push_back(j);
-          values[i].push_back(product);
-        }
+    for (int j = 0; j < B_M->n_rows; ++j) {
+      std::complex<double> product = computeDotProduct(*A_M, *B_M, i, j);
+      if (isNonZero(product)) {
+        col_indices[i].push_back(j);
+        values[i].push_back(product);
       }
     }
   });
