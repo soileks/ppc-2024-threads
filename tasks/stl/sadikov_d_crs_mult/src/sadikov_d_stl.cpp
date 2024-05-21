@@ -85,7 +85,8 @@ bool CRSComplexMult_stl::run() {
   const int piece = A->n / num_max_threads;
   std::vector<std::thread> threads(num_max_threads);
   for (int thr = 0; thr < num_max_threads; thr++) {
-    int L = thr * piece, R = (thr + 1) * piece;
+    int L = thr * piece;
+    int R = (thr + 1) * piece;
     if (thr == num_max_threads - 1) R = A->n;
     threads[thr] = std::thread(
         [&](int L, int R) {
