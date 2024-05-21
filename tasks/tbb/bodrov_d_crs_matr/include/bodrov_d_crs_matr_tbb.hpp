@@ -42,4 +42,4 @@ class SparseMatrixSolverBodrovOMPParallel : public ppc::core::Task {
  private:
   SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
 };
-}  // namespace bodrov_omp
+}  // namespace bodrov_tbb

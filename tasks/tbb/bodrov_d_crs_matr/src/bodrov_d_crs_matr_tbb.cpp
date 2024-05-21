@@ -205,7 +205,8 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
           values[i].push_back(product);
         }
       }
-    }});
+    }
+  });
 
   // Обновляем указатели и добавляем значения в результирующую матрицу
   for (int i = 0; i < Result->n_rows; ++i) {
