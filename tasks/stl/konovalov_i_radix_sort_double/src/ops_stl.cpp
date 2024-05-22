@@ -62,7 +62,7 @@ bool RadixSortSTLTaskParallel::run() {
     }
     std::vector<size_t> range(max_val);
     for (int i = 0; i < max_val; i++) range[i] = i;
-    std::for_each(std::execution::par, range.begin(), range.end(), [=](auto&& i) {
+    std::for_each(std::execution::par, range.begin(), range.end(), [=, this](auto&& i) {
       std::vector<double> local_ordered_chunks[sizeof(double) * max_val];
       radix_sort_seq(chunks + i * input_size, chunk_sizes[i], local_ordered_chunks);
     });
