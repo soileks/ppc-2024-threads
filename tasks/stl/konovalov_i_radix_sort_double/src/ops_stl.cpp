@@ -1,10 +1,10 @@
 // Copyright 2024 Konovalov Igor
-#include <future>
-#include <algorithm>
-#include <thread>
-#include <execution>
-
 #include "stl/konovalov_i_radix_sort_double/include/ops_stl.hpp"
+
+#include <algorithm>
+#include <execution>
+#include <future>
+#include <thread>
 
 using namespace std::chrono_literals;
 
