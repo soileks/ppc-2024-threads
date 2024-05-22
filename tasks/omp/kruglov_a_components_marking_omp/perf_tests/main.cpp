@@ -7,14 +7,12 @@
 #include "core/perf/include/perf.hpp"
 #include "omp/kruglov_a_components_marking_omp/include/ops_omp.hpp"
 
-using namespace KruglovOmpTask;
-
 TEST(kruglov_a_img_marking_perf_test, test_pipeline_run) {
-  int m = 1000;
-  int n = 1000;
-  auto serializedM = serializeInt32(m);
-  auto serializedN = serializeInt32(n);
-  std::vector<uint8_t> in = getRandomVector(m * n);
+  int m = 2000;
+  int n = 2000;
+  auto serializedM = KruglovOmpTask::serializeInt32(m);
+  auto serializedN = KruglovOmpTask::serializeInt32(n);
+  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
   std::vector<uint8_t> out(in.size() * sizeof(int));
 
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -28,7 +26,7 @@ TEST(kruglov_a_img_marking_perf_test, test_pipeline_run) {
   taskDataOmp->outputs.push_back(out.data());
   taskDataOmp->outputs_count.push_back(out.size());
 
-  auto testTaskOmp = std::make_shared<imgMarkingOmp>(taskDataOmp);
+  auto testTaskOmp = std::make_shared<KruglovOmpTask::imgMarkingOmp>(taskDataOmp);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
@@ -42,11 +40,11 @@ TEST(kruglov_a_img_marking_perf_test, test_pipeline_run) {
 }
 
 TEST(kruglov_a_img_marking_perf_test, test_task_run) {
-  int m = 1000;
-  int n = 1000;
-  auto serializedM = serializeInt32(m);
-  auto serializedN = serializeInt32(n);
-  std::vector<uint8_t> in = getRandomVector(m * n);
+  int m = 500;
+  int n = 500;
+  auto serializedM = KruglovOmpTask::serializeInt32(m);
+  auto serializedN = KruglovOmpTask::serializeInt32(n);
+  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
   std::vector<uint8_t> out(in.size() * sizeof(int));
 
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
@@ -60,7 +58,7 @@ TEST(kruglov_a_img_marking_perf_test, test_task_run) {
   taskDataOmp->outputs.push_back(out.data());
   taskDataOmp->outputs_count.push_back(out.size());
 
-  auto testTaskOmp = std::make_shared<imgMarkingOmp>(taskDataOmp);
+  auto testTaskOmp = std::make_shared<KruglovOmpTask::imgMarkingOmp>(taskDataOmp);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
