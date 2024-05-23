@@ -96,7 +96,7 @@ TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_medium_array) {
 
 TEST(shmelev_i_shell_sorting_with_Batcher, Sorting__another_medium_array) {
   std::vector<int> array = {23, 17, 32, 14, 29, 11, 5, 2, 26, 20, 8, 35, 10, 38, 47, 41};
-  std::vector<int> sorted_array(32);
+  std::vector<int> sorted_array(16);
   std::vector<int> expected = {2, 5, 8, 10, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 47};
 
   // Create TaskData
@@ -112,7 +112,7 @@ TEST(shmelev_i_shell_sorting_with_Batcher, Sorting__another_medium_array) {
   testTaskStl.pre_processing();
   testTaskStl.run();
   testTaskStl.post_processing();
-  for (int i = 0; i < 30; i++) {
+  for (int i = 0; i < 16; i++) {
     EXPECT_EQ(sorted_array[i], expected[i]);
   }
 }
