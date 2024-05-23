@@ -30,7 +30,7 @@ TEST(konovalov_i_double_radix_sort_stl, one_value_test_parallel) {
   EXPECT_EQ(out[0], res[0][0]);
 }
 
-TEST(konovalov_i_double_radix_sort_tbb, sorted_order_test_parallel) {
+TEST(konovalov_i_double_radix_sort_stl, sorted_order_test_parallel) {
   // Create data
   std::vector<double> in = {0.0, 1.0, 2.0, 2.2, 3.0};
   std::vector<double> out = {0.0, 1.0, 2.0, 2.2, 3.0};
