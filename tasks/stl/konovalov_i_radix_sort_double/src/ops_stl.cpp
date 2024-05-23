@@ -1,9 +1,6 @@
 // Copyright 2024 Konovalov Igor
 #include "stl/konovalov_i_radix_sort_double/include/ops_stl.hpp"
 
-#include <algorithm>
-#include <execution>
-#include <future>
 #include <thread>
 
 using namespace std::chrono_literals;
@@ -60,12 +57,16 @@ bool RadixSortSTLTaskParallel::run() {
       chunks[(uint8_t)val * input_size + chunk_sizes[(uint8_t)val]] = input_[i];
       chunk_sizes[(uint8_t)val]++;
     }
-    std::vector<size_t> range(max_val);
-    for (int i = 0; i < max_val; i++) range[i] = i;
-    std::for_each(std::execution::par, range.begin(), range.end(), [=, this](auto&& i) {
-      std::vector<double> local_ordered_chunks[sizeof(double) * max_val];
-      radix_sort_seq(chunks + i * input_size, chunk_sizes[i], local_ordered_chunks);
-    });
+    std::vector<std::thread> threads;
+    for (int i = 0; i < max_val; i++) {
+      threads.push_back(std::thread([this, i, chunks, chunk_sizes]() {
+        std::vector<double> local_ordered_chunks[sizeof(double) * max_val];
+        radix_sort_seq(chunks + i * input_size, chunk_sizes[i], local_ordered_chunks);
+      }));
+    }
+    for (size_t i = 0; i < max_val; i++) {
+      threads[i].join();
+    }
     size_t it = 0;
     for (int64_t i = 0; i < max_val; i++) {
       if (chunk_sizes[i] != 0) {
