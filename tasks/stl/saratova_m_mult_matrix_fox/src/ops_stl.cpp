@@ -9,8 +9,8 @@
 bool saratova_stl::SaratovaTaskSTL::validation() {
   internal_order_test();
   return (taskData->inputs[0] != nullptr) && (taskData->inputs[1] != nullptr) && (taskData->outputs[0] != nullptr) &&
-         taskData->inputs_count[0] == taskData->inputs_count[1] &&
-         taskData->inputs_count[0] == taskData->outputs_count[0];
+    taskData->inputs_count[0] == taskData->inputs_count[1] &&
+    taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
 bool saratova_stl::SaratovaTaskSTL::pre_processing() {
@@ -23,7 +23,7 @@ bool saratova_stl::SaratovaTaskSTL::pre_processing() {
   return true;
 }
 
-void multiply_chunk(double* A, double* B, double* C, size_t n, size_t start, size_t end) {
+void multiply_chunk(const double* A, const double* B, double* C, size_t n, size_t start, size_t end) {
   for (size_t i = start; i < end; i++) {
     for (size_t j = 0; j < n; j++) {
       double c = 0;
