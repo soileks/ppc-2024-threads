@@ -3,9 +3,9 @@
 
 #include <memory>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
-#include <thread>
 
 #include "core/task/include/task.hpp"
 
