@@ -57,9 +57,9 @@ bool RadixSortSTLTaskParallel::run() {
       chunks[(uint8_t)val * input_size + chunk_sizes[(uint8_t)val]] = input_[i];
       chunk_sizes[(uint8_t)val]++;
     }
-    std::vector<std::thread> threads(max_val);
+    auto* threads = new std::thread[max_val];
     for (int i = 0; i < max_val; i++) {
-      threads.emplace_back([this, i, chunks, chunk_sizes]() {
+      threads[i] = std::thread([this, i, chunks, chunk_sizes]() {
         std::vector<double> local_ordered_chunks[sizeof(double) * max_val];
         radix_sort_seq(chunks + i * input_size, chunk_sizes[i], local_ordered_chunks);
       });
@@ -67,6 +67,7 @@ bool RadixSortSTLTaskParallel::run() {
     for (size_t i = 0; i < max_val; i++) {
       threads[i].join();
     }
+    delete[] threads;
     size_t it = 0;
     for (int64_t i = 0; i < max_val; i++) {
       if (chunk_sizes[i] != 0) {
