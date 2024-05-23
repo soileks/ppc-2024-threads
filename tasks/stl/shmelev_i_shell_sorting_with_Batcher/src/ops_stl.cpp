@@ -50,7 +50,7 @@ void shmelev_stl::ShmelevTaskSTL::sortingShell() {
         in[j] = in[j - gap];
       }
       in[j] = temp;
-     }
+    }
   }
 }
 
@@ -62,9 +62,9 @@ void shmelev_stl::ShmelevTaskSTL::batcherMerge(int l, int r) {
       if (i + 1 <= m) {
         if (in[i] > in[i + 1]) {
           std::swap(in[i], in[i + 1]);
-         }
+        }
       }
-     }
+    }
     batcherMerge(l, m);
     batcherMerge(m + 1, r);
     merge(l, m, r);
@@ -94,7 +94,7 @@ void shmelev_stl::ShmelevTaskSTL::merge(int l, int m, int r) {
     } else if (L[i] > R[j]) {
       in[k] = R[j];
       j++;
-     }
+    }
     k++;
   }
 
@@ -122,6 +122,6 @@ void shmelev_stl::ShmelevTaskSTL::parallelBatcherMerge(int l, int r, int depth) 
       left_thread.join();
       right_thread.join();
       merge(l, m, r);
-     }
+    }
   }
 }
