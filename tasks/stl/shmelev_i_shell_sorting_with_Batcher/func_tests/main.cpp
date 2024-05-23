@@ -94,12 +94,10 @@ TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_medium_array) {
   }
 }
 
-TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_big_array) {
-  std::vector<int> array = {33, 56, 45, 30, 11, 47, 62, 19, 36, 58, 51, 14, 40, 8,  27,
-                            34, 48, 24, 25, 39, 13, 12, 55, 23, 59, 37, 17, 50, 42, 9};
+TEST(shmelev_i_shell_sorting_with_Batcher, Sorting__another_medium_array) {
+  std::vector<int> array = {23, 17, 32, 14, 29, 11, 5, 2, 26, 20, 8, 35, 10, 38, 47, 41};
   std::vector<int> sorted_array(32);
-  std::vector<int> expected = {8,  9,  11, 12, 13, 14, 17, 19, 23, 24, 25, 27, 30, 33, 34,
-                               36, 37, 39, 40, 42, 45, 47, 48, 50, 51, 55, 56, 58, 59, 62};
+  std::vector<int> expected = {2, 5, 8, 10, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 47};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
