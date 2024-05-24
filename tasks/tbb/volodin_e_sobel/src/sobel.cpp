@@ -17,9 +17,8 @@ bool SobelTaskTBBVolodin::pre_processing() {
     sourceImage.reserve(width_ * height_);
     resultImage.reserve(width_ * height_);
 
-    tbb::parallel_for(0, width_ * height_, [&](int i) {
-        sourceImage[i] = reinterpret_cast<int*>(taskData->inputs[0])[i];
-    });
+    tbb::parallel_for(0, width_ * height_,
+                      [&](int i) { sourceImage[i] = reinterpret_cast<int*>(taskData->inputs[0])[i]; });
   } catch (...) {
     return false;
   }
@@ -69,9 +68,8 @@ bool SobelTaskTBBVolodin::post_processing() {
     taskData->outputs_count[0] = width_;
     taskData->outputs_count[1] = height_;
 
-    tbb::parallel_for(0, width_ * height_, [&](int i) {
-        reinterpret_cast<int*>(taskData->outputs[0])[i] = resultImage[i];
-    });
+    tbb::parallel_for(0, width_ * height_,
+                      [&](int i) { reinterpret_cast<int*>(taskData->outputs[0])[i] = resultImage[i]; });
   } catch (...) {
     return false;
   }
