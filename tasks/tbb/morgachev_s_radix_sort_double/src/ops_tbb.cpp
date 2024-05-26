@@ -78,12 +78,12 @@ void morgachev_tbb::countSort(double* in, double* out, int length, int exp) {
 
 void morgachev_tbb::radixSortTBB(std::vector<double>& data, size_t dataSize) {
   std::vector<double> result;
-  int nThreads = tbb::this_task_arena::max_concurrency();
+  size_t nThreads = tbb::this_task_arena::max_concurrency();
   std::vector<std::vector<double>> localVectors(nThreads);
 
   tbb::parallel_for(tbb::blocked_range<size_t>(0, nThreads), [&](const tbb::blocked_range<size_t>& r) {
     for (size_t curThread = r.begin(); curThread != r.end(); ++curThread) {
-      int localSize = dataSize / nThreads;
+      size_t localSize = dataSize / nThreads;
 
       if (curThread == nThreads - 1) {
         localVectors[curThread].assign(data.begin() + localSize * curThread, data.end());
