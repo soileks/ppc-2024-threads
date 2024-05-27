@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <random>
+#include <vector>
 
 using namespace AfanasyevAlekseySeq;
 
