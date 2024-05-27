@@ -4,6 +4,7 @@
 #include <chrono>
 #include <random>
 #include <vector>
+#include <algorithm>
 
 using namespace AfanasyevAlekseySeq;
 
