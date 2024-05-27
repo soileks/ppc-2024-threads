@@ -19,7 +19,8 @@ std::vector<Pixel> AfanasyevAlekseySeq::generateRandomPixels(std::size_t size) {
   return pixels;
 }
 
-bool AfanasyevAlekseySeq::contrastEnhancementSeq(const std::vector<Pixel>& input_pixels, std::vector<Pixel>& output_pixels) {
+bool AfanasyevAlekseySeq::contrastEnhancementSeq(const std::vector<Pixel>& input_pixels,
+                                                 std::vector<Pixel>& output_pixels) {
   Pixel min_pixel = *std::min_element(input_pixels.begin(), input_pixels.end());
   Pixel max_pixel = *std::max_element(input_pixels.begin(), input_pixels.end());
 

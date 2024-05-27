@@ -70,9 +70,11 @@ TEST(afanasyev_a_image_contrast_enhacement_seq, test_small_pixels) {
 }
 
 TEST(afanasyev_a_image_contrast_enhacement_seq, test_medium_pixels) {
+  // clang-format off
   std::vector<Pixel> input_pixels = {117, 235, 120, 220, 19, 225, 117, 112, 22, 112, 192, 67, 162, 73, 139, 133};
   std::vector<Pixel> output_pixels(input_pixels.size());
   std::vector<Pixel> expected_output_pixels = {115, 255, 119, 237, 0, 243, 115, 109, 3, 109, 204, 56, 168, 63, 141, 134};
+  // clang-format on
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
@@ -96,9 +98,11 @@ TEST(afanasyev_a_image_contrast_enhacement_seq, test_medium_pixels) {
 }
 
 TEST(afanasyev_a_image_contrast_enhacement_seq, test_large_pixels) {
+  // clang-format off
   std::vector<Pixel> input_pixels = {248, 91, 235, 170, 175, 16, 243, 130, 0, 94, 140, 152, 62, 240, 152, 51, 134, 248, 128, 170, 87, 230, 81, 72, 9, 18, 240, 75, 114, 130};
   std::vector<Pixel> output_pixels(input_pixels.size());
   std::vector<Pixel> expected_output_pixels = {255, 93, 241, 174, 179, 16, 249, 133, 0, 96, 143, 156, 63, 246, 156, 52, 137, 255, 131, 174, 89, 236, 83, 74, 9, 18, 246, 77, 117, 133};
+  // clang-format on
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
