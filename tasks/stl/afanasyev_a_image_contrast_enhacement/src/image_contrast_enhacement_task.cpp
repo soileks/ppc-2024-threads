@@ -87,7 +87,7 @@ bool ImageContrastEnhacementTask::run() {
     if (i == threads.size() - 1) {
       end_i = this->_input_pixels.size();
     } else {
-      (i + 1) * this->_input_pixels.size() / threads.size();
+      end_i = (i + 1) * this->_input_pixels.size() / threads.size();
     }
 
     threads[i] = std::thread(handle_pixel, start_i, end_i);
