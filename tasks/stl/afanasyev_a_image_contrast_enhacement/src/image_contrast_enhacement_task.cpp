@@ -1,11 +1,10 @@
 // Copyright 2024 Afanasyev Aleksey
 #include "stl/afanasyev_a_image_contrast_enhacement/include/image_contrast_enhacement_task.hpp"
 
-#include <thread>
-
 #include <algorithm>
 #include <chrono>
 #include <random>
+#include <thread>
 #include <vector>
 
 using namespace AfanasyevAlekseyStl;
@@ -83,7 +82,8 @@ bool ImageContrastEnhacementTask::run() {
 
   for (std::size_t i = 0; i < threads.size(); i++) {
     std::size_t start_i = i * this->_input_pixels.size() / threads.size();
-    std::size_t end_i = (i == threads.size() - 1) ? this->_input_pixels.size() : (i + 1) * this->_input_pixels.size() / threads.size();
+    std::size_t end_i = 
+        (i == threads.size() - 1) ? this->_input_pixels.size() : (i + 1) * this->_input_pixels.size() / threads.size();
     threads[i] = std::thread(handle_pixel, start_i, end_i);
   }
 
