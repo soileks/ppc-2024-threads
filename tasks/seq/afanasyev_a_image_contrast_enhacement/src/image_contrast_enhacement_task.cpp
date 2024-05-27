@@ -1,10 +1,10 @@
 // Copyright 2024 Afanasyev Aleksey
 #include "seq/afanasyev_a_image_contrast_enhacement/include/image_contrast_enhacement_task.hpp"
 
+#include <algorithm>
 #include <chrono>
 #include <random>
 #include <vector>
-#include <algorithm>
 
 using namespace AfanasyevAlekseySeq;
 
