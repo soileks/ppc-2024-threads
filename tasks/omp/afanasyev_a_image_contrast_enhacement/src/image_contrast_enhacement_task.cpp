@@ -73,7 +73,7 @@ bool ImageContrastEnhacementTask::run() {
   }
 
 #pragma omp parallel for
-  for (std::size_t i = 0; i < this->_input_pixels.size(); i++) {
+  for (int i = 0; i < static_cast<int>(this->_input_pixels.size()); i++) {
     this->_output_pixels[i] = (this->_input_pixels[i] - min_pixel) * 255 / (max_pixel - min_pixel);
   }
 
