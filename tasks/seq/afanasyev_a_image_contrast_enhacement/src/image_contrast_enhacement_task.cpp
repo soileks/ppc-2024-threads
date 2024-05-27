@@ -47,7 +47,7 @@ bool ImageContrastEnhacementTask::validation() {
     return false;
   }
 
-  if (this->_input_pixels.size() == 0) {
+  if (this->_input_pixels.empty()) {
     return false;
   }
 
