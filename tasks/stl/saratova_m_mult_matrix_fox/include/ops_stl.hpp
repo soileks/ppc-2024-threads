@@ -43,6 +43,5 @@ class SaratovaTaskSTL : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-
 };
 }  // namespace saratova_stl
