@@ -76,9 +76,9 @@ bool SaratovaTaskSequential::post_processing() {
 
 bool SaratovaTaskOmp::validation() {
   internal_order_test();
-  return (taskData->inputs[0] != nullptr) && (taskData->inputs[1] != nullptr) && (taskData->outputs[0] != nullptr) &&
-         (taskData->inputs_count[0] == taskData->inputs_count[1]) &&
-         (taskData->inputs_count[0] == taskData->outputs_count[0]);
+  return (taskData->inputs[0] != nullptr && (taskData->outputs[0] != nullptr)) && (taskData->inputs[1] != nullptr) &&
+         (taskData->outputs_count[0] == taskData->inputs_count[0]) &&
+         (taskData->inputs_count[1] == taskData->inputs_count[0]);
 }
 
 bool SaratovaTaskOmp::pre_processing() {
