@@ -144,22 +144,22 @@ TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
   A.Rows = 1000;
   A.Columns = 1000;
   for (int i = 0; i <= 1000; ++i) {
-    A.DataPointer.push_back(i);
+    A.DataPointer.emplace_back(i);
   }
   for (int i = 0; i < 1000; ++i) {
-    A.ColumnsIndexes.push_back(i);
-    A.Values.push_back(1.0);
+    A.ColumnsIndexes.emplace_back(i);
+    A.Values.emplace_back(1.0);
   }
 
   SparseMatrixBodrovOMP B;
   B.Rows = 1000;
   B.Columns = 1000;
   for (int i = 0; i <= 1000; ++i) {
-    B.DataPointer.push_back(i);
+    B.DataPointer.emplace_back(i);
   }
   for (int i = 0; i < 1000; ++i) {
-    B.ColumnsIndexes.push_back(i);
-    B.Values.push_back(1.0);
+    B.ColumnsIndexes.emplace_back(i);
+    B.Values.emplace_back(1.0);
   }
 
   SparseMatrixBodrovOMP Result_Seq;
@@ -169,11 +169,11 @@ TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
   Expected.Rows = 1000;
   Expected.Columns = 1000;
   for (int i = 0; i <= 1000; ++i) {
-    Expected.DataPointer.push_back(i);
+    Expected.DataPointer.emplace_back(i);
   }
   for (int i = 0; i < 1000; ++i) {
-    Expected.ColumnsIndexes.push_back(i);
-    Expected.Values.push_back(1.0);
+    Expected.ColumnsIndexes.emplace_back(i);
+    Expected.Values.emplace_back(1.0);
   }
 
   auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
