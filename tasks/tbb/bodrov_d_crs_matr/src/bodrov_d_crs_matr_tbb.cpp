@@ -28,7 +28,7 @@ bool SparseMatrixSolverBodrovOMP::pre_processing() {
 bool SparseMatrixSolverBodrovOMP::validation() {
   internal_order_test();
 
-  if (!taskData->inputs[0] || !taskData->inputs[1] || !taskData->outputs[0]) {
+  if (taskData->inputs[0] != nullptr || taskData->inputs[1] != nullptr || taskData->outputs[0] != nullptr) {
     return false;
   }
 
@@ -86,8 +86,8 @@ bool SparseMatrixSolverBodrovOMP::run() {
   for (int i = 0; i < A_M->n_rows; ++i) {
     for (int j = 0; j < B_M->n_cols; ++j) {
       if (temp_result[i][j] != std::complex<double>(0.0, 0.0)) {
-        Result->non_zero_values.push_back(temp_result[i][j]);
-        Result->col_indexes.push_back(j);
+        Result->non_zero_values.emplace_back(temp_result[i][j]);
+        Result->col_indexes.emplace_back(j);
       }
     }
     Result->pointer[i + 1] = Result->non_zero_values.size();
@@ -117,7 +117,7 @@ bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
 bool SparseMatrixSolverBodrovOMPParallel::validation() {
   internal_order_test();
 
-  if (!taskData->inputs[0] || !taskData->inputs[1] || !taskData->outputs[0]) {
+  if (taskData->inputs[0] != nullptr || taskData->inputs[1] != nullptr || taskData->outputs[0] != nullptr) {
     return false;
   }
 
@@ -175,8 +175,8 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
   for (int i = 0; i < A_M->n_rows; ++i) {
     for (int j = 0; j < B_M->n_cols; ++j) {
       if (temp_result[i][j] != std::complex<double>(0.0, 0.0)) {
-        Result->non_zero_values.push_back(temp_result[i][j]);
-        Result->col_indexes.push_back(j);
+        Result->non_zero_values.emplace_back(temp_result[i][j]);
+        Result->col_indexes.emplace_back(j);
       }
     }
     Result->pointer[i + 1] = Result->non_zero_values.size();
