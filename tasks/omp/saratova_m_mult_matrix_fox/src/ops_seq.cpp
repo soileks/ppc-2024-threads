@@ -9,7 +9,7 @@
 #include <random>
 
 namespace saratova_omp {
-  
+
 void GenerateIdentityMatrix(double* matrix, int size, double scale) {
   std::fill(matrix, matrix + size * size, 0.0);
   for (int i = 0; i < size; ++i) {
