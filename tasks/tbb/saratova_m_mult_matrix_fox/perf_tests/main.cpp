@@ -10,25 +10,25 @@
 using namespace saratova_tbb;
 
 TEST(Saratova_M_Mult_Matrix_Fox, test_pipeline_run) {
-  size_t n = 580;
-  double k = 43.0;
-  std::vector<double> A(n * n);
-  std::vector<double> B(n * n);
-  std::vector<double> C(n * n);
-  GenerateRandomValue(A.data(), A.size());
-  IdentityMatrix(B.data(), n, k);
+  double scaleFactor = 43.0;
+  size_t matrixSize = 580;
+  std::vector<double> matrixA(matrixSize * matrixSize);
+  std::vector<double> matrixB(matrixSize * matrixSize);
+  std::vector<double> resultMatrix(matrixSize * matrixSize);
+  FillRandomValues(matrixA.data(), matrixA.size());
+  GenerateIdentityMatrix(matrixB.data(), matrixSize, scaleFactor);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
-  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(A.data()));
-  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(B.data()));
-  taskDataTbb->inputs_count.emplace_back(A.size());
-  taskDataTbb->inputs_count.emplace_back(B.size());
-  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(C.data()));
-  taskDataTbb->outputs_count.emplace_back(C.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(matrixA.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(matrixB.data()));
+  taskDataSeq->inputs_count.emplace_back(matrixA.size());
+  taskDataSeq->inputs_count.emplace_back(matrixB.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(resultMatrix.data()));
+  taskDataSeq->outputs_count.emplace_back(resultMatrix.size());
 
   // Create Task
-  auto saratovaTaskTbb = std::make_shared<SaratovaTaskTbb>(taskDataTbb);
+  auto saratovaTaskTbb = std::make_shared<SaratovaTaskTbb>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -43,31 +43,32 @@ TEST(Saratova_M_Mult_Matrix_Fox, test_pipeline_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(saratovaTaskTbb);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < n * n; i++) {
-    EXPECT_DOUBLE_EQ(C[i], k * A[i]);
+
+  for (size_t i = 0; i < matrixSize * matrixSize; i++) {
+    EXPECT_DOUBLE_EQ(resultMatrix[i], scaleFactor * matrixA[i]);
   }
 }
 
 TEST(Saratova_M_Mult_Matrix_Fox, test_task_run) {
-  size_t n = 580;
-  double k = 43.0;
-  std::vector<double> A(n * n);
-  std::vector<double> B(n * n);
-  std::vector<double> C(n * n);
-  GenerateRandomValue(A.data(), A.size());
-  IdentityMatrix(B.data(), n, k);
+  double scaleFactor = 43.0;
+  size_t matrixSize = 580;
+  std::vector<double> matrixA(matrixSize * matrixSize);
+  std::vector<double> matrixB(matrixSize * matrixSize);
+  std::vector<double> resultMatrix(matrixSize * matrixSize);
+  FillRandomValues(matrixA.data(), matrixA.size());
+  GenerateIdentityMatrix(matrixB.data(), matrixSize, scaleFactor);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
-  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(A.data()));
-  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(B.data()));
-  taskDataTbb->inputs_count.emplace_back(A.size());
-  taskDataTbb->inputs_count.emplace_back(B.size());
-  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(C.data()));
-  taskDataTbb->outputs_count.emplace_back(C.size());
+  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(matrixA.data()));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t*>(matrixB.data()));
+  taskDataSeq->inputs_count.emplace_back(matrixA.size());
+  taskDataSeq->inputs_count.emplace_back(matrixB.size());
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t*>(resultMatrix.data()));
+  taskDataSeq->outputs_count.emplace_back(resultMatrix.size());
 
   // Create Task
-  auto saratovaTaskTbb = std::make_shared<SaratovaTaskTbb>(taskDataTbb);
+  auto saratovaTaskTbb = std::make_shared<SaratovaTaskTbb>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -82,7 +83,7 @@ TEST(Saratova_M_Mult_Matrix_Fox, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(saratovaTaskTbb);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < n * n; i++) {
-    EXPECT_DOUBLE_EQ(C[i], k * A[i]);
+  for (size_t i = 0; i < matrixSize * matrixSize; i++) {
+    EXPECT_DOUBLE_EQ(resultMatrix[i], scaleFactor * matrixA[i]);
   }
 }
