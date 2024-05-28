@@ -4,228 +4,184 @@
 
 #include <algorithm>
 
+std::vector<int> shmelev_omp::create_random_sequence(int size, int min, int max) {
+  std::random_device rnd_device;
+  std::mt19937 mersenne_engine{rnd_device()};
+  std::uniform_int_distribution<int> dist{min, max};
+
+  auto gen = [&dist, &mersenne_engine]() { return dist(mersenne_engine); };
+
+  std::vector<int> vector(size);
+  generate(begin(vector), end(vector), gen);
+
+  return vector;
+}
+
+bool shmelev_omp::is_sorted(std::vector<int> input) {
+  return std::is_sorted(input.begin(), input.end());
+}
+
 bool shmelev_omp::ShmelevTaskSequential::pre_processing() {
   internal_order_test();
-  input_ = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
-  res = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
+  sequence = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
+  result = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
   return true;
 }
 
 bool shmelev_omp::ShmelevTaskSequential::validation() {
   internal_order_test();
-  return taskData->inputs_count[0] == taskData->outputs_count[0];
+  return taskData->outputs_count[0] == taskData->inputs_count[0];
 }
 
 bool shmelev_omp::ShmelevTaskSequential::run() {
   internal_order_test();
-  batcherMerge(0, input_.size() - 1);
+  batcherMergeSort(0, sequence.size() - 1);
   return true;
 }
 
 bool shmelev_omp::ShmelevTaskSequential::post_processing() {
   internal_order_test();
-  reinterpret_cast<std::vector<int>*>(taskData->outputs[0])->operator=(input_);
+  reinterpret_cast<std::vector<int>*>(taskData->outputs[0])->operator=(sequence);
 
   return true;
 }
 
-std::vector<int> shmelev_omp::ShmelevTaskSequential::generate_random_vector(int size, int min, int max) {
-  std::random_device rnd_device;
-  std::mt19937 mersenne_engine{rnd_device()};
-  std::uniform_int_distribution<int> dist{min, max};
-
-  auto gen = [&dist, &mersenne_engine]() { return dist(mersenne_engine); };
-
-  std::vector<int> vector(size);
-  generate(begin(vector), end(vector), gen);
-
-  return vector;
-}
-
-void shmelev_omp::ShmelevTaskSequential::sortingShell() {
-  int n = input_.size();
+void shmelev_omp::ShmelevTaskSequential::shellSort() {
+  int n = sequence.size();
   for (int gap = n / 2; gap > 0; gap /= 2) {
     for (int i = gap; i < n; i++) {
-      int temp = input_[i];
+      int temp = sequence[i];
       int j;
-      for (j = i; j >= gap && input_[j - gap] > temp; j -= gap) {
-        input_[j] = input_[j - gap];
+      for (j = i; j >= gap && sequence[j - gap] > temp; j -= gap) {
+        sequence[j] = sequence[j - gap];
       }
-      input_[j] = temp;
+      sequence[j] = temp;
     }
   }
 }
 
-void shmelev_omp::ShmelevTaskSequential::batcherMerge(int l, int r) {
-  sortingShell();
-  if (r > l) {
-    int m = l + (r - l) / 2;
-    for (int i = l; i <= m; i += 2) {
-      if (i + 1 <= m) {
-        if (input_[i] > input_[i + 1]) {
-          std::swap(input_[i], input_[i + 1]);
+void shmelev_omp::ShmelevTaskSequential::batcherMergeSort(int left, int right) {
+  shellSort();
+  if (right > left) {
+    int middle = left + (right - left) / 2;
+    for (int i = left; i <= middle; i += 2) {
+      if (i + 1 <= middle) {
+        if (sequence[i] > sequence[i + 1]) {
+          std::swap(sequence[i], sequence[i + 1]);
         }
       }
     }
-    batcherMerge(l, m);
-    batcherMerge(m + 1, r);
-    merge(l, m, r);
+    batcherMergeSort(left, middle);
+    batcherMergeSort(middle + 1, right);
+    mergeSequences(left, middle, right);
   }
 }
-bool shmelev_omp::ShmelevTaskSequential::sorted(std::vector<int> input) {
-  return std::is_sorted(input.begin(), input.end());
-}
 
-void shmelev_omp::ShmelevTaskSequential::merge(int l, int m, int r) {
-  int n1 = m - l + 1;
-  int n2 = r - m;
+void shmelev_omp::ShmelevTaskSequential::mergeSequences(int left, int middle, int right) {
+  int size_left = middle - left + 1;
+  int size_right = right - middle;
 
-  std::vector<int> L(n1);
-  std::vector<int> R(n2);
+  std::vector<int> left_array(size_left);
+  std::vector<int> right_array(size_right);
 
-  for (int i = 0; i < n1; i++) {
-    L[i] = input_[l + i];
+  for (int i = 0; i < size_left; ++i) {
+    left_array[i] = sequence[left + i];
   }
-  for (int j = 0; j < n2; j++) {
-    R[j] = input_[m + 1 + j];
+  for (int j = 0; j < size_right; ++j) {
+    right_array[j] = sequence[middle + 1 + j];
   }
 
-  int i = 0;
-  int j = 0;
-  int k = l;
-  while (i < n1 && j < n2) {
-    if (L[i] <= R[j]) {
-      input_[k] = L[i];
-      i++;
+  int k = left;
+  for (int i = 0, j = 0; i < size_left && j < size_right; ++k) {
+    if (left_array[i] <= right_array[j]) {
+      sequence[k] = left_array[i++];
     } else {
-      input_[k] = R[j];
-      j++;
+      sequence[k] = right_array[j++];
     }
-    k++;
   }
 
-  while (i < n1) {
-    input_[k] = L[i];
-    i++;
-    k++;
+  for (int i = 0; i < size_left; ++i, ++k) {
+    sequence[k] = left_array[i];
   }
-  while (j < n2) {
-    input_[k] = R[j];
-    j++;
-    k++;
+  for (int j = 0; j < size_right; ++j, ++k) {
+    sequence[k] = right_array[j];
   }
 }
 
 bool shmelev_omp::ShmelevTaskOmp::pre_processing() {
   internal_order_test();
-  input_ = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
-  res = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
+  sequence = *reinterpret_cast<std::vector<int>*>(taskData->inputs[0]);
+  result = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
   return true;
 }
 
 bool shmelev_omp::ShmelevTaskOmp::validation() {
   internal_order_test();
-  return taskData->inputs_count[0] == taskData->outputs_count[0];
+  return taskData->outputs_count[0] == taskData->inputs_count[0];
 }
 
 bool shmelev_omp::ShmelevTaskOmp::run() {
   internal_order_test();
-#pragma omp parallel
-  {
-#pragma omp single nowait
-    batcherMerge(0, input_.size() - 1);
-  }
+  batcherMergeSort(0, sequence.size() - 1);
   return true;
 }
 
 bool shmelev_omp::ShmelevTaskOmp::post_processing() {
   internal_order_test();
-  reinterpret_cast<std::vector<int>*>(taskData->outputs[0])->operator=(input_);
-
+  *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]) = sequence;
   return true;
 }
 
-std::vector<int> shmelev_omp::ShmelevTaskOmp::generate_random_vector(int size, int min, int max) {
-  std::random_device rnd_device;
-  std::mt19937 mersenne_engine{rnd_device()};
-  std::uniform_int_distribution<int> dist{min, max};
-
-  auto gen = [&dist, &mersenne_engine]() { return dist(mersenne_engine); };
-
-  std::vector<int> vector(size);
-  generate(begin(vector), end(vector), gen);
-
-  return vector;
-}
-
-void shmelev_omp::ShmelevTaskOmp::sortingShell() {
-  int n = input_.size();
+void shmelev_omp::ShmelevTaskOmp::shellSort() {
+  int n = sequence.size();
   for (int gap = n / 2; gap > 0; gap /= 2) {
-#pragma omp parallel for
     for (int i = gap; i < n; i++) {
-      int temp = input_[i];
-      int j;
-      for (j = i; j >= gap && input_[j - gap] > temp; j -= gap) {
-        input_[j] = input_[j - gap];
+      int temp = sequence[i];
+      int j = i;
+      while (j >= gap && sequence[j - gap] > temp) {
+        sequence[j] = sequence[j - gap];
+        j -= gap;
       }
-      input_[j] = temp;
+      sequence[j] = temp;
     }
   }
 }
 
-void shmelev_omp::ShmelevTaskOmp::batcherMerge(int l, int r) {
-  sortingShell();
-  if (r > l) {
-    int m = l + (r - l) / 2;
+void shmelev_omp::ShmelevTaskOmp::batcherMergeSort(int left, int right) {
+  shellSort();
+  if (right > left) {
+    int middle = left + (right - left) / 2;
 #pragma omp parallel sections
     {
 #pragma omp section
-      batcherMerge(l, m);
+      batcherMergeSort(left, middle);
 #pragma omp section
-      batcherMerge(m + 1, r);
+      batcherMergeSort(middle + 1, right);
     }
-    merge(l, m, r);
+    mergeSequences(left, middle, right);
   }
 }
 
-bool shmelev_omp::ShmelevTaskOmp::sorted(std::vector<int> input) { return std::is_sorted(input.begin(), input.end()); }
+void shmelev_omp::ShmelevTaskOmp::mergeSequences(int left, int middle, int right) {
+  std::vector<int> merged(right - left + 1);
+  int i = left, j = middle + 1, k = 0;
 
-void shmelev_omp::ShmelevTaskOmp::merge(int l, int m, int r) {
-  int n1 = m - l + 1;
-  int n2 = r - m;
-
-  std::vector<int> L(n1);
-  std::vector<int> R(n2);
-
-  for (int i = 0; i < n1; i++) {
-    L[i] = input_[l + i];
-  }
-  for (int j = 0; j < n2; j++) {
-    R[j] = input_[m + 1 + j];
-  }
-
-  int i = 0;
-  int j = 0;
-  int k = l;
-  while (i < n1 && j < n2) {
-    if (L[i] <= R[j]) {
-      input_[k] = L[i];
-      i++;
+  for (; i <= middle && j <= right; ++k) {
+    if (sequence[i] <= sequence[j]) {
+      merged[k] = sequence[i++];
     } else {
-      input_[k] = R[j];
-      j++;
+      merged[k] = sequence[j++];
     }
-    k++;
   }
 
-  while (i < n1) {
-    input_[k] = L[i];
-    i++;
-    k++;
+  for (; i <= middle; ++i, ++k) {
+    merged[k] = sequence[i];
   }
-  while (j < n2) {
-    input_[k] = R[j];
-    j++;
-    k++;
+  for (; j <= right; ++j, ++k) {
+    merged[k] = sequence[j];
+  }
+
+  for (int idx = 0; idx < k; ++idx) {
+    sequence[left + idx] = merged[idx];
   }
 }
