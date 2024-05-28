@@ -162,7 +162,9 @@ void shmelev_omp::ShmelevTaskOmp::batcherMergeSort(int left, int right) {
 
 void shmelev_omp::ShmelevTaskOmp::mergeSequences(int left, int middle, int right) {
   std::vector<int> merged(right - left + 1);
-  int i = left, j = middle + 1, k = 0;
+  int i = left;
+  int j = middle + 1;
+  int k = 0;
 
   for (; i <= middle && j <= right; ++k) {
     if (sequence[i] <= sequence[j]) {
