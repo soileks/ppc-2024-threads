@@ -11,11 +11,32 @@
 
 namespace saratova_stl {
 
-void ScaledIdentityMatrix(double* matrix, int n, double k = 1.0);
-void IdentityMatrix(double* matrix, int n, double k = 1.0);
-void GenerateRandomValue(double* matrix, int sz);
+void GenerateIdentityMatrix(double *matrix, int size, double scale = 1.0);
+void CreateIdentityMatrix(double *matrix, int size, double scale = 1.0);
+void FillRandomValues(double *matrix, int size);
+
+class SaratovaTaskSequential : public ppc::core::Task {
+ private:
+  size_t dimension{};
+  double *matrixA{nullptr};
+  double *matrixB{nullptr};
+  double *matrixC{nullptr};
+
+ public:
+  explicit SaratovaTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+};
 
 class SaratovaTaskSTL : public ppc::core::Task {
+ private:
+  size_t dimension{};
+  double *matrixA{nullptr};
+  double *matrixB{nullptr};
+  double *matrixC{nullptr};
+
  public:
   explicit SaratovaTaskSTL(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
@@ -23,8 +44,5 @@ class SaratovaTaskSTL : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
- private:
-  double *A{}, *B{}, *C{};
-  size_t n{};
 };
 }  // namespace saratova_stl
