@@ -94,8 +94,7 @@ bool saratova_tbb::SaratovaTaskTbb::run() {
   try {
     const int numThreads = 2;
     const int blockSize = dimension / numThreads;
-tbb::parallel_for(tbb::blocked_range<int>(0, dimension, blockSize),
-                      [&](const tbb::blocked_range<int>& r) {
+    tbb::parallel_for(tbb::blocked_range<int>(0, dimension, blockSize), [&](const tbb::blocked_range<int>& r) {
       for (int bi = r.begin(); bi < r.end(); bi += blockSize) {
         for (int bj = 0; bj < static_cast<int>(dimension); bj += blockSize) {
           for (int bk = 0; bk < static_cast<int>(dimension); bk += blockSize) {
