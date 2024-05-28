@@ -2,6 +2,7 @@
 #include "omp/saratova_m_mult_matrix_fox/include/ops_seq.hpp"
 
 #include <omp.h>
+
 #include <cmath>
 #include <cstring>
 #include <iostream>
@@ -72,7 +73,7 @@ bool SaratovaTaskOmp::run() {
   try {
     const int numThreads = 2;
     const int blockSize = dimension / numThreads;
-#pragma omp parallel for collapse(2) num_threads(numThreads * numThreads)
+#pragma omp parallel for collapse(2) num_threads(numThreads* numThreads)
     for (int bi = 0; bi < dimension; bi += blockSize) {
       for (int bj = 0; bj < dimension; bj += blockSize) {
         for (int bk = 0; bk < dimension; bk += blockSize) {
