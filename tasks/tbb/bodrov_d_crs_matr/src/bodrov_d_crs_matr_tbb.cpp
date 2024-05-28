@@ -13,14 +13,14 @@ using namespace bodrov_tbb;
 
 bool SparseMatrixSolverBodrovOMP::pre_processing() {
   internal_order_test();
-  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
-  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  MatrixA = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  MatrixB = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
   Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
 
   // Инициализация Result
-  Result->n_rows = A_M->n_rows;
-  Result->n_cols = B_M->n_cols;
-  Result->pointer.assign(A_M->n_rows + 1, 0);
+  Result->Rows = MatrixA->Rows;
+  Result->Columns = MatrixB->Columns;
+  Result->DataPointer.assign(MatrixA->Rows + 1, 0);
 
   return true;
 }
@@ -32,29 +32,29 @@ bool SparseMatrixSolverBodrovOMP::validation() {
       !taskData->outputs_count.empty())
     return false;
 
-  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
-  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  MatrixA = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  MatrixB = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
   Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
 
-  if (A_M->n_cols != B_M->n_rows) {
+  if (MatrixA->Columns != MatrixB->Rows) {
     return false;
   }
 
-  if (A_M->n_rows <= 0 || A_M->n_cols <= 0 || B_M->n_rows <= 0 || B_M->n_cols <= 0) {
+  if (MatrixA->Rows <= 0 || MatrixA->Columns <= 0 || MatrixB->Rows <= 0 || MatrixB->Columns <= 0) {
     return false;
   }
 
-  if (A_M->pointer.size() != static_cast<size_t>(A_M->n_rows + 1)) {
+  if (MatrixA->DataPointer.size() != static_cast<size_t>(MatrixA->Rows + 1)) {
     return false;
   }
-  if (B_M->pointer.size() != static_cast<size_t>(B_M->n_rows + 1)) {
+  if (MatrixB->DataPointer.size() != static_cast<size_t>(MatrixB->Rows + 1)) {
     return false;
   }
 
-  if (A_M->non_zero_values.size() != A_M->col_indexes.size()) {
+  if (MatrixA->Values.size() != MatrixA->ColumnsIndexes.size()) {
     return false;
   }
-  if (B_M->non_zero_values.size() != B_M->col_indexes.size()) {
+  if (MatrixB->Values.size() != MatrixB->ColumnsIndexes.size()) {
     return false;
   }
 
@@ -65,32 +65,32 @@ bool SparseMatrixSolverBodrovOMP::run() {
   internal_order_test();
 
   std::vector<std::vector<std::complex<double>>> temp_result(
-      A_M->n_rows, std::vector<std::complex<double>>(B_M->n_cols, {0.0, 0.0}));
+      MatrixA->Rows, std::vector<std::complex<double>>(MatrixB->Columns, {0.0, 0.0}));
 
-  for (int i = 0; i < A_M->n_rows; ++i) {
-    for (int j = A_M->pointer[i]; j < A_M->pointer[i + 1]; ++j) {
-      int col_A = A_M->col_indexes[j];
-      std::complex<double> val_A = A_M->non_zero_values[j];
+  for (int i = 0; i < MatrixA->Rows; ++i) {
+    for (int j = MatrixA->DataPointer[i]; j < MatrixA->DataPointer[i + 1]; ++j) {
+      int col_A = MatrixA->ColumnsIndexes[j];
+      std::complex<double> val_A = MatrixA->Values[j];
 
-      for (int k = B_M->pointer[col_A]; k < B_M->pointer[col_A + 1]; ++k) {
-        int col_B = B_M->col_indexes[k];
-        std::complex<double> val_B = B_M->non_zero_values[k];
+      for (int k = MatrixB->DataPointer[col_A]; k < MatrixB->DataPointer[col_A + 1]; ++k) {
+        int col_B = MatrixB->ColumnsIndexes[k];
+        std::complex<double> val_B = MatrixB->Values[k];
         temp_result[i][col_B] += val_A * val_B;
       }
     }
   }
 
-  Result->non_zero_values.clear();
-  Result->col_indexes.clear();
+  Result->Values.clear();
+  Result->ColumnsIndexes.clear();
 
-  for (int i = 0; i < A_M->n_rows; ++i) {
-    for (int j = 0; j < B_M->n_cols; ++j) {
+  for (int i = 0; i < MatrixA->Rows; ++i) {
+    for (int j = 0; j < MatrixB->Columns; ++j) {
       if (temp_result[i][j] != std::complex<double>(0.0, 0.0)) {
-        Result->non_zero_values.emplace_back(temp_result[i][j]);
-        Result->col_indexes.emplace_back(j);
+        Result->Values.emplace_back(temp_result[i][j]);
+        Result->ColumnsIndexes.emplace_back(j);
       }
     }
-    Result->pointer[i + 1] = Result->non_zero_values.size();
+    Result->DataPointer[i + 1] = Result->Values.size();
   }
 
   return true;
@@ -103,13 +103,13 @@ bool SparseMatrixSolverBodrovOMP::post_processing() {
 
 bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
   internal_order_test();
-  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
-  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  MatrixA = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  MatrixB = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
   Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
 
-  Result->n_rows = A_M->n_rows;
-  Result->n_cols = B_M->n_cols;
-  Result->pointer.assign(A_M->n_rows + 1, 0);
+  Result->Rows = MatrixA->Rows;
+  Result->Columns = MatrixB->Columns;
+  Result->DataPointer.assign(MatrixA->Rows + 1, 0);
 
   return true;
 }
@@ -121,29 +121,29 @@ bool SparseMatrixSolverBodrovOMPParallel::validation() {
       !taskData->outputs_count.empty())
     return false;
 
-  A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
-  B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
+  MatrixA = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
+  MatrixB = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
   Result = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->outputs[0]);
 
-  if (A_M->n_cols != B_M->n_rows) {
+  if (MatrixA->Columns != MatrixB->Rows) {
     return false;
   }
 
-  if (A_M->n_rows <= 0 || A_M->n_cols <= 0 || B_M->n_rows <= 0 || B_M->n_cols <= 0) {
+  if (MatrixA->Rows <= 0 || MatrixA->Columns <= 0 || MatrixB->Rows <= 0 || MatrixB->Columns <= 0) {
     return false;
   }
 
-  if (A_M->pointer.size() != static_cast<size_t>(A_M->n_rows + 1)) {
+  if (MatrixA->DataPointer.size() != static_cast<size_t>(MatrixA->Rows + 1)) {
     return false;
   }
-  if (B_M->pointer.size() != static_cast<size_t>(B_M->n_rows + 1)) {
+  if (MatrixB->DataPointer.size() != static_cast<size_t>(MatrixB->Rows + 1)) {
     return false;
   }
 
-  if (A_M->non_zero_values.size() != A_M->col_indexes.size()) {
+  if (MatrixA->Values.size() != MatrixA->ColumnsIndexes.size()) {
     return false;
   }
-  if (B_M->non_zero_values.size() != B_M->col_indexes.size()) {
+  if (MatrixB->Values.size() != MatrixB->ColumnsIndexes.size()) {
     return false;
   }
 
@@ -154,32 +154,32 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
   internal_order_test();
 
   std::vector<std::vector<std::complex<double>>> temp_result(
-      A_M->n_rows, std::vector<std::complex<double>>(B_M->n_cols, {0.0, 0.0}));
+      MatrixA->Rows, std::vector<std::complex<double>>(MatrixB->Columns, {0.0, 0.0}));
 
-  tbb::parallel_for(0, A_M->n_rows, [&](int i) {
-    for (int j = A_M->pointer[i]; j < A_M->pointer[i + 1]; ++j) {
-      int col_A = A_M->col_indexes[j];
-      std::complex<double> val_A = A_M->non_zero_values[j];
+  tbb::parallel_for(0, MatrixA->Rows, [&](int i) {
+    for (int j = MatrixA->DataPointer[i]; j < MatrixA->DataPointer[i + 1]; ++j) {
+      int col_A = MatrixA->ColumnsIndexes[j];
+      std::complex<double> val_A = MatrixA->Values[j];
 
-      for (int k = B_M->pointer[col_A]; k < B_M->pointer[col_A + 1]; ++k) {
-        int col_B = B_M->col_indexes[k];
-        std::complex<double> val_B = B_M->non_zero_values[k];
+      for (int k = MatrixB->DataPointer[col_A]; k < MatrixB->DataPointer[col_A + 1]; ++k) {
+        int col_B = MatrixB->ColumnsIndexes[k];
+        std::complex<double> val_B = MatrixB->Values[k];
         temp_result[i][col_B] += val_A * val_B;
       }
     }
   });
 
-  Result->non_zero_values.clear();
-  Result->col_indexes.clear();
+  Result->Values.clear();
+  Result->ColumnsIndexes.clear();
 
-  for (int i = 0; i < A_M->n_rows; ++i) {
-    for (int j = 0; j < B_M->n_cols; ++j) {
+  for (int i = 0; i < MatrixA->Rows; ++i) {
+    for (int j = 0; j < MatrixB->Columns; ++j) {
       if (temp_result[i][j] != std::complex<double>(0.0, 0.0)) {
-        Result->non_zero_values.emplace_back(temp_result[i][j]);
-        Result->col_indexes.emplace_back(j);
+        Result->Values.emplace_back(temp_result[i][j]);
+        Result->ColumnsIndexes.emplace_back(j);
       }
     }
-    Result->pointer[i + 1] = Result->non_zero_values.size();
+    Result->DataPointer[i + 1] = Result->Values.size();
   }
 
   return true;

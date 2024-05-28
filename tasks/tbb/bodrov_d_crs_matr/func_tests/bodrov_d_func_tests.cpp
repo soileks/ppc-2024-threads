@@ -9,28 +9,28 @@ using namespace bodrov_tbb;
 
 TEST(bodrov_d_crs_matr_omp, test_identity_matrix) {
   SparseMatrixBodrovOMP A;
-  A.n_rows = 3;
-  A.n_cols = 3;
-  A.pointer = {0, 1, 2, 3};
-  A.col_indexes = {0, 1, 2};
-  A.non_zero_values = {1, 1, 1};
+  A.Rows = 3;
+  A.Columns = 3;
+  A.DataPointer = {0, 1, 2, 3};
+  A.ColumnsIndexes = {0, 1, 2};
+  A.Values = {1, 1, 1};
 
   SparseMatrixBodrovOMP B;
-  B.n_rows = 3;
-  B.n_cols = 3;
-  B.pointer = {0, 1, 2, 3};
-  B.col_indexes = {0, 1, 2};
-  B.non_zero_values = {1, 1, 1};
+  B.Rows = 3;
+  B.Columns = 3;
+  B.DataPointer = {0, 1, 2, 3};
+  B.ColumnsIndexes = {0, 1, 2};
+  B.Values = {1, 1, 1};
 
   SparseMatrixBodrovOMP Result_Seq;
   SparseMatrixBodrovOMP Result_Par;
 
   SparseMatrixBodrovOMP Expected;
-  Expected.n_rows = 3;
-  Expected.n_cols = 3;
-  Expected.pointer = {0, 1, 2, 3};
-  Expected.col_indexes = {0, 1, 2};
-  Expected.non_zero_values = {1, 1, 1};
+  Expected.Rows = 3;
+  Expected.Columns = 3;
+  Expected.DataPointer = {0, 1, 2, 3};
+  Expected.ColumnsIndexes = {0, 1, 2};
+  Expected.Values = {1, 1, 1};
 
   auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -43,11 +43,11 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrix) {
   ASSERT_EQ(taskSequential.run(), true);
   ASSERT_EQ(taskSequential.post_processing(), true);
 
-  ASSERT_EQ(Result_Seq.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Seq.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Seq.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Seq.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Seq.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Seq.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Seq.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Seq.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Seq.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Seq.Values.size(), Expected.Values.size());
 
   auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -60,14 +60,14 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrix) {
   ASSERT_EQ(taskParallel.run(), true);
   ASSERT_EQ(taskParallel.post_processing(), true);
 
-  ASSERT_EQ(Result_Par.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Par.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Par.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Par.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Par.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Par.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Par.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Par.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Par.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Par.Values.size(), Expected.Values.size());
 
-  for (size_t i = 0; i < Result_Par.non_zero_values.size(); i++) {
-    std::complex<double> t = Result_Par.non_zero_values[i] - Result_Seq.non_zero_values[i];
+  for (size_t i = 0; i < Result_Par.Values.size(); i++) {
+    std::complex<double> t = Result_Par.Values[i] - Result_Seq.Values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -75,28 +75,28 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrix) {
 
 TEST(bodrov_d_crs_matr_omp, test_zero_matrix) {
   SparseMatrixBodrovOMP A;
-  A.n_rows = 3;
-  A.n_cols = 3;
-  A.pointer = {0, 0, 0, 0};
-  A.col_indexes = {};
-  A.non_zero_values = {};
+  A.Rows = 3;
+  A.Columns = 3;
+  A.DataPointer = {0, 0, 0, 0};
+  A.ColumnsIndexes = {};
+  A.Values = {};
 
   SparseMatrixBodrovOMP B;
-  B.n_rows = 3;
-  B.n_cols = 3;
-  B.pointer = {0, 0, 0, 0};
-  B.col_indexes = {};
-  B.non_zero_values = {};
+  B.Rows = 3;
+  B.Columns = 3;
+  B.DataPointer = {0, 0, 0, 0};
+  B.ColumnsIndexes = {};
+  B.Values = {};
 
   SparseMatrixBodrovOMP Result_Seq;
   SparseMatrixBodrovOMP Result_Par;
 
   SparseMatrixBodrovOMP Expected;
-  Expected.n_rows = 3;
-  Expected.n_cols = 3;
-  Expected.pointer = {0, 0, 0, 0};
-  Expected.col_indexes = {};
-  Expected.non_zero_values = {};
+  Expected.Rows = 3;
+  Expected.Columns = 3;
+  Expected.DataPointer = {0, 0, 0, 0};
+  Expected.ColumnsIndexes = {};
+  Expected.Values = {};
 
   auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -109,11 +109,11 @@ TEST(bodrov_d_crs_matr_omp, test_zero_matrix) {
   ASSERT_EQ(taskSequential.run(), true);
   ASSERT_EQ(taskSequential.post_processing(), true);
 
-  ASSERT_EQ(Result_Seq.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Seq.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Seq.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Seq.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Seq.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Seq.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Seq.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Seq.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Seq.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Seq.Values.size(), Expected.Values.size());
 
   auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -126,14 +126,14 @@ TEST(bodrov_d_crs_matr_omp, test_zero_matrix) {
   ASSERT_EQ(taskParallel.run(), true);
   ASSERT_EQ(taskParallel.post_processing(), true);
 
-  ASSERT_EQ(Result_Par.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Par.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Par.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Par.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Par.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Par.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Par.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Par.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Par.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Par.Values.size(), Expected.Values.size());
 
-  for (size_t i = 0; i < Result_Par.non_zero_values.size(); i++) {
-    std::complex<double> t = Result_Par.non_zero_values[i] - Result_Seq.non_zero_values[i];
+  for (size_t i = 0; i < Result_Par.Values.size(); i++) {
+    std::complex<double> t = Result_Par.Values[i] - Result_Seq.Values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -141,39 +141,39 @@ TEST(bodrov_d_crs_matr_omp, test_zero_matrix) {
 
 TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
   SparseMatrixBodrovOMP A;
-  A.n_rows = 1000;
-  A.n_cols = 1000;
+  A.Rows = 1000;
+  A.Columns = 1000;
   for (int i = 0; i <= 1000; ++i) {
-    A.pointer.push_back(i);
+    A.DataPointer.push_back(i);
   }
   for (int i = 0; i < 1000; ++i) {
-    A.col_indexes.push_back(i);
-    A.non_zero_values.push_back(1.0);
+    A.ColumnsIndexes.push_back(i);
+    A.Values.push_back(1.0);
   }
 
   SparseMatrixBodrovOMP B;
-  B.n_rows = 1000;
-  B.n_cols = 1000;
+  B.Rows = 1000;
+  B.Columns = 1000;
   for (int i = 0; i <= 1000; ++i) {
-    B.pointer.push_back(i);
+    B.DataPointer.push_back(i);
   }
   for (int i = 0; i < 1000; ++i) {
-    B.col_indexes.push_back(i);
-    B.non_zero_values.push_back(1.0);
+    B.ColumnsIndexes.push_back(i);
+    B.Values.push_back(1.0);
   }
 
   SparseMatrixBodrovOMP Result_Seq;
   SparseMatrixBodrovOMP Result_Par;
 
   SparseMatrixBodrovOMP Expected;
-  Expected.n_rows = 1000;
-  Expected.n_cols = 1000;
+  Expected.Rows = 1000;
+  Expected.Columns = 1000;
   for (int i = 0; i <= 1000; ++i) {
-    Expected.pointer.push_back(i);
+    Expected.DataPointer.push_back(i);
   }
   for (int i = 0; i < 1000; ++i) {
-    Expected.col_indexes.push_back(i);
-    Expected.non_zero_values.push_back(1.0);
+    Expected.ColumnsIndexes.push_back(i);
+    Expected.Values.push_back(1.0);
   }
 
   auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -187,11 +187,11 @@ TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
   ASSERT_EQ(taskSequential.run(), true);
   ASSERT_EQ(taskSequential.post_processing(), true);
 
-  ASSERT_EQ(Result_Seq.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Seq.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Seq.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Seq.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Seq.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Seq.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Seq.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Seq.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Seq.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Seq.Values.size(), Expected.Values.size());
 
   auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -204,14 +204,14 @@ TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
   ASSERT_EQ(taskParallel.run(), true);
   ASSERT_EQ(taskParallel.post_processing(), true);
 
-  ASSERT_EQ(Result_Par.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Par.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Par.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Par.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Par.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Par.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Par.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Par.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Par.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Par.Values.size(), Expected.Values.size());
 
-  for (size_t i = 0; i < Result_Par.non_zero_values.size(); i++) {
-    std::complex<double> t = Result_Par.non_zero_values[i] - Result_Seq.non_zero_values[i];
+  for (size_t i = 0; i < Result_Par.Values.size(); i++) {
+    std::complex<double> t = Result_Par.Values[i] - Result_Seq.Values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -219,28 +219,28 @@ TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
 
 TEST(bodrov_d_crs_matr_omp, test_non_square_matrix) {
   SparseMatrixBodrovOMP A;
-  A.n_rows = 3;
-  A.n_cols = 2;
-  A.pointer = {0, 1, 2, 3};
-  A.col_indexes = {0, 1, 0};
-  A.non_zero_values = {1, 1, 1};
+  A.Rows = 3;
+  A.Columns = 2;
+  A.DataPointer = {0, 1, 2, 3};
+  A.ColumnsIndexes = {0, 1, 0};
+  A.Values = {1, 1, 1};
 
   SparseMatrixBodrovOMP B;
-  B.n_rows = 2;
-  B.n_cols = 4;
-  B.pointer = {0, 2, 4};
-  B.col_indexes = {0, 1, 2, 3};
-  B.non_zero_values = {1, 2, 3, 4};
+  B.Rows = 2;
+  B.Columns = 4;
+  B.DataPointer = {0, 2, 4};
+  B.ColumnsIndexes = {0, 1, 2, 3};
+  B.Values = {1, 2, 3, 4};
 
   SparseMatrixBodrovOMP Result_Seq;
   SparseMatrixBodrovOMP Result_Par;
 
   SparseMatrixBodrovOMP Expected;
-  Expected.n_rows = 3;
-  Expected.n_cols = 4;
-  Expected.pointer = {0, 2, 4, 6};
-  Expected.col_indexes = {0, 1, 2, 3, 0, 1};
-  Expected.non_zero_values = {1, 2, 1, 2, 1, 2};
+  Expected.Rows = 3;
+  Expected.Columns = 4;
+  Expected.DataPointer = {0, 2, 4, 6};
+  Expected.ColumnsIndexes = {0, 1, 2, 3, 0, 1};
+  Expected.Values = {1, 2, 1, 2, 1, 2};
 
   auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -253,11 +253,11 @@ TEST(bodrov_d_crs_matr_omp, test_non_square_matrix) {
   ASSERT_EQ(taskSequential.run(), true);
   ASSERT_EQ(taskSequential.post_processing(), true);
 
-  ASSERT_EQ(Result_Seq.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Seq.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Seq.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Seq.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Seq.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Seq.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Seq.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Seq.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Seq.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Seq.Values.size(), Expected.Values.size());
 
   auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -270,14 +270,14 @@ TEST(bodrov_d_crs_matr_omp, test_non_square_matrix) {
   ASSERT_EQ(taskParallel.run(), true);
   ASSERT_EQ(taskParallel.post_processing(), true);
 
-  ASSERT_EQ(Result_Par.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Par.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Par.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Par.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Par.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Par.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Par.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Par.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Par.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Par.Values.size(), Expected.Values.size());
 
-  for (size_t i = 0; i < Result_Par.non_zero_values.size(); i++) {
-    std::complex<double> t = Result_Par.non_zero_values[i] - Result_Seq.non_zero_values[i];
+  for (size_t i = 0; i < Result_Par.Values.size(); i++) {
+    std::complex<double> t = Result_Par.Values[i] - Result_Seq.Values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }
@@ -285,28 +285,28 @@ TEST(bodrov_d_crs_matr_omp, test_non_square_matrix) {
 
 TEST(bodrov_d_crs_matr_omp, test_mixed_values_matrix) {
   SparseMatrixBodrovOMP A;
-  A.n_rows = 3;
-  A.n_cols = 3;
-  A.pointer = {0, 2, 4, 5};
-  A.col_indexes = {0, 2, 1, 2, 0};
-  A.non_zero_values = {1.0, 3.0, 2.0, 1.0, 4.0};
+  A.Rows = 3;
+  A.Columns = 3;
+  A.DataPointer = {0, 2, 4, 5};
+  A.ColumnsIndexes = {0, 2, 1, 2, 0};
+  A.Values = {1.0, 3.0, 2.0, 1.0, 4.0};
 
   SparseMatrixBodrovOMP B;
-  B.n_rows = 3;
-  B.n_cols = 3;
-  B.pointer = {0, 1, 3, 4};
-  B.col_indexes = {0, 1, 2, 2};
-  B.non_zero_values = {1.0, 2.0, 3.0, 4.0};
+  B.Rows = 3;
+  B.Columns = 3;
+  B.DataPointer = {0, 1, 3, 4};
+  B.ColumnsIndexes = {0, 1, 2, 2};
+  B.Values = {1.0, 2.0, 3.0, 4.0};
 
   SparseMatrixBodrovOMP Result_Seq;
   SparseMatrixBodrovOMP Result_Par;
 
   SparseMatrixBodrovOMP Expected;
-  Expected.n_rows = 3;
-  Expected.n_cols = 3;
-  Expected.pointer = {0, 2, 4, 5};
-  Expected.col_indexes = {0, 2, 1, 2, 0};
-  Expected.non_zero_values = {1.0, 12.0, 4.0, 3.0, 16.0};
+  Expected.Rows = 3;
+  Expected.Columns = 3;
+  Expected.DataPointer = {0, 2, 4, 5};
+  Expected.ColumnsIndexes = {0, 2, 1, 2, 0};
+  Expected.Values = {1.0, 12.0, 4.0, 3.0, 16.0};
 
   auto taskDataSeq = std::make_shared<ppc::core::TaskData>();
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -319,11 +319,11 @@ TEST(bodrov_d_crs_matr_omp, test_mixed_values_matrix) {
   ASSERT_EQ(taskSequential.run(), true);
   ASSERT_EQ(taskSequential.post_processing(), true);
 
-  ASSERT_EQ(Result_Seq.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Seq.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Seq.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Seq.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Seq.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Seq.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Seq.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Seq.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Seq.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Seq.Values.size(), Expected.Values.size());
 
   auto taskDataPar = std::make_shared<ppc::core::TaskData>();
   taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&A));
@@ -336,14 +336,14 @@ TEST(bodrov_d_crs_matr_omp, test_mixed_values_matrix) {
   ASSERT_EQ(taskParallel.run(), true);
   ASSERT_EQ(taskParallel.post_processing(), true);
 
-  ASSERT_EQ(Result_Par.n_rows, Expected.n_rows);
-  ASSERT_EQ(Result_Par.n_cols, Expected.n_cols);
-  ASSERT_EQ(Result_Par.pointer, Expected.pointer);
-  ASSERT_EQ(Result_Par.col_indexes, Expected.col_indexes);
-  ASSERT_EQ(Result_Par.non_zero_values.size(), Expected.non_zero_values.size());
+  ASSERT_EQ(Result_Par.Rows, Expected.Rows);
+  ASSERT_EQ(Result_Par.Columns, Expected.Columns);
+  ASSERT_EQ(Result_Par.DataPointer, Expected.DataPointer);
+  ASSERT_EQ(Result_Par.ColumnsIndexes, Expected.ColumnsIndexes);
+  ASSERT_EQ(Result_Par.Values.size(), Expected.Values.size());
 
-  for (size_t i = 0; i < Result_Par.non_zero_values.size(); i++) {
-    std::complex<double> t = Result_Par.non_zero_values[i] - Result_Seq.non_zero_values[i];
+  for (size_t i = 0; i < Result_Par.Values.size(); i++) {
+    std::complex<double> t = Result_Par.Values[i] - Result_Seq.Values[i];
     ASSERT_NEAR(0.0f, t.imag(), 1e-3);
     ASSERT_NEAR(0.0f, t.real(), 1e-3);
   }

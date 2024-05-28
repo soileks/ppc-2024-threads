@@ -11,11 +11,11 @@
 namespace bodrov_tbb {
 
 struct SparseMatrixBodrovOMP {
-  int n_rows{};
-  int n_cols{};
-  std::vector<std::complex<double>> non_zero_values{};
-  std::vector<int> pointer{};
-  std::vector<int> col_indexes{};
+  int Rows{};
+  int Columns{};
+  std::vector<std::complex<double>> Values{};
+  std::vector<int> DataPointer{};
+  std::vector<int> ColumnsIndexes{};
 };
 
 class SparseMatrixSolverBodrovOMP : public ppc::core::Task {
@@ -27,7 +27,7 @@ class SparseMatrixSolverBodrovOMP : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
+  SparseMatrixBodrovOMP *MatrixA{}, *MatrixB{}, *Result{};
 };
 
 class SparseMatrixSolverBodrovOMPParallel : public ppc::core::Task {
@@ -40,6 +40,6 @@ class SparseMatrixSolverBodrovOMPParallel : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  SparseMatrixBodrovOMP *A_M{}, *B_M{}, *Result{};
+  SparseMatrixBodrovOMP *MatrixA{}, *MatrixB{}, *Result{};
 };
 }  // namespace bodrov_tbb

@@ -18,25 +18,25 @@ SparseMatrixBodrovOMP generate_random_matrix1(int n, int m, double proba, int se
   std::bernoulli_distribution bernoulli(proba);
 
   SparseMatrixBodrovOMP result;
-  result.n_rows = n;
-  result.n_cols = m;
-  result.pointer.assign(result.n_rows + 1, 0);
+  result.Rows = n;
+  result.Columns = m;
+  result.DataPointer.assign(result.Rows + 1, 0);
 
-  std::vector<int> col_indexes;
-  std::vector<std::complex<double>> non_zero_values;
+  std::vector<int> ColumnsIndexes;
+  std::vector<std::complex<double>> Values;
 
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < m; ++j) {
       if (bernoulli(gen)) {
-        col_indexes.push_back(j);
-        non_zero_values.emplace_back(random(gen), random(gen));
+        ColumnsIndexes.push_back(j);
+        Values.emplace_back(random(gen), random(gen));
       }
     }
-    result.pointer[i + 1] = col_indexes.size();
+    result.DataPointer[i + 1] = ColumnsIndexes.size();
   }
 
-  result.col_indexes = std::move(col_indexes);
-  result.non_zero_values = std::move(non_zero_values);
+  result.ColumnsIndexes = std::move(ColumnsIndexes);
+  result.Values = std::move(Values);
 
   return result;
 }
