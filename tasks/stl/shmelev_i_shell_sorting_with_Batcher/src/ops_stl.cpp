@@ -154,7 +154,7 @@ void shmelev_stl::ShmelevTaskStl::batcherMergeSort(int left, int right) {
 
     leftThread.join();
     rightThread.join();
-    
+
     mergeSequences(left, middle, right);
   }
 }
