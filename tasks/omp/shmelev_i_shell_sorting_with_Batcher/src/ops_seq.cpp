@@ -17,9 +17,7 @@ std::vector<int> shmelev_omp::create_random_sequence(int size, int min, int max)
   return vector;
 }
 
-bool shmelev_omp::is_sorted(std::vector<int> input) {
-  return std::is_sorted(input.begin(), input.end());
-}
+bool shmelev_omp::is_sorted(std::vector<int> input) { return std::is_sorted(input.begin(), input.end()); }
 
 bool shmelev_omp::ShmelevTaskSequential::pre_processing() {
   internal_order_test();
