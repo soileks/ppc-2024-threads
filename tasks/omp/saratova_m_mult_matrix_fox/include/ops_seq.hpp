@@ -18,7 +18,7 @@ class SaratovaTaskSequential : public ppc::core::Task {
  private:
   size_t dimension{};
   double *matrixA{nullptr};
-  double *matrixB{nullptr}
+  double *matrixB{nullptr};
   double *matrixC{nullptr};
 
  public:
@@ -34,7 +34,7 @@ class SaratovaTaskOmp : public ppc::core::Task {
  private:
   int dimension{};
   double *matrixA{nullptr};
-  double *matrixB{nullptr}
+  double *matrixB{nullptr};
   double *matrixC{nullptr};
 
  public:

@@ -8,23 +8,21 @@
 #include <iostream>
 #include <random>
 
-namespace saratova_omp {
-
-void GenerateIdentityMatrix(double* matrix, int size, double scale) {
+void saratova_omp::GenerateIdentityMatrix(double* matrix, int size, double scale) {
   std::fill(matrix, matrix + size * size, 0.0);
   for (int i = 0; i < size; ++i) {
     matrix[i * size + i] = scale;
   }
 }
 
-void CreateIdentityMatrix(double* matrix, int size, double scale) {
+void saratova_omp::CreateIdentityMatrix(double* matrix, int size, double scale) {
   std::fill(matrix, matrix + size * size, 0.0);
   for (int i = 0; i < size; ++i) {
     matrix[i * size + (size - i - 1)] = scale;
   }
 }
 
-void FillRandomValues(double* matrix, int size) {
+void saratova_omp::FillRandomValues(double* matrix, int size) {
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<> dis(0, 99);
@@ -33,14 +31,14 @@ void FillRandomValues(double* matrix, int size) {
   }
 }
 
-bool SaratovaTaskSequential::validation() {
+bool saratova_omp::SaratovaTaskSequential::validation() {
   internal_order_test();
   return (taskData->inputs[0] != nullptr && (taskData->outputs[0] != nullptr)) && (taskData->inputs[1] != nullptr) &&
          (taskData->outputs_count[0] == taskData->inputs_count[0]) &&
          (taskData->inputs_count[1] == taskData->inputs_count[0]);
 }
 
-bool SaratovaTaskSequential::pre_processing() {
+bool saratova_omp::SaratovaTaskSequential::pre_processing() {
   internal_order_test();
   matrixA = reinterpret_cast<double*>(taskData->inputs[0]);
   matrixB = reinterpret_cast<double*>(taskData->inputs[1]);
@@ -50,7 +48,7 @@ bool SaratovaTaskSequential::pre_processing() {
   return true;
 }
 
-bool SaratovaTaskSequential::run() {
+bool saratova_omp::SaratovaTaskSequential::run() {
   internal_order_test();
   try {
     for (size_t i = 0; i < dimension; ++i) {
@@ -69,19 +67,19 @@ bool SaratovaTaskSequential::run() {
   return true;
 }
 
-bool SaratovaTaskSequential::post_processing() {
+bool saratova_omp::SaratovaTaskSequential::post_processing() {
   internal_order_test();
   return true;
 }
 
-bool SaratovaTaskOmp::validation() {
+bool saratova_omp::SaratovaTaskOmp::validation() {
   internal_order_test();
   return (taskData->inputs[0] != nullptr && (taskData->outputs[0] != nullptr)) && (taskData->inputs[1] != nullptr) &&
          (taskData->outputs_count[0] == taskData->inputs_count[0]) &&
          (taskData->inputs_count[1] == taskData->inputs_count[0]);
 }
 
-bool SaratovaTaskOmp::pre_processing() {
+bool saratova_omp::SaratovaTaskOmp::pre_processing() {
   internal_order_test();
   matrixA = reinterpret_cast<double*>(taskData->inputs[0]);
   matrixB = reinterpret_cast<double*>(taskData->inputs[1]);
@@ -91,7 +89,7 @@ bool SaratovaTaskOmp::pre_processing() {
   return true;
 }
 
-bool SaratovaTaskOmp::run() {
+bool saratova_omp::SaratovaTaskOmp::run() {
   internal_order_test();
   try {
     const int numThreads = 2;
@@ -119,8 +117,7 @@ bool SaratovaTaskOmp::run() {
   return true;
 }
 
-bool SaratovaTaskOmp::post_processing() {
+bool saratova_omp::SaratovaTaskOmp::post_processing() {
   internal_order_test();
   return true;
 }
-}  // namespace saratova_omp
