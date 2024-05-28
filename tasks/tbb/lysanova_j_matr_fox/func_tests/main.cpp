@@ -65,7 +65,9 @@ TEST(lysanova_j_matr_fox_tbb, AEsd) {
 
 TEST(lysanova_j_matr_fox_tbb, EA) {
   size_t n = 8;
-  std::vector<double> C(n * n), B(n * n), A(n * n);
+  std::vector<double> C(n * n);
+  std::vector<double> B(n * n);
+  std::vector<double> A(n * n);
   me_tbb::RandomFillMatrix(B.data(), B.size());
   me_tbb::EMatrix(A.data(), n);
 
@@ -91,7 +93,9 @@ TEST(lysanova_j_matr_fox_tbb, EA) {
 
 TEST(lysanova_j_matr_fox_tbb, EsdA) {
   size_t n = 8;
-  std::vector<double> C(n * n), B(n * n), A(n * n);
+  std::vector<double> C(n * n);
+  std::vector<double> B(n * n);
+  std::vector<double> A(n * n);
   me_tbb::RandomFillMatrix(B.data(), B.size());
   me_tbb::EsdMatrix(A.data(), n);
 
@@ -120,7 +124,9 @@ TEST(lysanova_j_matr_fox_tbb, EsdA) {
 TEST(lysanova_j_matr_fox_tbb, kAE) {
   size_t n = 8;
   double k = 42.0;
-  std::vector<double> C(n * n), B(n * n), A(n * n);
+  std::vector<double> C(n * n);
+  std::vector<double> B(n * n);
+  std::vector<double> A(n * n);
   me_tbb::RandomFillMatrix(A.data(), A.size());
   me_tbb::EMatrix(B.data(), n, k);
 
