@@ -28,9 +28,9 @@ bool SparseMatrixSolverBodrovOMP::pre_processing() {
 bool SparseMatrixSolverBodrovOMP::validation() {
   internal_order_test();
 
-  if (taskData->inputs[0] != nullptr || taskData->inputs[1] != nullptr || taskData->outputs[0] != nullptr) {
+  if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
+      !taskData->outputs_count.empty())
     return false;
-  }
 
   A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
   B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
@@ -117,9 +117,9 @@ bool SparseMatrixSolverBodrovOMPParallel::pre_processing() {
 bool SparseMatrixSolverBodrovOMPParallel::validation() {
   internal_order_test();
 
-  if (taskData->inputs[0] != nullptr || taskData->inputs[1] != nullptr || taskData->outputs[0] != nullptr) {
+  if (taskData->inputs.size() != 2 || taskData->outputs.size() != 1 || !taskData->inputs_count.empty() ||
+      !taskData->outputs_count.empty())
     return false;
-  }
 
   A_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[0]);
   B_M = reinterpret_cast<SparseMatrixBodrovOMP*>(taskData->inputs[1]);
