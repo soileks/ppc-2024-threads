@@ -10,10 +10,9 @@
 
 namespace saratova_omp {
 
-
-void GenerateIdentityMatrix(double* matrix, int size, double scale = 1.0);
-void CreateIdentityMatrix(double* matrix, int size, double scale = 1.0);
-void FillRandomValues(double* matrix, int size);
+void GenerateIdentityMatrix(double *matrix, int size, double scale = 1.0);
+void CreateIdentityMatrix(double *matrix, int size, double scale = 1.0);
+void FillRandomValues(double *matrix, int size);
 
 class SaratovaTaskSequential : public ppc::core::Task {
  private:
