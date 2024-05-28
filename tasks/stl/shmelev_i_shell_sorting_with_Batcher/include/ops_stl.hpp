@@ -4,8 +4,8 @@
 #include <iostream>
 #include <memory>
 #include <random>
-#include <string>
 #include <thread>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -13,24 +13,8 @@
 
 namespace shmelev_stl {
 
-class ShmelevTaskSTL : public ppc::core::Task {
- public:
-  explicit ShmelevTaskSTL(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
-  bool pre_processing() override;
-  bool validation() override;
-  bool run() override;
-  bool post_processing() override;
-  static std::vector<int> generate_random_vector(int size, int min, int max);
-  static bool sorted(std::vector<int> input);
-
- private:
-  std::vector<int> result;
-  std::vector<int> in;
-  void parallelBatcherMerge(int l, int r, int depth);
-  void batcherMerge(int l, int r);
-  void sortingShell();
-  void merge(int l, int m, int r);
-};
+std::vector<int> create_random_sequence(int size, int min, int max);
+bool is_sorted(std::vector<int> input);
 
 class ShmelevTaskSequential : public ppc::core::Task {
  public:
@@ -39,14 +23,29 @@ class ShmelevTaskSequential : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-  static std::vector<int> generate_random_vector(int size, int min, int max);
-  static bool sorted(std::vector<int> input);
 
  private:
+  std::vector<int> sequence;
   std::vector<int> result;
-  std::vector<int> in;
-  void batcherMerge(int l, int r);
-  void sortingShell();
-  void merge(int l, int m, int r);
+  void batcherMergeSort(int left, int right);
+  void shellSort();
+  void mergeSequences(int left, int middle, int right);
 };
-}  //  namespace shmelev_stl
+
+class ShmelevTaskStl : public ppc::core::Task {
+ public:
+  explicit ShmelevTaskStl(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  bool pre_processing() override;
+  bool validation() override;
+  bool run() override;
+  bool post_processing() override;
+
+ private:
+  std::vector<int> sequence;
+  std::vector<int> result;
+  void batcherMergeSort(int left, int right);
+  void shellSort();
+  void mergeSequences(int left, int middle, int right);
+};
+
+}  // namespace shmelev_stl
