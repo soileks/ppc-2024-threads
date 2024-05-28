@@ -12,9 +12,9 @@ namespace saratova_omp {
 
 bool SaratovaTaskSequential::validation() {
   internal_order_test();
-  return ((taskData->outputs[0] != nullptr) && taskData->inputs[0] != nullptr) && (taskData->inputs[1] != nullptr) &&
-         (taskData->inputs_count[0] == taskData->outputs_count[0]) &&
-         (taskData->inputs_count[0] == taskData->inputs_count[1]);
+  return (taskData->inputs[0] != nullptr && (taskData->outputs[0] != nullptr)) && (taskData->inputs[1] != nullptr) &&
+         (taskData->outputs_count[0] == taskData->inputs_count[0]) &&
+         (taskData->inputs_count[1] == taskData->inputs_count[0]);
 }
 
 bool SaratovaTaskSequential::pre_processing() {
