@@ -9,6 +9,29 @@
 #include <random>
 
 namespace saratova_omp {
+  
+void GenerateIdentityMatrix(double* matrix, int size, double scale) {
+  std::fill(matrix, matrix + size * size, 0.0);
+  for (int i = 0; i < size; ++i) {
+    matrix[i * size + i] = scale;
+  }
+}
+
+void CreateIdentityMatrix(double* matrix, int size, double scale) {
+  std::fill(matrix, matrix + size * size, 0.0);
+  for (int i = 0; i < size; ++i) {
+    matrix[i * size + (size - i - 1)] = scale;
+  }
+}
+
+void FillRandomValues(double* matrix, int size) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0, 99);
+  for (int i = 0; i < size; ++i) {
+    matrix[i] = dis(gen);
+  }
+}
 
 bool SaratovaTaskSequential::validation() {
   internal_order_test();
@@ -100,28 +123,4 @@ bool SaratovaTaskOmp::post_processing() {
   internal_order_test();
   return true;
 }
-
-void GenerateIdentityMatrix(double* matrix, int size, double scale) {
-  std::fill(matrix, matrix + size * size, 0.0);
-  for (int i = 0; i < size; ++i) {
-    matrix[i * size + i] = scale;
-  }
-}
-
-void CreateIdentityMatrix(double* matrix, int size, double scale) {
-  std::fill(matrix, matrix + size * size, 0.0);
-  for (int i = 0; i < size; ++i) {
-    matrix[i * size + (size - i - 1)] = scale;
-  }
-}
-
-void FillRandomValues(double* matrix, int size) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, 99);
-  for (int i = 0; i < size; ++i) {
-    matrix[i] = dis(gen);
-  }
-}
-
 }  // namespace saratova_omp
