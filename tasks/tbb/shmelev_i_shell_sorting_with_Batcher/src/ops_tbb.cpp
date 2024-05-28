@@ -151,10 +151,8 @@ void shmelev_tbb::ShmelevTaskTbb::batcherMergeSort(int left, int right) {
   shellSort();
   if (right > left) {
     int middle = left + (right - left) / 2;
-    tbb::parallel_invoke(
-      [this, left, middle] { batcherMergeSort(left, middle); },
-      [this, middle, right] { batcherMergeSort(middle + 1, right); }
-    );
+    tbb::parallel_invoke([this, left, middle] { batcherMergeSort(left, middle); },
+                         [this, middle, right] { batcherMergeSort(middle + 1, right); });
     mergeSequences(left, middle, right);
   }
 }
