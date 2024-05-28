@@ -10,9 +10,9 @@
 
 namespace saratova_omp {
 
-void ScaledIdentityMatrix(double* matrix, int n, double k = 1.0);
-void IdentityMatrix(double* matrix, int n, double k = 1.0);
-void GenerateRandomValue(double* matrix, int sz);
+void GenerateIdentityMatrix(double* matrix, int size, double scale = 1.0);
+void CreateIdentityMatrix(double* matrix, int size, double scale = 1.0);
+void FillRandomValues(double* matrix, int size);
 
 class SaratovaTaskSequential : public ppc::core::Task {
  public:
@@ -23,8 +23,8 @@ class SaratovaTaskSequential : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  double *A{}, *B{}, *C{};
-  size_t n{};
+  double *matrixA{nullptr}, *matrixB{nullptr}, *matrixC{nullptr};
+  size_t dimension{};
 };
 
 class SaratovaTaskOmp : public ppc::core::Task {
@@ -36,8 +36,8 @@ class SaratovaTaskOmp : public ppc::core::Task {
   bool post_processing() override;
 
  private:
-  double *A{}, *B{}, *C{};
-  int n{};
+  double *matrixA{nullptr}, *matrixB{nullptr}, *matrixC{nullptr};
+  int dimension{};
 };
 
 }  // namespace saratova_omp
