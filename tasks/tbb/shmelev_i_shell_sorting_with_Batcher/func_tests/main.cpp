@@ -1,6 +1,5 @@
 // Copyright 2024 Shmelev Ivan
 #include <gtest/gtest.h>
-#include <oneapi/tbb.h>
 
 #include <iostream>
 #include <vector>
@@ -10,110 +9,110 @@
 using namespace shmelev_tbb;
 
 TEST(shmelev_i_shell_sorting_with_Batcher, validation_check) {
-  std::vector<int> array = {10, -1, 0};
+  std::vector<int> input_array = {10, -1, 0};
   std::vector<int> sorted_array(3);
-  std::vector<int> expected = {-1, 0, 10};
+  std::vector<int> expected_array = {-1, 0, 10};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&array));
-  taskDataSeq->inputs_count.emplace_back(array.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
-  taskDataSeq->outputs_count.emplace_back(expected.size() + 1);
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&input_array));
+  taskDataPar->inputs_count.emplace_back(input_array.size());
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
+  taskDataPar->outputs_count.emplace_back(expected_array.size() + 1);
 
   // Create Task
-  ShmelevTaskTbb testTaskTbb(taskDataSeq);
+  ShmelevTaskTbb testTaskTbb(taskDataPar);
   ASSERT_EQ(testTaskTbb.validation(), false);
 }
 
-TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_small_array) {
-  std::vector<int> array = {12, 0, -32};
+TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_array1) {
+  std::vector<int> input_array = {12, 0, -32};
   std::vector<int> sorted_array(3);
-  std::vector<int> expected = {-32, 0, 12};
+  std::vector<int> expected_array = {-32, 0, 12};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&array));
-  taskDataSeq->inputs_count.emplace_back(1);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
-  taskDataSeq->outputs_count.emplace_back(1);
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&input_array));
+  taskDataPar->inputs_count.emplace_back(1);
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
+  taskDataPar->outputs_count.emplace_back(1);
 
   // Create Task
-  ShmelevTaskTbb testTaskTbb(taskDataSeq);
-  ASSERT_EQ(testTaskTbb.validation(), true);
-  testTaskTbb.pre_processing();
-  testTaskTbb.run();
-  testTaskTbb.post_processing();
-  for (int i = 0; i < 2; i++) {
-    EXPECT_EQ(sorted_array[i], expected[i]);
+  ShmelevTaskTbb testTaskOmp(taskDataPar);
+  ASSERT_EQ(testTaskOmp.validation(), true);
+  testTaskOmp.pre_processing();
+  testTaskOmp.run();
+  testTaskOmp.post_processing();
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(sorted_array[i], expected_array[i]);
   }
 }
 
-TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_another_small_array) {
-  std::vector<int> array = {60, -11, 234, 10};
-  std::vector<int> sorted_array(4);
-  std::vector<int> expected = {-11, 10, 60, 234};
+TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_array2) {
+  std::vector<int> input_array = {10, -1, 0};
+  std::vector<int> sorted_array(3);
+  std::vector<int> expected_array = {-1, 0, 10};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&array));
-  taskDataSeq->inputs_count.emplace_back(1);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
-  taskDataSeq->outputs_count.emplace_back(1);
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&input_array));
+  taskDataPar->inputs_count.emplace_back(1);
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
+  taskDataPar->outputs_count.emplace_back(1);
 
   // Create Task
-  ShmelevTaskTbb testTaskTbb(taskDataSeq);
-  ASSERT_EQ(testTaskTbb.validation(), true);
-  testTaskTbb.pre_processing();
-  testTaskTbb.run();
-  testTaskTbb.post_processing();
-  for (int i = 0; i < 4; i++) {
-    EXPECT_EQ(sorted_array[i], expected[i]);
+  ShmelevTaskTbb testTaskOmp(taskDataPar);
+  ASSERT_EQ(testTaskOmp.validation(), true);
+  testTaskOmp.pre_processing();
+  testTaskOmp.run();
+  testTaskOmp.post_processing();
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(sorted_array[i], expected_array[i]);
   }
 }
 
-TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_medium_array) {
-  std::vector<int> array = {131, -111, 34, -3, 0};
-  std::vector<int> sorted_array(5);
-  std::vector<int> expected = {-111, -3, 0, 34, 131};
+TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_array3) {
+  std::vector<int> input_array = {1, 0, -2};
+  std::vector<int> sorted_array(3);
+  std::vector<int> expected_array = {-2, 0, 1};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&array));
-  taskDataSeq->inputs_count.emplace_back(1);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
-  taskDataSeq->outputs_count.emplace_back(1);
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&input_array));
+  taskDataPar->inputs_count.emplace_back(1);
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
+  taskDataPar->outputs_count.emplace_back(1);
 
   // Create Task
-  ShmelevTaskTbb testTaskTbb(taskDataSeq);
-  ASSERT_EQ(testTaskTbb.validation(), true);
-  testTaskTbb.pre_processing();
-  testTaskTbb.run();
-  testTaskTbb.post_processing();
-  for (int i = 0; i < 5; i++) {
-    EXPECT_EQ(sorted_array[i], expected[i]);
+  ShmelevTaskTbb testTaskOmp(taskDataPar);
+  ASSERT_EQ(testTaskOmp.validation(), true);
+  testTaskOmp.pre_processing();
+  testTaskOmp.run();
+  testTaskOmp.post_processing();
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(sorted_array[i], expected_array[i]);
   }
 }
 
-TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_another_array) {
-  std::vector<int> array = {1, 0};
-  std::vector<int> sorted_array(2);
-  std::vector<int> expected = {0, 1};
+TEST(shmelev_i_shell_sorting_with_Batcher, Sorting_array4) {
+  std::vector<int> input_array = {123, 0, -322};
+  std::vector<int> sorted_array(3);
+  std::vector<int> expected_array = {-322, 0, 123};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&array));
-  taskDataSeq->inputs_count.emplace_back(1);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
-  taskDataSeq->outputs_count.emplace_back(1);
+  std::shared_ptr<ppc::core::TaskData> taskDataPar = std::make_shared<ppc::core::TaskData>();
+  taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t *>(&input_array));
+  taskDataPar->inputs_count.emplace_back(1);
+  taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&sorted_array));
+  taskDataPar->outputs_count.emplace_back(1);
 
   // Create Task
-  ShmelevTaskTbb testTaskTbb(taskDataSeq);
-  ASSERT_EQ(testTaskTbb.validation(), true);
-  testTaskTbb.pre_processing();
-  testTaskTbb.run();
-  testTaskTbb.post_processing();
-  for (int i = 0; i < 2; i++) {
-    EXPECT_EQ(sorted_array[i], expected[i]);
+  ShmelevTaskTbb testTaskOmp(taskDataPar);
+  ASSERT_EQ(testTaskOmp.validation(), true);
+  testTaskOmp.pre_processing();
+  testTaskOmp.run();
+  testTaskOmp.post_processing();
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(sorted_array[i], expected_array[i]);
   }
 }
