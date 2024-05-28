@@ -33,7 +33,7 @@ void saratova_omp::FillRandomValues(double* matrix, int size) {
 
 bool saratova_omp::SaratovaTaskSequential::validation() {
   internal_order_test();
-  return (taskData->inputs[0] != nullptr && (taskData->outputs[0] != nullptr)) && (taskData->inputs[1] != nullptr) &&
+  return (taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr) && (taskData->inputs[1] != nullptr) &&
          (taskData->outputs_count[0] == taskData->inputs_count[0]) &&
          (taskData->inputs_count[1] == taskData->inputs_count[0]);
 }
@@ -74,7 +74,7 @@ bool saratova_omp::SaratovaTaskSequential::post_processing() {
 
 bool saratova_omp::SaratovaTaskOmp::validation() {
   internal_order_test();
-  return (taskData->inputs[0] != nullptr && (taskData->outputs[0] != nullptr)) && (taskData->inputs[1] != nullptr) &&
+  return (taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr) && (taskData->inputs[1] != nullptr) &&
          (taskData->outputs_count[0] == taskData->inputs_count[0]) &&
          (taskData->inputs_count[1] == taskData->inputs_count[0]);
 }
@@ -94,7 +94,7 @@ bool saratova_omp::SaratovaTaskOmp::run() {
   try {
     const int numThreads = 2;
     const int blockSize = dimension / numThreads;
-#pragma omp parallel for collapse(2) num_threads(numThreads* numThreads)
+#pragma omp parallel for num_threads(numThreads)
     for (int bi = 0; bi < dimension; bi += blockSize) {
       for (int bj = 0; bj < dimension; bj += blockSize) {
         for (int bk = 0; bk < dimension; bk += blockSize) {
