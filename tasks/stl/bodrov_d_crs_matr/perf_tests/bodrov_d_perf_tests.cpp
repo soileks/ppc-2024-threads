@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/bodrov_d_crs_matr/include/bodrov_d_crs_matr_tbb.hpp"
+#include "stl/bodrov_d_crs_matr/include/bodrov_d_crs_matr_stl.hpp"
 
 using namespace bodrov_stl;
 
