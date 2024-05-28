@@ -15,6 +15,12 @@ void CreateIdentityMatrix(double* matrix, int size, double scale = 1.0);
 void FillRandomValues(double* matrix, int size);
 
 class SaratovaTaskSequential : public ppc::core::Task {
+ private:
+  size_t dimension{};
+  double *matrixA{nullptr};
+  double *matrixB{nullptr}
+  double *matrixC{nullptr};
+
  public:
   explicit SaratovaTaskSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
@@ -22,12 +28,15 @@ class SaratovaTaskSequential : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
- private:
-  double *matrixA{nullptr}, *matrixB{nullptr}, *matrixC{nullptr};
-  size_t dimension{};
 };
 
 class SaratovaTaskOmp : public ppc::core::Task {
+ private:
+  int dimension{};
+  double *matrixA{nullptr};
+  double *matrixB{nullptr}
+  double *matrixC{nullptr};
+
  public:
   explicit SaratovaTaskOmp(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
@@ -35,9 +44,6 @@ class SaratovaTaskOmp : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
- private:
-  double *matrixA{nullptr}, *matrixB{nullptr}, *matrixC{nullptr};
-  int dimension{};
 };
 
 }  // namespace saratova_omp
