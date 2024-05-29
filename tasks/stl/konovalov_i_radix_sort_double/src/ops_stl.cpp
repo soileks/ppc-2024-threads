@@ -57,7 +57,7 @@ bool RadixSortSTLTaskParallel::run() {
       chunks[(uint8_t)val * input_size + chunk_sizes[(uint8_t)val]] = input_[i];
       chunk_sizes[(uint8_t)val]++;
     }
-    int nthr = 4;
+    size_t nthr = 4;
     size_t factor = max_val / nthr;
     auto* threads = new std::thread[max_val];
     for (size_t i = 0; i < nthr; i++) {
