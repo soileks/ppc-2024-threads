@@ -1,10 +1,9 @@
 // Copyright 2024 Smirnova Daria
 #include "stl/smirnova_d_complex_matrix_crs/include/ops_stl.hpp"
 
-#include <thread>
-
 #include <algorithm>
 #include <complex>
+#include <thread>
 #include <utility>
 #include <vector>
 
