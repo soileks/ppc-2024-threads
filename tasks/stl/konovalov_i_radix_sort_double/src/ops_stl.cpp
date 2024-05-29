@@ -2,6 +2,7 @@
 #include "stl/konovalov_i_radix_sort_double/include/ops_stl.hpp"
 
 #include <thread>
+#include <iostream>
 
 using namespace std::chrono_literals;
 
@@ -57,14 +58,18 @@ bool RadixSortSTLTaskParallel::run() {
       chunks[(uint8_t)val * input_size + chunk_sizes[(uint8_t)val]] = input_[i];
       chunk_sizes[(uint8_t)val]++;
     }
+    int nthr = 4;
+    size_t factor = max_val / nthr;
     auto* threads = new std::thread[max_val];
-    for (int i = 0; i < max_val; i++) {
-      threads[i] = std::thread([this, i, chunks, chunk_sizes]() {
-        std::vector<double> local_ordered_chunks[sizeof(double) * max_val];
-        radix_sort_seq(chunks + i * input_size, chunk_sizes[i], local_ordered_chunks);
+    for (size_t i = 0; i < nthr; i++) {
+      threads[i] = std::thread([this, i, chunks, chunk_sizes, factor]() {
+        std::vector<double> local_ordered_chunks[max_val * sizeof(double)];
+        for (size_t j = 0; j < factor; j++) {
+          radix_sort_seq(chunks + (i * factor + j) * input_size, chunk_sizes[i * factor + j], local_ordered_chunks);
+        }
       });
     }
-    for (size_t i = 0; i < max_val; i++) {
+    for (size_t i = 0; i < nthr; i++) {
       threads[i].join();
     }
     delete[] threads;
