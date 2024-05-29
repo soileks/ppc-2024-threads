@@ -2,7 +2,6 @@
 #include "stl/konovalov_i_radix_sort_double/include/ops_stl.hpp"
 
 #include <thread>
-#include <iostream>
 
 using namespace std::chrono_literals;
 
