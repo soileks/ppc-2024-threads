@@ -1,9 +1,6 @@
 // Copyright 2024 Nogin Denis
 #pragma once
-#include <omp.h>
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/parallel_sort.h>
+
 #include <tbb/tbb.h>
 
 #include <algorithm>

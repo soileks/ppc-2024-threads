@@ -1,5 +1,6 @@
 // Copyright 2024 Nogin Denis
 #include <gtest/gtest.h>
+#include <oneapi/tbb.h>
 
 #include "core/perf/include/perf.hpp"
 #include "tbb/nogin_d_radix_double_batcher/include/ops_tbb.hpp"

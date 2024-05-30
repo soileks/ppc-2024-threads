@@ -164,11 +164,13 @@ void partSortTbb(std::vector<std::vector<double>>& parts, std::vector<double>& s
       parts[temp].push_back(j);
     }
 
-    side = batchersMergeSeq(parts);
+    side = batchersMergeTbb(parts);
 
-    for (auto& part : parts) {
-      part.clear();
-    }
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, parts.size()), [&](const tbb::blocked_range<size_t>& r) {
+      for (size_t j = r.begin(); j != r.end(); ++j) {
+        parts[j].clear();
+      }
+    });
   }
 }
 
@@ -186,9 +188,15 @@ std::vector<double> radixSortBatcherTbb(std::vector<double> vec) {
     }
   }
 
-  std::vector<std::vector<double>> parts(256);
-  partSortTbb(parts, negative);
-  partSortTbb(parts, positive);
+  tbb::parallel_invoke(
+      [&]() {
+        std::vector<std::vector<double>> partsNegative(256);
+        partSortTbb(partsNegative, negative);
+      },
+      [&]() {
+        std::vector<std::vector<double>> partsPositive(256);
+        partSortTbb(partsPositive, positive);
+      });
 
   vec.clear();
   vec.reserve(negative.size() + positive.size());
@@ -197,7 +205,6 @@ std::vector<double> radixSortBatcherTbb(std::vector<double> vec) {
 
   return vec;
 }
-
 
 std::vector<double> randomVector(int sizeVec, double minValue, double maxValue) {
   std::random_device rd;
