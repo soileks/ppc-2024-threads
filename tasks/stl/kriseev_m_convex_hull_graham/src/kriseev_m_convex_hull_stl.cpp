@@ -38,9 +38,7 @@ bool compareForSort1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl
 }
 
 void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin, size_t begin, size_t end) {
-
   size_t numThreads = std::thread::hardware_concurrency();
-
 
   size_t chunkSize = points.size() / numThreads;
   if (points.size() % numThreads > 0) {
