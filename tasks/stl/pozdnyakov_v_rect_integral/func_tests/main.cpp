@@ -8,8 +8,8 @@
 using namespace pozdnyakov_stl;
 
 TEST(pozdnyakov_v_rect_integral_stl, Test_x_sub_y_1) {
-  Func f = pozdnyakov_flin;
   int n = 100;
+  Func f = pozdnyakov_flin;
 
   std::vector<double> in = {0, 3, 0, 3};
   std::vector<double> out_seq(1, 0);
