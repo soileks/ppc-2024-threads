@@ -38,9 +38,9 @@ bool compareForSort1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl
 }
 
 void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin, size_t begin, size_t end) {
-  const size_t numThreads = 2;  // std::thread::hardware_concurrency();
 
-  std::thread threads[numThreads];
+  size_t numThreads = std::thread::hardware_concurrency();
+
 
   size_t chunkSize = points.size() / numThreads;
   if (points.size() % numThreads > 0) {
@@ -51,9 +51,10 @@ void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin
     numThreads = 1;
   }
 
+  std::vector<std::thread> threads;
   std::barrier b(numThreads);
 
-  auto work = [&](Point origin, size_t chunkSize, size_t threadNum) {
+  auto work = [&b](std::vector<Point>& points, Point origin, size_t chunkSize, size_t threadNum) {
     size_t firstIndex = threadNum * chunkSize;
     if ((firstIndex & 1) == 0) firstIndex++;
 
@@ -85,7 +86,7 @@ void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin
     }
   };
   for (size_t t = 0; t < numThreads; ++t) {
-    threads[t] = std::thread(work, origin, chunkSize, t);
+    threads.emplace_back(work, std::ref(points), origin, chunkSize, t);
   }
   for (size_t t = 0; t < numThreads; ++t) {
     threads[t].join();
