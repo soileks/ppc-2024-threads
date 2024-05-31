@@ -28,4 +28,4 @@ class ConvexHullTask : public ppc::core::Task {
   std::vector<Point> points;
   std::vector<Point> finalHull;
 };
-}  // namespace KriseevMTaskSeq
+}  // namespace KriseevMTaskStl

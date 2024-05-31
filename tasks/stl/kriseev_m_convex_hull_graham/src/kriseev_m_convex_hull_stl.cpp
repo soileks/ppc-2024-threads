@@ -2,10 +2,9 @@
 #include "stl/kriseev_m_convex_hull_graham/include/kriseev_m_convex_hull_stl.hpp"
 
 #include <algorithm>
+#include <barrier>
 #include <limits>
 #include <thread>
-
-#include <barrier>
 
 namespace KriseevMTaskStl {
 
@@ -19,8 +18,8 @@ double angle1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl::Point
   // Calculating angle using algorithm from https://stackoverflow.com/a/14675998/14116050
   return (dx >= 0 ? dy / (dx + dy) : 1 - dx / (dy - dx));
 }
-bool compareForSort1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl::Point& a,
-                     const KriseevMTaskStl::Point& b) {
+bool compareForSort1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl::Point &a,
+                     const KriseevMTaskStl::Point &b) {
   double angleA = angle1(origin, a);
   double angleB = angle1(origin, b);
   if (angleA < angleB) {
@@ -39,7 +38,7 @@ bool compareForSort1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl
 }
 
 void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin, size_t begin, size_t end) {
-  size_t numThreads = 2;// std::thread::hardware_concurrency();
+  size_t numThreads = 2;  // std::thread::hardware_concurrency();
   if (numThreads == 0) {
     numThreads = 1;
   }
@@ -47,10 +46,10 @@ void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin
   std::thread threads[numThreads];
 
   size_t chunkSize = points.size() / numThreads;
-  if(points.size() % numThreads > 0) {
+  if (points.size() % numThreads > 0) {
     chunkSize++;
-  } 
-  if(points.size() <= numThreads) {
+  }
+  if (points.size() <= numThreads) {
     chunkSize = points.size();
     numThreads = 1;
   }
@@ -59,15 +58,15 @@ void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin
 
   auto work = [&](Point origin, size_t chunkSize, size_t threadNum) {
     size_t firstIndex = threadNum * chunkSize;
-    if((firstIndex & 1) == 0) firstIndex++;
+    if ((firstIndex & 1) == 0) firstIndex++;
 
     size_t lastIndex = (threadNum + 1) * chunkSize;
-    if(lastIndex > points.size()) {
+    if (lastIndex > points.size()) {
       lastIndex = points.size();
     }
     size_t pointsSize = points.size();
     auto pointsBegin = points.begin();
-    //std::cout << "thread " << threadNum << " work " << firstIndex << " to " << lastIndex << "\n";
+    // std::cout << "thread " << threadNum << " work " << firstIndex << " to " << lastIndex << "\n";
 
     size_t lastIndexOdd = lastIndex == points.size() ? lastIndex - 1 : lastIndex;
     for (size_t phase = 0; phase < pointsSize; phase++) {
@@ -82,17 +81,16 @@ void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin
           if (compareForSort1(origin, points[i + 1], points[i])) {
             std::iter_swap(pointsBegin + i, pointsBegin + i + 1);
           }
-
         }
       }
 
       b.arrive_and_wait();
     }
-  }; 
-  for(size_t t = 0; t < numThreads; ++t) {
+  };
+  for (size_t t = 0; t < numThreads; ++t) {
     threads[t] = std::thread(work, origin, chunkSize, t);
   }
-  for(size_t t = 0; t < numThreads; ++t) {
+  for (size_t t = 0; t < numThreads; ++t) {
     threads[t].join();
   }
 }
