@@ -37,7 +37,7 @@ bool compareForSort1(const KriseevMTaskStl::Point &origin, const KriseevMTaskStl
   return dxA * dxA + dyA * dyA > dxB * dxB + dyB * dyB;
 }
 
-void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin, size_t begin, size_t end) {
+void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin) {
   size_t numThreads = std::thread::hardware_concurrency();
 
   size_t chunkSize = points.size() / numThreads;
@@ -131,7 +131,7 @@ bool KriseevMTaskStl::ConvexHullTask::run() {
       std::min_element(points.begin(), points.end(), [](auto &a, auto &b) -> bool { return a.second < b.second; });
   auto origin = *originIt;
 
-  sortPoints(points, origin, 0, points.size());
+  sortPoints(points, origin);
 
   std::vector<Point> hull;
   hull.reserve(points.size());
