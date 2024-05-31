@@ -54,7 +54,7 @@ void sortPoints(std::vector<Point> &points, const KriseevMTaskStl::Point &origin
   std::vector<std::thread> threads;
   std::barrier b(numThreads);
 
-  auto work = [&b](std::vector<Point>& points, Point origin, size_t chunkSize, size_t threadNum) {
+  auto work = [&b](std::vector<Point> &points, Point origin, size_t chunkSize, size_t threadNum) {
     size_t firstIndex = threadNum * chunkSize;
     if ((firstIndex & 1) == 0) firstIndex++;
 
