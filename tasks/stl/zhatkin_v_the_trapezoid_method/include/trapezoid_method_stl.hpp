@@ -4,17 +4,15 @@
 #ifndef TASKS_STL_ZHATKIN_V_TRAPEZOID_METHOD_INCLUDETRAPEZOID_METHOD_TBB_HPP_
 #define TASKS_STL_ZHATKIN_V_TRAPEZOID_METHOD_INCLUDETRAPEZOID_METHOD_TBB_HPP_
 
-#include <future>
-#include <thread>
-#include <numeric>
-
 #include <cmath>
 #include <functional>
+#include <future>
 #include <memory>
+#include <numeric>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
-
 #include "core/task/include/task.hpp"
 
 class ZhatkinTaskTBBSequential : public ppc::core::Task {
