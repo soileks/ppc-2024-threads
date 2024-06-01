@@ -81,7 +81,7 @@ TEST(zhatkin_v_trapezoid_stl, test_task_run) {
   taskDataSTL->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto taskDataSTL = std::make_shared<ZhatkinTaskSTL>(taskDataSTL, productXY);
+  auto testTaskSTL = std::make_shared<ZhatkinTaskSTL>(taskDataSTL, productXY);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -97,7 +97,7 @@ TEST(zhatkin_v_trapezoid_stl, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskDataSTL);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_NEAR(res, out[0], 0.02);
