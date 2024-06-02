@@ -34,7 +34,6 @@ bool HoareSortSequential::run() {
   try {
     internal_order_test();
     hoareSortSequential(array, 0, array.size() - 1);
-    std::this_thread::sleep_for(20ms);
   } catch (...) {
     return false;
   }
