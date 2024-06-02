@@ -1,11 +1,13 @@
 // Copyright 2024 Vyunov Danila
 
-#include "core/task/include/task.hpp"
 #include <tbb/tbb.h>
+
 #include <algorithm>
-#include <vector>
 #include <iostream>
 #include <random>
+#include <vector>
+
+#include "core/task/include/task.hpp"
 
 class HoareSortSimpleSeq : public ppc::core::Task {
  public:
