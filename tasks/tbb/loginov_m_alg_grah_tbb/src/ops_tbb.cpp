@@ -1,6 +1,6 @@
 // Copyright 2024 Loginov Maxim
 
-#include "tbb/loginov_alg_grah_tbb/include/ops_tbb.hpp"
+#include "tbb/loginov_m_alg_grah_tbb/include/ops_tbb.hpp"
 
 #include "tbb/parallel_sort.h"
 
