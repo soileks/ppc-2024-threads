@@ -6,7 +6,6 @@
 
 #include "core/perf/include/perf.hpp"
 
-
 TEST(loginov_m_alg_grah_tbb, test_pipeline_run) {
   double min = 0;
   double max = 100000;
