@@ -1,9 +1,11 @@
 // Copyright 2024 Loginov Maxim
 
+#include "tbb/loginov_m_alg_grah_tbb/include/ops_tbb.hpp"
+
 #include <gtest/gtest.h>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/loginov_m_alg_grah_tbb/include/ops_tbb.hpp"
+
 
 TEST(loginov_m_alg_grah_tbb, test_pipeline_run) {
   double min = 0;
