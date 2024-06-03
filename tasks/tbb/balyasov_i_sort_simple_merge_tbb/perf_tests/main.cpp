@@ -1,6 +1,6 @@
 // Copyright 2024 Balyasov Ivan
 #include <gtest/gtest.h>
- 
+
 #include <random>
 #include <vector>
 

@@ -110,7 +110,7 @@ bool RadixSortClassTaskTbb::run() {
     }
 
     tbb::parallel_reduce(tbb::blocked_range<std::vector<int>::iterator>(VectorSort.begin(), VectorSort.end(), step),
-                        clist);
+                         clist);
 
     VectorSort = clist.VectorResult;
   } catch (...) {
