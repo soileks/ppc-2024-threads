@@ -8,7 +8,7 @@
 TEST(loginov_m_alg_grah_tbb, Test1) {
   // Create data
   std::vector<LoginovTbb::LoginovPoint> points = {
-      LoginovTbb::LoginovPoint(-6, 2),   LoginovTbb::LoginovPoint(-2, 4),   LoginovTbb::LoginovPoint(-11, 1),
+      LoginovTbb::LoginovPoint(-8, 2),   LoginovTbb::LoginovPoint(-2, 4),   LoginovTbb::LoginovPoint(-11, 1),
       LoginovTbb::LoginovPoint(-4, -3),  LoginovTbb::LoginovPoint(-8, -2),  LoginovTbb::LoginovPoint(-2, 4),
       LoginovTbb::LoginovPoint(-3, 3),   LoginovTbb::LoginovPoint(-6, 6),   LoginovTbb::LoginovPoint(-12, 8),
       LoginovTbb::LoginovPoint(-6, 3),   LoginovTbb::LoginovPoint(-4, 0),   LoginovTbb::LoginovPoint(-12, 2),
