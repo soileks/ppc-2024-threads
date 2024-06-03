@@ -11,14 +11,12 @@ TEST(loginov_m_alg_grah_tbb, test_pipeline_run) {
   size_t size = 400000;  // size of vector of random points
 
   // Create data
-  std::vector<LoginovTbb::LoginovPoint> points = {
-      LoginovTbb::LoginovPoint(max, min), LoginovTbb::LoginovPoint(min, max), LoginovTbb::LoginovPoint(max, max),
-      LoginovTbb::LoginovPoint(min, min)};
+  std::vector<LoginovTbb::LoginovPoint> points = {LoginovTbb::LoginovPoint(max, min), LoginovTbb::LoginovPoint(min, max), LoginovTbb::LoginovPoint(max, max),
+                                                  LoginovTbb::LoginovPoint(min, min)};
   std::vector<LoginovTbb::LoginovPoint> randomPoints = LoginovTbb::LoginovRandomPoints(min, max, size);
   points.insert(points.end(), randomPoints.begin(), randomPoints.end());
-  std::vector<LoginovTbb::LoginovPoint> res = {
-      LoginovTbb::LoginovPoint(min, min), LoginovTbb::LoginovPoint(max, min), LoginovTbb::LoginovPoint(max, max),
-      LoginovTbb::LoginovPoint(min, max)};
+  std::vector<LoginovTbb::LoginovPoint> res = {LoginovTbb::LoginovPoint(min, min), LoginovTbb::LoginovPoint(max, min),
+                                               LoginovTbb::LoginovPoint(max, max), LoginovTbb::LoginovPoint(min, max)};
   std::vector<LoginovTbb::LoginovPoint> mch(res.size());
 
   // Create TaskData
@@ -61,9 +59,8 @@ TEST(loginov_m_alg_grah_tbb, test_task_run) {
       LoginovTbb::LoginovPoint(min, min)};
   std::vector<LoginovTbb::LoginovPoint> randomPoints = LoginovTbb::LoginovRandomPoints(min, max, size);
   points.insert(points.end(), randomPoints.begin(), randomPoints.end());
-  std::vector<LoginovTbb::LoginovPoint> res = {
-      LoginovTbb::LoginovPoint(min, min), LoginovTbb::LoginovPoint(max, min), LoginovTbb::LoginovPoint(max, max),
-      LoginovTbb::LoginovPoint(min, max)};
+  std::vector<LoginovTbb::LoginovPoint> res = {LoginovTbb::LoginovPoint(min, min), LoginovTbb::LoginovPoint(max, min),
+                                               LoginovTbb::LoginovPoint(max, max), LoginovTbb::LoginovPoint(min, max)};
   std::vector<LoginovTbb::LoginovPoint> mch(res.size());
 
   // Create TaskData

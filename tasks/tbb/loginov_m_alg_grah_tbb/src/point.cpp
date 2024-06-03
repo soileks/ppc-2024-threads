@@ -59,8 +59,7 @@ double LoginovTbb::LoginovPoint::Distance(const LoginovTbb::LoginovPoint& p) con
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }
 
-int LoginovTbb::LoginovPoint::Compare(const LoginovTbb::LoginovPoint& pivot,
-                                        const LoginovTbb::LoginovPoint& P) const {
+int LoginovTbb::LoginovPoint::Compare(const LoginovTbb::LoginovPoint& pivot, const LoginovTbb::LoginovPoint& P) const {
   int res = 0;  // ==
   double x1 = pivot.x - x;
   double y1 = pivot.y - y;

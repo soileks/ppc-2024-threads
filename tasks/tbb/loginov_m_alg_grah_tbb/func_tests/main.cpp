@@ -9,7 +9,7 @@ TEST(loginov_m_alg_grah_tbb, Test1) {
   // Create data
   std::vector<LoginovTbb::LoginovPoint> points = {
       LoginovTbb::LoginovPoint(-6, 2),   LoginovTbb::LoginovPoint(-2, 4),   LoginovTbb::LoginovPoint(-11, 1),
-      LoginovTbb::LoginovPoint(-4, -3),  LoginovTbb::LoginovPoint(-8, -2), LoginovTbb::LoginovPoint(-2, 4),
+      LoginovTbb::LoginovPoint(-4, -3),  LoginovTbb::LoginovPoint(-8, -2),  LoginovTbb::LoginovPoint(-2, 4),
       LoginovTbb::LoginovPoint(-3, 3),   LoginovTbb::LoginovPoint(-6, 6),   LoginovTbb::LoginovPoint(-12, 8),
       LoginovTbb::LoginovPoint(-6, 3),   LoginovTbb::LoginovPoint(-4, 0),   LoginovTbb::LoginovPoint(-12, 2),
       LoginovTbb::LoginovPoint(-17, -5), LoginovTbb::LoginovPoint(-15, -3), LoginovTbb::LoginovPoint(-13, -5)};
@@ -55,15 +55,12 @@ TEST(loginov_m_alg_grah_tbb, Test1) {
 TEST(loginov_m_alg_grah_tbb, Test2) {
   // Create data
   std::vector<LoginovTbb::LoginovPoint> points = {
-      LoginovTbb::LoginovPoint(-0.7, 2.4),  LoginovTbb::LoginovPoint(1.5, 1.2),
-      LoginovTbb::LoginovPoint(0.2, -0.5),  LoginovTbb::LoginovPoint(0.3, 1.5),
-      LoginovTbb::LoginovPoint(-1.8, 1.42), LoginovTbb::LoginovPoint(-0.2, 0.5),
-      LoginovTbb::LoginovPoint(-0.6, -1.3), LoginovTbb::LoginovPoint(1.1, -0.7),
-      LoginovTbb::LoginovPoint(0.6, 0.3),   LoginovTbb::LoginovPoint(1.2, 2.0),
-      LoginovTbb::LoginovPoint(0.2, -1.6),  LoginovTbb::LoginovPoint(-1.8, 0.5),
-      LoginovTbb::LoginovPoint(-0.5, -0.2), LoginovTbb::LoginovPoint(1.7, 0.4),
-      LoginovTbb::LoginovPoint(-1.2, -0.9), LoginovTbb::LoginovPoint(-0.8, 1.2),
-      LoginovTbb::LoginovPoint(-1.3, 1.7),  LoginovTbb::LoginovPoint(0.2, 2.4),
+      LoginovTbb::LoginovPoint(-0.7, 2.4),  LoginovTbb::LoginovPoint(1.5, 1.2),   LoginovTbb::LoginovPoint(0.2, -0.5),
+      LoginovTbb::LoginovPoint(0.3, 1.5),   LoginovTbb::LoginovPoint(-1.8, 1.42), LoginovTbb::LoginovPoint(-0.2, 0.5),
+      LoginovTbb::LoginovPoint(-0.6, -1.3), LoginovTbb::LoginovPoint(1.1, -0.7),  LoginovTbb::LoginovPoint(0.6, 0.3),
+      LoginovTbb::LoginovPoint(1.2, 2.0),   LoginovTbb::LoginovPoint(0.2, -1.6),  LoginovTbb::LoginovPoint(-1.8, 0.5),
+      LoginovTbb::LoginovPoint(-0.5, -0.2), LoginovTbb::LoginovPoint(1.7, 0.4),   LoginovTbb::LoginovPoint(-1.2, -0.9),
+      LoginovTbb::LoginovPoint(-0.8, 1.2),  LoginovTbb::LoginovPoint(-1.3, 1.7),  LoginovTbb::LoginovPoint(0.2, 2.4),
       LoginovTbb::LoginovPoint(1.6, -0.2)};
 
   std::vector<LoginovTbb::LoginovPoint> mchSeq(13);
@@ -108,12 +105,10 @@ TEST(loginov_m_alg_grah_tbb, Test2) {
 TEST(loginov_m_alg_grah_tbb, Test3) {
   // Create data
   std::vector<LoginovTbb::LoginovPoint> points = {
-      LoginovTbb::LoginovPoint(-1.2, 2.4), LoginovTbb::LoginovPoint(2.3, 2.3),
-      LoginovTbb::LoginovPoint(-0.5, 2.1), LoginovTbb::LoginovPoint(-2.4, 2.1),
-      LoginovTbb::LoginovPoint(2.9, 2.3),  LoginovTbb::LoginovPoint(0.7, 2.4),
-      LoginovTbb::LoginovPoint(1.4, 2.3),  LoginovTbb::LoginovPoint(-3.6, 2.4),
-      LoginovTbb::LoginovPoint(5.2, 2.3),  LoginovTbb::LoginovPoint(4.3, 2.6),
-      LoginovTbb::LoginovPoint(3.5, 2.3)};
+      LoginovTbb::LoginovPoint(-1.2, 2.4), LoginovTbb::LoginovPoint(2.3, 2.3),  LoginovTbb::LoginovPoint(-0.5, 2.1),
+      LoginovTbb::LoginovPoint(-2.4, 2.1), LoginovTbb::LoginovPoint(2.9, 2.3),  LoginovTbb::LoginovPoint(0.7, 2.4),
+      LoginovTbb::LoginovPoint(1.4, 2.3),  LoginovTbb::LoginovPoint(-3.6, 2.4), LoginovTbb::LoginovPoint(5.2, 2.3),
+      LoginovTbb::LoginovPoint(4.3, 2.6),  LoginovTbb::LoginovPoint(3.5, 2.3)};
   std::vector<LoginovTbb::LoginovPoint> mchSeq(2);
 
   // Create TaskData
@@ -198,7 +193,7 @@ TEST(loginov_m_alg_grah_tbb, Test4) {
 TEST(loginov_m_alg_grah_tbb, Test5) {
   // Create data
   std::vector<LoginovTbb::LoginovPoint> points = {LoginovTbb::LoginovPoint(2.4, -2.9),
-                                                    LoginovTbb::LoginovPoint(-1.8, 4.2)};
+                                                  LoginovTbb::LoginovPoint(-1.8, 4.2)};
   std::vector<LoginovTbb::LoginovPoint> mchSeq(2);
 
   // Create TaskData
