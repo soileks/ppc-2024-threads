@@ -19,7 +19,6 @@ class markingImageStl : public ppc::core::Task {
 
  private:
   uint32_t height{}, width{};
-  uint32_t countThreads;
   std::vector<std::vector<uint32_t>> sourse = {};
   std::vector<std::vector<uint32_t>> destination = {};
   void markingImage();
