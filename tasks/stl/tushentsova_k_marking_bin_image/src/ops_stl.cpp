@@ -125,22 +125,9 @@ void markingImageStl::markingImage() {
     label = count;
   }
 
-  rowsPerThread = (height) / numThreads;
-
-  for (int i = 0; i < numThreads; ++i) {
-    size_t startRow = i * rowsPerThread;
-    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread;
-
-    threads[i] = std::thread([this, startRow, endRow, &arr] {
-      for (size_t i = startRow; i < endRow; ++i)
-        for (size_t j = 0; j < width; ++j)
-          if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
-    });
-  }
-
-  for (int p = 0; p < numThreads; ++p) {
-    threads[p].join();
-  }
+  for (size_t i = 0; i < height; ++i)
+    for (size_t j = 0; j < width; ++j)
+      if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
 
   delete[] threads;
 }
