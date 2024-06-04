@@ -62,15 +62,28 @@ void markingImageStl::markingImage() {
     threads[p].join();
   }
 
-  for (size_t i = 0; i < width; ++i) {
-    if (sourse[0][i] == 0) {
-      if (i == 0 || arr[0][i - 1] == nullptr) {
-        vec.push_back(++curLabel);
-        arr[0][i] = &vec.back();
-      } else
-        arr[0][i] = arr[0][i - 1];
-    }
+  rowsPerThread = (width) / numThreads;
+  for (int i = 0; i < numThreads; ++i) {
+    size_t startRow = i * rowsPerThread;
+    size_t endRow = (i == numThreads - 1) ? width : (i + 1) * rowsPerThread;
+
+    threads[i] = std::thread([this, startRow, endRow, &arr, &vec, &curLabel] {
+      for (size_t i = startRow; i < endRow; ++i) {
+        if (sourse[0][i] == 0) {
+          if (i == 0 || arr[0][i - 1] == nullptr) {
+            vec.push_back(++curLabel);
+            arr[0][i] = &vec.back();
+          } else
+            arr[0][i] = arr[0][i - 1];
+        }
+      }
+    });
   }
+
+  for (int p = 0; p < numThreads; ++p) {
+    threads[p].join();
+  }
+
   for (size_t i = 1; i < height; ++i) {
     if (sourse[i][0] == 0) {
       if (arr[i - 1][0] == nullptr) {
@@ -112,9 +125,22 @@ void markingImageStl::markingImage() {
     label = count;
   }
 
-  for (size_t i = 0; i < height; ++i)
-    for (size_t j = 0; j < width; ++j)
-      if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
+  rowsPerThread = (height) / numThreads;
+
+  for (int i = 0; i < numThreads; ++i) {
+    size_t startRow = i * rowsPerThread;
+    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread;
+
+    threads[i] = std::thread([this, startRow, endRow, &arr] {
+      for (size_t i = startRow; i < endRow; ++i)
+        for (size_t j = 0; j < width; ++j)
+          if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
+    });
+  }
+
+  for (int p = 0; p < numThreads; ++p) {
+    threads[p].join();
+  }
 
   delete[] threads;
 }
