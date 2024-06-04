@@ -1,272 +1,182 @@
-// Copyright 2023 Kruglov Alexey
+// Copyright 2024 Kruglov Alexey
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 #include "omp/kruglov_a_components_marking_omp/include/ops_omp.hpp"
 
-TEST(kruglov_a_img_marking_func_test, Test10_10) {
-  int m = 10;
-  int n = 10;
-  auto serializedM = KruglovOmpTask::serializeInt32(m);
-  auto serializedN = KruglovOmpTask::serializeInt32(n);
-  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
+using namespace KruglovOmpTask;
 
-  std::vector<uint8_t> out_seq(in.size() * sizeof(int));
+TEST(kruglov_a_components_marking_omp_functional, test_functional) {
+  // Create data
 
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataSeq->inputs.push_back(in.data());
-  taskDataSeq->inputs.push_back(serializedM.data());
-  taskDataSeq->inputs.push_back(serializedN.data());
-  taskDataSeq->inputs_count.push_back(in.size());
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->outputs.push_back(out_seq.data());
-  taskDataSeq->outputs_count.push_back(out_seq.size());
+  uint32_t h = 10;
+  uint32_t w = 10;
+  std::vector<uint32_t> size = {h, w};
+  std::vector<uint8_t> in = {0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0,
+                             1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+                             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+                             1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1};
+  std::vector<uint32_t> out(h * w, 0);
 
-  KruglovOmpTask::imgMarkingSeq testTaskSequential(taskDataSeq);
-  ASSERT_TRUE(testTaskSequential.validation());
-  ASSERT_TRUE(testTaskSequential.pre_processing());
-  ASSERT_TRUE(testTaskSequential.run());
-  ASSERT_TRUE(testTaskSequential.post_processing());
-
-  std::vector<int> outVD_seq = KruglovOmpTask::deserializeInt32V(out_seq);
-
-  std::vector<uint8_t> out_omp(in.size() * sizeof(int));
-
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
-  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataOmp->inputs.push_back(in.data());
-  taskDataOmp->inputs.push_back(serializedM.data());
-  taskDataOmp->inputs.push_back(serializedN.data());
-  taskDataOmp->inputs_count.push_back(in.size());
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->outputs.push_back(out_omp.data());
-  taskDataOmp->outputs_count.push_back(out_omp.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(size.data()));
+  taskDataOmp->inputs_count.emplace_back(size.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
-  KruglovOmpTask::imgMarkingOmp testTaskOmp(taskDataOmp);
-  ASSERT_TRUE(testTaskOmp.validation());
-  ASSERT_TRUE(testTaskOmp.pre_processing());
-  ASSERT_TRUE(testTaskOmp.run());
-  ASSERT_TRUE(testTaskOmp.post_processing());
+  // Create Task
+  imgMarkingOmp testTaskParallel(taskDataOmp);
+  ASSERT_EQ(testTaskParallel.validation(), true);
+  testTaskParallel.pre_processing();
+  testTaskParallel.run();
+  testTaskParallel.post_processing();
 
-  std::vector<int> outVD_omp = KruglovOmpTask::deserializeInt32V(out_omp);
+  int32_t unique = 0;
+  sort(out.begin(), out.end());
+  for (uint32_t i = 0; i < h * w - 1; ++i) {
+    if (out[i] != out[i + 1]) unique++;
+  }
 
-  EXPECT_EQ(KruglovOmpTask::getObjectsNum(outVD_omp), KruglovOmpTask::getObjectsNum(outVD_seq));
-  EXPECT_TRUE(KruglovOmpTask::isMapsEqual(outVD_omp, outVD_seq));
+  ASSERT_EQ(5, unique);
 }
 
-TEST(kruglov_a_img_marking_func_test, Test100_100) {
-  int m = 100;
-  int n = 100;
-  auto serializedM = KruglovOmpTask::serializeInt32(m);
-  auto serializedN = KruglovOmpTask::serializeInt32(n);
-  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
+TEST(kruglov_a_components_marking_omp_functional, test_non_square) {
+  // Create data
 
-  std::vector<uint8_t> out_seq(in.size() * sizeof(int));
+  uint32_t h = 5;
+  uint32_t w = 10;
+  std::vector<uint32_t> size = {h, w};
+  std::vector<uint8_t> in = {0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1,
+                             1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1};
+  std::vector<uint32_t> out(h * w, 0);
+  std::vector<uint32_t> comp = {1, 1, 0, 0, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 1, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0};
 
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataSeq->inputs.push_back(in.data());
-  taskDataSeq->inputs.push_back(serializedM.data());
-  taskDataSeq->inputs.push_back(serializedN.data());
-  taskDataSeq->inputs_count.push_back(in.size());
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->outputs.push_back(out_seq.data());
-  taskDataSeq->outputs_count.push_back(out_seq.size());
-
-  KruglovOmpTask::imgMarkingSeq testTaskSequential(taskDataSeq);
-  ASSERT_TRUE(testTaskSequential.validation());
-  ASSERT_TRUE(testTaskSequential.pre_processing());
-  ASSERT_TRUE(testTaskSequential.run());
-  ASSERT_TRUE(testTaskSequential.post_processing());
-
-  std::vector<int> outVD_seq = KruglovOmpTask::deserializeInt32V(out_seq);
-
-  std::vector<uint8_t> out_omp(in.size() * sizeof(int));
-
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
-  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataOmp->inputs.push_back(in.data());
-  taskDataOmp->inputs.push_back(serializedM.data());
-  taskDataOmp->inputs.push_back(serializedN.data());
-  taskDataOmp->inputs_count.push_back(in.size());
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->outputs.push_back(out_omp.data());
-  taskDataOmp->outputs_count.push_back(out_omp.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(size.data()));
+  taskDataOmp->inputs_count.emplace_back(size.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
-  KruglovOmpTask::imgMarkingOmp testTaskOmp(taskDataOmp);
-  ASSERT_TRUE(testTaskOmp.validation());
-  ASSERT_TRUE(testTaskOmp.pre_processing());
-  ASSERT_TRUE(testTaskOmp.run());
-  ASSERT_TRUE(testTaskOmp.post_processing());
+  // Create Task
+  imgMarkingOmp testTaskParallel(taskDataOmp);
+  ASSERT_EQ(testTaskParallel.validation(), true);
+  testTaskParallel.pre_processing();
+  testTaskParallel.run();
+  testTaskParallel.post_processing();
+  int32_t unique = 0;
+  sort(out.begin(), out.end());
+  for (uint32_t i = 0; i < h * w - 1; ++i) {
+    if (out[i] != out[i + 1]) unique++;
+  }
 
-  std::vector<int> outVD_omp = KruglovOmpTask::deserializeInt32V(out_omp);
-
-  EXPECT_EQ(KruglovOmpTask::getObjectsNum(outVD_omp), KruglovOmpTask::getObjectsNum(outVD_seq));
-  EXPECT_TRUE(KruglovOmpTask::isMapsEqual(outVD_omp, outVD_seq));
+  ASSERT_EQ(3, unique);
 }
 
-TEST(kruglov_a_img_marking_func_test, Test200_200) {
-  int m = 100;
-  int n = 100;
-  auto serializedM = KruglovOmpTask::serializeInt32(m);
-  auto serializedN = KruglovOmpTask::serializeInt32(n);
-  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
+TEST(kruglov_a_components_marking_omp_functional, test_all_ones) {
+  // Create data
+  uint32_t h = 10;
+  uint32_t w = 10;
+  std::vector<uint32_t> size = {h, w};
+  std::vector<uint8_t> in(h * w, 1);
+  std::vector<uint32_t> out(h * w, 0);
+  std::vector<uint32_t> comp(h * w, 0);
 
-  std::vector<uint8_t> out_seq(in.size() * sizeof(int));
-
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataSeq->inputs.push_back(in.data());
-  taskDataSeq->inputs.push_back(serializedM.data());
-  taskDataSeq->inputs.push_back(serializedN.data());
-  taskDataSeq->inputs_count.push_back(in.size());
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->outputs.push_back(out_seq.data());
-  taskDataSeq->outputs_count.push_back(out_seq.size());
-
-  KruglovOmpTask::imgMarkingSeq testTaskSequential(taskDataSeq);
-  ASSERT_TRUE(testTaskSequential.validation());
-  ASSERT_TRUE(testTaskSequential.pre_processing());
-  ASSERT_TRUE(testTaskSequential.run());
-  ASSERT_TRUE(testTaskSequential.post_processing());
-
-  std::vector<int> outVD_seq = KruglovOmpTask::deserializeInt32V(out_seq);
-
-  std::vector<uint8_t> out_omp(in.size() * sizeof(int));
-
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
-  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataOmp->inputs.push_back(in.data());
-  taskDataOmp->inputs.push_back(serializedM.data());
-  taskDataOmp->inputs.push_back(serializedN.data());
-  taskDataOmp->inputs_count.push_back(in.size());
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->outputs.push_back(out_omp.data());
-  taskDataOmp->outputs_count.push_back(out_omp.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(size.data()));
+  taskDataOmp->inputs_count.emplace_back(size.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
-  KruglovOmpTask::imgMarkingOmp testTaskOmp(taskDataOmp);
-  ASSERT_TRUE(testTaskOmp.validation());
-  ASSERT_TRUE(testTaskOmp.pre_processing());
-  ASSERT_TRUE(testTaskOmp.run());
-  ASSERT_TRUE(testTaskOmp.post_processing());
-
-  std::vector<int> outVD_omp = KruglovOmpTask::deserializeInt32V(out_omp);
-
-  EXPECT_EQ(KruglovOmpTask::getObjectsNum(outVD_omp), KruglovOmpTask::getObjectsNum(outVD_seq));
-  EXPECT_TRUE(KruglovOmpTask::isMapsEqual(outVD_omp, outVD_seq));
+  // Create Task
+  imgMarkingOmp testTaskParallel(taskDataOmp);
+  ASSERT_EQ(testTaskParallel.validation(), true);
+  testTaskParallel.pre_processing();
+  testTaskParallel.run();
+  testTaskParallel.post_processing();
+  ASSERT_EQ(out, comp);
 }
 
-TEST(kruglov_a_img_marking_func_test, Test300_300) {
-  int m = 300;
-  int n = 300;
-  auto serializedM = KruglovOmpTask::serializeInt32(m);
-  auto serializedN = KruglovOmpTask::serializeInt32(n);
-  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
+TEST(kruglov_a_components_marking_omp_functional, test_all_zeros) {
+  // Create data
+  uint32_t h = 10;
+  uint32_t w = 10;
+  std::vector<uint32_t> size = {h, w};
+  std::vector<uint8_t> in(h * w, 0);
+  std::vector<uint32_t> out(h * w, 0);
+  std::vector<uint32_t> comp(h * w, 1);
 
-  std::vector<uint8_t> out_seq(in.size() * sizeof(int));
-
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataSeq->inputs.push_back(in.data());
-  taskDataSeq->inputs.push_back(serializedM.data());
-  taskDataSeq->inputs.push_back(serializedN.data());
-  taskDataSeq->inputs_count.push_back(in.size());
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->outputs.push_back(out_seq.data());
-  taskDataSeq->outputs_count.push_back(out_seq.size());
-
-  KruglovOmpTask::imgMarkingSeq testTaskSequential(taskDataSeq);
-  ASSERT_TRUE(testTaskSequential.validation());
-  ASSERT_TRUE(testTaskSequential.pre_processing());
-  ASSERT_TRUE(testTaskSequential.run());
-  ASSERT_TRUE(testTaskSequential.post_processing());
-
-  std::vector<int> outVD_seq = KruglovOmpTask::deserializeInt32V(out_seq);
-
-  std::vector<uint8_t> out_omp(in.size() * sizeof(int));
-
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
-  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataOmp->inputs.push_back(in.data());
-  taskDataOmp->inputs.push_back(serializedM.data());
-  taskDataOmp->inputs.push_back(serializedN.data());
-  taskDataOmp->inputs_count.push_back(in.size());
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->outputs.push_back(out_omp.data());
-  taskDataOmp->outputs_count.push_back(out_omp.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(size.data()));
+  taskDataOmp->inputs_count.emplace_back(size.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
-  KruglovOmpTask::imgMarkingOmp testTaskOmp(taskDataOmp);
-  ASSERT_TRUE(testTaskOmp.validation());
-  ASSERT_TRUE(testTaskOmp.pre_processing());
-  ASSERT_TRUE(testTaskOmp.run());
-  ASSERT_TRUE(testTaskOmp.post_processing());
+  // Create Task
+  imgMarkingOmp testTaskParallel(taskDataOmp);
+  ASSERT_EQ(testTaskParallel.validation(), true);
+  testTaskParallel.pre_processing();
+  testTaskParallel.run();
+  testTaskParallel.post_processing();
 
-  std::vector<int> outVD_omp = KruglovOmpTask::deserializeInt32V(out_omp);
+  int32_t unique = 0;
+  sort(out.begin(), out.end());
+  for (uint32_t i = 0; i < h * w - 1; ++i) {
+    if (out[i] != out[i + 1]) unique++;
+  }
 
-  EXPECT_EQ(KruglovOmpTask::getObjectsNum(outVD_omp), KruglovOmpTask::getObjectsNum(outVD_seq));
-  EXPECT_TRUE(KruglovOmpTask::isMapsEqual(outVD_omp, outVD_seq));
+  ASSERT_EQ(unique, 0);
 }
 
-TEST(kruglov_a_img_marking_func_test, Test500_500) {
-  int m = 500;
-  int n = 500;
-  auto serializedM = KruglovOmpTask::serializeInt32(m);
-  auto serializedN = KruglovOmpTask::serializeInt32(n);
-  std::vector<uint8_t> in = KruglovOmpTask::getRandomVector(m * n);
+TEST(kruglov_a_components_marking_omp_functional, test_grid) {
+  // Create data
+  uint32_t h = 10;
+  uint32_t w = 10;
+  std::vector<uint32_t> size = {h, w};
+  std::vector<uint8_t> in(h * w);
+  std::vector<uint32_t> comp(h * w);
+  for (uint32_t i = 0; i < h * w; ++i) {
+    in[i] = (i / 10 + i % 10) % 2;
+    comp[i] = ((i / 10 + i % 10) % 2 == 0) ? i / 2 + 1 : 0;
+  }
+  std::vector<uint32_t> out(h * w, 0);
 
-  std::vector<uint8_t> out_seq(in.size() * sizeof(int));
-
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataSeq->inputs.push_back(in.data());
-  taskDataSeq->inputs.push_back(serializedM.data());
-  taskDataSeq->inputs.push_back(serializedN.data());
-  taskDataSeq->inputs_count.push_back(in.size());
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->inputs_count.push_back(4);
-  taskDataSeq->outputs.push_back(out_seq.data());
-  taskDataSeq->outputs_count.push_back(out_seq.size());
-
-  KruglovOmpTask::imgMarkingSeq testTaskSequential(taskDataSeq);
-  ASSERT_TRUE(testTaskSequential.validation());
-  ASSERT_TRUE(testTaskSequential.pre_processing());
-  ASSERT_TRUE(testTaskSequential.run());
-  ASSERT_TRUE(testTaskSequential.post_processing());
-
-  std::vector<int> outVD_seq = KruglovOmpTask::deserializeInt32V(out_seq);
-
-  std::vector<uint8_t> out_omp(in.size() * sizeof(int));
-
+  // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
-  taskDataOmp->state_of_testing = ppc::core::TaskData::FUNC;
-  taskDataOmp->inputs.push_back(in.data());
-  taskDataOmp->inputs.push_back(serializedM.data());
-  taskDataOmp->inputs.push_back(serializedN.data());
-  taskDataOmp->inputs_count.push_back(in.size());
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->inputs_count.push_back(4);
-  taskDataOmp->outputs.push_back(out_omp.data());
-  taskDataOmp->outputs_count.push_back(out_omp.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(size.data()));
+  taskDataOmp->inputs_count.emplace_back(size.size());
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
 
-  KruglovOmpTask::imgMarkingOmp testTaskOmp(taskDataOmp);
-  ASSERT_TRUE(testTaskOmp.validation());
-  ASSERT_TRUE(testTaskOmp.pre_processing());
-  ASSERT_TRUE(testTaskOmp.run());
-  ASSERT_TRUE(testTaskOmp.post_processing());
+  // Create Task
+  imgMarkingOmp testTaskParallel(taskDataOmp);
+  ASSERT_EQ(testTaskParallel.validation(), true);
+  testTaskParallel.pre_processing();
+  testTaskParallel.run();
+  testTaskParallel.post_processing();
 
-  std::vector<int> outVD_omp = KruglovOmpTask::deserializeInt32V(out_omp);
+  int32_t unique = 0;
+  sort(out.begin(), out.end());
+  for (uint32_t i = 0; i < h * w - 1; ++i) {
+    if (out[i] != out[i + 1]) unique++;
+  }
 
-  EXPECT_EQ(KruglovOmpTask::getObjectsNum(outVD_omp), KruglovOmpTask::getObjectsNum(outVD_seq));
-  EXPECT_TRUE(KruglovOmpTask::isMapsEqual(outVD_omp, outVD_seq));
+  ASSERT_EQ(50, unique);
 }
