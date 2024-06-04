@@ -62,66 +62,43 @@ void markingImageStl::markingImage() {
     threads[p].join();
   }
 
-  for (int i = 0; i < numThreads; ++i) {
-    size_t startRow = i * rowsPerThread;
-    size_t endRow = (i == numThreads - 1) ? width : (i + 1) * rowsPerThread;
-
-    threads[i] = std::thread([this, startRow, endRow, &arr, &vec, &curLabel] {
-      for (size_t i = startRow; i < endRow; ++i) {
-        if (sourse[0][i] == 0) {
-          if (i == 0 || arr[0][i - 1] == nullptr) {
-            vec.push_back(++curLabel);
-            arr[0][i] = &vec.back();
-          } else
-            arr[0][i] = arr[0][i - 1];
-        }
-      }
-    });
+  for (size_t i = 0; i < width; ++i) {
+    if (sourse[0][i] == 0) {
+      if (i == 0 || arr[0][i - 1] == nullptr) {
+        vec.push_back(++curLabel);
+        arr[0][i] = &vec.back();
+      } else
+        arr[0][i] = arr[0][i - 1];
+    }
   }
-  for (int p = 0; p < numThreads; ++p) {
-    threads[p].join();
-  }
-
-  rowsPerThread = (height - 1) / numThreads;
-  for (int i = 0; i < numThreads; ++i) {
-    size_t startRow = i * rowsPerThread + 1;
-    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread + 1;
-
-    threads[i] = std::thread([this, startRow, endRow, &arr, &vec, &curLabel] {
-      for (size_t i = startRow; i < endRow; ++i) {
-        if (sourse[i][0] == 0) {
-          if (arr[i - 1][0] == nullptr) {
+  for (size_t i = 1; i < height; ++i) {
+    if (sourse[i][0] == 0) {
+      if (arr[i - 1][0] == nullptr) {
+        vec.push_back(++curLabel);
+        arr[i][0] = &vec.back();
+      } else
+        arr[i][0] = arr[i - 1][0];
+    }
+    for (size_t j = 1; j < width; ++j) {
+      if (sourse[i][j] == 0) {
+        if (arr[i - 1][j] == arr[i][j - 1]) {
+          if (arr[i - 1][j] == nullptr) {
             vec.push_back(++curLabel);
-            arr[i][0] = &vec.back();
+            arr[i][j] = &vec.back();
           } else
-            arr[i][0] = arr[i - 1][0];
-        }
-        for (size_t j = 1; j < width; ++j) {
-          if (sourse[i][j] == 0) {
-            if (arr[i - 1][j] == arr[i][j - 1]) {
-              if (arr[i - 1][j] == nullptr) {
-                vec.push_back(++curLabel);
-                arr[i][j] = &vec.back();
-              } else
-                arr[i][j] = arr[i][j - 1];
-            } else {
-              if (arr[i - 1][j] == nullptr)
-                arr[i][j] = arr[i][j - 1];
-              else if (arr[i][j - 1] == nullptr)
-                arr[i][j] = arr[i - 1][j];
-              else {
-                *(arr[i - 1][j]) = *(arr[i][j - 1]);
-                arr[i][j] = arr[i][j - 1];
-              }
-            }
+            arr[i][j] = arr[i][j - 1];
+        } else {
+          if (arr[i - 1][j] == nullptr)
+            arr[i][j] = arr[i][j - 1];
+          else if (arr[i][j - 1] == nullptr)
+            arr[i][j] = arr[i - 1][j];
+          else {
+            *(arr[i - 1][j]) = *(arr[i][j - 1]);
+            arr[i][j] = arr[i][j - 1];
           }
         }
       }
-    });
-  }
-
-  for (int p = 0; p < numThreads; ++p) {
-    threads[p].join();
+    }
   }
 
   size_t count = 0;
@@ -135,21 +112,9 @@ void markingImageStl::markingImage() {
     label = count;
   }
 
-  rowsPerThread = (height) / numThreads;
-
-  for (int i = 0; i < numThreads; ++i) {
-    size_t startRow = i * rowsPerThread;
-    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread;
-    threads[i] = std::thread([this, startRow, endRow, &arr] {
-      for (size_t i = startRow; i < endRow; ++i)
-        for (size_t j = 0; j < width; ++j)
-          if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
-    });
-  }
-
-  for (int p = 0; p < numThreads; ++p) {
-    threads[p].join();
-  }
+  for (size_t i = 0; i < height; ++i)
+    for (size_t j = 0; j < width; ++j)
+      if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
 
   delete[] threads;
 }
