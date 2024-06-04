@@ -49,9 +49,9 @@ void markingImageStl::markingImage() {
   auto *threads = new std::thread[numThreads];
   int rowsPerThread = (height) / numThreads;
 
-  for (int i = 0; i < numThreads; ++i) {
+  for (int i = 0; i < (int)numThreads; ++i) {
     size_t startRow = i * rowsPerThread;
-    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread;
+    size_t endRow = (i == (int)numThreads - 1) ? height : (i + 1) * rowsPerThread;
 
     threads[i] = std::thread([this, startRow, endRow, &arr] {
       for (size_t i = startRow; i < endRow; ++i) arr[i].resize(width, nullptr);
@@ -62,9 +62,9 @@ void markingImageStl::markingImage() {
     threads[p].join();
   }
 
-  for (int i = 0; i < numThreads; ++i) {
+  for (int i = 0; i < (int)numThreads; ++i) {
     size_t startRow = i * rowsPerThread;
-    size_t endRow = (i == numThreads - 1) ? width : (i + 1) * rowsPerThread;
+    size_t endRow = (i == (int)numThreads - 1) ? width : (i + 1) * rowsPerThread;
 
     threads[i] = std::thread([this, startRow, endRow, &arr, &vec, &curLabel] {
       for (size_t i = startRow; i < endRow; ++i) {
@@ -83,9 +83,9 @@ void markingImageStl::markingImage() {
   }
 
   rowsPerThread = (height - 1) / numThreads;
-  for (int i = 0; i < numThreads; ++i) {
+  for (int i = 0; i < (int)numThreads; ++i) {
     size_t startRow = i * rowsPerThread + 1;
-    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread + 1;
+    size_t endRow = (i == (int)numThreads - 1) ? height : (i + 1) * rowsPerThread + 1;
 
     threads[i] = std::thread([this, startRow, endRow, &arr, &vec, &curLabel] {
       for (size_t i = startRow; i < endRow; ++i) {
@@ -137,9 +137,9 @@ void markingImageStl::markingImage() {
 
   rowsPerThread = (height) / numThreads;
 
-  for (int i = 0; i < numThreads; ++i) {
+  for (int i = 0; i < (int)numThreads; ++i) {
     size_t startRow = i * rowsPerThread;
-    size_t endRow = (i == numThreads - 1) ? height : (i + 1) * rowsPerThread;
+    size_t endRow = (i == (int)numThreads - 1) ? height : (i + 1) * rowsPerThread;
     threads[i] = std::thread([this, startRow, endRow, &arr] {
       for (size_t i = startRow; i < endRow; ++i)
         for (size_t j = 0; j < width; ++j)
