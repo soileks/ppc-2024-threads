@@ -80,8 +80,7 @@ void imgMarkingOmp::imgMarking() {
   omp_init_lock(lock);
 
   uint32_t num_thr = omp_get_thread_limit();
-  if (num_thr > h) 
-    num_thr = 1;
+  if (num_thr > h) num_thr = 1;
 
 #pragma omp parallel num_threads(num_thr)
   {
@@ -150,8 +149,7 @@ void imgMarkingOmp::imgMarking() {
       }
     }
 
-    if (localPtr != nullptr) 
-        delete localPtr;
+    if (localPtr != nullptr) delete localPtr;
 
 #pragma omp barrier
     if (omp_get_thread_num() != 0) {
