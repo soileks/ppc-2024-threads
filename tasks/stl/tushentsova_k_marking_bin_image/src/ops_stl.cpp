@@ -45,7 +45,7 @@ void markingImageStl::markingImage() {
   std::vector<std::vector<uint32_t *>> arr;
   arr.resize(height);
 
-  int numThreads = std::thread::hardware_concurrency();
+  size_t numThreads = std::thread::hardware_concurrency();
   auto *threads = new std::thread[numThreads];
   int rowsPerThread = (height) / numThreads;
 
