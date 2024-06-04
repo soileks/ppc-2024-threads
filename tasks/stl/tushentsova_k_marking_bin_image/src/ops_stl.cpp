@@ -82,13 +82,7 @@ void markingImageStl::markingImage() {
     threads[p].join();
   }
 
-  rowsPerThread = (height - 1) / numThreads;
-  for (int i = 0; i < (int)numThreads; ++i) {
-    size_t startRow = i * rowsPerThread + 1;
-    size_t endRow = (i == (int)numThreads - 1) ? height : (i + 1) * rowsPerThread + 1;
-
-    threads[i] = std::thread([this, startRow, endRow, &arr, &vec, &curLabel] {
-      for (size_t i = startRow; i < endRow; ++i) {
+      for (size_t i = 1; i < height; ++i) {
         if (sourse[i][0] == 0) {
           if (arr[i - 1][0] == nullptr) {
             vec.push_back(++curLabel);
@@ -117,12 +111,9 @@ void markingImageStl::markingImage() {
           }
         }
       }
-    });
-  }
 
-  for (size_t p = 0; p < numThreads; ++p) {
-    threads[p].join();
-  }
+
+
 
   size_t count = 0;
   size_t cur = 0;
