@@ -3,8 +3,8 @@
 
 #include <algorithm>
 #include <cmath>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #include "stl/shishkina_v_gauss_block_stl/include/ops_stl.hpp"
 

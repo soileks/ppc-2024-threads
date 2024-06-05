@@ -2,28 +2,28 @@
 #include "stl/shishkina_v_gauss_block_stl/include/ops_stl.hpp"
 
 #include <cmath>
+#include <thread>
 #include <functional>
 #include <random>
-#include <thread>
 
 void LinearFilteringGauss::applyLinearFilteringGauss(int startRow, int endRow) {
   std::vector<int> gaussianKernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
   int kernelSize = 3;
   for (int i = startRow; i < endRow; ++i) {
-      for (int j = 0; j < width; ++j) {
-          int sum = 0;
-          for (int m = 0; m < kernelSize; ++m) {
-              for (int n = 0; n < kernelSize; ++n) {
-                  int row = i + m - kernelSize / 2;
-                  int col = j + n - kernelSize / 2;
-                  if (row >= 0 && row < height && col >= 0 && col < width) {
-                      sum += getPixel(row, col) * gaussianKernel[m * kernelSize + n];
-                  }
-              }
+    for (int j = 0; j < width; ++j) {
+      int sum = 0;
+      for (int m = 0; m < kernelSize; ++m) {
+        for (int n = 0; n < kernelSize; ++n) {
+          int row = i + m - kernelSize / 2;
+          int col = j + n - kernelSize / 2;
+          if (row >= 0 && row < height && col >= 0 && col < width) {
+            sum += getPixel(row, col) * gaussianKernel[m * kernelSize + n];
           }
-          sum = std::min(sum, 255);
-          setPixel(i, j, sum);
+        }
       }
+      sum = std::min(sum, 255);
+      setPixel(i, j, sum);
+    }
   }
 }
 

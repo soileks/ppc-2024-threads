@@ -3,8 +3,8 @@
 
 #include <cmath>
 #include <string>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
@@ -21,7 +21,6 @@ class LinearFilteringGauss : public ppc::core::Task {
   void setPixel(int x, int y, int value) { res[x * width + y] = value; }
   void applyLinearFilteringGauss(int startRow, int endRow);
   void setNumThreads(int numThreads) { countThreads = numThreads; }
-
 
  private:
   std::vector<int> input = {};
