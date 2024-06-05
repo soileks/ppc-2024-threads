@@ -1,7 +1,6 @@
 // Copyright 2024 Borovkov Sergey
 #include "tbb/borovkov_s_can_tbb/include/ops_tbb.hpp"
 
-
 #include "tbb/parallel_sort.h"
 
 using namespace std::chrono_literals;
