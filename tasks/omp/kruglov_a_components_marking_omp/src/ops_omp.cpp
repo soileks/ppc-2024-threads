@@ -82,7 +82,7 @@ void imgMarkingOmp::imgMarking() {
   uint32_t num_thr = omp_get_thread_limit();
   if (num_thr > h) num_thr = 1;
 
-#pragma omp parallel num_threads(num_thr)
+#pragma omp parallel num_threads(omp_get_thread_limit() > static_cast <int>(h) ? 1 : omp_get_thread_limit())
   {
     num_thr = num_thr + 1;
 #pragma omp for
