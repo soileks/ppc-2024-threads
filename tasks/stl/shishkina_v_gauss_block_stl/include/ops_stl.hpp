@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <thread>
 
 #include "core/task/include/task.hpp"
 
@@ -27,6 +28,5 @@ class LinearFilteringGauss : public ppc::core::Task {
   std::vector<int> res = {};
   int height{}, width{};
   int min{}, max{};
-  int countThreads = std::thread::hardware_concurrency();;
-
+  int countThreads = std::thread::hardware_concurrency();
 };
