@@ -13,22 +13,17 @@ bool isEqual(double valueOne, double valueTwo, double eps = 0.01);
 
 bool validateMatrix(size_t sizeOne, size_t sizeTwo);
 
-std::vector<double> CannonMatrixMultSeq(const std::vector<double> &matrOne,
-                                        const std::vector<double> &matrTwo,
-                                        int size, int block);
++std::vector<double> CannonMatrixMultSeq(const std::vector<double> &matrOne, const std::vector<double> &matrTwo,
+                                         int size, int block);
 
-std::vector<double> CannonMatrixMultTbb(const std::vector<double> &matrOne,
-                                        const std::vector<double> &matrTwo,
-                                        int size, int block);
++std::vector<double> CannonMatrixMultTbb(const std::vector<double> &matrOne, const std::vector<double> &matrTwo,
+                                         int size, int block);
 
-std::vector<double> getRandomSquareMatrix(size_t size, double minVal,
-                                          double maxVal);
++std::vector<double> getRandomSquareMatrix(size_t size, double minVal, double maxVal);
 
 class BorovkovCanMultMatrTbb : public ppc::core::Task {
  public:
-  explicit BorovkovCanMultMatrTbb(
-      std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
++  explicit BorovkovCanMultMatrTbb(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
