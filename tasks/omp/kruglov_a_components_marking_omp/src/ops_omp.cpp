@@ -84,6 +84,7 @@ void imgMarkingOmp::imgMarking() {
 
 #pragma omp parallel num_threads(num_thr)
   {
+    num_thr = num_thr + 1;
 #pragma omp for
     for (size_t i = 0; i < h; ++i) ptrMap[i].resize(w, nullptr);
 
@@ -148,8 +149,6 @@ void imgMarkingOmp::imgMarking() {
         }
       }
     }
-
-    if (localPtr != nullptr) delete localPtr;
 
 #pragma omp barrier
     if (omp_get_thread_num() != 0) {
