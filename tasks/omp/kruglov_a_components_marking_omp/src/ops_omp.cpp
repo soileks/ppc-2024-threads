@@ -21,7 +21,7 @@ class RecursivePtr {
     while (p->getParent() != nullptr) {
       p = p->getParent();
     }
-    if (ptr != nullptr) {
+    if (ptr == nullptr) {
       ptr = p;
       value = 0;
       return;
@@ -29,7 +29,7 @@ class RecursivePtr {
     ptr->set(p);
   }
   int getValue() {
-    if (ptr != nullptr) {
+    if (ptr == nullptr) {
       return value;
     }
     return ptr->getValue();
