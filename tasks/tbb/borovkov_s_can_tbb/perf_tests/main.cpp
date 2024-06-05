@@ -23,13 +23,11 @@ TEST(borovkov_s_tbb_perf_tests, test_900x900) {
   auto taskDataTbb = std::make_shared<ppc::core::TaskData>();
 
   // Add matrOne
-  taskDataTbb->inputs.emplace_back(
-      reinterpret_cast<uint8_t *>(inputMatrOne.data()));
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrOne.data()));
   taskDataTbb->inputs_count.emplace_back(inputMatrOne.size());
 
   // Add matrTwo
-  taskDataTbb->inputs.emplace_back(
-      reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
   taskDataTbb->inputs_count.emplace_back(inputMatrTwo.size());
 
   // Add size
@@ -39,24 +37,19 @@ TEST(borovkov_s_tbb_perf_tests, test_900x900) {
   taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(&block));
 
   // Add out matr
-  taskDataTbb->outputs.emplace_back(
-      reinterpret_cast<uint8_t *>(outputMatr.data()));
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputMatr.data()));
   taskDataTbb->outputs_count.emplace_back(outputMatr.size());
 
-  auto resSeq =
-      BorovkovTbb::CannonMatrixMultSeq(inputMatrOne, inputMatrTwo, size, block);
+  auto resSeq = BorovkovTbb::CannonMatrixMultSeq(inputMatrOne, inputMatrTwo, size, block);
 
   // Create Task
-  auto testTaskTbb =
-      std::make_shared<BorovkovTbb::BorovkovCanMultMatrTbb>(taskDataTbb);
+  auto testTaskTbb = std::make_shared<BorovkovTbb::BorovkovCanMultMatrTbb>(taskDataTbb);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
-  perfAttr->current_timer = [&] {
-    return (oneapi::tbb::tick_count::now() - t0).seconds();
-  };
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -89,13 +82,11 @@ TEST(borovkov_s_tbb_perf_tests, test_800x800) {
   auto taskDataTbb = std::make_shared<ppc::core::TaskData>();
 
   // Add matrOne
-  taskDataTbb->inputs.emplace_back(
-      reinterpret_cast<uint8_t *>(inputMatrOne.data()));
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrOne.data()));
   taskDataTbb->inputs_count.emplace_back(inputMatrOne.size());
 
   // Add matrTwo
-  taskDataTbb->inputs.emplace_back(
-      reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputMatrTwo.data()));
   taskDataTbb->inputs_count.emplace_back(inputMatrTwo.size());
 
   // Add size
@@ -105,24 +96,19 @@ TEST(borovkov_s_tbb_perf_tests, test_800x800) {
   taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(&block));
 
   // Add out matr
-  taskDataTbb->outputs.emplace_back(
-      reinterpret_cast<uint8_t *>(outputMatr.data()));
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputMatr.data()));
   taskDataTbb->outputs_count.emplace_back(outputMatr.size());
 
-  auto resSeq =
-      BorovkovTbb::CannonMatrixMultSeq(inputMatrOne, inputMatrTwo, size, block);
+  auto resSeq = BorovkovTbb::CannonMatrixMultSeq(inputMatrOne, inputMatrTwo, size, block);
 
   // Create Task
-  auto testTaskTbb =
-      std::make_shared<BorovkovTbb::BorovkovCanMultMatrTbb>(taskDataTbb);
+  auto testTaskTbb = std::make_shared<BorovkovTbb::BorovkovCanMultMatrTbb>(taskDataTbb);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = oneapi::tbb::tick_count::now();
-  perfAttr->current_timer = [&] {
-    return (oneapi::tbb::tick_count::now() - t0).seconds();
-  };
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
