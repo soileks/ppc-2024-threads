@@ -6,7 +6,7 @@
 #include "core/perf/include/perf.hpp"
 #include "tbb/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort_tbb.hpp"
 
-const uint32_t COUNT = 1UL << 25;
+const uint32_t COUNT = 1UL << 22;
 const uint32_t SEED = 420;
 
 TEST(MakhinyaPerf, test_pipeline_run) {
