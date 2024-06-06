@@ -45,7 +45,6 @@ bool LinearGaussianFiltering::run() {
   std::vector<int> gauss_kernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
   int kSize = 3;
   tbb::parallel_for(0, height, 1, [&](int i) {
-    for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         int sum = 0;
         for (int m = 0; m < kSize; ++m) {
@@ -60,7 +59,6 @@ bool LinearGaussianFiltering::run() {
         sum = std::min(sum, 255);
         setPixel(i, j, sum);
       }
-    }
     return true;
   });
 }
