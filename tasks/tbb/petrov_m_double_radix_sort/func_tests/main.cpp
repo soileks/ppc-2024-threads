@@ -45,7 +45,7 @@ TEST(Petrov_M_Radix_Sort_TBB, Test_With_Negative_Numbers) {
   taskDataPar->outputs_count.emplace_back(out.size());
 
   // Create Task
-   PetrovRadixSortDoubleTBB testTaskTBB(taskDataPar);
+  PetrovRadixSortDoubleTBB testTaskTBB(taskDataPar);
   ASSERT_EQ(testTaskTBB.validation(), true);
   testTaskTBB.pre_processing();
   testTaskTBB.run();
@@ -69,7 +69,7 @@ TEST(Petrov_M_Radix_Sort_TBB, Test_With_Positive_and_Negative_Numbers) {
   taskDataPar->outputs_count.emplace_back(out.size());
 
   // Create Task
-   PetrovRadixSortDoubleTBB testTaskTBB(taskDataPar);
+  PetrovRadixSortDoubleTBB testTaskTBB(taskDataPar);
   ASSERT_EQ(testTaskTBB.validation(), true);
   testTaskTBB.pre_processing();
   testTaskTBB.run();
