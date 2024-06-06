@@ -134,77 +134,77 @@ bool RadixSortDoubleWithBatcherStlParallel::post_processing() {
 }
 
 std::vector<double> batchersMergeStl(std::vector<std::vector<double>> &subVec) {
-    std::vector<double> result;
-    if (subVec.empty()) {
-        return result;
-    }
-
-    std::vector<std::pair<double, int>> valueIndices;
-    for (size_t i = 0; i < subVec.size(); ++i) {
-        for (const auto &val : subVec[i]) {
-            valueIndices.emplace_back(val, i);
-        }
-    }
-
-    std::sort(valueIndices.begin(), valueIndices.end());
-    result.resize(valueIndices.size());
-
-    std::transform(valueIndices.begin(), valueIndices.end(), result.begin(),
-                   [](const std::pair<double, int>& p) { return p.first; });
-
+  std::vector<double> result;
+  if (subVec.empty()) {
     return result;
+  }
+
+  std::vector<std::pair<double, int>> valueIndices;
+  for (size_t i = 0; i < subVec.size(); ++i) {
+    for (const auto &val : subVec[i]) {
+      valueIndices.emplace_back(val, i);
+    }
+  }
+
+  std::sort(valueIndices.begin(), valueIndices.end());
+  result.resize(valueIndices.size());
+
+  std::transform(valueIndices.begin(), valueIndices.end(), result.begin(),
+                 [](const std::pair<double, int> &p) { return p.first; });
+
+  return result;
 }
 
 void sortPartStl(std::vector<std::vector<double>> &parts, std::vector<double> &vec) {
-    for (int i = 0; i < sizeDouble; ++i) {
-        for (auto &j : vec) {
-            auto tmp = static_cast<uint64_t>(j);
-            tmp >>= i * 8;
-            tmp &= 255;
-            parts[tmp].push_back(j);
-        }
-
-        vec = batchersMergeStl(parts);
-
-        for (auto &part : parts) {
-            part.clear();
-        }
+  for (int i = 0; i < sizeDouble; ++i) {
+    for (auto &j : vec) {
+      auto tmp = static_cast<uint64_t>(j);
+      tmp >>= i * 8;
+      tmp &= 255;
+      parts[tmp].push_back(j);
     }
+
+    vec = batchersMergeStl(parts);
+
+    for (auto &part : parts) {
+      part.clear();
+    }
+  }
 }
 
 std::vector<double> radixSortWithBatcherStl(std::vector<double> vec) {
-    uint64_t mask = static_cast<uint64_t>(1) << (sizeof(double) * 8 - 1);
-    std::vector<double> positive;
-    std::vector<double> negative;
+  uint64_t mask = static_cast<uint64_t>(1) << (sizeof(double) * 8 - 1);
+  std::vector<double> positive;
+  std::vector<double> negative;
 
-    for (auto &i : vec) {
-        auto tmp = static_cast<uint64_t>(i);
-        if ((tmp & mask) != 0) {
-            negative.push_back(i);
-        } else {
-            positive.push_back(i);
-        }
+  for (auto &i : vec) {
+    auto tmp = static_cast<uint64_t>(i);
+    if ((tmp & mask) != 0) {
+      negative.push_back(i);
+    } else {
+      positive.push_back(i);
     }
+  }
 
-    auto sortNegative = std::async(std::launch::async, [&]() {
-        std::vector<std::vector<double>> partsNegative(256);
-        sortPartStl(partsNegative, negative);
-    });
+  auto sortNegative = std::async(std::launch::async, [&]() {
+    std::vector<std::vector<double>> partsNegative(256);
+    sortPartStl(partsNegative, negative);
+  });
 
-    auto sortPositive = std::async(std::launch::async, [&]() {
-        std::vector<std::vector<double>> partsPositive(256);
-        sortPartStl(partsPositive, positive);
-    });
+  auto sortPositive = std::async(std::launch::async, [&]() {
+    std::vector<std::vector<double>> partsPositive(256);
+    sortPartStl(partsPositive, positive);
+  });
 
-    sortNegative.wait();
-    sortPositive.wait();
+  sortNegative.wait();
+  sortPositive.wait();
 
-    vec.clear();
-    vec.reserve(negative.size() + positive.size());
-    vec.insert(vec.end(), negative.begin(), negative.end());
-    vec.insert(vec.end(), positive.begin(), positive.end());
+  vec.clear();
+  vec.reserve(negative.size() + positive.size());
+  vec.insert(vec.end(), negative.begin(), negative.end());
+  vec.insert(vec.end(), positive.begin(), positive.end());
 
-    return vec;
+  return vec;
 }
 
 std::vector<double> randomVector(int size, double min, double max) {

@@ -4,12 +4,10 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <random>
-#include <vector>
-#include <thread>
 #include <future>
-#include <cstdint>
-#include <execution>
+#include <random>
+#include <thread>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 

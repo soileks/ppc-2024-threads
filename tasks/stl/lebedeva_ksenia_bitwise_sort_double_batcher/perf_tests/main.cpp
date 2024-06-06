@@ -72,7 +72,7 @@ TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_task_run) {
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
     return static_cast<double>(duration) * 1e-9;
   };
-  
+
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
