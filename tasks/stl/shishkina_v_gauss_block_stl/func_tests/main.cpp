@@ -11,7 +11,7 @@
 TEST(shishkina_v_gauss_block_stl, test1_stl) {
   int n = 3;
   int m = 3;
-  auto count = std::thread::hardware_concurrency() * 5;
+  auto count = std::thread::hardware_concurrency() * 2;
   // Create data
   std::vector<int> tmp = {255, 255, 255, 255, 255, 255, 255, 255, 255};
 
@@ -37,9 +37,9 @@ TEST(shishkina_v_gauss_block_stl, test1_stl) {
 
   // Create Task
   LinearFilteringGauss testSTLTaskSequential(taskDataSeq);
+  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.validation(), true);
   testSTLTaskSequential.pre_processing();
-  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.run(), true);
   testSTLTaskSequential.post_processing();
   for (int i = 0; i < n * m; i++) {
@@ -50,7 +50,7 @@ TEST(shishkina_v_gauss_block_stl, test1_stl) {
 TEST(shishkina_v_gauss_block_stl, test2_stl) {
   int n = 3;
   int m = 3;
-  auto count = std::thread::hardware_concurrency() * 6;
+  auto count = std::thread::hardware_concurrency() * 3;
 
   // Create data
   std::vector<int> tmp = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -77,9 +77,9 @@ TEST(shishkina_v_gauss_block_stl, test2_stl) {
 
   // Create Task
   LinearFilteringGauss testSTLTaskSequential(taskDataSeq);
+  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.validation(), true);
   testSTLTaskSequential.pre_processing();
-  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.run(), true);
   testSTLTaskSequential.post_processing();
   for (int i = 0; i < n * m; i++) {
@@ -90,7 +90,7 @@ TEST(shishkina_v_gauss_block_stl, test2_stl) {
 TEST(shishkina_v_gauss_block_stl, test3_stl) {
   int n = 4;
   int m = 4;
-  auto count = std::thread::hardware_concurrency() * 7;
+  auto count = std::thread::hardware_concurrency() * 4;
   // Create data
   std::vector<int> tmp = {0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0};
 
@@ -116,9 +116,9 @@ TEST(shishkina_v_gauss_block_stl, test3_stl) {
 
   // Create Task
   LinearFilteringGauss testSTLTaskSequential(taskDataSeq);
+  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.validation(), true);
   testSTLTaskSequential.pre_processing();
-  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.run(), true);
   testSTLTaskSequential.post_processing();
   for (int i = 0; i < n * m; i++) {
@@ -129,7 +129,7 @@ TEST(shishkina_v_gauss_block_stl, test3_stl) {
 TEST(shishkina_v_gauss_block_stl, test4_stl) {
   int n = 5;
   int m = 5;
-  auto count = std::thread::hardware_concurrency() * 8;
+  auto count = std::thread::hardware_concurrency() * 5;
 
   // Create data
   std::vector<int> tmp = {0,   255, 0,   255, 0,   255, 0,   255, 0,   255, 0,   255, 0,
@@ -157,9 +157,9 @@ TEST(shishkina_v_gauss_block_stl, test4_stl) {
 
   // Create Task
   LinearFilteringGauss testSTLTaskSequential(taskDataSeq);
+  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.validation(), true);
   testSTLTaskSequential.pre_processing();
-  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.run(), true);
   testSTLTaskSequential.post_processing();
   for (int i = 0; i < n * m; i++) {
@@ -170,7 +170,7 @@ TEST(shishkina_v_gauss_block_stl, test4_stl) {
 TEST(shishkina_v_gauss_block_stl, test5_stl) {
   int n = 3;
   int m = 5;
-  auto count = std::thread::hardware_concurrency() * 9;
+  auto count = std::thread::hardware_concurrency() * 6;
 
   // Create data
   std::vector<int> tmp = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
@@ -197,9 +197,9 @@ TEST(shishkina_v_gauss_block_stl, test5_stl) {
 
   // Create Task
   LinearFilteringGauss testSTLTaskSequential(taskDataSeq);
+  testSTLTaskSequential.setNumThreads(count);
   ASSERT_EQ(testSTLTaskSequential.validation(), true);
   testSTLTaskSequential.pre_processing();
-  testSTLTaskSequential.setNumThreads(count);  
   ASSERT_EQ(testSTLTaskSequential.run(), true);
   testSTLTaskSequential.post_processing();
   for (int i = 0; i < n * m; i++) {
