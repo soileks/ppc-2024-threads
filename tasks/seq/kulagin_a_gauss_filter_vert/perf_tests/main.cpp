@@ -6,8 +6,8 @@
 
 TEST(kulagin_a_gauss_filter_vert_seq, test_pipeline_run) {
   // Create data
-  size_t w = 1500;
-  size_t h = 1500;
+  size_t w = 3500;
+  size_t h = 3500;
   float sigma = 2.0f;
   std::vector<uint32_t> img = kulagin_a_gauss::generator1(w, h);
   std::vector<float> kernel = kulagin_a_gauss::generate_kernel(sigma);
@@ -47,8 +47,8 @@ TEST(kulagin_a_gauss_filter_vert_seq, test_pipeline_run) {
 
 TEST(kulagin_a_gauss_filter_vert_seq, test_task_run) {
   // Create data
-  size_t w = 1500;
-  size_t h = 1500;
+  size_t w = 3500;
+  size_t h = 3500;
   float sigma = 2.0f;
   std::vector<uint32_t> img = kulagin_a_gauss::generator1(w, h);
   std::vector<float> kernel = kulagin_a_gauss::generate_kernel(sigma);
