@@ -97,6 +97,7 @@ std::vector<std::vector<task::pnt>> task::AkopyanZBinHull::label_components() {
     }
   };
 
+  threads.reserve(num_threads);
   for (int i = 0; i < num_threads; ++i) {
     threads.emplace_back(worker, i);
   }
