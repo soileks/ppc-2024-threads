@@ -44,7 +44,7 @@ bool LinearGaussianFiltering::run() {
   std::vector<int> filteredImage(input.size(), 0);
   std::vector<int> gauss_kernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
   int kSize = 3;
-  tbb::parallel_for(0, height, blockSize, [&](int i) {
+  tbb::parallel_for(0, height, 1, [&](int i) {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         int sum = 0;
@@ -73,12 +73,6 @@ bool LinearGaussianFiltering::post_processing() {
   return true;
 }
 
-int LinearGaussianFiltering::getPixel(int x, int y)
-{ 
-  return input[x * width + y];
-}
+int LinearGaussianFiltering::getPixel(int x, int y) { return input[x * width + y]; }
 
-void LinearGaussianFiltering::setPixel(int x, int y, int value)
-{
-	res[x * width + y] = value;
-}
+void LinearGaussianFiltering::setPixel(int x, int y, int value) { res[x * width + y] = value; }
