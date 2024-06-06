@@ -1,14 +1,14 @@
 // Copyright 2024 Borovkov Sergey
 #pragma once
 
-#include <cmath>
-#include <random>
-#include <string>
-#include <vector>
 #include <algorithm>
-#include <stdexcept>
-#include <thread>
+#include <cmath>
 #include <future>
+#include <random>
+#include <stdexcept>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 

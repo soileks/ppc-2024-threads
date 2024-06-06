@@ -34,38 +34,39 @@ std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, cons
   return matrRes;
 }
 
-std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, const std::vector<double>& matrTwo, int size, int block) {
+std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
+                                        int size, int block) {
     if (!validateMatrix(matrOne.size(), matrTwo.size())) throw std::invalid_argument{"invalid matrices"};
     if (block > size) throw std::invalid_argument{"Wrong block size"};
 
-    int jbMin = 0;
-    int kbMin = 0;
-    std::vector<double> matrRes(size * size, 0.0);
+  int jbMin = 0;
+  int kbMin = 0;
+  std::vector<double> matrRes(size * size, 0.0);
 
-    std::vector<std::future<void>> futures;
+  std::vector<std::future<void>> futures;
 
-    for (int jb = 0; jb < size; jb += block) {
-        for (int kb = 0; kb < size; kb += block) {
-            jbMin = std::min(jb + block, size);
-            kbMin = std::min(kb + block, size);
+  for (int jb = 0; jb < size; jb += block) {
+    for (int kb = 0; kb < size; kb += block) {
+      jbMin = std::min(jb + block, size);
+      kbMin = std::min(kb + block, size);
 
-            for (int i = 0; i < size; ++i) {
-                futures.push_back(std::async(std::launch::async, [&, i, kb, kbMin, jb, jbMin]() {
-                    for (int k = kb; k < kbMin; ++k) {
-                        for (int j = jb; j < jbMin; ++j) {
-                            matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
-                        }
-                    }
-                }));
-            }
-        }
-    }
+      for (int i = 0; i < size; ++i) {
+        futures.push_back(std::async(std::launch::async, [&, i, kb, kbMin, jb, jbMin]() {
+          for (int k = kb; k < kbMin; ++k) {
+            for (int j = jb; j < jbMin; ++j) {
+              matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
+             }
+          }
+        }));
+      }
+     }
+  }
 
-    for (auto& future : futures) {
-        future.get();
-    }
+  for (auto& future : futures) {
+    future.get();
+  }
 
-    return matrRes;
+  return matrRes;
 }
 
 std::vector<double> getRandomSquareMatrix(size_t size, double minVal, double maxVal) {
