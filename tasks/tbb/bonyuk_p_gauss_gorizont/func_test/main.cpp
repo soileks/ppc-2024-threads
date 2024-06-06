@@ -7,7 +7,7 @@
 
 #include "tbb/bonyuk_p_gauss_gorizont/include/ops_tbb.hpp"
 
-TEST(bonyuk_p_gauss_gorizont, one_test) {
+TEST(bonyuk_p_gauss_gorizont, tbb_one_test) {
   int n = 3;
   int m = 3;
 
@@ -42,7 +42,7 @@ TEST(bonyuk_p_gauss_gorizont, one_test) {
   }
 }
 
-TEST(bonyuk_p_gauss_gorizont, two_test) {
+TEST(bonyuk_p_gauss_gorizont, tbb_two_test) {
   int n = 3;
   int m = 3;
 
@@ -76,7 +76,7 @@ TEST(bonyuk_p_gauss_gorizont, two_test) {
     ASSERT_EQ(result[i], out[i]);
   }
 }
-TEST(bonyuk_p_gauss_gorizont, three_test) {
+TEST(bonyuk_p_gauss_gorizont, tbb_three_test) {
   int n = 3;
   int m = 3;
 
@@ -111,7 +111,7 @@ TEST(bonyuk_p_gauss_gorizont, three_test) {
   }
 }
 
-TEST(bonyuk_p_gauss_gorizont, four_test) {
+TEST(bonyuk_p_gauss_gorizont, tbb_four_test) {
   int n = 5;
   int m = 5;
 
@@ -148,7 +148,7 @@ TEST(bonyuk_p_gauss_gorizont, four_test) {
   }
 }
 
-TEST(bonyuk_p_gauss_gorizont, five_test) {
+TEST(bonyuk_p_gauss_gorizont, tbb_five_test) {
   int n = 5;
   int m = 5;
 

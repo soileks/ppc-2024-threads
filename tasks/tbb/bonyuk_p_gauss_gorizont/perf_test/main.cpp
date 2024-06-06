@@ -7,7 +7,7 @@
 #include "core/perf/include/perf.hpp"
 #include "tbb/bonyuk_p_gauss_gorizont/include/ops_tbb.hpp"
 
-TEST(bonyuk_p_gauss_gorizont, test_one) {
+TEST(bonyuk_p_gauss_gorizont, tbb_test_one) {
   int n = 1000;
   int m = 1000;
   int min = 100;
@@ -69,7 +69,7 @@ TEST(bonyuk_p_gauss_gorizont, test_one) {
   }
 }
 
-TEST(bonyuk_p_gauss_gorizont, test_two) {
+TEST(bonyuk_p_gauss_gorizont, tbb_test_two) {
   int n = 1000;
   int m = 1000;
   int min = 100;
