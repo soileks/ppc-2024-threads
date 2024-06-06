@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "stl/akopyan_z_bin_hull/include/ops_stl.hpp"
