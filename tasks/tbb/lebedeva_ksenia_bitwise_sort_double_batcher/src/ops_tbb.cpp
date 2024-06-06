@@ -15,7 +15,7 @@ bool RadixSortDoubleWithBatcherSequential::pre_processing() {
   for (unsigned i = 0; i < taskData->inputs_count[0]; i++) {
     array[i] = tmp_arr[i];
   }
-  
+
   return true;
 }
 
