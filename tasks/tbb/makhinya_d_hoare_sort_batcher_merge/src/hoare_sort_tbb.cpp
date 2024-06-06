@@ -49,7 +49,7 @@ void HoareSortTBB::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type
   const int32_t len = last_ptr - first_ptr;
   for (int32_t k = 1; k < len; k <<= 1) {
     const uint32_t chank = len / k;
-    tbb::parallel_for (0, k, 1, [&](uint32_t i) {
+    tbb::parallel_for(0, k, 1, [&](uint32_t i) {
       // k = 5
       sortable_type* l = first_ptr + i * chank;
       sortable_type* r = l + chank;
