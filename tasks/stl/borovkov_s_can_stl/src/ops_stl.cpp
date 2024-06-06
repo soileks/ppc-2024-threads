@@ -36,8 +36,8 @@ std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, cons
 
 std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
                                         int size, int block) {
-    if (!validateMatrix(matrOne.size(), matrTwo.size())) throw std::invalid_argument{"invalid matrices"};
-    if (block > size) throw std::invalid_argument{"Wrong block size"};
+  if (!validateMatrix(matrOne.size(), matrTwo.size())) throw std::invalid_argument{"invalid matrices"};
+  if (block > size) throw std::invalid_argument{"Wrong block size"};
 
   int jbMin = 0;
   int kbMin = 0;
@@ -55,11 +55,11 @@ std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, cons
           for (int k = kb; k < kbMin; ++k) {
             for (int j = jb; j < jbMin; ++j) {
               matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
-             }
+            }
           }
         }));
       }
-     }
+    }
   }
 
   for (auto& future : futures) {
