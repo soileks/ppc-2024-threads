@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #include "core/perf/include/perf.hpp"
 #include "stl/shishkina_v_gauss_block_stl/include/ops_stl.hpp"

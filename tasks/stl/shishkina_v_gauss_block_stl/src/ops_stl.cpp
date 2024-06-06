@@ -2,9 +2,9 @@
 #include "stl/shishkina_v_gauss_block_stl/include/ops_stl.hpp"
 
 #include <cmath>
-#include <thread>
 #include <functional>
 #include <random>
+#include <thread>
 
 void LinearFilteringGauss::applyLinearFilteringGauss(int startRow, int endRow) {
   std::vector<int> gaussianKernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
@@ -21,8 +21,7 @@ void LinearFilteringGauss::applyLinearFilteringGauss(int startRow, int endRow) {
           }
         }
       }
-      sum = std::min(sum, 255);
-      setPixel(i, j, sum);
+      setPixel(i, j, std::min(sum, 255));
     }
   }
 }
@@ -62,7 +61,7 @@ bool LinearFilteringGauss::validation() {
 bool LinearFilteringGauss::run() {
   internal_order_test();
   std::vector<int> filteredImage(input.size(), 0);
-  std::vector<std::thread> threads;
+  std::vector<std::thread> threads(countThreads);
   int blockSize = height / countThreads;
 
   for (int i = 0; i < countThreads; ++i) {
@@ -73,12 +72,11 @@ bool LinearFilteringGauss::run() {
     } else {
       endRow = (i + 1) * blockSize;
     }
-    threads.emplace_back([this, startRow, endRow]() { this->applyLinearFilteringGauss(startRow, endRow); });
+    threads[i] = std::thread(&LinearFilteringGauss::applyLinearFilteringGauss, this, startRow, endRow);
   }
-  for (auto &thread : threads) {
-    thread.join();
+  for (int i = 0; i < countThreads; ++i) {
+    threads[i].join();
   }
-  threads.clear();
   return true;
 }
 bool LinearFilteringGauss::post_processing() {

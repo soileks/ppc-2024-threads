@@ -11,7 +11,7 @@
 TEST(shishkina_v_gauss_block_stl, test1_stl) {
   int n = 3;
   int m = 3;
-  auto count = std::thread::hardware_concurrency() * 10;
+  auto count = std::thread::hardware_concurrency() * 5;
   // Create data
   std::vector<int> tmp = {255, 255, 255, 255, 255, 255, 255, 255, 255};
 
@@ -50,7 +50,7 @@ TEST(shishkina_v_gauss_block_stl, test1_stl) {
 TEST(shishkina_v_gauss_block_stl, test2_stl) {
   int n = 3;
   int m = 3;
-  auto count = std::thread::hardware_concurrency() * 11;
+  auto count = std::thread::hardware_concurrency() * 6;
 
   // Create data
   std::vector<int> tmp = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -90,7 +90,7 @@ TEST(shishkina_v_gauss_block_stl, test2_stl) {
 TEST(shishkina_v_gauss_block_stl, test3_stl) {
   int n = 4;
   int m = 4;
-  auto count = std::thread::hardware_concurrency() * 12;
+  auto count = std::thread::hardware_concurrency() * 7;
   // Create data
   std::vector<int> tmp = {0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0};
 
@@ -129,7 +129,7 @@ TEST(shishkina_v_gauss_block_stl, test3_stl) {
 TEST(shishkina_v_gauss_block_stl, test4_stl) {
   int n = 5;
   int m = 5;
-  auto count = std::thread::hardware_concurrency() * 13;
+  auto count = std::thread::hardware_concurrency() * 8;
 
   // Create data
   std::vector<int> tmp = {0,   255, 0,   255, 0,   255, 0,   255, 0,   255, 0,   255, 0,
@@ -170,7 +170,7 @@ TEST(shishkina_v_gauss_block_stl, test4_stl) {
 TEST(shishkina_v_gauss_block_stl, test5_stl) {
   int n = 3;
   int m = 5;
-  auto count = std::thread::hardware_concurrency() * 14;
+  auto count = std::thread::hardware_concurrency() * 9;
 
   // Create data
   std::vector<int> tmp = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
