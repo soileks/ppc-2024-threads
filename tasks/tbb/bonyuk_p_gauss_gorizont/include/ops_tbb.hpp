@@ -23,5 +23,4 @@ class LinearGaussianFiltering : public ppc::core::Task {
   int height{}, width{}, min{}, max{};
   std::vector<int> input = {};
   std::vector<int> res = {};
-  
 };
