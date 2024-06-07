@@ -12,6 +12,7 @@ bool validateMatrix(size_t sizeOne, size_t sizeTwo) { return sizeOne == sizeTwo 
 
 std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
                                         int size, int block) {
+
   if (!validateMatrix(matrOne.size(), matrTwo.size())) throw std::invalid_argument{"invalid matrixs"};
 
   if (block > size) throw std::invalid_argument{"Wrong size block"};
@@ -28,45 +29,57 @@ std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, cons
       for (int i = 0; i < size; ++i)
         for (int k = kb; k < kbMin; ++k)
           for (int j = jb; j < jbMin; ++j) matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
-    }
-  }
+        }
+    }   
 
   return matrRes;
 }
 
-std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
-                                        int size, int block) {
-  if (!validateMatrix(matrOne.size(), matrTwo.size())) throw std::invalid_argument{"invalid matrices"};
-  if (block > size) throw std::invalid_argument{"Wrong block size"};
+void blockMultiply(const std::vector<double>& matrOne, const std::vector<double>& matrTwo, std::vector<double>& matrRes, 
+                   int size, int block, int startRow, int endRow) {
+    for (int jb = 0; jb < size; jb += block) {
+        for (int kb = 0; kb < size; kb += block) {
+            int jbMin = std::min(jb + block, size);
+            int kbMin = std::min(kb + block, size);
 
-  int jbMin = 0;
-  int kbMin = 0;
-  std::vector<double> matrRes(size * size, 0.0);
-
-  std::vector<std::future<void>> futures;
-
-  for (int jb = 0; jb < size; jb += block) {
-    for (int kb = 0; kb < size; kb += block) {
-      jbMin = std::min(jb + block, size);
-      kbMin = std::min(kb + block, size);
-
-      for (int i = 0; i < size; ++i) {
-        futures.push_back(std::async(std::launch::async, [&, i, kb, kbMin, jb, jbMin]() {
-          for (int k = kb; k < kbMin; ++k) {
-            for (int j = jb; j < jbMin; ++j) {
-              matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
+            for (int i = startRow; i < endRow; ++i) {
+                for (int k = kb; k < kbMin; ++k) {
+                    for (int j = jb; j < jbMin; ++j) {
+                        matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
+                    }
+                }
             }
-          }
-        }));
-      }
+        }
     }
-  }
+}
 
-  for (auto& future : futures) {
-    future.get();
-  }
+std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, const std::vector<double>& matrTwo, 
+                                        int size, int block) {
+    if (!validateMatrix(matrOne.size(), matrTwo.size())) 
+        throw std::invalid_argument{"Invalid matrix sizes"};
 
-  return matrRes;
+    if (block > size || block <= 0) 
+        throw std::invalid_argument{"Wrong block size"};
+
+    int numThreads = std::thread::hardware_concurrency();
+    if (numThreads == 0) numThreads = 1;
+
+    std::vector<double> matrRes(size * size, 0.0);
+    std::vector<std::thread> threads;
+    int rowsPerThread = size / numThreads;
+    int extraRows = size % numThreads;
+
+    for (int t = 0; t < numThreads; ++t) {
+        int startRow = t * rowsPerThread + std::min(t, extraRows);
+        int endRow = startRow + rowsPerThread + (t < extraRows ? 1 : 0);
+        threads.emplace_back(blockMultiply, std::cref(matrOne), std::cref(matrTwo), std::ref(matrRes), size, block, startRow, endRow);
+    }
+
+    for (auto& thread : threads) {
+        thread.join();
+    }
+
+    return matrRes;
 }
 
 std::vector<double> getRandomSquareMatrix(size_t size, double minVal, double maxVal) {

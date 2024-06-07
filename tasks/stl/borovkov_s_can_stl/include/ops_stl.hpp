@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <future>
 #include <random>
 #include <stdexcept>
 #include <string>
