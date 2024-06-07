@@ -1,11 +1,11 @@
 // Copyright 2024 Bonyuk Peter
 #include "tbb/bonyuk_p_gauss_gorizont/include/ops_tbb.hpp"
 
+#include <tbb/tbb.h>
+
 #include <cmath>
 #include <random>
 #include <thread>
-
-using namespace std::chrono_literals;
 
 std::vector<int> getImage(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
