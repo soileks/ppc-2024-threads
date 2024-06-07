@@ -35,7 +35,7 @@ bool kozlov_omp::KozlovTasknOmpSequential::run() {
   for (int i = 0; i <= n; i++) {
     if (i == 0 || i == n) {
       p = 1;
-    } else if (i % 2 == 0) {
+    } else if (j % 2 == 0) {
       p = 4;
     } else {
       p = 2;
