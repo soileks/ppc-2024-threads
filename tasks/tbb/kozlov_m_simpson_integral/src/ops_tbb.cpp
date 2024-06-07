@@ -43,7 +43,7 @@ bool kozlov_TBB::KozlovTasknTBBSequential::run() {
     for (int j = 0; j <= m; j++) {
       if (j == 0 || j == m) {
         q = 1;
-      } else if (i % 2 == 0) {
+      } else if (j % 2 == 0) {
         q = 4;
       } else {
         q = 2;
@@ -104,7 +104,7 @@ bool kozlov_TBB::KozlovTasknTBBParallel::run() {
           for (int j = 0; j <= m; j++) {
             if (j == 0 || j == m) {
               q = 1;
-            } else if (i % 2 == 0) {
+            } else if (j % 2 == 0) {
               q = 4;
             } else {
               q = 2;
