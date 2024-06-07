@@ -59,8 +59,8 @@ bool LinearGaussianFiltering::run() {
       sum = std::min(sum, 255);
       setPixel(i, j, sum);
     }
-    return true;
   });
+  return true;
 }
 
 bool LinearGaussianFiltering::post_processing() {
