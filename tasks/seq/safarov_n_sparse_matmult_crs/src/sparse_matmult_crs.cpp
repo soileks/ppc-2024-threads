@@ -64,12 +64,9 @@ SparseMatrixCRS sparseMatrixTransposeCRS(const SparseMatrixCRS& object) {
 }
 
 bool SparseMatrixCRS::operator==(const SparseMatrixCRS& matrix) const {
-  if ((values == matrix.values) && (numberOfColumns == matrix.numberOfColumns) &&
-      (columnIndexes == matrix.columnIndexes) && (numberOfRows == matrix.numberOfRows) &&
-      (pointers == matrix.pointers)) {
-    return true;
-  }
-  return false;
+  return (values == matrix.values) && (numberOfColumns == matrix.numberOfColumns) &&
+         (columnIndexes == matrix.columnIndexes) && (numberOfRows == matrix.numberOfRows) &&
+         (pointers == matrix.pointers);
 }
 
 std::vector<std::vector<double>> fillTheMatrixWithZeros(int columns, int rows) {
@@ -192,7 +189,8 @@ bool SparseMatrixMultiplicationCRS::pre_processing() {
 bool SparseMatrixMultiplicationCRS::run() {
   internal_order_test();
 
-  std::vector<int> finalColumnIndexes, finalPointers;
+  std::vector<int> finalColumnIndexes;
+  std::vector<int> finalPointers;
   std::vector<double> finalValues;
   int resultRows = X->numberOfRows;
   std::vector<std::vector<int>> localColumnIndexes(X->numberOfRows);
