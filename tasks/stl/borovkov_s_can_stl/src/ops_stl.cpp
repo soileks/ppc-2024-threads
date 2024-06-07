@@ -28,16 +28,14 @@ std::vector<double> CannonMatrixMultSeq(const std::vector<double>& matrOne, cons
       for (int i = 0; i < size; ++i)
         for (int k = kb; k < kbMin; ++k)
           for (int j = jb; j < jbMin; ++j) matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
-        
-    
-    }   
+    }
   }
   return matrRes;
 }
 
 void blockMultiply(const std::vector<double>& matrOne, const std::vector<double>& matrTwo, std::vector<double>& matrRes,
                    int size, int block, int startRow, int endRow) {
-    for (int jb = 0; jb < size; jb += block) {
+  for (int jb = 0; jb < size; jb += block) {
     for (int kb = 0; kb < size; kb += block) {
       int jbMin = std::min(jb + block, size);
       int kbMin = std::min(kb + block, size);
@@ -47,11 +45,11 @@ void blockMultiply(const std::vector<double>& matrOne, const std::vector<double>
           for (int j = jb; j < jbMin; ++j) {
             matrRes[i * size + j] += matrOne[i * size + k] * matrTwo[k * size + j];
           }
-         }
+        }
       }
-     }
+    }
   }
- }
+}
 
 std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, const std::vector<double>& matrTwo,
                                         int size, int block) {
@@ -60,7 +58,6 @@ std::vector<double> CannonMatrixMultStl(const std::vector<double>& matrOne, cons
   if (block > size || block <= 0) throw std::invalid_argument{"Wrong block size"};
   int numThreads = std::thread::hardware_concurrency();
   if (numThreads == 0) numThreads = 1;
- 
 
   std::vector<double> matrRes(size * size, 0.0);
   std::vector<std::thread> threads;
