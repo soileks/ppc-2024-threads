@@ -29,8 +29,7 @@ void radix_sort(std::vector<int>& arr, int exp) {
 #pragma omp parallel for
   for (std::size_t i = 0; i < n; ++i) {
     int index = (arr[n - 1 - i] / exp) % 10;
-#pragma omp critical
-    { output[--count[index]] = arr[n - 1 - i]; }
+    output[--count[index]] = arr[n - 1 - i];
   }
 
 #pragma omp parallel for
@@ -70,8 +69,7 @@ std::vector<int> BatchSort(std::vector<int>& a1, std::vector<int>& a2) {
     for (std::size_t i = 0; i < merged.size() / 2; ++i) {
       if (((i % 2 == 0) && ((merged[2 * i] >> bit) & 1) != 0) ||
           ((i % 2 != 0) && ((merged[2 * i + 1] >> bit) & 1) != 0)) {
-#pragma omp critical
-        { std::swap(merged[2 * i], merged[2 * i + 1]); }
+        std::swap(merged[2 * i], merged[2 * i + 1]);
       }
     }
   }
