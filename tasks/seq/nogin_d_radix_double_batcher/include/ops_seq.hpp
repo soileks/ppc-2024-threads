@@ -7,6 +7,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace NoginDenisSeq {
+
 class RadixSortDoubleBatcherSequential : public ppc::core::Task {
  public:
   explicit RadixSortDoubleBatcherSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
@@ -25,3 +27,4 @@ std::vector<double> batchersMerge(std::vector<std::vector<double>>& subvectors);
 void partSort(std::vector<std::vector<double>>& parts, std::vector<double>& side);
 std::vector<double> radixSortBatcher(std::vector<double> v);
 std::vector<double> randomVector(int sizeVec, double minValue, double maxValue);
+}  // namespace NoginDenisSeq
