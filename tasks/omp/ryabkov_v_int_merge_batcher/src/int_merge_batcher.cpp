@@ -51,10 +51,13 @@ std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>&
 
 #pragma omp parallel for
   for (std::size_t k = 0; k < merged.size(); ++k) {
-    if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
-      merged[k] = a1[i++];
-    } else {
-      merged[k] = a2[j++];
+#pragma omp critical
+    {
+      if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
+        merged[k] = a1[i++];
+      } else {
+        merged[k] = a2[j++];
+      }
     }
   }
   return merged;
