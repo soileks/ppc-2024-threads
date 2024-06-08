@@ -1,6 +1,5 @@
 #include "omp/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
-
 namespace ryabkov_batcher {
 void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
@@ -48,12 +47,16 @@ std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>&
   std::size_t i = 0;
   std::size_t j = 0;
 
-#pragma omp parallel for
-  for (std::size_t k = 0; k < merged.size(); ++k) {
-    if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
-      merged[k] = a1[i++];
-    } else {
-      merged[k] = a2[j++];
+#pragma omp parallel
+  {
+    std::size_t local_i, local_j;
+#pragma omp for
+    for (std::size_t k = 0; k < merged.size(); ++k) {
+      if (local_i < a1.size() && (local_j >= a2.size() || a1[local_i] < a2[local_j])) {
+        merged[k] = a1[local_i++];
+      } else {
+        merged[k] = a2[local_j++];
+      }
     }
   }
   return merged;
