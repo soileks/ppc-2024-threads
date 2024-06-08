@@ -59,13 +59,13 @@ bool KiselevTaskTBB::run() {
       tbb::parallel_for(tbb::blocked_range<int>(0, ThreadNum), [&](const tbb::blocked_range<int> &range) {
         for (int j = range.begin(); j < range.end(); j += 2 * i) {
           int left = BlockIndices[j];
-          int right = (j + 1 < range.end()) ? BlockIndices[j + 1] : -1;
+          int right = (j + i < ThreadNum) ? BlockIndices[j + i] : -1;
           if (right != -1) {
             MergeBlocks(Index[left], BlockSize[left], Index[right], BlockSize[right], arr);
-            BlockIndices[j] = left;
+            BlockIndices[j + i] = left;
             BlockSize[j] = BlockSize[left] + BlockSize[right];
           } else {
-            BlockIndices[j] = left;
+            BlockIndices[j + i] = left;
             BlockSize[j] = BlockSize[left];
           }
         }
