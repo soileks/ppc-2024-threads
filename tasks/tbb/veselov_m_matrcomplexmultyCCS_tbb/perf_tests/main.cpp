@@ -52,7 +52,7 @@ TEST(veselov_m_matrcomplexmultyCCS, test_pipeline_run) {
   std::cout << "Start" << std::endl;
 
   // Create Task
-  auto testTaskOMP = std::make_shared<SparseMatrixComplexMultiTBBParallel>(taskDataSeq);
+  auto testTaskTBB = std::make_shared<SparseMatrixComplexMultiTBBParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -68,7 +68,7 @@ TEST(veselov_m_matrcomplexmultyCCS, test_pipeline_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < res.size(); ++i) {
@@ -118,7 +118,7 @@ TEST(veselov_m_matrcomplexmultyCCS, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskOMP = std::make_shared<SparseMatrixComplexMultiTBBParallel>(taskDataSeq);
+  auto testTaskTBB = std::make_shared<SparseMatrixComplexMultiTBBParallel>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -133,7 +133,7 @@ TEST(veselov_m_matrcomplexmultyCCS, test_task_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < res.size(); ++i) {
