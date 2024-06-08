@@ -7,29 +7,18 @@ void radix_sort(std::vector<int>& arr, int exp) {
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
 
-#pragma omp parallel
-  {
-    std::vector<int> local_count(10, 0);
-#pragma omp for
-    for (std::size_t i = 0; i < n; ++i) {
-      local_count[(arr[i] / exp) % 10]++;
-    }
-#pragma omp critical
-    {
-      for (int i = 0; i < 10; ++i) {
-        count[i] += local_count[i];
-      }
-    }
+#pragma omp parallel for
+  for (std::size_t i = 0; i < n; ++i) {
+#pragma omp atomic
+    count[(arr[i] / exp) % 10]++;
   }
 
   for (int i = 1; i < 10; i++) {
     count[i] += count[i - 1];
   }
 
-#pragma omp parallel for
-  for (std::size_t i = 0; i < n; ++i) {
-    int index = (arr[n - 1 - i] / exp) % 10;
-    output[--count[index]] = arr[n - 1 - i];
+  for (int i = n - 1; i >= 0; --i) {
+    output[--count[(arr[i] / exp) % 10]] = arr[i];
   }
 
 #pragma omp parallel for
