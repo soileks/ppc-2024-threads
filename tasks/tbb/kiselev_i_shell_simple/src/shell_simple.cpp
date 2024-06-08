@@ -50,24 +50,20 @@ bool KiselevTaskTBB::run() {
       BlockSize[i] = Index[i + 1] - Index[i];
       BlockIndices[i] = i;
     }
-    tbb::parallel_for(tbb::blocked_range<int>(0, ThreadNum), [&](const tbb::blocked_range<int> &range) {
-      for (int i = range.begin(); i < range.end(); i++) {
-        SeqSorter(Index[i], Index[i] + BlockSize[i], arr);
-      }
+    tbb::parallel_for(0, ThreadNum, [&](int i) {
+      SeqSorter(Index[i], Index[i] + BlockSize[i], arr);
     });
     for (int i = 1; i < ThreadNum; i *= 2) {
-      tbb::parallel_for(tbb::blocked_range<int>(0, ThreadNum), [&](const tbb::blocked_range<int> &range) {
-        for (int j = range.begin(); j < range.end(); j += 2 * i) {
-          int left = BlockIndices[j];
-          int right = (j + i < ThreadNum) ? BlockIndices[j + i] : -1;
-          if (right != -1) {
-            MergeBlocks(Index[left], BlockSize[left], Index[right], BlockSize[right], arr);
-            BlockIndices[j] = left;
-            BlockSize[j] = BlockSize[left] + BlockSize[right];
-          } else {
-            BlockIndices[j] = left;
-            BlockSize[j] = BlockSize[left];
-          }
+      tbb::parallel_for(0, ThreadNum, [&](int j) {
+        int left = BlockIndices[j * 2 * i];
+        int right = (j * 2 * i + i < ThreadNum) ? BlockIndices[j * 2 * i + i] : -1;
+        if (right != -1) {
+          MergeBlocks(Index[left], BlockSize[left], Index[right], BlockSize[right], arr);
+          BlockIndices[j * 2 * i] = left;
+          BlockSize[j * 2 * i] = BlockSize[left] + BlockSize[right];
+        } else {
+          BlockIndices[j * 2 * i] = left;
+          BlockSize[j * 2 * i] = BlockSize[left];
         }
       });
     }
