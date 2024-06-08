@@ -1,8 +1,6 @@
 // Copyright 2024 Kiselev Igor
 #include "tbb/kiselev_i_shell_simple/include/shell_simple.hpp"
 
-#include <tbb/mutex.h>
-
 #include <memory>
 
 #include "tbb/parallel_for.h"
@@ -57,23 +55,18 @@ bool KiselevTaskTBB::run() {
         SeqSorter(Index[i], Index[i] + BlockSize[i], arr);
       }
     });
-    tbb::mutex mutex;
     for (int i = 1; i < ThreadNum; i *= 2) {
       tbb::parallel_for(tbb::blocked_range<int>(0, ThreadNum), [&](const tbb::blocked_range<int> &range) {
         for (int j = range.begin(); j < range.end(); j += 2 * i) {
           int left = BlockIndices[j];
-          int right = (j + i < ThreadNum) ? BlockIndices[j + i] : -1;
+          int right = (j + 1 < ThreadNum) ? BlockIndices[j + 1] : -1;
           if (right != -1) {
-            mutex.lock();
             MergeBlocks(Index[left], BlockSize[left], Index[right], BlockSize[right], arr);
             BlockIndices[j] = left;
             BlockSize[j] = BlockSize[left] + BlockSize[right];
-            mutex.unlock();
           } else {
-            mutex.lock();
             BlockIndices[j] = left;
             BlockSize[j] = BlockSize[left];
-            mutex.unlock();
           }
         }
       });
