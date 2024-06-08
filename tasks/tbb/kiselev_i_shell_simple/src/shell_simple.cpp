@@ -65,7 +65,7 @@ bool KiselevTaskTBB::run() {
             BlockIndices[j + i] = left;
             BlockSize[j] = BlockSize[left] + BlockSize[right];
           } else {
-            BlockIndices[j + i] = left;
+            BlockIndices[j] = left;
             BlockSize[j] = BlockSize[left];
           }
         }
