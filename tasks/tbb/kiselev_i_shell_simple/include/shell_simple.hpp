@@ -25,7 +25,7 @@ class KiselevTaskTBB : public ppc::core::Task {
   bool IsSorted();
   static int exp(int arg, int exp);
   void FindThreadVariables();
-  void MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2);
+  void MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2, std::vector<int> array);
   void SeqSorter(int start, int end, std::vector<int> array);
 };
 }  // namespace Kiselev_tbb

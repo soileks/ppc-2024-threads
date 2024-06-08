@@ -1,5 +1,6 @@
 // Copyright 2024 Kiselev Igor
 #include "tbb/kiselev_i_shell_simple/include/shell_simple.hpp"
+
 #include <memory>
 
 #include "tbb/parallel_for.h"
@@ -60,7 +61,7 @@ bool KiselevTaskTBB::run() {
           int left = BlockIndices[j];
           int right = (j + i < ThreadNum) ? BlockIndices[j + i] : -1;
           if (right != -1) {
-            MergeBlocks(Index[left], BlockSize[left], Index[right], BlockSize[right]);
+            MergeBlocks(Index[left], BlockSize[left], Index[right], BlockSize[right], arr);
             BlockIndices[j] = left;
             BlockSize[j] = BlockSize[left] + BlockSize[right];
           } else {
@@ -95,7 +96,7 @@ bool KiselevTaskTBB::post_processing() {
   }
 }
 // Can do better
-void KiselevTaskTBB::MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2) {
+void KiselevTaskTBB::MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2, std::vector<int> array) {
   int *pTempArray = new int[BlockSize1 + BlockSize2];
   for (int i = BlockSize1 + BlockSize2 - 1; i >= 0; i--) {
     pTempArray[i] = 0;
@@ -105,23 +106,23 @@ void KiselevTaskTBB::MergeBlocks(int Index1, int BlockSize1, int Index2, int Blo
   int curr = 0;
   if (BlockSize1 == 0) {
     for (int i = 0; i < BlockSize2; i++) {
-      pTempArray[curr++] = arr[i2++];
+      pTempArray[curr++] = array[i2++];
     }
   } else if (BlockSize2 == 0) {
     for (int i = 0; i < BlockSize1; i++) {
-      pTempArray[curr++] = arr[i1++];
+      pTempArray[curr++] = array[i1++];
     }
   } else {
     while (i1 < Index1 + BlockSize1 && i2 < Index2 + BlockSize2) {
-      if (arr[i1] < arr[i2])
-        pTempArray[curr++] = arr[i1++];
+      if (array[i1] < array[i2])
+        pTempArray[curr++] = array[i1++];
       else
-        pTempArray[curr++] = arr[i2++];
+        pTempArray[curr++] = array[i2++];
     }
-    while (i1 < Index1 + BlockSize1) pTempArray[curr++] = arr[i1++];
-    while (i2 < Index2 + BlockSize2) pTempArray[curr++] = arr[i2++];
+    while (i1 < Index1 + BlockSize1) pTempArray[curr++] = array[i1++];
+    while (i2 < Index2 + BlockSize2) pTempArray[curr++] = array[i2++];
   }
-  for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTempArray[i];
+  for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTemparrayay[i];
   delete[] pTempArray;
 }
 
