@@ -2,9 +2,9 @@
 #ifndef SHELL_SIMPLE_HPP_INCLUDED
 #define SHELL_SIMPLE_HPP_INCLUDED
 #pragma once
+#include <tbb/tbb.h>
 
 #include <vector>
-#include <tbb/tbb.h>
 
 #include "core/task/include/task.hpp"
 

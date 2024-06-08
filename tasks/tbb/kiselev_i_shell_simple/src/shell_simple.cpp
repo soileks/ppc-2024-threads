@@ -1,8 +1,8 @@
 // Copyright 2024 Kiselev Igor
 #include "tbb/kiselev_i_shell_simple/include/shell_simple.hpp"
+#include <memory>
 
 #include "tbb/parallel_for.h"
-#include <memory>
 
 using namespace std::chrono_literals;
 

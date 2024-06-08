@@ -1,7 +1,7 @@
 // Copyright 2024 Kiselev Igor
 #include <gtest/gtest.h>
-#include <tbb/tbb.h>
 #include <oneapi/tbb.h>
+#include <tbb/tbb.h>
 
 #include <vector>
 
