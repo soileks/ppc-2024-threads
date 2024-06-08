@@ -57,7 +57,7 @@ bool KiselevTaskTBB::run() {
     });
     for (int i = 1; i < ThreadNum; i *= 2) {
       tbb::parallel_for(tbb::blocked_range<int>(0, ThreadNum), [&](const tbb::blocked_range<int> &range {
-        for (int j = 0; j < ThreadNum; j += 2 * i) {
+        for (int j = range.begin(); j < range.end(); j += 2 * i) {
           int left = BlockIndices[j];
           int right = (j + i < ThreadNum) ? BlockIndices[j + i] : -1;
           if (right != -1) {
@@ -69,7 +69,7 @@ bool KiselevTaskTBB::run() {
             BlockSize[j] = BlockSize[left];
           }
         }
-      });
+      }
     }
     delete[] Index;
     delete[] BlockSize;
