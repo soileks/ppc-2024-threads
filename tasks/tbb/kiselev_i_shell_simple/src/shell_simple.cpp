@@ -69,7 +69,7 @@ bool KiselevTaskTBB::run() {
             BlockSize[j] = BlockSize[left];
           }
         }
-      }
+      });
     }
     delete[] Index;
     delete[] BlockSize;
