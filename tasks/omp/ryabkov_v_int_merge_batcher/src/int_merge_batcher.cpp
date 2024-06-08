@@ -26,12 +26,11 @@ void radix_sort(std::vector<int>& arr, int exp) {
     count[i] += count[i - 1];
   }
 
-  std::vector<int> temp_count(count);
 #pragma omp parallel for
   for (std::size_t i = 0; i < n; ++i) {
     int index = (arr[n - 1 - i] / exp) % 10;
 #pragma omp critical
-    { output[--temp_count[index]] = arr[n - 1 - i]; }
+    { output[--count[index]] = arr[n - 1 - i]; }
   }
 
 #pragma omp parallel for
@@ -49,12 +48,13 @@ void radix_sort(std::vector<int>& arr) {
 
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
+  std::size_t n1 = a1.size(), n2 = a2.size();
 #pragma omp parallel for
   for (std::size_t k = 0; k < merged.size(); ++k) {
     std::size_t i = k / 2;
     std::size_t j = k - i;
 
-    if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
+    if (i < n1 && (j >= n2 || a1[i] < a2[j])) {
       merged[k] = a1[i++];
     } else {
       merged[k] = a2[j++];
