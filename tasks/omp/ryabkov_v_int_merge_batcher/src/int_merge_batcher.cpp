@@ -7,34 +7,21 @@ void radix_sort(std::vector<int>& arr, int exp) {
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
 
-#pragma omp parallel
-  {
-    std::vector<int> local_count(10, 0);
-#pragma omp for
-    for (int i = 0; i < static_cast<int>(n); ++i) {
-      local_count[(arr[i] / exp) % 10]++;
-    }
-#pragma omp critical
-    {
-      for (int i = 0; i < 10; ++i) {
-        count[i] += local_count[i];
-      }
-    }
+#pragma omp parallel for
+  for (std::size_t i = 0; i < n; ++i) {
+    count[(arr[i] / exp) % 10]++;
   }
 
   for (int i = 1; i < 10; i++) {
     count[i] += count[i - 1];
   }
 
-#pragma omp parallel for
-  for (int i = 0; i < static_cast<int>(n); ++i) {
-    int index = (arr[n - 1 - i] / exp) % 10;
-#pragma omp critical
-    { output[--count[index]] = arr[n - 1 - i]; }
+  for (int i = n - 1; i >= 0; --i) {
+    output[--count[(arr[i] / exp) % 10]] = arr[i];
   }
 
 #pragma omp parallel for
-  for (int i = 0; i < static_cast<int>(n); ++i) {
+  for (std::size_t i = 0; i < n; ++i) {
     arr[i] = output[i];
   }
 }
@@ -48,11 +35,12 @@ void radix_sort(std::vector<int>& arr) {
 
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
+
 #pragma omp parallel for
-  for (int k = 0; k < static_cast<int>(merged.size()); ++k) {
-    int i = k / 2;
-    int j = k - i;
-    if (i < static_cast<int>(a1.size()) && (j >= static_cast<int>(a2.size()) || a1[i] < a2[j])) {
+  for (std::size_t k = 0; k < merged.size(); ++k) {
+    std::size_t i = k / 2;
+    std::size_t j = k - i;
+    if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
       merged[k] = a1[i];
     } else {
       merged[k] = a2[j];
@@ -66,7 +54,7 @@ std::vector<int> BatchSort(std::vector<int>& a1, std::vector<int>& a2) {
 
   for (size_t bit = 0; bit < sizeof(int) * 8; bit++) {
 #pragma omp parallel for
-    for (int i = 0; i < static_cast<int>(merged.size()) / 2; ++i) {
+    for (std::size_t i = 0; i < merged.size() / 2; ++i) {
       if (((i % 2 == 0) && ((merged[2 * i] >> bit) & 1) != 0) ||
           ((i % 2 != 0) && ((merged[2 * i + 1] >> bit) & 1) != 0)) {
         std::swap(merged[2 * i], merged[2 * i + 1]);
@@ -95,7 +83,7 @@ bool SeqBatcher::pre_processing() {
   a1.resize(inv.size() / 2);
   a2.resize(inv.size() / 2);
 
-  for (int i = 0; i < static_cast<int>(inv.size() / 2); ++i) {
+  for (std::size_t i = 0; i < inv.size() / 2; ++i) {
     a1[i] = inv[i];
     a2[i] = inv[inv.size() / 2 + i];
   }
