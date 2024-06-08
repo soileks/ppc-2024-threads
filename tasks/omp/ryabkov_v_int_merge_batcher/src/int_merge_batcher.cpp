@@ -74,15 +74,15 @@ bool ryabkov_batcher::SeqBatcher::pre_processing() {
 
   inv.resize(taskData->inputs_count[0]);
   int* tmp_ptr_A = reinterpret_cast<int*>(taskData->inputs[0]);
-  std::copy(tmp_ptr_A, tmp_ptr_A + taskData->inputs_count[0], inv.begin());
-
-  a1.resize(inv.size() / 2);
-  a2.resize(inv.size() / 2);
 
 #pragma omp parallel for
-  for (std::size_t i = 0; i < inv.size() / 2; ++i) {
-    a1[i] = inv[i];
-    a2[i] = inv[inv.size() / 2 + i];
+  for (std::size_t i = 0; i < taskData->inputs_count[0]; ++i) {
+#pragma omp critical
+    {
+      inv[i] = tmp_ptr_A[i];
+      a1.push_back(inv[i]);
+      a2.push_back(inv[taskData->inputs_count[0] / 2 + i]);
+    }
   }
 
   return true;
@@ -104,6 +104,12 @@ bool ryabkov_batcher::SeqBatcher::run() {
 bool ryabkov_batcher::SeqBatcher::post_processing() {
   internal_order_test();
 
-  std::copy(result.begin(), result.end(), reinterpret_cast<int*>(taskData->outputs[0]));
+  int* tmp_ptr_A = reinterpret_cast<int*>(taskData->outputs[0]);
+#pragma omp parallel for
+  for (std::size_t i = 0; i < result.size(); ++i) {
+#pragma omp critical
+    { tmp_ptr_A[i] = result[i]; }
+  }
+
   return true;
 }
