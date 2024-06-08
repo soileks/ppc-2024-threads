@@ -96,7 +96,7 @@ bool KiselevTaskTBB::post_processing() {
   }
 }
 // Can do better
-void KiselevTaskTBB::MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2, std::vector<int> array) {
+void KiselevTaskTBB::MergeBlocks(int Index1, int BlockSize1, int Index2, int BlockSize2, std::vector<int> &array) {
   int *pTempArray = new int[BlockSize1 + BlockSize2];
   for (int i = BlockSize1 + BlockSize2 - 1; i >= 0; i--) {
     pTempArray[i] = 0;
@@ -152,7 +152,7 @@ void KiselevTaskTBB::FindThreadVariables() {
   }
 }
 
-void KiselevTaskTBB::SeqSorter(int start, int end, std::vector<int> array) {
+void KiselevTaskTBB::SeqSorter(int start, int end, std::vector<int> &array) {
   int n = end - start;
   for (int i = 1; i < n; i++) {
     int j = i - 1;
