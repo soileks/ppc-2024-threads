@@ -9,6 +9,7 @@
 #include <iterator>
 #include <random>
 #include <vector>
+#include <mutex>
 
 #include "core/task/include/task.hpp"
 

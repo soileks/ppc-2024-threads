@@ -2,20 +2,21 @@
 
 namespace ryabkov_batcher {
 
+namespace ryabkov_batcher {
+
 void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
+  std::mutex count_mutex;
 
 #pragma omp parallel
   {
     std::vector<int> local_count(10, 0);
-
 #pragma omp for
     for (std::size_t i = 0; i < n; ++i) {
       local_count[(arr[i] / exp) % 10]++;
     }
-
 #pragma omp critical
     {
       for (int i = 0; i < 10; ++i) {
@@ -29,10 +30,10 @@ void radix_sort(std::vector<int>& arr, int exp) {
   }
 
 #pragma omp parallel for
-  for (std::size_t i = n; i-- > 0;) {
-    int index = (arr[i] / exp) % 10;
+  for (std::size_t i = 0; i < n; ++i) {
+    int index = (arr[n - 1 - i] / exp) % 10;
 #pragma omp critical
-    output[--count[index]] = arr[i];
+    { output[--count[index]] = arr[n - 1 - i]; }
   }
 
 #pragma omp parallel for
@@ -50,21 +51,14 @@ void radix_sort(std::vector<int>& arr) {
 
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
-
 #pragma omp parallel for
   for (std::size_t k = 0; k < merged.size(); ++k) {
-    std::size_t i = 0, j = 0;
-    for (std::size_t m = 0; m < k; ++m) {
-      if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
-        ++i;
-      } else {
-        ++j;
-      }
-    }
+    std::size_t i = k / 2;
+    std::size_t j = k - i;
     if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
-      merged[k] = a1[i++];
+      merged[k] = a1[i];
     } else {
-      merged[k] = a2[j++];
+      merged[k] = a2[j];
     }
   }
   return merged;
