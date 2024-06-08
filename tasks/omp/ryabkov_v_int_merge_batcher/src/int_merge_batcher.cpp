@@ -2,8 +2,6 @@
 
 namespace ryabkov_batcher {
 
-namespace ryabkov_batcher {
-
 void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
