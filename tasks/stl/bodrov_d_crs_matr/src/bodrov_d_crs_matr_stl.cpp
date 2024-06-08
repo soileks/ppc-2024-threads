@@ -9,6 +9,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <functional>
 
 using namespace std::chrono_literals;
 using namespace bodrov_stl;
