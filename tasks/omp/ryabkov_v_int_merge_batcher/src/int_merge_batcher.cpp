@@ -44,15 +44,15 @@ void radix_sort(std::vector<int>& arr) {
 
 std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>& a2) {
   std::vector<int> merged(a1.size() + a2.size());
-  std::size_t i = 0;
-  std::size_t j = 0;
+  std::size_t n1 = a1.size();
+  std::size_t n2 = a2.size();
 
 #pragma omp parallel
   {
-    std::size_t local_i, local_j;
+    std::size_t local_i = 0, local_j = 0;
 #pragma omp for
     for (std::size_t k = 0; k < merged.size(); ++k) {
-      if (local_i < a1.size() && (local_j >= a2.size() || a1[local_i] < a2[local_j])) {
+      if (local_i < n1 && (local_j >= n2 || a1[local_i] < a2[local_j])) {
         merged[k] = a1[local_i++];
       } else {
         merged[k] = a2[local_j++];
