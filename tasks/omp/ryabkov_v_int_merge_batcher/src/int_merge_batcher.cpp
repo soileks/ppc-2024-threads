@@ -9,6 +9,7 @@ void radix_sort(std::vector<int>& arr, int exp) {
 
 #pragma omp parallel for
   for (std::size_t i = 0; i < n; ++i) {
+#pragma omp atomic
     count[(arr[i] / exp) % 10]++;
   }
 
