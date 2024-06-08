@@ -122,7 +122,7 @@ void KiselevTaskTBB::MergeBlocks(int Index1, int BlockSize1, int Index2, int Blo
     while (i1 < Index1 + BlockSize1) pTempArray[curr++] = array[i1++];
     while (i2 < Index2 + BlockSize2) pTempArray[curr++] = array[i2++];
   }
-  for (int i = 0; i < BlockSize1 + BlockSize2; i++) arr[Index1 + i] = pTemparrayay[i];
+  for (int i = 0; i < BlockSize1 + BlockSize2; i++) array[Index1 + i] = pTempArray[i];
   delete[] pTempArray;
 }
 
