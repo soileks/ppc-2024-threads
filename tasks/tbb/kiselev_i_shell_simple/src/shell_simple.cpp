@@ -52,7 +52,7 @@ bool KiselevTaskTBB::run() {
     }
     tbb::parallel_for(0, ThreadNum, [&](int i) { SeqSorter(Index[i], Index[i] + BlockSize[i], arr); });
     for (int i = 1; i < ThreadNum; i *= 2) {
-      tbb::parallel_for(0, ThreadNum, [&](int j) {
+      tbb::parallel_for(0, ThreadNum / (2 * i), [&](int j) {
         int left = BlockIndices[j * 2 * i];
         int right = (j * 2 * i + i < ThreadNum) ? BlockIndices[j * 2 * i + i] : -1;
         if (right != -1) {
