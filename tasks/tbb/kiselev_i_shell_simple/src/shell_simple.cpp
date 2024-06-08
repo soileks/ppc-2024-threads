@@ -39,7 +39,7 @@ bool KiselevTaskTBB::run() {
     internal_order_test();
     int n = (int)arr.size();
     FindThreadVariables();
-    //  if (ThreadNum == 0) return false;
+    if (ThreadNum == 0) return false;
     int *Index = new int[ThreadNum + 1];
     int *BlockSize = new int[ThreadNum];
     int *BlockIndices = new int[ThreadNum];
@@ -50,9 +50,7 @@ bool KiselevTaskTBB::run() {
       BlockSize[i] = Index[i + 1] - Index[i];
       BlockIndices[i] = i;
     }
-    tbb::parallel_for(0, ThreadNum, [&](int i) {
-      SeqSorter(Index[i], Index[i] + BlockSize[i], arr);
-    });
+    tbb::parallel_for(0, ThreadNum, [&](int i) { SeqSorter(Index[i], Index[i] + BlockSize[i], arr); });
     for (int i = 1; i < ThreadNum; i *= 2) {
       tbb::parallel_for(0, ThreadNum, [&](int j) {
         int left = BlockIndices[j * 2 * i];
@@ -139,7 +137,7 @@ int KiselevTaskTBB::exp(int arg, int exp) {
 }
 
 void KiselevTaskTBB::FindThreadVariables() {
-  ThreadNum = 16;
+  ThreadNum = 8;
   int helper = 1;
   DimSize = 1;
   while (ThreadNum >= helper) {
