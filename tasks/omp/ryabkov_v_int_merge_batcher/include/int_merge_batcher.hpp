@@ -9,11 +9,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "tbb/blocked_range.h"
-#include "tbb/mutex.h"
-#include "tbb/parallel_for.h"
-#include "tbb/parallel_invoke.h"
-#include "tbb/task_group.h"
+#include <omp.h>
 
 namespace ryabkov_batcher {
 class SeqBatcher : public ppc::core::Task {
