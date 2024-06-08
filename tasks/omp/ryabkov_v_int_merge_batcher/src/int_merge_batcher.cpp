@@ -10,20 +10,20 @@ void radix_sort(std::vector<int>& arr, int exp) {
 #pragma omp parallel
   {
     std::vector<int> local_count(10, 0);
-#pragma omp for
+#pragma omp for nowait
     for (std::size_t i = 0; i < n; i++) {
       local_count[(arr[i] / exp) % 10]++;
     }
-
 #pragma omp critical
-    for (int i = 0; i < 10; i++) {
-      count[i] += local_count[i];
+    {
+      for (int i = 0; i < 10; i++) {
+        count[i] += local_count[i];
+      }
     }
   }
 
   for (int i = 1; i < 10; i++) count[i] += count[i - 1];
 
-#pragma omp parallel for
   for (int i = static_cast<int>(n) - 1; i >= 0; i--) {
     output[count[(arr[i] / exp) % 10] - 1] = arr[i];
     count[(arr[i] / exp) % 10]--;
@@ -46,6 +46,7 @@ std::vector<int> batch_merge(const std::vector<int>& a1, const std::vector<int>&
   std::size_t i = 0;
   std::size_t j = 0;
 
+#pragma omp parallel for
   for (std::size_t k = 0; k < merged.size(); ++k) {
     if (i < a1.size() && (j >= a2.size() || a1[i] < a2[j])) {
       merged[k] = a1[i++];

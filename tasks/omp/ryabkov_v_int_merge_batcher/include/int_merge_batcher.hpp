@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <omp.h>
 #include <algorithm>
 #include <chrono>
 #include <iterator>
@@ -9,7 +10,6 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include <omp.h>
 
 namespace ryabkov_batcher {
 class SeqBatcher : public ppc::core::Task {
