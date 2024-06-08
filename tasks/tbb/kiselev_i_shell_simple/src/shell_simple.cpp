@@ -69,6 +69,7 @@ bool KiselevTaskTBB::run() {
           }
         }
       });
+    }
     delete[] Index;
     delete[] BlockSize;
     delete[] BlockIndices;
