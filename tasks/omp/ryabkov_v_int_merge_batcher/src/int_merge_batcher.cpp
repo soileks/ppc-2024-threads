@@ -6,7 +6,6 @@ void radix_sort(std::vector<int>& arr, int exp) {
   const std::size_t n = arr.size();
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
-  std::mutex count_mutex;
 
 #pragma omp parallel
   {
