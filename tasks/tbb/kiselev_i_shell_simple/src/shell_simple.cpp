@@ -57,9 +57,9 @@ bool KiselevTaskTBB::run() {
     });
     for (int i = 1; i < ThreadNum; i *= 2) {
       int difference = ThreadNum / (i * 2);
-      tbb::parallel_for(tbb::blocked_range<int>(0, i), [&](const tbb::blocked_range<int> &range) {
-        for (int j = 0; j < ThreadNum - difference; j+=i) {
-          if (j + difference > ThreadNum) break;
+      tbb::parallel_for(tbb::blocked_range<int>(0, difference), [&](const tbb::blocked_range<int> &range) {
+        for (int j = range.begin(); j < range.end(); j += i) {
+          if (j + difference >= ThreadNum) break;
           MergeBlocks(Index[j], BlockSize[j], Index[j + difference], BlockSize[j + difference], arr);
         }
       });
