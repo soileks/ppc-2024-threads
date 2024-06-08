@@ -10,7 +10,7 @@ void radix_sort(std::vector<int>& arr, int exp) {
 #pragma omp parallel
   {
     std::vector<int> local_count(10, 0);
-#pragma omp for nowait
+#pragma omp for
     for (std::size_t i = 0; i < n; i++) {
       local_count[(arr[i] / exp) % 10]++;
     }
@@ -24,8 +24,10 @@ void radix_sort(std::vector<int>& arr, int exp) {
 
   for (int i = 1; i < 10; i++) count[i] += count[i - 1];
 
+#pragma omp parallel for
   for (int i = static_cast<int>(n) - 1; i >= 0; i--) {
     output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+#pragma omp atomic
     count[(arr[i] / exp) % 10]--;
   }
 
