@@ -17,7 +17,7 @@ class LinearGaussianFiltering : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-  LinearFiltering(int);
+  void LinearFiltering(int);
   int getPixel(int, int);
   void setPixel(int, int, int);
 

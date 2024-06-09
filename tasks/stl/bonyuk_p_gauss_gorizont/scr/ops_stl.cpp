@@ -11,11 +11,11 @@ std::vector<int> getImage(int n, int m, uint8_t min, uint8_t max) {
   std::random_device dev;
   std::mt19937 gen(dev());
   std::uniform_int_distribution<int> distrib(min, max);
-  std::vector<int> picture(size);
+  std::vector<int> image(size);
   for (int i = 0; i < size; i++) {
-    picture[i] = static_cast<int>(distrib(gen));
+	  image[i] = static_cast<int>(distrib(gen));
   }
-  return picture;
+  return image;
 }
 
 bool LinearGaussianFiltering::pre_processing() {
