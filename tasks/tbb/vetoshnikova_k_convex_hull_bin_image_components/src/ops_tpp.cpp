@@ -204,7 +204,10 @@ bool vetoshnikova_tbb::ConstructingConvexHullTBB::run() {
   });
 
   for (int i = 0; i < numComponents; ++i) {
-    int sz = convexHulls[i].size() for (int j = 0; j < sz; ++j) { hull.emplace_back(convexHulls[i][j]); }
+    int sz = convexHulls[i].size();
+    for (int j = 0; j < sz; ++j) {
+      hull.emplace_back(convexHulls[i][j]);
+    }
   }
 
   for (int i = 0; i < numComponents; ++i) {
