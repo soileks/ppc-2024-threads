@@ -21,6 +21,7 @@ class RecursivePtr {
     while (p->getParent() != nullptr) {
       p = p->getParent();
     }
+    if (this == p) return;
     if (ptr == nullptr) {
       ptr = p;
       value = 0;
@@ -75,14 +76,15 @@ bool imgMarkingOmp::post_processing() {
 void imgMarkingOmp::imgMarking() {
   std::vector<std::vector<RecursivePtr *>> ptrMap;
   ptrMap.resize(h);
-
   auto *lock = new omp_lock_t;
   omp_init_lock(lock);
 
-#pragma omp parallel num_threads(omp_get_thread_limit() > static_cast<int>(h) ? 1 : omp_get_thread_limit())
+  if (omp_get_max_threads() > static_cast<int>(h)) omp_set_num_threads(h);
+
+#pragma omp parallel
   {
 #pragma omp for
-    for (size_t i = 0; i < h; ++i) ptrMap[i].resize(w, nullptr);
+    for (int i = 0; i < static_cast<int>(h); ++i) ptrMap[i].resize(w, nullptr);
 
     std::list<uint32_t> localVec;
 
@@ -91,7 +93,7 @@ void imgMarkingOmp::imgMarking() {
     size_t h1;
     if (omp_get_thread_num() != 0) {
       h0 = d * (omp_get_thread_num() - 1);
-      h1 = d * (omp_get_thread_num()) - 1;
+      h1 = d * (omp_get_thread_num());
     } else {
       h0 = d * (omp_get_num_threads() - 1);
       h1 = h;
@@ -148,7 +150,7 @@ void imgMarkingOmp::imgMarking() {
 
 #pragma omp barrier
     if (omp_get_thread_num() != 0) {
-      for (size_t j = 0; j < w; ++j) {
+      for (int j = 0; j < static_cast<int>(w); ++j) {
         if (src[h1][j] == 0) {
           if (ptrMap[h1 - 1][j] != nullptr && ptrMap[h1][j] != nullptr &&
               ptrMap[h1 - 1][j]->getValue() != ptrMap[h1][j]->getValue()) {
@@ -159,22 +161,23 @@ void imgMarkingOmp::imgMarking() {
         }
       }
     }
-
-    omp_destroy_lock(lock);
-    delete lock;
+#pragma omp barrier
 
 #pragma omp for
-    for (size_t i = 0; i < h; ++i)
+    for (int i = 0; i < static_cast<int>(h); ++i)
       for (size_t j = 0; j < w; ++j)
         if (ptrMap[i][j] != nullptr) dst[i][j] = ptrMap[i][j]->getValue();
+
 #pragma omp for
-    for (size_t i = 0; i < h; ++i)
+    for (int i = 0; i < static_cast<int>(h); ++i)
       for (size_t j = 0; j < w; ++j)
         if (ptrMap[i][j] != nullptr) delete ptrMap[i][j];
 
     // if (ptr != nullptr) delete ptr;
     // if (localPtr != nullptr) delete localPtr;
   }
+  omp_destroy_lock(lock);
+  delete lock;
 }
 
 }  // namespace KruglovOmpTask
