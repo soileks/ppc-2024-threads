@@ -19,7 +19,7 @@ TEST(nogin_d_radix_double_batcher_seq, array) {
   std::sort(result.begin(), result.end());
 
   // Create Task
-  RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisSeq::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -50,7 +50,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_array_2) {
   std::sort(result.begin(), result.end());
 
   // Create Task
-  RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisSeq::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -76,7 +76,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_empty) {
   std::sort(result.begin(), result.end());
 
   // Create Task
-  RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisSeq::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -102,7 +102,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_one_number) {
   std::sort(result.begin(), result.end());
 
   // Create Task
-  RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisSeq::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -128,7 +128,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_with_negative) {
   std::sort(result.begin(), result.end());
 
   // Create Task
-  RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisSeq::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();
@@ -140,7 +140,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_with_negative) {
 
 TEST(nogin_d_radix_double_batcher_seq, test_random) {
   // Create data
-  std::vector<double> array = randomVector(1000, -1000000, 1000000);
+  std::vector<double> array = NoginDenisSeq::randomVector(1000, -1000000, 1000000);
   std::vector<double> out(array.size());
 
   // Create TaskData
@@ -154,7 +154,7 @@ TEST(nogin_d_radix_double_batcher_seq, test_random) {
   std::sort(result.begin(), result.end());
 
   // Create Task
-  RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
+  NoginDenisSeq::RadixSortDoubleBatcherSequential testRDSBSequential(RSDBDataSeq);
   ASSERT_EQ(testRDSBSequential.validation(), true);
   testRDSBSequential.pre_processing();
   testRDSBSequential.run();

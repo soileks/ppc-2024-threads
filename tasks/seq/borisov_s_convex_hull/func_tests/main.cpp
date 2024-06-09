@@ -24,7 +24,7 @@ TEST(borisov_s_convex_hull_sequential, no_point) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  ConvexHullSequential convexHullSequential(taskDataSeq);
+  BorisovSaveliySEQ::ConvexHullSequential convexHullSequential(taskDataSeq);
   ASSERT_EQ(convexHullSequential.validation(), true);
   convexHullSequential.pre_processing();
   convexHullSequential.run();
@@ -50,7 +50,7 @@ TEST(borisov_s_convex_hull_sequential, single_point) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  ConvexHullSequential convexHullSequential(taskDataSeq);
+  BorisovSaveliySEQ::ConvexHullSequential convexHullSequential(taskDataSeq);
   ASSERT_EQ(convexHullSequential.validation(), true);
   convexHullSequential.pre_processing();
   convexHullSequential.run();
@@ -76,7 +76,7 @@ TEST(borisov_s_convex_hull_sequential, two_points) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  ConvexHullSequential convexHullSequential(taskDataSeq);
+  BorisovSaveliySEQ::ConvexHullSequential convexHullSequential(taskDataSeq);
   ASSERT_EQ(convexHullSequential.validation(), true);
   convexHullSequential.pre_processing();
   convexHullSequential.run();
@@ -104,7 +104,7 @@ TEST(borisov_s_convex_hull_sequential, corner_to_triangle) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  ConvexHullSequential convexHullSequential(taskDataSeq);
+  BorisovSaveliySEQ::ConvexHullSequential convexHullSequential(taskDataSeq);
   ASSERT_EQ(convexHullSequential.validation(), true);
   convexHullSequential.pre_processing();
   convexHullSequential.run();
@@ -132,7 +132,7 @@ TEST(borisov_s_convex_hull_sequential, frame_to_square) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  ConvexHullSequential convexHullSequential(taskDataSeq);
+  BorisovSaveliySEQ::ConvexHullSequential convexHullSequential(taskDataSeq);
   ASSERT_EQ(convexHullSequential.validation(), true);
   convexHullSequential.pre_processing();
   convexHullSequential.run();
@@ -162,7 +162,7 @@ TEST(borisov_s_convex_hull_sequential, cross_to_star) {
   taskDataSeq->outputs_count.emplace_back(height);
 
   // Create Task
-  ConvexHullSequential convexHullSequential(taskDataSeq);
+  BorisovSaveliySEQ::ConvexHullSequential convexHullSequential(taskDataSeq);
   ASSERT_EQ(convexHullSequential.validation(), true);
   convexHullSequential.pre_processing();
   convexHullSequential.run();
