@@ -6,7 +6,6 @@
 #include <random>
 #include <thread>
 
-
 std::vector<int> getImage(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
   std::random_device dev;
