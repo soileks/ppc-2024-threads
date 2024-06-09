@@ -8,12 +8,12 @@
 
 std::vector<int> getImage(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
-  std::random_device dev;
-  std::mt19937 gen(dev());
-  std::uniform_int_distribution<int> distrib(min, max);
+  std::random_device device;
+  std::mt19937 mt(device());
+  std::uniform_int_distribution<int> distribut(min, max);
   std::vector<int> image(size);
   for (int i = 0; i < size; i++) {
-	  image[i] = static_cast<int>(distrib(gen));
+    image[i] = static_cast<int>(distribut(mt));
   }
   return image;
 }
