@@ -195,15 +195,17 @@ bool vetoshnikova_tbb::ConstructingConvexHullTBB::run() {
   tbb::parallel_for(tbb::blocked_range<int>(0, numComponents), [&](const tbb::blocked_range<int>& range) {
     for (int i = range.begin(); i != range.end(); ++i) {
       std::vector<int> c = convexHull(PointsComponents[i]);
-      convexHulls[i].reserve(c.size());
-      for (int j = 0; j < c.size(); ++j) {
+      int size_hull = c.size();
+      convexHulls[i].reserve(size_hull);
+      for (int j = 0; j < size_hull; ++j) {
         convexHulls[i].emplace_back(c[j]);
       }
     }
   });
 
   for (int i = 0; i < numComponents; ++i) {
-    for (int j = 0; j < convexHulls[i].size(); ++j) {
+    int sz = convexHulls[i].size()
+    for (int j = 0; j < sz; ++j) {
       hull.emplace_back(convexHulls[i][j]);
     }
   }
