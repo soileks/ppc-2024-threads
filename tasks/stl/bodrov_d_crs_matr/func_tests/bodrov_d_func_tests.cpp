@@ -7,7 +7,7 @@
 #include "stl/bodrov_d_crs_matr/include/bodrov_d_crs_matr_stl.hpp"
 using namespace bodrov_stl;
 
-TEST(bodrov_d_crs_matr_omp, test_identity_matrix) {
+TEST(bodrov_d_crs_matr_stl, test_identity_matrix) {
   SparseMatrixBodrovOMP A;
   A.Rows = 3;
   A.Columns = 3;
@@ -73,7 +73,7 @@ TEST(bodrov_d_crs_matr_omp, test_identity_matrix) {
   }
 }
 
-TEST(bodrov_d_crs_matr_omp, test_zero_matrix) {
+TEST(bodrov_d_crs_matr_stl, test_zero_matrix) {
   SparseMatrixBodrovOMP A;
   A.Rows = 3;
   A.Columns = 3;
@@ -139,7 +139,7 @@ TEST(bodrov_d_crs_matr_omp, test_zero_matrix) {
   }
 }
 
-TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
+TEST(bodrov_d_crs_matr_stl, test_large_matrix) {
   SparseMatrixBodrovOMP A;
   A.Rows = 1000;
   A.Columns = 1000;
@@ -217,7 +217,7 @@ TEST(bodrov_d_crs_matr_omp, test_large_matrix) {
   }
 }
 
-TEST(bodrov_d_crs_matr_omp, test_non_square_matrix) {
+TEST(bodrov_d_crs_matr_stl, test_non_square_matrix) {
   SparseMatrixBodrovOMP A;
   A.Rows = 3;
   A.Columns = 2;
@@ -283,7 +283,7 @@ TEST(bodrov_d_crs_matr_omp, test_non_square_matrix) {
   }
 }
 
-TEST(bodrov_d_crs_matr_omp, test_mixed_values_matrix) {
+TEST(bodrov_d_crs_matr_stl, test_mixed_values_matrix) {
   SparseMatrixBodrovOMP A;
   A.Rows = 3;
   A.Columns = 3;
