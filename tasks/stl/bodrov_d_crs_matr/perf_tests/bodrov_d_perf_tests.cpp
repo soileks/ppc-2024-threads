@@ -41,8 +41,8 @@ SparseMatrixBodrovOMP generate_random_matrix_bodrov_stl(int n, int m, double pro
 }
 
 TEST(bodrov_d_crs_matr_stl, test_pipeline_run) {
-  SparseMatrixBodrovOMP A = generate_random_matrix1(100, 100, 0.6, 4113);
-  SparseMatrixBodrovOMP B = generate_random_matrix1(100, 100, 0.6, 2134);
+  SparseMatrixBodrovOMP A = generate_random_matrix_bodrov_stl(100, 100, 0.6, 4113);
+  SparseMatrixBodrovOMP B = generate_random_matrix_bodrov_stl(100, 100, 0.6, 2134);
   SparseMatrixBodrovOMP Result;
 
   // Create TaskData
@@ -74,8 +74,8 @@ TEST(bodrov_d_crs_matr_stl, test_pipeline_run) {
 }
 
 TEST(bodrov_d_crs_matr_stl, test_task_run) {
-  SparseMatrixBodrovOMP A = generate_random_matrix1(100, 100, 0.6, 4113);
-  SparseMatrixBodrovOMP B = generate_random_matrix1(100, 100, 0.6, 2134);
+  SparseMatrixBodrovOMP A = generate_random_matrix_bodrov_stl(100, 100, 0.6, 4113);
+  SparseMatrixBodrovOMP B = generate_random_matrix_bodrov_stl(100, 100, 0.6, 2134);
   SparseMatrixBodrovOMP Result;
 
   // Create TaskData
