@@ -1,8 +1,8 @@
 // Copyright 2024 Kiselev Igor
 #include "stl/kiselev_i_shell_simple/include/shell_simple.hpp"
 
-#include <memory>
 #include <execution>
+#include <memory>
 
 using namespace std::chrono_literals;
 
@@ -53,10 +53,10 @@ bool KiselevTaskSTL::run() {
     for (int i = 0; i < ThreadNum; i++) {
       helper[i] = i;
     }
-    std::for_each_n(std::execution::par, helper.begin(), ThreadNum,
+    std::for_each_n(helper.begin(), ThreadNum,
                     [&](int i) { SeqSorter(Index[i], Index[i] + BlockSize[i], arr); });
     for (int i = 1; i < ThreadNum; i *= 2) {
-      std::for_each_n(std::execution::par, helper.begin(), ThreadNum / (2 * i), [&](int j) {
+      std::for_each_n(helper.begin(), ThreadNum / (2 * i), [&](int j) {
         int left = BlockIndices[j * 2 * i];
         int right = (j * 2 * i + i < ThreadNum) ? BlockIndices[j * 2 * i + i] : -1;
         if (right != -1) {
