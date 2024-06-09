@@ -11,7 +11,7 @@
 
 using namespace bodrov_stl;
 
-SparseMatrixBodrovOMP generate_random_matrix1(int n, int m, double proba, int seed) {
+SparseMatrixBodrovOMP generate_random_matrix_bodrov_stl(int n, int m, double proba, int seed) {
   std::mt19937 gen(seed);
   std::uniform_real_distribution<double> random(-2.0, 2.0);
   std::bernoulli_distribution bernoulli(proba);
@@ -40,7 +40,7 @@ SparseMatrixBodrovOMP generate_random_matrix1(int n, int m, double proba, int se
   return result;
 }
 
-TEST(bodrov_d_crs_matr_tbb, test_pipeline_run) {
+TEST(bodrov_d_crs_matr_stl, test_pipeline_run) {
   SparseMatrixBodrovOMP A = generate_random_matrix1(100, 100, 0.6, 4113);
   SparseMatrixBodrovOMP B = generate_random_matrix1(100, 100, 0.6, 2134);
   SparseMatrixBodrovOMP Result;
@@ -73,7 +73,7 @@ TEST(bodrov_d_crs_matr_tbb, test_pipeline_run) {
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
 
-TEST(bodrov_d_crs_matr_tbb, test_task_run) {
+TEST(bodrov_d_crs_matr_stl, test_task_run) {
   SparseMatrixBodrovOMP A = generate_random_matrix1(100, 100, 0.6, 4113);
   SparseMatrixBodrovOMP B = generate_random_matrix1(100, 100, 0.6, 2134);
   SparseMatrixBodrovOMP Result;
