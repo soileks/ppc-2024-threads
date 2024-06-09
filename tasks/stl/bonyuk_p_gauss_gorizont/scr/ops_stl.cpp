@@ -67,7 +67,7 @@ void LinearGaussianFiltering::LinearFiltering(int row) {
       }
     }
     sum = std::min(sum, 255);
-    setPixel(i, j, sum);
+    setPixel(row, j, sum);
   }
 }
 
