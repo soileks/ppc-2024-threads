@@ -9,14 +9,14 @@
 
 std::vector<int> getImage(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
-  std::random_device dev;
-  std::mt19937 gen(dev());
-  std::uniform_int_distribution<int> distrib(min, max);
-  std::vector<int> picture(size);
+  std::random_device device;
+  std::mt19937 mt(device());
+  std::uniform_int_distribution<int> distribut(min, max);
+  std::vector<int> image(size);
   for (int i = 0; i < size; i++) {
-    picture[i] = static_cast<int>(distrib(gen));
+    image[i] = static_cast<int>(distribut(mt));
   }
-  return picture;
+  return image;
 }
 
 bool LinearGaussianFiltering::pre_processing() {
@@ -44,9 +44,10 @@ bool LinearGaussianFiltering::run() {
   std::vector<int> filteredImage(input.size(), 0);
   std::vector<int> gauss_kernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
   int kSize = 3;
+  int sum;
   tbb::parallel_for(0, height, 1, [&](int i) {
-    for (int j = 0; j < width; j++) {
-      int sum = 0;
+    for (int j = 0; j < width; ++j) {
+      sum = 0;
       for (int m = 0; m < kSize; ++m) {
         for (int n = 0; n < kSize; ++n) {
           int row = i + m - kSize / 2;
