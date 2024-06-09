@@ -66,7 +66,7 @@ bool LinearGaussianFiltering::run() {
 
 bool LinearGaussianFiltering::post_processing() {
   internal_order_test();
-  for (int i = 0; i < height * width; i++) {
+  for (int i = 0; i < height * width; ++i) {
     reinterpret_cast<int *>(taskData->outputs[0])[i] = res[i];
   }
   return true;
