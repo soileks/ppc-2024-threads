@@ -62,7 +62,7 @@ void LinearGaussianFiltering::LinearFiltering(int row) {
         int rowOffset = row + m - kSize / 2;
         int colOffset = j + n - kSize / 2;
         if (rowOffset >= 0 && rowOffset < height && colOffset >= 0 && colOffset < width) {
-          sum += getPixel(rowOffset, colOffset) * gaussianKernel[m * kernelSize + n];
+          sum += getPixel(rowOffset, colOffset) * gauss_kernel[m * kSize + n];
         }
       }
     }
