@@ -1,5 +1,5 @@
 // Copyright 2024 Ryabkov Vladislav
-#include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
+#include "omp/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
 namespace ryabkov_batcher {
 void radix_sort(std::vector<int>& arr, int exp) {
