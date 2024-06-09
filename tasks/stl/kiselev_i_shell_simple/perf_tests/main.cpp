@@ -9,7 +9,7 @@
 using namespace Kiselev_stl;
 
 TEST(kiselev_i_shell_simple_stl, test_pipeline_run) {
-  const int count = 10000;
+  const int count = 100000;
 
   // Create data
   std::vector<int> in(count, 0);
