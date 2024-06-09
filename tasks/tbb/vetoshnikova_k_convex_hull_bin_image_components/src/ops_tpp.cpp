@@ -237,7 +237,7 @@ void vetoshnikova_tbb::ConstructingConvexHullTBB::markingComponent() {
     for (int j = 0; j < w; ++j) {
       if (img[i][j] == 1) {
         { 
-         imgMark[i][j] = 1; 
+          imgMark[i][j] = 1; 
         }
       }
     }
