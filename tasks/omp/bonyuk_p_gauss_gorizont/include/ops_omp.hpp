@@ -16,12 +16,11 @@ class LinearGaussianFiltering : public ppc::core::Task {
   bool validation() override;
   bool run() override;
   bool post_processing() override;
-  int getPixel(int x, int y) { return input[x * width + y]; }
-  void setPixel(int x, int y, int value) { res[x * width + y] = value; }
+  int getPixel(int, int);
+  void setPixel(int, int, int);
 
  private:
+  int height{}, width{}, min{}, max{};
   std::vector<int> input = {};
   std::vector<int> res = {};
-  int height{}, width{};
-  int min{}, max{};
 };

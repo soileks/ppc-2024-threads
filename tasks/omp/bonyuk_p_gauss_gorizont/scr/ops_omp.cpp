@@ -7,14 +7,14 @@
 
 std::vector<int> getImage(int n, int m, uint8_t min, uint8_t max) {
   int size = n * m;
-  std::random_device dev;
-  std::mt19937 gen(dev());
-  std::uniform_int_distribution<int> distrib(min, max);
-  std::vector<int> picture(size);
+  std::random_device device;
+  std::mt19937 mt(device());
+  std::uniform_int_distribution<int> distribut(min, max);
+  std::vector<int> image(size);
   for (int i = 0; i < size; i++) {
-    picture[i] = static_cast<int>(distrib(gen));
+    image[i] = static_cast<int>(distribut(mt));
   }
-  return picture;
+  return image;
 }
 
 bool LinearGaussianFiltering::pre_processing() {
@@ -71,3 +71,7 @@ bool LinearGaussianFiltering::post_processing() {
   }
   return true;
 }
+
+int LinearGaussianFiltering::getPixel(int x, int y) { return input[x * width + y]; }
+
+void LinearGaussianFiltering::setPixel(int x, int y, int value) { res[x * width + y] = value; }
