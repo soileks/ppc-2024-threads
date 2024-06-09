@@ -32,7 +32,7 @@ void radix_sort(std::vector<int>& arr, int exp) {
   }
 
 #pragma omp parallel for
-  for (int i = 0; i < n; i++) { 
+  for (int i = 0; i < n; i++) {
     arr[i] = output[i];
   }
 }
@@ -96,7 +96,7 @@ bool ryabkov_batcher::SeqBatcher::pre_processing() {
   a2.resize(inv.size() / 2);
 
 #pragma omp parallel for
-  for (int i = 0; i < static_cast<int>(inv.size() / 2); ++i) { 
+  for (int i = 0; i < static_cast<int>(inv.size() / 2); ++i) {
     a1[i] = inv[i];
     a2[i] = inv[inv.size() / 2 + i];
   }
