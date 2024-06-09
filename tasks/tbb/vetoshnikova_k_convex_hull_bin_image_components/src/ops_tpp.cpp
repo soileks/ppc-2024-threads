@@ -276,7 +276,7 @@ void vetoshnikova_tbb::ConstructingConvexHullTBB::markingComponent() {
   }
 }
 
-std::vector<int> vetoshnikova_tbb::ConstructingConvexHullTBB::convexHull(std::vector<Point>& points) {
+std::vector<int> vetoshnikova_tbb::convexHull(std::vector<Point>& points) {
   std::vector<int> hull_thread;
 
   if (!points.empty()) {

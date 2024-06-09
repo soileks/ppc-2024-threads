@@ -50,8 +50,8 @@ class ConstructingConvexHullTBB : public ppc::core::Task {
   std::vector<int> hull = {};
 
   void markingComponent();
-  std::vector<int> convexHull(std::vector<Point>& points);
 };
+std::vector<int> convexHull(std::vector<Point>& points);
 
 int orientation(Point p, Point q, Point r);
 
