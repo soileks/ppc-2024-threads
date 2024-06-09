@@ -1,4 +1,5 @@
-#include "omp/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
+// Copyright 2024 Ryabkov Vladislav
+#include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
 namespace ryabkov_batcher {
 void radix_sort(std::vector<int>& arr, int exp) {
@@ -6,35 +7,16 @@ void radix_sort(std::vector<int>& arr, int exp) {
   std::vector<int> output(n);
   std::vector<int> count(10, 0);
 
-#pragma omp parallel
-  {
-    std::vector<int> local_count(10, 0);
-#pragma omp for
-    for (std::size_t i = 0; i < n; i++) {
-      local_count[(arr[i] / exp) % 10]++;
-    }
+  for (std::size_t i = 0; i < n; i++) count[(arr[i] / exp) % 10]++;
 
-#pragma omp critical
-    {
-      for (int i = 0; i < 10; i++) {
-        count[i] += local_count[i];
-      }
-    }
-  }
-
-  for (int i = 1; i < 10; i++) {
-    count[i] += count[i - 1];
-  }
+  for (int i = 1; i < 10; i++) count[i] += count[i - 1];
 
   for (int i = static_cast<int>(n) - 1; i >= 0; i--) {
     output[count[(arr[i] / exp) % 10] - 1] = arr[i];
     count[(arr[i] / exp) % 10]--;
   }
 
-#pragma omp parallel for
-  for (std::size_t i = 0; i < n; i++) {
-    arr[i] = output[i];
-  }
+  for (std::size_t i = 0; i < n; i++) arr[i] = output[i];
 }
 
 void radix_sort(std::vector<int>& arr) {
@@ -64,7 +46,6 @@ std::vector<int> BatchSort(std::vector<int>& a1, std::vector<int>& a2) {
   std::vector<int> merged = batch_merge(a1, a2);
 
   for (size_t bit = 0; bit < sizeof(int) * 8; bit++) {
-#pragma omp parallel for
     for (std::size_t i = 0; i < merged.size() / 2; i++) {
       if (((i % 2 == 0) && ((merged[2 * i] >> bit) & 1) != 0) ||
           ((i % 2 != 0) && ((merged[2 * i + 1] >> bit) & 1) != 0)) {
@@ -95,7 +76,6 @@ bool ryabkov_batcher::SeqBatcher::pre_processing() {
   a1.resize(inv.size() / 2);
   a2.resize(inv.size() / 2);
 
-#pragma omp parallel for
   for (std::size_t i = 0; i < inv.size() / 2; ++i) {
     a1[i] = inv[i];
     a2[i] = inv[inv.size() / 2 + i];
