@@ -46,30 +46,30 @@ bool LinearGaussianFiltering::run() {
   for (int i = 0; i < height; ++i) {
     threads[i] = std::thread(&LinearGaussianFiltering::LinearFiltering, this, i);
   }
-  for (auto& thread : threads) {
+  for (auto &thread : threads) {
     thread.join();
   }
   return true;
 }
 
 void LinearGaussianFiltering::LinearFiltering(int row) {
- std::vector<int> gauss_kernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
+  std::vector<int> gauss_kernel = {1, 2, 1, 2, 4, 2, 1, 2, 1};
   int kSize = 3;
   int sum;
   for (int j = 0; j < width; ++j) {
     sum = 0;
     for (int m = 0; m < kSize; ++m) {
       for (int n = 0; n < kSize; ++n) {
-		int rowOffset = row + m - kSize / 2;
-		int colOffset = j + n - kSize / 2;
-		if (rowOffset >= 0 && rowOffset < height && colOffset >= 0 && colOffset < width) {
-		  sum += getPixel(rowOffset, colOffset) * gaussianKernel[m * kernelSize + n];
+        int rowOffset = row + m - kSize / 2;
+        int colOffset = j + n - kSize / 2;
+        if (rowOffset >= 0 && rowOffset < height && colOffset >= 0 && colOffset < width) {
+          sum += getPixel(rowOffset, colOffset) * gaussianKernel[m * kernelSize + n];
         }
       }
     }
     sum = std::min(sum, 255);
     setPixel(i, j, sum);
-  }  
+  }
 }
 
 bool LinearGaussianFiltering::post_processing() {
