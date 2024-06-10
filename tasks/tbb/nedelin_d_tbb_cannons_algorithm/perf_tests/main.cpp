@@ -29,7 +29,6 @@ TEST(tbb_nedelin_d_block_cannons_perf_test, test_pipeline_run) {
 
   auto testTaskTBB = std::make_shared<TestTaskTBBParallelNedelinCannon>(taskDataSeq);
 
- 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto zero_time_start = oneapi::tbb::tick_count::now();
