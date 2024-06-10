@@ -3,12 +3,9 @@
 
 #include <algorithm>
 #include <complex>
-#include <functional>
-#include <future>
 #include <mutex>
 #include <numeric>
 #include <thread>
-#include <utility>
 #include <vector>
 
 using namespace std::chrono_literals;
