@@ -7,63 +7,63 @@
 using namespace std::chrono_literals;
 
 std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, std::vector<int>& vec2, size_t idx1,
-                                  size_t idx2, size_t increment, int modification) {
+                              size_t idx2, size_t increment, int modification) {
   std::vector<int> mergedVec = vec0;
   size_t idx = 0;
 
   if ((modification == 0) || (modification == 1)) {
-      while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
-          if (vec1[idx1] <= vec2[idx2]) {
-              mergedVec[idx] = vec1[idx1];
-              idx1 += increment;
-          } else {
-              mergedVec[idx] = vec2[idx2];
-              idx2 += increment;
-          }
-          idx++;
-      }
-      if (idx1 >= vec1.size()) {
-          tbb::parallel_for(tbb::blocked_range<size_t>(idx2, vec2.size()),
-                            [&](const tbb::blocked_range<size_t>& range) {
-              for (size_t i = range.begin(); i != range.end(); i += increment) {
-                  mergedVec[idx] = vec2[i];
-                  idx++;
-              }
-          }, tbb::simple_partitioner());
+    while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
+      if (vec1[idx1] <= vec2[idx2]) {
+        mergedVec[idx] = vec1[idx1];
+        idx1 += increment;
       } else {
-          tbb::parallel_for(tbb::blocked_range<size_t>(idx1, vec1.size()),
-                            [&](const tbb::blocked_range<size_t>& range) {
-              for (size_t i = range.begin(); i != range.end(); i += increment) {
-                  mergedVec[idx] = vec1[i];
-                  idx++;
-              }
-          }, tbb::simple_partitioner());
+        mergedVec[idx] = vec2[idx2];
+        idx2 += increment;
       }
-  } else {
-      while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
-          mergedVec[idx] = vec1[idx1];
-          mergedVec[idx + 1] = vec2[idx2];
-          idx += 2;
-          idx1++;
-          idx2++;
-      }
-      if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
-          tbb::parallel_for(tbb::blocked_range<size_t>(idx, mergedVec.size()),
-                            [&](const tbb::blocked_range<size_t>& range) {
-              for (size_t i = range.begin(); i != range.end(); i += increment) {
-                  mergedVec[i] = vec1[idx1];
-                  idx1++;
-              }
-          }, tbb::simple_partitioner());
-      }
-      tbb::parallel_for(tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
-                        [&](const tbb::blocked_range<size_t>& range) {
-          for (size_t i = range.begin(); i != range.end(); i += increment) {
-              if (mergedVec[i] > mergedVec[i + 1]) {
-                  std::swap(mergedVec[i], mergedVec[i + 1]);
-              }
-          }
+      idx++;
+    }
+    if (idx1 >= vec1.size()) {
+      tbb::parallel_for(tbb::blocked_range<size_t>(idx2, vec2.size()),
+                      [&](const tbb::blocked_range<size_t>& range) {
+        for (size_t i = range.begin(); i != range.end(); i += increment) {
+          mergedVec[idx] = vec2[i];
+          idx++;
+        }
       }, tbb::simple_partitioner());
+    } else {
+      tbb::parallel_for(tbb::blocked_range<size_t>(idx1, vec1.size()),
+                      [&](const tbb::blocked_range<size_t>& range) {
+        for (size_t i = range.begin(); i != range.end(); i += increment) {
+          mergedVec[idx] = vec1[i];
+          idx++;
+        }
+      }, tbb::simple_partitioner());
+    }
+  } else {
+    while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
+      mergedVec[idx] = vec1[idx1];
+      mergedVec[idx + 1] = vec2[idx2];
+      idx += 2;
+      idx1++;
+      idx2++;
+    }
+    if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
+      tbb::parallel_for(tbb::blocked_range<size_t>(idx, mergedVec.size()),
+                      [&](const tbb::blocked_range<size_t>& range) {
+        for (size_t i = range.begin(); i != range.end(); i += increment) {
+          mergedVec[i] = vec1[idx1];
+          idx1++;
+        }
+      }, tbb::simple_partitioner());
+    }
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
+                    [&](const tbb::blocked_range<size_t>& range) {
+      for (size_t i = range.begin(); i != range.end(); i += increment) {
+        if (mergedVec[i] > mergedVec[i + 1]) {
+          std::swap(mergedVec[i], mergedVec[i + 1]);
+        }
+      }
+    }, tbb::simple_partitioner());
   }
 
   return mergedVec;

@@ -1,8 +1,8 @@
 // Copyright 2024 Novostroev Ivan
 #include <gtest/gtest.h>
 
-#include <vector>
 #include <numeric>
+#include <vector>
 
 #include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_tbb.hpp"
 
