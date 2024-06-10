@@ -23,21 +23,25 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
       idx++;
     }
     if (idx1 >= vec1.size()) {
-      tbb::parallel_for(tbb::blocked_range<size_t>(idx2, vec2.size()),
-                      [&](const tbb::blocked_range<size_t>& range) {
-        for (size_t i = range.begin(); i != range.end(); i += increment) {
-          mergedVec[idx] = vec2[i];
-          idx++;
-        }
-      }, tbb::simple_partitioner());
+      tbb::parallel_for(
+          tbb::blocked_range<size_t>(idx2, vec2.size()),
+          [&](const tbb::blocked_range<size_t>& range) {
+            for (size_t i = range.begin(); i != range.end(); i += increment) {
+              mergedVec[idx] = vec2[i];
+              idx++;
+            }
+          },
+          tbb::simple_partitioner());
     } else {
-      tbb::parallel_for(tbb::blocked_range<size_t>(idx1, vec1.size()),
-                      [&](const tbb::blocked_range<size_t>& range) {
-        for (size_t i = range.begin(); i != range.end(); i += increment) {
-          mergedVec[idx] = vec1[i];
-          idx++;
-        }
-      }, tbb::simple_partitioner());
+      tbb::parallel_for(
+          tbb::blocked_range<size_t>(idx1, vec1.size()),
+          [&](const tbb::blocked_range<size_t>& range) {
+            for (size_t i = range.begin(); i != range.end(); i += increment) {
+              mergedVec[idx] = vec1[i];
+              idx++;
+            }
+          },
+          tbb::simple_partitioner());
     }
   } else {
     while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
@@ -48,22 +52,26 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
       idx2++;
     }
     if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
-      tbb::parallel_for(tbb::blocked_range<size_t>(idx, mergedVec.size()),
-                      [&](const tbb::blocked_range<size_t>& range) {
-        for (size_t i = range.begin(); i != range.end(); i += increment) {
-          mergedVec[i] = vec1[idx1];
-          idx1++;
-        }
-      }, tbb::simple_partitioner());
+      tbb::parallel_for(
+          tbb::blocked_range<size_t>(idx, mergedVec.size()),
+          [&](const tbb::blocked_range<size_t>& range) {
+            for (size_t i = range.begin(); i != range.end(); i += increment) {
+              mergedVec[i] = vec1[idx1];
+              idx1++;
+            }
+          },
+          tbb::simple_partitioner());
     }
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
-                    [&](const tbb::blocked_range<size_t>& range) {
-      for (size_t i = range.begin(); i != range.end(); i += increment) {
-        if (mergedVec[i] > mergedVec[i + 1]) {
-          std::swap(mergedVec[i], mergedVec[i + 1]);
-        }
-      }
-    }, tbb::simple_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
+        [&](const tbb::blocked_range<size_t>& range) {
+          for (size_t i = range.begin(); i != range.end(); i += increment) {
+            if (mergedVec[i] > mergedVec[i + 1]) {
+              std::swap(mergedVec[i], mergedVec[i + 1]);
+            }
+          }
+        },
+        tbb::simple_partitioner());
   }
 
   return mergedVec;
