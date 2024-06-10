@@ -9,8 +9,9 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include <tbb/parallel_for.h>
+
 #include <tbb/blocked_range2d.h>
+#include <tbb/parallel_for.h>
 
 using std::vector;
 
