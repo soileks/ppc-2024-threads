@@ -31,7 +31,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
         if (idx1 >= vec1.size()) {
             tbb::parallel_for(
                 tbb::blocked_range<size_t>(idx2, vec2.size()),
-                [&](const tbb::blocked_range<size_t>& range {
+                [&](const tbb::blocked_range<size_t>& range) {
                     for (size_t i = range.begin(); i != range.end(); i += increment) {
                         std::lock_guard<std::mutex> guard(idx_mutex);
                         mergedVec[idx] = vec2[i];
@@ -42,7 +42,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
         } else {
             tbb::parallel_for(
                 tbb::blocked_range<size_t>(idx1, vec1.size()),
-                [&](const tbb::blocked_range<size_t>& range {
+                [&](const tbb::blocked_range<size_t>& range) {
                     for (size_t i = range.begin(); i != range.end(); i += increment) {
                         std::lock_guard<std::mutex> guard(idx_mutex);
                         mergedVec[idx] = vec1[i];
@@ -65,7 +65,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
         if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
             tbb::parallel_for(
                 tbb::blocked_range<size_t>(idx, mergedVec.size()),
-                [&](const tbb::blocked_range<size_t>& range {
+                [&](const tbb::blocked_range<size_t>& range) {
                     for (size_t i = range.begin(); i != range.end(); i += increment) {
                         std::lock_guard<std::mutex> guard(idx_mutex);
                         mergedVec[i] = vec1[idx1];
@@ -77,7 +77,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
         // Проверяем и меняем местами элементы, если необходимо
         tbb::parallel_for(
             tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
-            [&](const tbb::blocked_range<size_t>& range {
+            [&](const tbb::blocked_range<size_t>& range) {
                 for (size_t i = range.begin(); i != range.end(); i += increment) {
                     if (mergedVec[i] > mergedVec[i + 1]) {
                         std::swap(mergedVec[i], mergedVec[i + 1]);
