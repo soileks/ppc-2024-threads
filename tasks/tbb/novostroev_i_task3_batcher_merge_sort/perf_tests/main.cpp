@@ -74,8 +74,3 @@ TEST(novostroev_i_batcher_sort_perf_tbb, Test_TaskPerformance) {
 
   ASSERT_TRUE(std::is_sorted(out.begin(), out.end()));
 }
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

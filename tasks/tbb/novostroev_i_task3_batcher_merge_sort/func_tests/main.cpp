@@ -158,8 +158,3 @@ TEST(novostroev_i_batcher_sort_func_tbb, Test_ReverseSortedArray) {
 
   ASSERT_EQ(expected, out);
 }
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
