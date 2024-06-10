@@ -5,6 +5,13 @@
 
 #include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_tbb.hpp"
 
+// Helper function to generate a vector of integers sorted in reverse order
+std::vector<int> getReverseSortedVector(int size) {
+  std::vector<int> vec(size);
+  std::iota(vec.rbegin(), vec.rend(), 0); // Fill the vector with descending values
+  return vec;
+}
+
 TEST(novostroev_i_batcher_sort_func_tbb, Test_SmallArray) {
   std::vector<int> vec = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5};
   std::vector<int> expected = vec;
