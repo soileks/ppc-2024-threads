@@ -12,7 +12,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
                                size_t idx2, size_t increment, int modification) {
   std::vector<int> mergedVec = vec0;
   size_t idx = 0;
- 
+
   if ((modification == 0) || (modification == 1)) {
     while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
       if (vec1[idx1] <= vec2[idx2]) {
@@ -63,18 +63,18 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
     idx2++;
   }
   if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
-     tbb::parallel_for(
+    tbb::parallel_for(
         tbb::blocked_range<size_t>(idx, mergedVec.size()),
-         [&](const tbb::blocked_range<size_t>& range) {
+        [&](const tbb::blocked_range<size_t>& range) {
           for (size_t i = range.begin(); i != range.end(); i += increment) {
             std::lock_guard<std::mutex> guard(idx_mutex);
             if (idx1 < vec1.size()) {
               mergedVec[i] = vec1[idx1];
               idx1++;
-             }
+            }
           }
-         },
-         tbb::simple_partitioner());
+        },
+        tbb::simple_partitioner());
   }
   tbb::parallel_for(
       tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
@@ -90,7 +90,6 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
 
   return mergedVec;
 }
-
 
 std::vector<int> getOddElements(std::vector<int> vec1, std::vector<int> vec2, int threads_count = 4) {
   size_t idx1 = 1;
