@@ -5,8 +5,8 @@
 
 #include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_tbb.hpp"
 
-TEST(novostroev_i_batcher_sort_func_tbb, Test_size_100_omp) {
-  const int count = 100;
+TEST(novostroev_i_batcher_sort_func_tbb, Test_size_10_tbb) {
+  const int count = 10;
 
   std::vector<int> vect = RandomVector(count);
   std::vector<int> result(vect.size(), 0);
@@ -25,8 +25,8 @@ TEST(novostroev_i_batcher_sort_func_tbb, Test_size_100_omp) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(novostroev_i_batcher_sort_func_tbb, Test_size_300_omp) {
-  const int count = 300;
+TEST(novostroev_i_batcher_sort_func_tbb, Test_size_30_tbb) {
+  const int count = 30;
 
   std::vector<int> vect = RandomVector(count);
   std::vector<int> result(vect.size(), 0);
@@ -45,7 +45,7 @@ TEST(novostroev_i_batcher_sort_func_tbb, Test_size_300_omp) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(novostroev_i_batcher_sort_func_tbb, Test_small_size_omp) {
+TEST(novostroev_i_batcher_sort_func_tbb, Test_small_size_tbb) {
   const int count = 4;
 
   std::vector<int> vect = RandomVector(count);
@@ -65,7 +65,7 @@ TEST(novostroev_i_batcher_sort_func_tbb, Test_small_size_omp) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(novostroev_i_batcher_sort_func_tbb, Test_only_negative_numbers_omp) {
+TEST(novostroev_i_batcher_sort_func_tbb, Test_only_negative_numbers_tbb) {
   std::vector<int> vect = {-998, -555, -100, -303, -20, -110, -340, -41, -9, -4, -199, -1};
   std::vector<int> result(vect.size(), 0);
 
@@ -83,7 +83,7 @@ TEST(novostroev_i_batcher_sort_func_tbb, Test_only_negative_numbers_omp) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(novostroev_i_batcher_sort_func_tbb, Test_pre_sorted_omp) {
+TEST(novostroev_i_batcher_sort_func_tbb, Test_pre_sorted_tbb) {
   std::vector<int> vect = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
   std::vector<int> result(vect.size(), 0);
 
