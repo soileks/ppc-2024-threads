@@ -24,6 +24,8 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
       }
       idx++;
     }
+
+    return mergedVec;
     if (idx1 >= vec1.size()) {
       tbb::parallel_for(
           tbb::blocked_range<size_t>(idx2, vec2.size()),
@@ -51,46 +53,47 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
           },
           tbb::simple_partitioner());
     }
-    return mergedVec;
-  }
-  while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
-    mergedVec[idx] = vec1[idx1];
-    if (idx + 1 < mergedVec.size()) {
-      mergedVec[idx + 1] = vec2[idx2];
+  } else {
+    while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
+      mergedVec[idx] = vec1[idx1];
+      if (idx + 1 < mergedVec.size()) {
+        mergedVec[idx + 1] = vec2[idx2];
+      }
+      idx += 2;
+      idx1++;
+      idx2++;
     }
-    idx += 2;
-    idx1++;
-    idx2++;
-  }
-  if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
+
+    if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
+      tbb::parallel_for(
+          tbb::blocked_range<size_t>(idx, mergedVec.size()),
+          [&](const tbb::blocked_range<size_t>& range) {
+            for (size_t i = range.begin(); i != range.end(); i += increment) {
+              std::lock_guard<std::mutex> guard(idx_mutex);
+              if (idx1 < vec1.size()) {
+                mergedVec[i] = vec1[idx1];
+                idx1++;
+              }
+            }
+          },
+          tbb::simple_partitioner());
+    }
+
     tbb::parallel_for(
-        tbb::blocked_range<size_t>(idx, mergedVec.size()),
+        tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
         [&](const tbb::blocked_range<size_t>& range) {
           for (size_t i = range.begin(); i != range.end(); i += increment) {
-            std::lock_guard<std::mutex> guard(idx_mutex);
-            if (idx1 < vec1.size()) {
-              mergedVec[i] = vec1[idx1];
-              idx1++;
+            if (i + 1 < mergedVec.size() && mergedVec[i] > mergedVec[i + 1]) {
+              std::lock_guard<std::mutex> guard(idx_mutex);
+              std::swap(mergedVec[i], mergedVec[i + 1]);
             }
           }
         },
         tbb::simple_partitioner());
   }
-  tbb::parallel_for(
-      tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
-      [&](const tbb::blocked_range<size_t>& range) {
-        for (size_t i = range.begin(); i != range.end(); i += increment) {
-          if (i + 1 < mergedVec.size() && mergedVec[i] > mergedVec[i + 1]) {
-            std::lock_guard<std::mutex> guard(idx_mutex);
-            std::swap(mergedVec[i], mergedVec[i + 1]);
-          }
-        }
-      },
-      tbb::simple_partitioner());
 
   return mergedVec;
 }
-
 std::vector<int> getOddElements(std::vector<int> vec1, std::vector<int> vec2, int threads_count = 4) {
   size_t idx1 = 1;
   size_t idx2 = 1;
