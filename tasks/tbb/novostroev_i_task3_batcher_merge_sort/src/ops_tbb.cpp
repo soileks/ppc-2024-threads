@@ -2,7 +2,7 @@
 
 #include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_tbb.hpp"
 
-#include <tbb.h>
+#include <oneapi/tbb.h>
 
 using namespace std::chrono_literals;
 
