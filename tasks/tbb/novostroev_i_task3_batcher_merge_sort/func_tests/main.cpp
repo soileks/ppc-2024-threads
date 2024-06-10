@@ -8,7 +8,7 @@
 // Helper function to generate a vector of integers sorted in reverse order
 std::vector<int> getReverseSortedVector(int size) {
   std::vector<int> vec(size);
-  std::iota(vec.rbegin(), vec.rend(), 0); // Fill the vector with descending values
+  std::iota(vec.rbegin(), vec.rend(), 0);
   return vec;
 }
 
