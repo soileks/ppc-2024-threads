@@ -1,9 +1,7 @@
-// Copyright 2024 Bodrov Daniil
 #include "stl/bodrov_d_crs_matr/include/bodrov_d_crs_matr_stl.hpp"
 
 #include <algorithm>
 #include <complex>
-#include <mutex>
 #include <numeric>
 #include <thread>
 #include <vector>
@@ -157,7 +155,6 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
   Result->Columns = MatrixB->Columns;
   Result->DataPointer.assign(MatrixA->Rows + 1, 0);
 
-  std::vector<std::mutex> row_mutexes(MatrixA->Rows);
   std::vector<std::vector<int>> temp_col_indexes(MatrixA->Rows);
   std::vector<std::vector<std::complex<double>>> temp_values(MatrixA->Rows);
 
@@ -170,7 +167,6 @@ bool SparseMatrixSolverBodrovOMPParallel::run() {
         int col_b = MatrixB->ColumnsIndexes[jb];
         std::complex<double> value_b = MatrixB->Values[jb];
 
-        std::lock_guard<std::mutex> lock(row_mutexes[row]);
         auto it = std::find(temp_col_indexes[row].begin(), temp_col_indexes[row].end(), col_b);
         if (it != temp_col_indexes[row].end()) {
           int index = std::distance(temp_col_indexes[row].begin(), it);
