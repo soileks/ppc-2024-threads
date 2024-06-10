@@ -246,9 +246,7 @@ void vetoshnikova_stl::ConstructingConvexHullSTL::markingComponent() {
 
   for (int i = 0; i < h; ++i) {
     for (int j = 0; j < w; ++j) {
-      if (img[i][j] == 1) {
-        { imgMark[i][j] = 1; }
-      }
+      if (img[i][j] == 1) imgMark[i][j] = 1;
     }
   }
 
