@@ -3,9 +3,11 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <mutex>
 #include <thread>
 #include <vector>
+
 
 #include "core/task/include/task.hpp"
 
