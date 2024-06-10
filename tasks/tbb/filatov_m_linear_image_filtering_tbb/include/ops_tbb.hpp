@@ -1,6 +1,9 @@
 // Copyright 2024 Filatov Maxim
 #pragma once
 
+#include <tbb/blocked_range2d.h>
+#include <tbb/parallel_for.h>
+
 #include <cmath>
 #include <cstring>
 #include <memory>
@@ -9,9 +12,6 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-
-#include <tbb/blocked_range2d.h>
-#include <tbb/parallel_for.h>
 
 using std::vector;
 
