@@ -4,9 +4,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "stl/kozlov_m_simpson_integral/include/ops_stl.hpp"
-
-using namespace kozlov_stl;
+#include "stl/kozlov_m_simpson_integral/include/ops_seq.hpp"
 
 TEST(kozlov_m_simpson_integral_seq, test_pipeline_run) {
   double res = 1.5;
@@ -33,7 +31,7 @@ TEST(kozlov_m_simpson_integral_seq, test_pipeline_run) {
   auto testTaskSequential = std::make_shared<KozlovTaskSequential>(taskDataSeq);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-  perfAttr->num_running = 10;
+  perfAttr->num_running = 15;
   const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
     auto current_time_point = std::chrono::high_resolution_clock::now();

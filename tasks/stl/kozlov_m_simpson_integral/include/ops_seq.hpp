@@ -4,13 +4,11 @@
 #include <cmath>
 #include <functional>
 #include <memory>
-#include <mutex>
-#include <thread>
 #include <utility>
 #include <vector>
 
 #include "core/task/include/task.hpp"
-namespace kozlov_stl {
+
 using FUNC = double (*)(double, double);
 
 double xy(double x, double y);
@@ -32,8 +30,5 @@ class KozlovTaskSequential : public ppc::core::Task {
   double x1{}, x2{}, y1{}, y2{};
   uint64_t n;
   uint64_t m;
-  double h_x;
-  double h_y;
   double res;
 };
-}  // namespace kozlov_stl
