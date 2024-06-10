@@ -6,7 +6,6 @@
 
 using namespace std::chrono_literals;
 
-// Объявляем мьютекс для синхронизации доступа к общим ресурсам
 std::mutex idx_mutex;
 
 std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, std::vector<int>& vec2,
@@ -14,7 +13,6 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
     std::vector<int> mergedVec = vec0;
     size_t idx = 0;
 
-    // Объединяем элементы из двух векторов в один
     if ((modification == 0) || (modification == 1)) {
         while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
             if (vec1[idx1] <= vec2[idx2]) {
@@ -27,15 +25,16 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
             idx++;
         }
 
-        // Если один из векторов закончился, копируем оставшиеся элементы
         if (idx1 >= vec1.size()) {
             tbb::parallel_for(
                 tbb::blocked_range<size_t>(idx2, vec2.size()),
                 [&](const tbb::blocked_range<size_t>& range) {
                     for (size_t i = range.begin(); i != range.end(); i += increment) {
                         std::lock_guard<std::mutex> guard(idx_mutex);
-                        mergedVec[idx] = vec2[i];
-                        idx++;
+                        if (idx < mergedVec.size()) {
+                            mergedVec[idx] = vec2[i];
+                            idx++;
+                        }
                     }
                 },
                 tbb::simple_partitioner());
@@ -45,41 +44,46 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
                 [&](const tbb::blocked_range<size_t>& range) {
                     for (size_t i = range.begin(); i != range.end(); i += increment) {
                         std::lock_guard<std::mutex> guard(idx_mutex);
-                        mergedVec[idx] = vec1[i];
-                        idx++;
+                        if (idx < mergedVec.size()) {
+                            mergedVec[idx] = vec1[i];
+                            idx++;
+                        }
                     }
                 },
                 tbb::simple_partitioner());
         }
     } else {
-        // Для modification == 2 выполняем специальное слияние
         while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
             mergedVec[idx] = vec1[idx1];
-            mergedVec[idx + 1] = vec2[idx2];
+            if (idx + 1 < mergedVec.size()) {
+                mergedVec[idx + 1] = vec2[idx2];
+            }
             idx += 2;
             idx1++;
             idx2++;
         }
 
-        // Если один из векторов закончился, копируем оставшиеся элементы
         if ((idx2 >= vec2.size()) && (idx1 < vec1.size())) {
             tbb::parallel_for(
                 tbb::blocked_range<size_t>(idx, mergedVec.size()),
                 [&](const tbb::blocked_range<size_t>& range) {
                     for (size_t i = range.begin(); i != range.end(); i += increment) {
                         std::lock_guard<std::mutex> guard(idx_mutex);
-                        mergedVec[i] = vec1[idx1];
-                        idx1++;
+                        if (idx1 < vec1.size()) {
+                            mergedVec[i] = vec1[idx1];
+                            idx1++;
+                        }
                     }
                 },
                 tbb::simple_partitioner());
         }
-        // Проверяем и меняем местами элементы, если необходимо
+
         tbb::parallel_for(
             tbb::blocked_range<size_t>(0, mergedVec.size() - 1),
             [&](const tbb::blocked_range<size_t>& range) {
                 for (size_t i = range.begin(); i != range.end(); i += increment) {
-                    if (mergedVec[i] > mergedVec[i + 1]) {
+                    if (i + 1 < mergedVec.size() && mergedVec[i] > mergedVec[i + 1]) {
+                        std::lock_guard<std::mutex> guard(idx_mutex);
                         std::swap(mergedVec[i], mergedVec[i + 1]);
                     }
                 }
