@@ -7,9 +7,9 @@
 #include <memory>
 #include <numeric>
 #include <random>
+#include <thread>
 #include <utility>
 #include <vector>
-#include <thread>
 
 #include "core/task/include/task.hpp"
 
