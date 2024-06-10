@@ -7,7 +7,7 @@
 #include "omp/derun_a_shell/include/shell_omp.hpp"
 
 TEST(derun_andrey_shell_omp, pipeline_run) {
-  const int count = 10000;
+  const int count = 2000000;
 
   // Create data
   std::vector<int> in = ShellOMP::generate_random_vector(count, 1, 100);
@@ -44,10 +44,10 @@ TEST(derun_andrey_shell_omp, pipeline_run) {
 }
 
 TEST(derun_andrey_shell_omp, task_run) {
-  const int count = 10000;
+  const int count = 8000000;
 
   // Create data
-  std::vector<int> in(1, count);
+  std::vector<int> in = ShellOMP::generate_random_vector(count, 1, 100);
   std::vector<int> out(count, 0);
 
   // Create TaskData
@@ -77,5 +77,5 @@ TEST(derun_andrey_shell_omp, task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskOMP);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count, out[0]);
+  ASSERT_TRUE(ShellOMP::checkSorted(out));
 }

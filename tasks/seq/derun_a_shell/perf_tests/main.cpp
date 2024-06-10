@@ -7,7 +7,7 @@
 #include "seq/derun_a_shell/include/shell_seq.hpp"
 
 TEST(derun_andrey_shell_seq, pipeline_run) {
-  const int count = 10000;
+  const int count = 2000000;
 
   // Create data
   std::vector<int> in = ShellSequential::generate_random_vector(count, 1, 100);
@@ -44,10 +44,11 @@ TEST(derun_andrey_shell_seq, pipeline_run) {
 }
 
 TEST(derun_andrey_shell_seq, task_run) {
-  const int count = 10000;
+  const int count = 8000000;
 
   // Create data
-  std::vector<int> in(1, count);
+  // std::vector<int> in(1, count);
+  std::vector<int> in = ShellSequential::generate_random_vector(count, 1, 100);
   std::vector<int> out(count, 0);
 
   // Create TaskData
@@ -77,5 +78,5 @@ TEST(derun_andrey_shell_seq, task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(count, out[0]);
+  ASSERT_TRUE(ShellSequential::checkSorted(out));
 }
