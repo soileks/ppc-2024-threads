@@ -1,11 +1,11 @@
 // Copyright 2024 Filatov Maxim
 #pragma once
 
-#include <cmath>
-#include <vector>
-#include <thread>
-#include <mutex>
 #include <algorithm>
+#include <cmath>
+#include <mutex>
+#include <thread>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
