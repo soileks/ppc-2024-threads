@@ -89,16 +89,14 @@ void GaussFilterHorizontal::makeKernel(float sigma) {
   normalizeKernel(normalizationFactor);
 }
 void GaussFilterHorizontal::applyKernel() {
-  tbb::parallel_for(
-    tbb::blocked_range2d<uint32_t>(0, height, 0, width),
-    [&](const tbb::blocked_range2d<uint32_t>& r) {
-      for (uint32_t i = r.rows().begin(); i != r.rows().end(); ++i) {
-        for (uint32_t j = r.cols().begin(); j != r.cols().end(); ++j) {
-          size_t index = i * width + j;
-          image[index] = calculateNewPixelColor(i, j);
-        }
+  tbb::parallel_for(tbb::blocked_range2d<uint32_t>(0, height, 0, width), [&](const tbb::blocked_range2d<uint32_t>& r) {
+    for (uint32_t i = r.rows().begin(); i != r.rows().end(); ++i) {
+      for (uint32_t j = r.cols().begin(); j != r.cols().end(); ++j) {
+        size_t index = i * width + j;
+        image[index] = calculateNewPixelColor(i, j);
       }
-    });
+    }
+  });
 }
 
 void GaussFilterHorizontal::calculateSingleColorComponent(uint8_t neighborColor, float kernelValue,
