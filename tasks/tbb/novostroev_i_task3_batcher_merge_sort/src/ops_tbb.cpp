@@ -8,8 +8,8 @@ using namespace std::chrono_literals;
 
 std::mutex idx_mutex;
 
-std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, std::vector<int>& vec2,
-                               size_t idx1, size_t idx2, size_t increment, int modification) {
+std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, std::vector<int>& vec2, size_t idx1,
+                               size_t idx2, size_t increment, int modification) {
   std::vector<int> mergedVec = vec0;
   size_t idx = 0;
 
