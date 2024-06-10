@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include <vector>
+#include <numeric>
 
 #include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_tbb.hpp"
 
