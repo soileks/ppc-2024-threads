@@ -8,10 +8,10 @@
 
 #include "core/task/include/task.hpp"
 
-class KutarinASobel  : public ppc::core::Task {
+class KutarinASobel : public ppc::core::Task {
  public:
   explicit KutarinASobel(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)), width_(0), height_(0){}
+      : Task(std::move(taskData_)), width_(0), height_(0) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -27,6 +27,5 @@ class KutarinASobel  : public ppc::core::Task {
 
 
   static int clamp(int value, int min, int max);
-  void generateSaltAndPepperNoise(std::vector<int>& image,
-   int height, int width, float noise_ratio);
+  void generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio);
 };
