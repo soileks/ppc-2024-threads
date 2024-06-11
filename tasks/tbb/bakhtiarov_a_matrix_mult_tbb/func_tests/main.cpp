@@ -143,7 +143,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_inverse_matrix) {
 
   std::vector<double> identity{1, 0, 0, 0, 1, 0, 0, 0, 1};
   for (size_t i = 0; i < out.size(); ++i) {
-    ASSERT_NEAR(out [i], identity[i], 1e-6);
+    ASSERT_NEAR(out[i], identity[i], 1e-6);
   }
 }
 TEST(bakhtiarov_a_matrix_mult_tbb, test_multiply_square_matrices) {

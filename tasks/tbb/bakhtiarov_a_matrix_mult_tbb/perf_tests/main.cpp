@@ -28,11 +28,11 @@ void test_matrix_multiplication(size_t p, size_t q, size_t r, const std::shared_
   std::vector<double> out(p * r, 0.0);
 
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(lhs_in.data()));
+  taskData->inputs.emplace_back(static_cast<uint8_t*>(lhs_in.data()));
   taskData->inputs_count = {p, q};
-  taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(rhs_in.data()));
+  taskData->inputs.emplace_back(static_cast<uint8_t*>(rhs_in.data()));
   taskData->inputs_count.insert(taskData->inputs_count.end(), {q, r});
-  taskData->outputs.emplace_back(reinterpret_cast<uint8_t*>(out.data()));
+  taskData->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
   taskData->outputs_count = {p, r};
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
