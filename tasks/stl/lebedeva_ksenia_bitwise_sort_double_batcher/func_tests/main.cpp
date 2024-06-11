@@ -215,7 +215,6 @@ TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_with_negative) {
   }
 }
 
-
 TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_random) {
   // Create data
   std::vector<double> arr = LebedevaKStl::randomVector(1000, -1000000, 1000000);
