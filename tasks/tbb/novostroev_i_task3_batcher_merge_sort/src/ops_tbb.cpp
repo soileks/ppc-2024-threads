@@ -48,7 +48,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
             if (idx < mergedVec.size()) {
               mergedVec[idx] = vec2[idx2];
               idx2 += increment;
-              idx++; 
+              idx++;
             }
           }
         });
