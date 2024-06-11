@@ -96,9 +96,9 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
   size_t k = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-      if (out[i] == test[i]) {
-          k++;
-      }
+    if (out[i] == test[i]) {
+        k++;
+    }
   }
 
   ASSERT_EQ(k, n1 * m2);
@@ -138,9 +138,9 @@ TEST(bakhtiarov_a_matrix_mult_tbb, inverse_matrix) {
   size_t k = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-      if (out[i] == identity[i]) {
-          k++;
-      }
+    if (out[i] == identity[i]) {
+        k++;
+    }
   }
 
   ASSERT_EQ(k, n1 * m2);
@@ -179,9 +179,9 @@ TEST(bakhtiarov_a_matrix_mult_tbb, zero_matrix) {
   size_t k = 0;
 
   for (size_t i = 0; i < out.size(); ++i) {
-      if (out[i] == 0.0) {
-          k++;
-      }
+    if (out[i] == 0.0) {
+        k++;
+    }
   }
 
   ASSERT_EQ(k, n1 * m2);

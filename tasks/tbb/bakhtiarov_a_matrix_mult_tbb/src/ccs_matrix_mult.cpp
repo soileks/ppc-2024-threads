@@ -32,11 +32,11 @@ bool SparseMatrixMultiTBB::pre_processing() {
   for (int j = 0; j < numCols1; ++j) {
     colPtr1.push_back(notNullNumbers);
     for (int i = 0; i < numRows1; ++i) {
-        int index = i * numCols1 + j;
-        if (matrix1[index] != 0) {
-          values1.push_back(matrix1[index]);
-          rows1.push_back(i);
-          notNullNumbers++;
+      int index = i * numCols1 + j;
+      if (matrix1[index] != 0) {
+        values1.push_back(matrix1[index]);
+        rows1.push_back(i);
+        notNullNumbers++;
       }
     }
   }
@@ -46,11 +46,11 @@ bool SparseMatrixMultiTBB::pre_processing() {
   for (int j = 0; j < numCols2; ++j) {
     colPtr2.push_back(notNullNumbers);
     for (int i = 0; i < numRows2; ++i) {
-        int index = i * numCols2 + j;
-        if (matrix2[index] != 0) {
-          values2.push_back(matrix2[index]);
-          rows2.push_back(i);
-          notNullNumbers++;
+      int index = i * numCols2 + j;
+      if (matrix2[index] != 0) {
+        values2.push_back(matrix2[index]);
+        rows2.push_back(i);
+        notNullNumbers++;
       }
     }
   }
@@ -98,11 +98,11 @@ bool SparseMatrixMultiTBB::run() {
   for (int j = 0; j < numCols2; j++) {
     colPtr3.push_back(values3.size());
     for (int i = 0; i < numRows1; i++) {
-        int index = i * numCols2 + j;
-        if (result[index] != 0.0) {
-          values3.push_back(result[index]);
-          rows3.push_back(i);
-        }
+      int index = i * numCols2 + j;
+      if (result[index] != 0.0) {
+        values3.push_back(result[index]);
+        rows3.push_back(i);
+      }
     }
   }
   colPtr3.push_back(values3.size());
