@@ -1,7 +1,7 @@
 // Copyright 2024 Nedelin Dmitry
-#include "tbb/nedelin_d_tbb_cannons_algorithm/include/ops_tbb.hpp"
+#include"stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
 
-#include <tbb/tbb.h>
+#include<thread>
 
 #include <algorithm>
 #include <iostream>
@@ -39,6 +39,18 @@ std::vector<double> cannonMtrxMultiplication(const std::vector<double>& A, const
   return mtrx_C;
 }
 
+void BlocksMultiply(const std::vector<double>& A, const std::vector<double>& B, std::vector<double>& C, int n, int m,
+                    int _SizeBlock, int _iCount, int _jCount, int _kCount) {
+  for (int i = _iCount; i < std::min(_iCount + _SizeBlock, n); ++i) {
+    for (int j = _jCount; j < std::min(_jCount + _SizeBlock, m); ++j) {
+      for (int k = _kCount; k < std::min(_kCount + _SizeBlock, m); ++k) {
+        C[i * m + j] += A[i * m + k] * B[k * m + j];
+      }
+    }
+  }
+}
+
+
 std::vector<double> cannonMtrxMultiplication_tbb(const std::vector<double>& A, const std::vector<double>& B, int n,
                                                  int m) {
   int SizeBlock = std::min(n, m);
@@ -49,29 +61,42 @@ std::vector<double> cannonMtrxMultiplication_tbb(const std::vector<double>& A, c
     return std::vector<double>();
   }
 
-  tbb::parallel_for(0, n, SizeBlock, [&](int i) {
-    std::vector<double> tmp_accum(n * m, 0.0);
+  int Threads_num = std::thread::hardware_concurrency();
+  if (Threads_num == 0) {
+    Threads_num = 1;
+  }
 
-    for (int j = 0; j < m; j += SizeBlock) {
-      for (int k = 0; k < m; k += SizeBlock) {
-        int i_end = std::min(i + SizeBlock, n);
-        int j_end = std::min(j + SizeBlock, m);
-        int k_end = std::min(k + SizeBlock, m);
+  std::vector<std::thread> threads(Threads_num);
+  int SizeBlockForThread = (n + Threads_num - 1) / Threads_num;
 
-        for (int ii = i; ii < i_end; ++ii) {
-          for (int jj = j; jj < j_end; ++jj) {
-            for (int kk = k; kk < k_end; ++kk) {
-              tmp_accum[ii * m + jj] += A[ii * m + kk] * B[kk * m + jj];
-            }
+  for (int thrd = 0; thrd < Threads_num; ++thrd) {
+    int RowBeg = thrd * SizeBlockForThread;
+    int RowEnd = std::min((thrd + 1) * SizeBlockForThread, n);
+
+    threads[thrd] = std::thread([&, RowBeg, RowEnd] {
+      std::vector<double> loc_mtrx_C(n * m, 0.0);
+
+      for (int i = RowBeg; i < RowEnd; i += SizeBlock) {
+        for (int j = 0; j < m; j += SizeBlock) {
+          for (int k = 0; k < m; k += SizeBlock) {
+            BlocksMultiply(A, B, loc_mtrx_C, n, m, SizeBlock, i, j, k);
           }
         }
       }
-    }
 
-    for (int num = 0; num < n * m; ++num) {
-      mtrx_C[num] += tmp_accum[num];
+      for (int i = RowBeg; i < RowEnd; ++i) {
+        for (int j = 0; j < m; ++j) {
+          mtrx_C[i * m + j] += loc_mtrx_C[i * m + j];
+        }
+      }
+    });
+  }
+
+  for (auto& thread : threads) {
+    if (thread.joinable()) {
+      thread.join();
     }
-  });
+  }
 
   return mtrx_C;
 }
@@ -150,7 +175,7 @@ bool TestTBBSequentialNedelinCannon::post_processing() {
   return true;
 }
 
-bool TestTaskTBBParallelNedelinCannon::pre_processing() {
+bool TestTaskSTLParallelNedelinCannon::pre_processing() {
   internal_order_test();
 
   A = std::vector<double>(taskData->inputs_count[0]);
@@ -171,7 +196,7 @@ bool TestTaskTBBParallelNedelinCannon::pre_processing() {
   return true;
 }
 
-bool TestTaskTBBParallelNedelinCannon::validation() {
+bool TestTaskSTLParallelNedelinCannon::validation() {
   internal_order_test();
 
   return taskData->inputs_count[0] == taskData->inputs_count[1] &&
@@ -179,13 +204,13 @@ bool TestTaskTBBParallelNedelinCannon::validation() {
          taskData->inputs_count[1] == taskData->outputs_count[0];
 }
 
-bool TestTaskTBBParallelNedelinCannon::run() {
+bool TestTaskSTLParallelNedelinCannon::run() {
   internal_order_test();
   res = cannonMtrxMultiplication_tbb(A, B, n, m);
   return true;
 }
 
-bool TestTaskTBBParallelNedelinCannon::post_processing() {
+bool TestTaskSTLParallelNedelinCannon::post_processing() {
   internal_order_test();
   std::copy(res.begin(), res.end(), reinterpret_cast<double*>(taskData->outputs[0]));
   return true;

@@ -1,9 +1,9 @@
 // Copyright 2024 Nedelin Dmitry
 #include <gtest/gtest.h>
 
-#include "tbb/nedelin_d_tbb_cannons_algorithm/include/ops_tbb.hpp"
+#include"stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
 
-TEST(nedelin_d_block_cannons_tbb, Multiply_3x3) {
+TEST(nedelin_d_block_cannons_stl, Multiply_3x3) {
   int n = 3;
   int m = 3;
 
@@ -43,18 +43,18 @@ TEST(nedelin_d_block_cannons_tbb, Multiply_3x3) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(parallel_res.data()));
   taskDataPar->outputs_count.emplace_back(parallel_res.size());
 
-  TestTBBSequentialNedelinCannon testOmpTaskParallel(taskDataPar);
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
+  TestTBBSequentialNedelinCannon testSTLTaskParallel(taskDataPar);
+  ASSERT_EQ(testSTLTaskParallel.validation(), true);
+  testSTLTaskParallel.pre_processing();
+  testSTLTaskParallel.run();
+  testSTLTaskParallel.post_processing();
 
   for (size_t i = 0; i < seq_block_result.size(); ++i) {
     ASSERT_EQ(parallel_res[i], seq_block_result[i]);
   }
 }
 
-TEST(nedelin_d_block_cannons_tbb, Multiply_2x2) {
+TEST(nedelin_d_block_cannons_stl, Multiply_2x2) {
   int n = 2;
   int m = 2;
 
@@ -94,18 +94,18 @@ TEST(nedelin_d_block_cannons_tbb, Multiply_2x2) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(parallel_res.data()));
   taskDataPar->outputs_count.emplace_back(parallel_res.size());
 
-  TestTBBSequentialNedelinCannon testOmpTaskParallel(taskDataPar);
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
+  TestTBBSequentialNedelinCannon testSTLTaskParallel(taskDataPar);
+  ASSERT_EQ(testSTLTaskParallel.validation(), true);
+  testSTLTaskParallel.pre_processing();
+  testSTLTaskParallel.run();
+  testSTLTaskParallel.post_processing();
 
   for (size_t i = 0; i < seq_block_result.size(); ++i) {
     ASSERT_EQ(parallel_res[i], seq_block_result[i]);
   }
 }
 
-TEST(nedelin_d_block_cannons_tbb, Multiply_5x5) {
+TEST(nedelin_d_block_cannons_stl, Multiply_5x5) {
   int n = 5;
   int m = 5;
 
@@ -145,18 +145,18 @@ TEST(nedelin_d_block_cannons_tbb, Multiply_5x5) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(parallel_res.data()));
   taskDataPar->outputs_count.emplace_back(parallel_res.size());
 
-  TestTBBSequentialNedelinCannon testTBBTaskSequential(taskDataPar);
-  ASSERT_EQ(testTBBTaskSequential.validation(), true);
-  testTBBTaskSequential.pre_processing();
-  testTBBTaskSequential.run();
-  testTBBTaskSequential.post_processing();
+  TestTBBSequentialNedelinCannon testSTLTaskParallel(taskDataPar);
+  ASSERT_EQ(testSTLTaskParallel.validation(), true);
+  testSTLTaskParallel.pre_processing();
+  testSTLTaskParallel.run();
+  testSTLTaskParallel.post_processing();
 
   for (size_t i = 0; i < seq_block_result.size(); ++i) {
     ASSERT_EQ(parallel_res[i], seq_block_result[i]);
   }
 }
 
-TEST(nedelin_d_block_cannons_tbb, Multiply_0x0) {
+TEST(nedelin_d_block_cannons_stl, Multiply_0x0) {
   int n = 0;
   int m = 0;
 
@@ -176,11 +176,11 @@ TEST(nedelin_d_block_cannons_tbb, Multiply_0x0) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(seq_block_result.data()));
   taskDataSeq->outputs_count.emplace_back(seq_block_result.size());
 
-  TestTBBSequentialNedelinCannon testTBBTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTBBTaskSequential.validation(), true);
-  testTBBTaskSequential.pre_processing();
-  testTBBTaskSequential.run();
-  testTBBTaskSequential.post_processing();
+  TestTBBSequentialNedelinCannon testSTLTaskParallel(taskDataSeq);
+  ASSERT_EQ(testSTLTaskParallel.validation(), true);
+  testSTLTaskParallel.pre_processing();
+  testSTLTaskParallel.run();
+  testSTLTaskParallel.post_processing();
 
   std::vector<double> parallel_res(n * m);
 
@@ -201,7 +201,7 @@ TEST(nedelin_d_block_cannons_tbb, Multiply_0x0) {
   }
 }
 
-TEST(nedelin_d_block_cannons_tbb, Multiply_100x100) {
+TEST(nedelin_d_block_cannons_stl, Multiply_100x100) {
   int n = 100;
   int m = 100;
 
@@ -241,11 +241,11 @@ TEST(nedelin_d_block_cannons_tbb, Multiply_100x100) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(parallel_res.data()));
   taskDataPar->outputs_count.emplace_back(parallel_res.size());
 
-  TestTaskTBBParallelNedelinCannon testOmpTaskParallel(taskDataPar);
-  ASSERT_EQ(testOmpTaskParallel.validation(), true);
-  testOmpTaskParallel.pre_processing();
-  testOmpTaskParallel.run();
-  testOmpTaskParallel.post_processing();
+  TestTaskSTLParallelNedelinCannon testSTLTaskParallel(taskDataPar);
+  ASSERT_EQ(testSTLTaskParallel.validation(), true);
+  testSTLTaskParallel.pre_processing();
+  testSTLTaskParallel.run();
+  testSTLTaskParallel.post_processing();
 
   for (size_t i = 0; i < seq_block_result.size(); ++i) {
     ASSERT_EQ(parallel_res[i], seq_block_result[i]);
