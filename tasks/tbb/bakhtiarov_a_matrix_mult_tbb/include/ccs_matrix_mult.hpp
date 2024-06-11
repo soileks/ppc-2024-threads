@@ -9,7 +9,7 @@
 
 class SparseMatrixMultiTBB {
  public:
-  explicit SparseMatrixMultiTBB(ppc::core::TaskData* taskData);
+  explicit SparseMatrixMultiTBB(std::shared_ptr<ppc::core::TaskData> taskData);
   bool pre_processing();
   bool run();
   bool post_processing();
