@@ -12,8 +12,7 @@
 using namespace std::chrono_literals;
 using namespace std;
 
-SparseMatrixMultiTBB::SparseMatrixMultiTBB(std::shared_ptr<ppc::core::TaskData> taskData)
-    : taskData(taskData), result(nullptr) {}
+SparseMatrixMultiTBB::SparseMatrixMultiTBB(std::shared_ptr<ppc::core::TaskData> taskData) : taskData(taskData), result(nullptr) {}
 
 bool SparseMatrixMultiTBB::pre_processing() {
   internal_order_test();
@@ -73,26 +72,26 @@ bool SparseMatrixMultiTBB::run() {
   colPtr3.clear();
 
   tbb::parallel_for(tbb::blocked_range<int>(0, numCols2), [this](const tbb::blocked_range<int>& range) {
-    for (int j = range.begin(); j != range.end(); ++j) {
-      for (int i = 0; i < numRows1; i++) {
-        double sum = 0.0;
-        for (int k = colPtr1[i]; k < colPtr1[i + 1]; k++) {
-          int row1 = rows1[k];
-          double val1 = values1[k];
-          for (int l = colPtr2[j]; l < colPtr2[j + 1]; l++) {
-            if (rows2[l] == row1) {
-              double val2 = values2[l];
-              sum += val1 * val2;
-              break;
+      for (int j = range.begin(); j != range.end(); ++j) {
+        for (int i = 0; i < numRows1; i++) {
+          double sum = 0.0;
+          for (int k = colPtr1[i]; k < colPtr1[i + 1]; k++) {
+            int row1 = rows1[k];
+            double val1 = values1[k];
+            for (int l = colPtr2[j]; l < colPtr2[j + 1]; l++) {
+              if (rows2[l] == row1) {
+                double val2 = values2[l];
+                sum += val1 * val2;
+                break;
+              }
             }
           }
-        }
-        if (sum != 0.0) {
-          int index = i * numCols2 + j;
-          result[index] = sum;
+          if (sum != 0.0) {
+            int index = i * numCols2 + j;
+            result[index] = sum;
+          }
         }
       }
-    }
   });
 
   for (int j = 0; j < numCols2; j++) {
