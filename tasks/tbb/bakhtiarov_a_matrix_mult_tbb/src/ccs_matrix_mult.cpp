@@ -2,15 +2,15 @@
 
 #include "tbb/bakhtiarov_a_matrix_mult_tbb/include/ccs_matrix_mult.hpp"
 
+#include <tbb/tbb.h>
+
 #include <thread>
 #include <vector>
-#include <tbb/tbb.h>
 
 using namespace std::chrono_literals;
 using namespace std;
 
-SparseMatrixMultiTBB::SparseMatrixMultiTBB(ppc::core::TaskData* taskData)
-    : taskData(taskData), result(nullptr) {}
+SparseMatrixMultiTBB::SparseMatrixMultiTBB(ppc::core::TaskData* taskData) : taskData(taskData), result(nullptr) {}
 
 bool SparseMatrixMultiTBB::pre_processing() {
   internal_order_test();
@@ -69,29 +69,28 @@ bool SparseMatrixMultiTBB::run() {
   rows3.clear();
   colPtr3.clear();
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, numCols2)),
-    [this](const tbb::blocked_range<int>& range {
-      for (int j = range.begin(); j != range.end(); ++j) {
-        for (int i = 0; i < numRows1; i++) {
-          double sum = 0.0;
-          for (int k = colPtr1[i]; k < colPtr1[i + 1]; k++) {
-            int row1 = rows1[k];
-            double val1 = values1[k];
-            for (int l = colPtr2[j]; l < colPtr2[j + 1]; l++) {
-              if (rows2[l] == row1) {
-                double val2 = values2[l];
-                sum += val1 * val2;
-                break;
-              }
+  tbb::parallel_for(tbb::blocked_range<int>(0, numCols2)), [this](const tbb::blocked_range<int>& range {
+    for (int j = range.begin(); j != range.end(); ++j) {
+      for (int i = 0; i < numRows1; i++) {
+        double sum = 0.0;
+        for (int k = colPtr1[i]; k < colPtr1[i + 1]; k++) {
+          int row1 = rows1[k];
+          double val1 = values1[k];
+          for (int l = colPtr2[j]; l < colPtr2[j + 1]; l++) {
+            if (rows2[l] == row1) {
+              double val2 = values2[l];
+              sum += val1 * val2;
+              break;
             }
           }
-          if (sum != 0.0) {
-            int index = i * numCols2 + j;
-            result[index] = sum;
-          }
+        }
+        if (sum != 0.0) {
+          int index = i * numCols2 + j;
+          result[index] = sum;
         }
       }
-    });
+    }
+  });
 
   for (int j = 0; j < numCols2; j++) {
     colPtr3.push_back(values3.size());

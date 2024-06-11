@@ -1,8 +1,9 @@
 // Copyright 2024 Bakhtiarov Alexander
 #pragma once
 
-#include <vector>
 #include <tbb/tbb.h>
+
+#include <vector>
 
 class SparseMatrixMultiTBB {
  public:
