@@ -31,8 +31,8 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes) {
   taskDataSeq->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiSequential sparseMatrixMultiSequential(taskDataSeq);
-  ASSERT_EQ(sparseMatrixMultiSequential.validation(), true);
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  ASSERT_EQ(sparseMatrixMultiTBB.validation(), true);
 }
 
 TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes2) {
@@ -61,8 +61,8 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes2) {
   taskDataSeq->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiSequential sparseMatrixMultiSequential(taskDataSeq);
-  ASSERT_FALSE(sparseMatrixMultiSequential.validation());
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  ASSERT_FALSE(sparseMatrixMultiTBB.validation());
 }
 
 TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
@@ -90,11 +90,11 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
   taskDataSeq->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiSequential sparseMatrixMultiSequential(taskDataSeq);
-  sparseMatrixMultiSequential.validation();
-  sparseMatrixMultiSequential.pre_processing();
-  sparseMatrixMultiSequential.run();
-  sparseMatrixMultiSequential.post_processing();
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  sparseMatrixMultiTBB.validation();
+  sparseMatrixMultiTBB.pre_processing();
+  sparseMatrixMultiTBB.run();
+  sparseMatrixMultiTBB.post_processing();
 
   size_t k = 0;
 
@@ -129,11 +129,11 @@ TEST(bakhtiarov_a_matrix_mult_tbb, inverse_matrix) {
   taskDataSeq->outputs_count.emplace_back(n1);
   taskDataSeq->outputs_count.emplace_back(m2);
   // Create Task
-  SparseMatrixMultiSequential sparseMatrixMultiSequential(taskDataSeq);
-  sparseMatrixMultiSequential.validation();
-  sparseMatrixMultiSequential.pre_processing();
-  sparseMatrixMultiSequential.run();
-  sparseMatrixMultiSequential.post_processing();
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  sparseMatrixMultiTBB.validation();
+  sparseMatrixMultiTBB.pre_processing();
+  sparseMatrixMultiTBB.run();
+  sparseMatrixMultiTBB.post_processing();
 
   size_t k = 0;
 
@@ -171,11 +171,11 @@ TEST(bakhtiarov_a_matrix_mult_tbb, zero_matrix) {
   taskDataSeq->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiSequential sparseMatrixMultiSequential(taskDataSeq);
-  sparseMatrixMultiSequential.validation();
-  sparseMatrixMultiSequential.pre_processing();
-  sparseMatrixMultiSequential.run();
-  sparseMatrixMultiSequential.post_processing();
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  sparseMatrixMultiTBB.validation();
+  sparseMatrixMultiTBB.pre_processing();
+  sparseMatrixMultiTBB.run();
+  sparseMatrixMultiTBB.post_processing();
 
   size_t k = 0;
 

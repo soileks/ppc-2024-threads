@@ -39,7 +39,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SparseMatrixMultiSequential>(taskDataSeq);
+  auto testTaskSeq = std::make_shared<SparseMatrixMultiTBB>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -100,7 +100,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SparseMatrixMultiSequential>(taskDataSeq);
+  auto testTaskSeq = std::make_shared<SparseMatrixMultiTBB>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
