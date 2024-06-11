@@ -4,7 +4,7 @@
 #include <chrono>
 #include <vector>
 #include "core/perf/include/perf.hpp"
-#include "tbb/bakhtiarov_a_matrix_mult_css_tbb/include/ccs_matrix_mult.hpp"
+#include "tbb/bakhtiarov_a_matrix_mult_tbb/include/ccs_matrix_mult.hpp"
 
 using namespace std;
 
@@ -57,12 +57,12 @@ void test_matrix_multiplication(size_t p, size_t q, size_t r, const std::shared_
   }
 }
 
-TEST(bakhtiarov_a_matrix_mult_css_tbb, test_pipeline_run) {
+TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   auto task = std::make_shared<SparseTBBMatrixMultiParallel>(std::make_shared<ppc::core::TaskData>());
   test_matrix_multiplication(500, 500, 500, task);
 }
 
-TEST(bakhtiarov_a_matrix_mult_css_tbb, test_task_run) {
+TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   auto task = std::make_shared<SparseTBBMatrixMultiParallel>(std::make_shared<ppc::core::TaskData>());
   test_matrix_multiplication(700, 700, 700, task);
 }

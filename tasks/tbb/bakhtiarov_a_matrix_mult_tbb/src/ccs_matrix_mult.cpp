@@ -1,6 +1,6 @@
 // Copyright 2024 Bakhtiarov Alexander
 
-#include "tbb/bakhtiarov_a_matrix_mult_css_tbb/include/ccs_matrix_mult.hpp"
+#include "tbb/bakhtiarov_a_matrix_mult_tbb/include/ccs_matrix_mult.hpp"
 
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>

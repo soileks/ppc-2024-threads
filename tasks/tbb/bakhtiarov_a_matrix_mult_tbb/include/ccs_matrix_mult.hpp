@@ -10,7 +10,7 @@ class SparseTBBMatrixMulti : public ppc::core::Task {
   explicit SparseTBBMatrixMulti(std::shared_ptr<ppc::core::TaskData> taskData_)
       : Task(std::move(taskData_)) {}
   bool pre_processing() override;
-  bool run() override = 0; // Pure virtual
+  bool run() override = 0;
   bool post_processing() override;
   bool validation() override;
 
