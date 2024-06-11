@@ -17,8 +17,8 @@ class KutarinASobel : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
-  int width_ {0};
-  int height_ {0};
+  int width_{0};
+  int height_{0};
 
   std::vector<int> sourceImage;
   std::vector<int> resultImage;

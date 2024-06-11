@@ -111,7 +111,8 @@ bool KutarinASobel::post_processing() {
   return true;
 }
 
-static void KutarinASobel ::generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio) {
+static void KutarinASobel ::generateSaltAndPepperNoise(std::vector<int>& image, int height, int width,
+                                                       float noise_ratio) {
   int num_noise_pixels = static_cast<int>(height * width * noise_ratio);
   for (int i = 0; i < num_noise_pixels; ++i) {
     int x = rand() % width;
