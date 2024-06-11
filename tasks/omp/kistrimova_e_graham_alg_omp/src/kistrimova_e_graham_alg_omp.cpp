@@ -36,23 +36,17 @@ double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y
 std::vector<point> graham(std::vector<point> points) {
   int n = points.size();
   std::vector<int> R(n);
-  // Инициализация индексов
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < n; i++) R[i] = i;
 
-  // Нахождение точки с минимальной x-координатой
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 1; i < n; i++) {
     if (points[R[i]].x < points[R[0]].x) {
-      #pragma omp critical
-      {
-        std::swap(R[i], R[0]);
-      }
+#pragma omp critical
+      { std::swap(R[i], R[0]); }
     }
   }
 
-  // Сортировка точек по углу относительно базовой точки
-  // Это должно быть выполнено последовательно, так как зависит от порядка точек
   for (int i = 2; i < n; i++) {
     int j = i;
     while (j > 1 && rotate(points[R[0]], points[R[j - 1]], points[R[j]]) < 0) {
@@ -62,7 +56,6 @@ std::vector<point> graham(std::vector<point> points) {
   }
 
   std::vector<point> res{points[R[0]], points[R[1]]};
-  // Построение выпуклой оболочки
   for (int i = 2; i < n; i++) {
     while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) <= 0) {
       if (res.size() > 2) {
