@@ -251,7 +251,6 @@ TEST(lebedeva_ksenia_bitwise_sort_double_batcher, test_random) {
   testRDSBtbbParallel.pre_processing();
   testRDSBtbbParallel.run();
   testRDSBtbbParallel.post_processing();
-  
 
   for (size_t i = 0; i < out_seq.size(); ++i) {
     ASSERT_EQ(out_seq[i], out_par[i]);
