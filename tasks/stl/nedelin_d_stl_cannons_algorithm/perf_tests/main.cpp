@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 
 #include "core/perf/include/perf.hpp"
-#include"stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
+#include "stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
 
-TEST(_nedelin_d_block_cannons_perf_test_stl, test_pipeline_run) {
+TEST(nedelin_d_block_cannons_perf_test_stl, test_pipeline_run) {
   int n = 500;
   int m = 500;
 

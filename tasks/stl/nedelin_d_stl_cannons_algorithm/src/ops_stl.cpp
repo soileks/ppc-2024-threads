@@ -1,10 +1,9 @@
 // Copyright 2024 Nedelin Dmitry
-#include"stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
-
-#include<thread>
+#include "stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
 
 #include <algorithm>
 #include <iostream>
+#include<thread>
 
 #undef min
 
@@ -49,7 +48,6 @@ void BlocksMultiply(const std::vector<double>& A, const std::vector<double>& B, 
     }
   }
 }
-
 
 std::vector<double> cannonMtrxMultiplication_tbb(const std::vector<double>& A, const std::vector<double>& B, int n,
                                                  int m) {

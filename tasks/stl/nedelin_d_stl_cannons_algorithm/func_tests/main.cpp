@@ -1,7 +1,7 @@
 // Copyright 2024 Nedelin Dmitry
 #include <gtest/gtest.h>
 
-#include "stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
+#include"stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
 
 TEST(nedelin_d_block_cannons_stl, Multiply_3x3) {
   int n = 3;
