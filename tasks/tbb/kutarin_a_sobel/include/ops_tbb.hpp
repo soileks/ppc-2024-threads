@@ -17,14 +17,14 @@ class KutarinASobel : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
-  int width_;
-  int height_;
+  int width_ {0};
+  int height_ {0};
 
   std::vector<int> sourceImage;
   std::vector<int> resultImage;
   std::vector<int> kernel_x = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
   std::vector<int> kernel_y = {1, 2, 1, 0, 0, 0, -1, -2, -1};
 
+  static void generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio);
   static int clamp(int value, int min, int max);
-  void generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio);
 };
