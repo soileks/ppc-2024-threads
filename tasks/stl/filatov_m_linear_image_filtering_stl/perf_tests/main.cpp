@@ -14,16 +14,21 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
   std::vector<uint8_t> expectedData;
   uint64_t width;
   uint64_t height;
+  std::shared_ptr<GaussFilterHorizontal> gaussFilterHorizontal;
+
+  void SetExpectedData(std::vector<uint8_t> data) { expectedData = data; }
 
   void SetUpWH(int width_, int height_) {
     width = width_;
     height = height_;
   }
 
+  void CreateGaussFilterHorizontal() { gaussFilterHorizontal = std::make_shared<GaussFilterHorizontal>(taskData); }
+
   void CommonSetUp() {
-    inputData.resize(width * height * 3);
-    outputData.resize(width * height * 3);
-    expectedData.resize(width * height * 3);
+    inputData.resize(width * height * 3, 0);
+    outputData.resize(width * height * 3, 0);
+    expectedData.resize(width * height * 3, 0);
     taskData = std::make_shared<ppc::core::TaskData>();
   }
 
@@ -43,46 +48,46 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
   }
 
   void ValidateOutputData() { ASSERT_EQ(expectedData, outputData); }
+
+  std::shared_ptr<ppc::core::PerfAttr> SetUpPerfAttributes() {
+    auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
+    perfAttr->num_running = 10;
+    return perfAttr;
+  }
+
+  void RunPerfAnalysis(const std::shared_ptr<GaussFilterHorizontal>& filter) {
+    auto perfAttr = SetUpPerfAttributes();
+    const auto t0 = std::chrono::high_resolution_clock::now();
+    perfAttr->current_timer = [&] {
+      auto current_time_point = std::chrono::high_resolution_clock::now();
+      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+      return static_cast<double>(duration) * 1e-9;
+    };
+    auto perfResults = std::make_shared<ppc::core::PerfResults>();
+    auto perfAnalyzer = std::make_shared<ppc::core::Perf>(filter);
+    perfAnalyzer->pipeline_run(perfAttr, perfResults);
+    ppc::core::Perf::print_perf_statistic(perfResults);
+  }
 };
 
-TEST_F(filatov_m_linear_image_filtering, test_pipeline_run_with_blue_image) {
+TEST_F(filatov_m_linear_image_filtering, test_pipeline_run_with_red_image) {
   SetUpWH(512, 512);
   CommonSetUp();
-  InitializeTaskData();
   FillChannel(0, 111);
-  expectedData = inputData;
-  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-  perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
-  auto perfResults = std::make_shared<ppc::core::PerfResults>();
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskData);
-  perfAnalyzer->pipeline_run(perfAttr, perfResults);
-  ppc::core::Perf::print_perf_statistic(perfResults);
+  CreateGaussFilterHorizontal();
+  SetExpectedData(inputData);
+  InitializeTaskData();
+  RunPerfAnalysis(gaussFilterHorizontal);
   ValidateOutputData();
 }
 
-TEST_F(filatov_m_linear_image_filtering, test_task_run_with_green_image) {
+TEST_F(filatov_m_linear_image_filtering, test_task_run_with_blue_image) {
   SetUpWH(512, 512);
   CommonSetUp();
-  InitializeTaskData();
   FillChannel(1, 255);
-  expectedData = inputData;
-  auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
-  perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] {
-    auto current_time_point = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-    return static_cast<double>(duration) * 1e-9;
-  };
-  auto perfResults = std::make_shared<ppc::core::PerfResults>();
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskData);
-  perfAnalyzer->task_run(perfAttr, perfResults);
-  ppc::core::Perf::print_perf_statistic(perfResults);
+  CreateGaussFilterHorizontal();
+  SetExpectedData(inputData);
+  InitializeTaskData();
+  RunPerfAnalysis(gaussFilterHorizontal);
   ValidateOutputData();
 }
