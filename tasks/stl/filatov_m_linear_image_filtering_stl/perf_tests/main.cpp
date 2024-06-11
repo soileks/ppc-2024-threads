@@ -92,4 +92,3 @@ TEST_F(filatov_m_linear_image_filtering, test_task_run_with_blue_image) {
   RunPerfAnalysis(gaussFilterHorizontal);
   ValidateOutputData();
 }
-
