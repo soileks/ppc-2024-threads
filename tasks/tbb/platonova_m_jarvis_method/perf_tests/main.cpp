@@ -7,7 +7,7 @@
 #include "tbb/platonova_m_jarvis_method/include/ops_tbb.hpp"
 
 TEST(Platonova_m_jarvis, test_pipeline_run) {
-   std::vector<Point> points;
+  std::vector<Point> points;
   const int size = 128000;
   points.reserve(size);
   for (int i = 0; i < size; i++) {

@@ -47,21 +47,23 @@ std::vector<Point> Jarvis(const std::vector<Point>& Points, int num_threads) {
 
   tbb::global_control control(tbb::global_control::max_allowed_parallelism, num_threads);
 
-  Point p0 = *std::min_element(Points.begin(), Points.end(), [](const Point& a, const Point& b) { return a.x < b.x || (a.x == b.x && a.y < b.y); });
+  Point p0 = *std::min_element(Points.begin(), Points.end(),
+                               [](const Point& a, const Point& b) { return a.x < b.x || (a.x == b.x && a.y < b.y); });
   std::vector<Point> convexHull = {p0};
 
   do {
     Point nextPoint = Points[0];
     double maxAngle = std::numeric_limits<double>::lowest();
 
-    tbb::parallel_for_each(Points.begin(), Points.end(), [&Points, &convexHull, &nextPoint, &maxAngle](const Point& point) {
-      if (point == convexHull.back()) return;
-      double angle = std::atan2(point.y - convexHull.back().y, point.x - convexHull.back().x);
-      if (angle > maxAngle) {
-        maxAngle = angle;
-        nextPoint = point;
-      }
-    });
+    tbb::parallel_for_each(Points.begin(), Points.end(), 
+                           [&convexHull, &nextPoint, &maxAngle](const Point& point) {
+                             if (point == convexHull.back()) return;
+                             double angle = std::atan2(point.y - convexHull.back().y, point.x - convexHull.back().x);
+                             if (angle > maxAngle) {
+                               maxAngle = angle;
+                               nextPoint = point;
+                             }
+                           });
 
     if (nextPoint == p0) break;
 
@@ -80,23 +82,23 @@ bool JarvisTBB::pre_processing() {
 }
 
 bool JarvisTBB::validation() {
-    internal_order_test();
-    if (taskData->inputs_count[0] == 0) {
-        return false;
-    }
-    std::sort(points.begin(), points.end());
-    return std::unique(points.begin(), points.end()) == points.end();
+  internal_order_test();
+  if (taskData->inputs_count[0] == 0) {
+      return false;
+  }
+  std::sort(points.begin(), points.end());
+  return std::unique(points.begin(), points.end()) == points.end();
 }
 
 bool JarvisTBB::run() {
-    internal_order_test();
-    resPoints = Jarvis(points,10);
-    return true;
+  internal_order_test();
+  resPoints = Jarvis(points,10);
+  return true;
 }
 
 bool JarvisTBB::post_processing() {
-    internal_order_test();
-    auto* output_ptr = reinterpret_cast<Point*>(taskData->outputs[0]);
-    std::copy_n(resPoints.begin(), resPoints.size(), output_ptr);
-    return true;
+  internal_order_test();
+  auto* output_ptr = reinterpret_cast<Point*>(taskData->outputs[0]);
+  std::copy_n(resPoints.begin(), resPoints.size(), output_ptr);
+  return true;
 }

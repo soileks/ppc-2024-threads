@@ -4,9 +4,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 #include "core/task/include/task.hpp"
 

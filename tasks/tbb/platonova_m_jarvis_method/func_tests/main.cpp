@@ -56,9 +56,9 @@ TEST(Platonova_m_jarvis, can_operate_three_points) {
 
   // Создание TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataTBB = std::make_shared<ppc::core::TaskData>();
-  taskDataTBB->inputs.emplace_back(reinterpret_cast<uint8_t*>(points.data()));
+  taskDataTBB->inputs.emplace_back(reinterpret_cast<uint8_t *>(points.data()));
   taskDataTBB->inputs_count.emplace_back(points.size());
-  taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t*>(res.data()));
+  taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
   taskDataTBB->outputs_count.emplace_back(res.size());
 
   // Создание TBB Task
