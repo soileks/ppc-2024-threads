@@ -16,16 +16,16 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   size_t r = 500;
   std::vector<double> lhs_in(p * q);
   for (size_t i = 0; i < p; ++i) {
-      if (i % 4 == 0)
-          for (size_t j = 0; j < q; ++j) {
-              lhs_in[i * q + j] = 1.0;
-          }
+    if (i % 4 == 0)
+      for (size_t j = 0; j < q; ++j) {
+        lhs_in[i * q + j] = 1.0;
+      }
   }
   std::vector<double> rhs_in(q * r);
   for (size_t i = 0; i < q; ++i) {
-      for (size_t j = 0; j < r; ++j) {
-          if (j % 5 == 0) rhs_in[i * r + j] = 1.0;
-      }
+    for (size_t j = 0; j < r; ++j) {
+      if (j % 5 == 0) rhs_in[i * r + j] = 1.0;
+    }
   }
   std::vector<double> out(p * r);
 
@@ -47,9 +47,9 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
-      auto current_time_point = std::chrono::high_resolution_clock::now();
-      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-      return static_cast<double>(duration) * 1e-9;
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
   };
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -57,12 +57,12 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
-      for (size_t j = 0; j < r; ++j) {
-          if (i % 4 == 0 && j % 5 == 0)
-              EXPECT_DOUBLE_EQ(out[i * r + j], q);
-          else
-              EXPECT_DOUBLE_EQ(out[i * r + j], 0.0);
-      }
+    for (size_t j = 0; j < r; ++j) {
+      if (i % 4 == 0 && j % 5 == 0)
+        EXPECT_DOUBLE_EQ(out[i * r + j], q);
+      else
+        EXPECT_DOUBLE_EQ(out[i * r + j], 0.0);
+    }
   }
 }
 
@@ -73,16 +73,16 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   size_t r = 500;
   std::vector<double> lhs_in(p * q);
   for (size_t i = 0; i < p; ++i) {
-      if (i % 4 == 0)
-          for (size_t j = 0; j < q; ++j) {
-              lhs_in[i * q + j] = 1.0;
-          }
+    if (i % 4 == 0)
+      for (size_t j = 0; j < q; ++j) {
+        lhs_in[i * q + j] = 1.0;
+      }
   }
   std::vector<double> rhs_in(q * r);
   for (size_t i = 0; i < q; ++i) {
-      for (size_t j = 0; j < r; ++j) {
-          if (j % 5 == 0) rhs_in[i * r + j] = 1.0;
-      }
+    for (size_t j = 0; j < r; ++j) {
+      if (j % 5 == 0) rhs_in[i * r + j] = 1.0;
+    }
   }
   std::vector<double> out(p * r);
   // Create TaskData
@@ -103,9 +103,9 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] {
-      auto current_time_point = std::chrono::high_resolution_clock::now();
-      auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
-      return static_cast<double>(duration) * 1e-9;
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
   };
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -113,11 +113,11 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
-      for (size_t j = 0; j < r; ++j) {
-          if (i % 4 == 0 && j % 5 == 0)
-              EXPECT_DOUBLE_EQ(out[i * r + j], q);
-          else
-              EXPECT_DOUBLE_EQ(out[i * r + j], 0.0);
-      }
+    for (size_t j = 0; j < r; ++j) {
+      if (i % 4 == 0 && j % 5 == 0)
+        EXPECT_DOUBLE_EQ(out[i * r + j], q);
+      else
+        EXPECT_DOUBLE_EQ(out[i * r + j], 0.0);
+    }
   }
 }
