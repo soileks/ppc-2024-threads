@@ -5,7 +5,6 @@
 #include <iostream>
 #include <random>
 
-
 bool KutarinASobel::pre_processing() {
   internal_order_test();
   if (!taskData) {
@@ -49,13 +48,13 @@ bool KutarinASobel::validation() {
   bool valid_input_count = taskData->inputs_count.size() == 2;
   if (!valid_input_count) {
     std::cerr << "Ошибка: Неверное количество входных данных. Ожидается 2, получено " << taskData->inputs_count.size()
-      << "." << std::endl;
+            << "." << std::endl;
   }
 
   bool valid_output_count = taskData->outputs_count.size() == 2;
   if (!valid_output_count) {
     std::cerr << "Ошибка: Неверное количество выходных данных. Ожидается 2, получено " << taskData->outputs_count.size()
-      << "." << std::endl;
+            << "." << std::endl;
   }
 
   return valid_input_count && valid_output_count;
@@ -64,14 +63,13 @@ bool KutarinASobel::validation() {
 bool KutarinASobel::run() {
   internal_order_test();
   try {
-    tbb::parallel_for(0, height_, 1, [&](int j ) {
+    tbb::parallel_for(0, height_, 1, [&](int j) {
       for (int i = 0; i < width_; ++i) {
         int resultX = 0;
         int resultY = 0;
         for (int y = -1; y <= 1; ++y) {
           for (int x = -1; x <= 1; ++x) {
-            int pixelValue = sourceImage[clamp(j + y, 0, height_ - 1) * width_
-             + clamp(i + x, 0, width_ - 1)];
+            int pixelValue = sourceImage[clamp(j + y, 0, height_ - 1) * width_ + clamp(i + x, 0, width_ - 1)];
             resultX += pixelValue * kernel_x[(y + 1) * 3 + (x + 1)];
             resultY += pixelValue * kernel_y[(y + 1) * 3 + (x + 1)];
           }

@@ -25,7 +25,6 @@ class KutarinASobel : public ppc::core::Task {
   std::vector<int> kernel_x = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
   std::vector<int> kernel_y = {1, 2, 1, 0, 0, 0, -1, -2, -1};
 
-
   static int clamp(int value, int min, int max);
   void generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio);
 };
