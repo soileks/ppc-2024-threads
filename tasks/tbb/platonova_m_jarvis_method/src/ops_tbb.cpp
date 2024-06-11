@@ -1,4 +1,4 @@
-// Copyright 2024 Platonova Mariya
+// Copyright 2024 Platonova Maria
 #include "tbb/platonova_m_jarvis_method/include/ops_tbb.hpp"
 
 #include <tbb/tbb.h>
