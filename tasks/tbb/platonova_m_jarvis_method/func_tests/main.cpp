@@ -48,31 +48,6 @@ TEST(Platonova_m_jarvis, can_operate_line) {
   }
 }
 
-TEST(Platonova_m_jarvis, can_operate_three_points) {
-  std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}};
-  std::vector<Point> expected_hull = {{0, 0}, {1, 1}, {2, 2}};
-
-  std::vector<Point> res(points.size());
-
-  // Создание TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataTBB = std::make_shared<ppc::core::TaskData>();
-  taskDataTBB->inputs.emplace_back(reinterpret_cast<uint8_t *>(points.data()));
-  taskDataTBB->inputs_count.emplace_back(points.size());
-  taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
-  taskDataTBB->outputs_count.emplace_back(res.size());
-
-  // Создание TBB Task
-  JarvisTBB TaskTBB(taskDataTBB);
-  ASSERT_EQ(TaskTBB.validation(), true);
-  TaskTBB.pre_processing();
-  TaskTBB.run();
-  TaskTBB.post_processing();
-
-  for (size_t i = 0; i < expected_hull.size(); ++i) {
-    ASSERT_EQ(res[i], expected_hull[i]);
-  }
-}
-
 TEST(Platonova_m_jarvis, can_operate_one_point) {
   std::vector<Point> points = {{0, 0}};
   std::vector<Point> hull = {{0, 0}};

@@ -25,15 +25,14 @@ std::vector<Point> Jarvis(const std::vector<Point>& Points, int num_threads) {
     Point nextPoint = Points[0];
     double maxAngle = std::numeric_limits<double>::lowest();
 
-    tbb::parallel_for_each(Points.begin(), Points.end(), 
-                           [&convexHull, &nextPoint, &maxAngle](const Point& point) {
-                             if (point == convexHull.back()) return;
-                             double angle = std::atan2(point.y - convexHull.back().y, point.x - convexHull.back().x);
-                             if (angle > maxAngle) {
-                               maxAngle = angle;
-                               nextPoint = point;
-                             }
-                           });
+    tbb::parallel_for_each(Points.begin(), Points.end(), [&convexHull, &nextPoint, &maxAngle](const Point& point) {
+      if (point == convexHull.back()) return;
+      double angle = std::atan2(point.y - convexHull.back().y, point.x - convexHull.back().x);
+      if (angle > maxAngle) {
+        maxAngle = angle;
+        nextPoint = point;
+      }
+    });
 
     if (nextPoint == p0) break;
 
