@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include "core/task/include/task.hpp"
+
 class SparseMatrixMultiTBB {
  public:
   explicit SparseMatrixMultiTBB(ppc::core::TaskData* taskData);
