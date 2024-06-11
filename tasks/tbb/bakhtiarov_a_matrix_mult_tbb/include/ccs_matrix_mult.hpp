@@ -1,47 +1,23 @@
 // Copyright 2024 Bakhtiarov Alexander
 #pragma once
 
-#include <memory>
 #include <vector>
+#include <tbb/tbb.h>
 
-#include "core/task/include/task.hpp"
-
-class SparseTBBMatrixMulti : public ppc::core::Task {
+class SparseMatrixMultiTBB {
  public:
-  explicit SparseTBBMatrixMulti(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
-  bool pre_processing() override;
-  bool run() override = 0;
-  bool post_processing() override;
-  bool validation();
+  explicit SparseMatrixMultiTBB(ppc::core::TaskData* taskData);
+  bool pre_processing();
+  bool run();
+  bool post_processing();
 
  private:
-  struct Matrix {
-    std::vector<double> values;
-    std::vector<int> rows;
-    std::vector<int> colPtr;
-    int numRows;
-    int numCols;
-  };
+  ppc::core::TaskData* taskData;
+  std::vector<double> values1, values2, values3;
+  std::vector<int> rows1, rows2, rows3;
+  std::vector<int> colPtr1, colPtr2, colPtr3;
+  double* result;
+  int numRows1, numCols1, numRows2, numCols2, numRows3, numCols3;
 
- protected:
-  Matrix matrix1;
-  Matrix matrix2;
-  Matrix result;
-
-  void construct_ccs(Matrix& matrix, const double* data, int numRows, int numCols);
-  double doubleFromBytes(uint8_t* buffer);
-};
-
-class SparseTBBMatrixMultiSequential : public SparseTBBMatrixMulti {
- public:
-  explicit SparseTBBMatrixMultiSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : SparseTBBMatrixMulti(std::move(taskData_)) {}
-  bool run() override;
-};
-
-class SparseTBBMatrixMultiParallel : public SparseTBBMatrixMulti {
- public:
-  explicit SparseTBBMatrixMultiParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : SparseTBBMatrixMulti(std::move(taskData_)) {}
-  bool run() override;
+  void internal_order_test();
 };
