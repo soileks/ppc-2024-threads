@@ -1,13 +1,13 @@
 // Copyright 2024 Kozlov Mikhail
 #pragma once
 
+#include <atomic>
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <thread>
 #include <utility>
 #include <vector>
-#include <thread>
-#include <atomic>
 
 #include "core/task/include/task.hpp"
 

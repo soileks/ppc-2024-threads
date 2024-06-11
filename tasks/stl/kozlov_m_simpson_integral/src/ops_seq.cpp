@@ -27,7 +27,7 @@ bool KozlovTaskSequential::run() {
   internal_order_test();
   double h_x = std::abs(x2 - x1) / n;
   double h_y = std::abs(y2 - y1) / m;
-  auto Int = [&,this](const uint32_t start, const uint32_t end) {
+  auto Int = [&, this](const uint32_t start, const uint32_t end) {
     double local_res = 0.0;
     for (uint64_t i = start; i <= end; i++) {
       double q;
