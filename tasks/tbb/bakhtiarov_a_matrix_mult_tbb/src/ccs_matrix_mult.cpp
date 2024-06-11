@@ -91,8 +91,7 @@ bool SparseTBBMatrixMultiParallel::run() {
         int row1 = matrix1.rows[l];
         double val1 = matrix1.values[l];
         double val2 = matrix2.values[k];
-        result.values
-         result.values[row1 * matrix2.numCols + column2] += val1 * val2;
+        result.values[row1 * matrix2.numCols + column2] += val1 * val2;
       }
     }
   });
