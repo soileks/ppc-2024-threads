@@ -26,7 +26,7 @@ class SparseTBBMatrixMulti : public ppc::core::Task {
   Matrix matrix1;
   Matrix matrix2;
   Matrix result;
-  
+
   void construct_ccs(Matrix& matrix, const double* data, int numRows, int numCols);
 };
 
