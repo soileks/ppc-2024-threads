@@ -12,8 +12,8 @@
 using namespace std::chrono_literals;
 using namespace std;
 
-SparseMatrixMultiTBB::SparseMatrixMultiTBB(shared_ptr<ppc::core::TaskData> taskData)
-    : taskData(taskData), result(nullptr) {}
+//SparseMatrixMultiTBB::SparseMatrixMultiTBB(shared_ptr<ppc::core::TaskData> taskData)
+//    : taskData(taskData), result(nullptr) {}
 
 bool SparseMatrixMultiTBB::pre_processing() {
   internal_order_test();
@@ -71,6 +71,10 @@ bool SparseMatrixMultiTBB::run() {
   values3.clear();
   rows3.clear();
   colPtr3.clear();
+
+  values3.resize(numCols2 * numRows1);
+  rows3.reserve(numCols2 * numRows1);
+  colPtr3.reserve(numCols2 + 1);
 
   tbb::parallel_for(tbb::blocked_range<int>(0, numCols2), [this](const tbb::blocked_range<int>& range) {
     for (int j = range.begin(); j != range.end(); ++j) {
