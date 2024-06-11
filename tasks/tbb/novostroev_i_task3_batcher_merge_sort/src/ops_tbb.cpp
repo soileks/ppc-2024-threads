@@ -10,25 +10,46 @@ std::mutex idx_mutex;
 
 std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, std::vector<int>& vec2, size_t idx1,
                                size_t idx2, size_t increment, int modification) {
-  std::vector<int> mergedVec = vec0;
-  size_t idx = 0;
+    std::vector<int> mergedVec = vec0;
+    size_t idx = 0;
 
-  if ((modification == 0) || (modification == 1)) {
-    while ((idx1 < vec1.size()) && (idx2 < vec2.size())) {
-      if (vec1[idx1] <= vec2[idx2]) {
-        mergedVec[idx] = vec1[idx1];
-        idx1 += increment;
-      } else {
-        mergedVec[idx] = vec2[idx2];
-        idx2 += increment;
-      }
-      idx++;
+    if ((modification == 0) || (modification == 1)) {
+        size_t len1 = vec1.size();
+        size_t len2 = vec2.size();
+
+        tbb::parallel_invoke(
+            [&] {
+                while ((idx1 < len1) && (idx2 < len2)) {
+                    if (vec1[idx1] <= vec2[idx2]) {
+                        mergedVec[idx] = vec1[idx1];
+                        idx1 += increment;
+                    } else {
+                        mergedVec[idx] = vec2[idx2];
+                        idx2 += increment;
+                    }
+                    idx++;
+                }
+            },
+            [&] {
+                while (idx1 < len1) {
+                    mergedVec[idx] = vec1[idx1];
+                    idx1 += increment;
+                    idx++;
+                }
+            },
+            [&] {
+                while (idx2 < len2) {
+                    mergedVec[idx] = vec2[idx2];
+                    idx2 += increment;
+                    idx++;
+                }
+            }
+        );
+
+        return mergedVec;
     }
 
     return mergedVec;
-  }
-
-  return mergedVec;
 }
 std::vector<int> getOddElements(std::vector<int> vec1, std::vector<int> vec2) {
   size_t idx1 = 1;
