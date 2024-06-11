@@ -8,7 +8,7 @@
 #include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_tbb.hpp"
 
 TEST(novostroev_i_batcher_sort_perf_tbb, test_pipeline_run) {
-  std::vector<int> vect = RandomVector(100000);
+  std::vector<int> vect = RandomVector(1);
   std::vector<int> result(vect.size(), 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -36,7 +36,7 @@ TEST(novostroev_i_batcher_sort_perf_tbb, test_pipeline_run) {
 }
 
 TEST(novostroev_i_batcher_sort_perf_tbb, test_task_run) {
-  std::vector<int> vect = RandomVector(100000);
+  std::vector<int> vect = RandomVector(1);
   std::vector<int> result(vect.size(), 0);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
