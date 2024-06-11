@@ -32,12 +32,14 @@ class SparseTBBMatrixMulti : public ppc::core::Task {
 
 class SparseTBBMatrixMultiSequential : public SparseTBBMatrixMulti {
  public:
-  explicit SparseTBBMatrixMultiSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : SparseTBBMatrixMulti(std::move(taskData_)) {}
+  explicit SparseTBBMatrixMultiSequential(std::shared_ptr<ppc::core::TaskData> taskData_)
+      : SparseTBBMatrixMulti(std::move(taskData_)) {}
   bool run() override;
 };
 
 class SparseTBBMatrixMultiParallel : public SparseTBBMatrixMulti {
  public:
-  explicit SparseTBBMatrixMultiParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : SparseTBBMatrixMulti(std::move(taskData_)) {}
+  explicit SparseTBBMatrixMultiParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
+      : SparseTBBMatrixMulti(std::move(taskData_)) {}
   bool run() override;
 };

@@ -187,7 +187,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_determinant_square_matrix) {
   taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(nullptr));
+  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(nullptr));
 
   SparseTBBMatrixDeterminant sparseTBBMatrixDeterminant(taskDataSeq);
   ASSERT_TRUE(sparseTBBMatrixDeterminant.validation());
