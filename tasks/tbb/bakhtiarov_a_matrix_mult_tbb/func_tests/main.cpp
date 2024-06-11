@@ -12,17 +12,19 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes) {
   size_t m2 = 4;
 
   std::vector<double> in1(n1 * m1);
+
   std::vector<double> in2(n2 * m2);
+
   std::vector<double> out(n1 * m2);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in1.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in1.data()));
   taskDataSeq->inputs_count.emplace_back(n1);
   taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in2.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in2.data()));
   taskDataSeq->inputs_count.emplace_back(n2);
   taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(out.data()));
   taskDataSeq->outputs_count.emplace_back(n1);
   taskDataSeq->outputs_count.emplace_back(m2);
 
@@ -46,13 +48,13 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multiply) {
   std::vector<double> out(n1 * m2);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in1.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in1.data()));
   taskDataSeq->inputs_count.emplace_back(n1);
   taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in2.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in2.data()));
   taskDataSeq->inputs_count.emplace_back(n2);
   taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(out.data()));
   taskDataSeq->outputs_count.emplace_back(n1);
   taskDataSeq->outputs_count.emplace_back(m2);
 
@@ -75,10 +77,10 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_determinant) {
   std::vector<double> in{2, 3, 1, 4, 6, 5, 7, 8, 9};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(nullptr));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(nullptr));
 
   SparseTBBMatrixDeterminant sparseTBBMatrixDeterminant(taskDataSeq);
   ASSERT_TRUE(sparseTBBMatrixDeterminant.validation());
@@ -98,13 +100,13 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multiply_zero_matrix) {
   std::vector<double> out(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in1.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in1.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in2.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in2.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(out.data()));
   taskDataSeq->outputs_count.emplace_back(n);
   taskDataSeq->outputs_count.emplace_back(n);
 
@@ -127,10 +129,10 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_inverse_matrix) {
   std::vector<double> out(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(out.data()));
   taskDataSeq->outputs_count.emplace_back(n);
   taskDataSeq->outputs_count.emplace_back(n);
 
@@ -154,13 +156,13 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multiply_square_matrices) {
   std::vector<double> out(n * n);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in1.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in1.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in2.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in2.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(out.data()));
   taskDataSeq->outputs_count.emplace_back(n);
   taskDataSeq->outputs_count.emplace_back(n);
 
@@ -183,10 +185,10 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_determinant_square_matrix) {
   std::vector<double> in{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in.data()));
   taskDataSeq->inputs_count.emplace_back(n);
   taskDataSeq->inputs_count.emplace_back(n);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(nullptr));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(nullptr));
 
   SparseTBBMatrixDeterminant sparseTBBMatrixDeterminant(taskDataSeq);
   ASSERT_TRUE(sparseTBBMatrixDeterminant.validation());
@@ -209,13 +211,13 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multiply_rectangular_matrices) {
   std::vector<double> out(n1 * m2);
 
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in1.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in1.data()));
   taskDataSeq->inputs_count.emplace_back(n1);
   taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(static_cast<uint8_t*>(in2.data()));
+  taskDataSeq->inputs.emplace_back(doubleFromBytes(in2.data()));
   taskDataSeq->inputs_count.emplace_back(n2);
   taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(static_cast<uint8_t*>(out.data()));
+  taskDataSeq->outputs.emplace_back(doubleFromBytes(out.data()));
   taskDataSeq->outputs_count.emplace_back(n1);
   taskDataSeq->outputs_count.emplace_back(m2);
 

@@ -7,6 +7,12 @@
 
 using namespace std;
 
+double SparseTBBMatrixMulti::doubleFromBytes(uint8_t *buffer) {
+  double result;
+  memcpy(&result, buffer, sizeof(double))
+  return result;
+}
+
 void SparseTBBMatrixMulti::construct_ccs(Matrix& matrix, const double* data, int numRows, int numCols) {
   int notNullNumbers = 0;
   for (int j = 0; j < numCols; ++j) {
@@ -26,8 +32,8 @@ void SparseTBBMatrixMulti::construct_ccs(Matrix& matrix, const double* data, int
 bool SparseTBBMatrixMulti::pre_processing() {
   internal_order_test();
 
-  auto* matrix1Data = reinterpret_cast<double*>(taskData->inputs[0]);
-  auto* matrix2Data = reinterpret_cast<double*>(taskData->inputs[1]);
+  auto* matrix1Data = static_cast<double*>(taskData->inputs[0]);
+  auto* matrix2Data = static_cast<double*>(taskData->inputs[1]);
 
   matrix1.numRows = taskData->inputs_count[0];
   matrix1.numCols = taskData->inputs_count[1];
@@ -55,7 +61,7 @@ bool SparseTBBMatrixMulti::validation() {
 bool SparseTBBMatrixMulti::post_processing() {
   internal_order_test();
 
-  auto* out_ptr = reinterpret_cast<double*>(taskData->outputs[0]);
+  auto* out_ptr = static_cast<double*>(taskData->outputs[0]);
   copy(result.values.begin(), result.values.end(), out_ptr);
 
   return true;
