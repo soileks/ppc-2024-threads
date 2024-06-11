@@ -13,6 +13,7 @@ class SparseMatrixMultiTBB {
   bool pre_processing();
   bool run();
   bool post_processing();
+  bool validation();
 
  private:
   ppc::core::TaskData* taskData;
