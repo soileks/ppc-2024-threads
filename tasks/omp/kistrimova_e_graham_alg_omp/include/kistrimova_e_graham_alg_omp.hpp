@@ -20,4 +20,4 @@ class GrahamAlgTask : public ppc::core::Task {
   std::vector<Point> points;
   std::vector<Point> finalHull;
 };
-}  // namespace KistrimovaETaskOmp
+}  // namespace KistrimovaETaskSeq
