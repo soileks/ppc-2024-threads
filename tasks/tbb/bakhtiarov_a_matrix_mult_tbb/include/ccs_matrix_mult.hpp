@@ -12,6 +12,7 @@ class SparseTBBMatrixMulti : public ppc::core::Task {
   bool pre_processing() override;
   bool run() override = 0;
   bool post_processing() override;
+  bool validation();
 
  private:
   struct Matrix {
