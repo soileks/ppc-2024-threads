@@ -12,7 +12,7 @@
 using namespace std::chrono_literals;
 using namespace std;
 
-SparseMatrixMultiTBB::SparseMatrixMultiTBB(std::shared_ptr<ppc::core::TaskData> taskData)
+SparseMatrixMultiTBB::SparseMatrixMultiTBB(shared_ptr<ppc::core::TaskData> taskData)
     : taskData(taskData), result(nullptr) {}
 
 bool SparseMatrixMultiTBB::pre_processing() {
