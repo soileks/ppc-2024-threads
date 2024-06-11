@@ -14,13 +14,9 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
   uint64_t width;
   uint64_t height;
 
-  void SetUpWidth(int width_) {
-    this->width = width_;
-  }
+  void SetUpWidth(int width_) { this->width = width_; }
 
-  void SetUpHeight(int height_) {
-    this->height = height_;
-  }
+  void SetUpHeight(int height_) { this->height = height_; }
 
   void SetUpWH(int width_, int height_) {
     SetUpWidth(width_);
@@ -52,17 +48,11 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
     ASSERT_EQ(expectedData, outputData);
   }
 
-  void SetInputData(const std::vector<uint8_t>& data) {
-    inputData = data;
-  }
+  void SetInputData(const std::vector<uint8_t>& data) { inputData = data; }
 
-  void SetExpectedData(const std::vector<uint8_t>& data) {
-    expectedData = data;
-  }
+  void SetExpectedData(const std::vector<uint8_t>& data) { expectedData = data; }
 
-  void FillInputData(uint8_t value) {
-    std::fill(inputData.begin(), inputData.end(), value);
-  }
+  void FillInputData(uint8_t value) { std::fill(inputData.begin(), inputData.end(), value); }
 };
 
 TEST_F(filatov_m_linear_image_filtering, white_image) {
@@ -113,28 +103,10 @@ TEST_F(filatov_m_linear_image_filtering, 2x2_low_resolution_image_false) {
 TEST_F(filatov_m_linear_image_filtering, 3x3_low_resolution_image_true) {
   SetUpWH(3, 3);
   MySetUp();
-  std::vector<uint8_t> customInputData = {
-    1, 1, 1,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    1, 1, 1
-  };
-  std::vector<uint8_t> customExpectedData = {
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1
-  };
+  std::vector<uint8_t> customInputData = {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1};
+  std::vector<uint8_t> customExpectedData = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
   SetInputData(customInputData);
   SetExpectedData(customExpectedData);
   InitializeTaskData();
@@ -144,42 +116,10 @@ TEST_F(filatov_m_linear_image_filtering, 3x3_low_resolution_image_true) {
 TEST_F(filatov_m_linear_image_filtering, 4x4_low_resolution_image_true) {
   SetUpWH(4, 4);
   MySetUp();
-  std::vector<uint8_t> customInputData = {
-    1, 1, 1,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    1, 1, 1,
-    1, 1, 1,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    0, 0, 0,
-    1, 1, 1
-  };
-  std::vector<uint8_t> customExpectedData = {
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1
-  };
+  std::vector<uint8_t> customInputData = {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+                                          1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1};
+  std::vector<uint8_t> customExpectedData = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
   SetInputData(customInputData);
   SetExpectedData(customExpectedData);
   InitializeTaskData();

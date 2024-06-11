@@ -42,9 +42,7 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
     }
   }
 
-  void ValidateOutputData() {
-    ASSERT_EQ(expectedData, outputData);
-  }
+  void ValidateOutputData() { ASSERT_EQ(expectedData, outputData); }
 };
 
 TEST_F(filatov_m_linear_image_filtering, test_pipeline_run_with_blue_image) {
