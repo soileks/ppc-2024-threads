@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
-#include<thread>
+#include <thread>
 
 #undef min
 
