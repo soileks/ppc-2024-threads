@@ -194,7 +194,7 @@ TEST(kutarin_a_sobel_tbb, Test_Sobel_SaltAndPepper_Noise_Image) {
   taskDataTbb->outputs_count.emplace_back(height);
 
   KutarinASobel sobelTaskTbb(taskDataTbb);
-  sobelTaskTbb.generateSaltAndPepperNoise(inImage, height, width, noise_ratio);
+  KutarinASobel::generateSaltAndPepperNoise(inImage, height, width, noise_ratio);
 
   ASSERT_EQ(sobelTaskTbb.validation(), true);
   sobelTaskTbb.pre_processing();

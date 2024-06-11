@@ -23,6 +23,12 @@ bool KutarinASobel::pre_processing() {
       return false;
     }
 
+    // Используйте явное сравнение с nullptr для output_buffer
+    int* output_buffer = reinterpret_cast<int*>(taskData->outputs[0]);
+    if (output_buffer == nullptr) {
+      return false;
+    }
+
     tbb::blocked_range<size_t> range(0, width_ * height_);
     auto copy_func = [&](const tbb::blocked_range<size_t>& r) {
       for (size_t i = r.begin(); i != r.end(); ++i) {
@@ -111,7 +117,7 @@ bool KutarinASobel::post_processing() {
   return true;
 }
 
-static void KutarinASobel ::generateSaltAndPepperNoise(std::vector<int>& image, int height, int width,
+void KutarinASobel ::generateSaltAndPepperNoise(std::vector<int>& image, int height, int width,
                                                        float noise_ratio) {
   int num_noise_pixels = static_cast<int>(height * width * noise_ratio);
   for (int i = 0; i < num_noise_pixels; ++i) {
