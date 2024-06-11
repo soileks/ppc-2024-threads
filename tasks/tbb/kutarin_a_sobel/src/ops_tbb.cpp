@@ -48,13 +48,13 @@ bool KutarinASobel::validation() {
   bool valid_input_count = taskData->inputs_count.size() == 2;
   if (!valid_input_count) {
     std::cerr << "Ошибка: Неверное количество входных данных. Ожидается 2, получено " << taskData->inputs_count.size()
-            << "." << std::endl;
+              << "." << std::endl;
   }
 
   bool valid_output_count = taskData->outputs_count.size() == 2;
   if (!valid_output_count) {
     std::cerr << "Ошибка: Неверное количество выходных данных. Ожидается 2, получено " << taskData->outputs_count.size()
-            << "." << std::endl;
+              << "." << std::endl;
   }
 
   return valid_input_count && valid_output_count;

@@ -110,7 +110,6 @@ TEST(kutarin_a_sobel_tbb, Test_Sobel_Simple_Image_8x8) {
                               1,   7,   149, 103, 93,  44,  126, 174, 31,  163, 206, 164, 183, 150, 112, 87,
                               117, 59,  0,   52,  193, 22,  186, 234, 179, 56,  76,  177, 97,  62,  249, 80};
 
-
   std::vector<int> outImage(height * width, 0);
 
   std::vector<int> resultImage = {
