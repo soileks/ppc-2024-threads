@@ -29,7 +29,7 @@ class SparseTBBMatrixMulti : public ppc::core::Task {
   Matrix result;
 
   void construct_ccs(Matrix& matrix, const double* data, int numRows, int numCols);
-  double doubleFromBytes(uint8_t *buffer);
+  double doubleFromBytes(uint8_t* buffer);
 };
 
 class SparseTBBMatrixMultiSequential : public SparseTBBMatrixMulti {

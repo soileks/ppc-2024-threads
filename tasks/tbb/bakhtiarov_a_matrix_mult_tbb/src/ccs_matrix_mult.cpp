@@ -7,10 +7,9 @@
 
 using namespace std;
 
-double SparseTBBMatrixMulti::doubleFromBytes(uint8_t *buffer) {
+double SparseTBBMatrixMulti::doubleFromBytes(uint8_t* buffer) {
   double result;
-  memcpy(&result, buffer, sizeof(double))
-  return result;
+  memcpy(&result, buffer, sizeof(double)) return result;
 }
 
 void SparseTBBMatrixMulti::construct_ccs(Matrix& matrix, const double* data, int numRows, int numCols) {
