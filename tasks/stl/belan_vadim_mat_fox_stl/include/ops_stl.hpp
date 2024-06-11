@@ -1,11 +1,11 @@
 // Copyright 2024 Vadim Belan
 #pragma once
 
+#include <algorithm>
 #include <memory>
+#include <thread>
 #include <utility>
 #include <vector>
-#include <thread>
-#include <algorithm>
 
 #include "core/task/include/task.hpp"
 
