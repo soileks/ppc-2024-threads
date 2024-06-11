@@ -56,7 +56,7 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
     return perfAttr;
   }
 
-  void RunPerfAnalysis(const std::shared_ptr<GaussFilterHorizontal>& filter) {
+  void static RunPerfAnalysis(const std::shared_ptr<GaussFilterHorizontal>& filter) {
     auto perfAttr = SetUpPerfAttributes();
     const auto t0 = std::chrono::high_resolution_clock::now();
     perfAttr->current_timer = [&] {
