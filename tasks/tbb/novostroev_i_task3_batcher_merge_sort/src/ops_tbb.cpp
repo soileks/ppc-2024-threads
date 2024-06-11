@@ -30,21 +30,21 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
 
   return mergedVec;
 }
-std::vector<int> getOddElements(std::vector<int> vec1, std::vector<int> vec2, int threads_count = 4) {
+std::vector<int> getOddElements(std::vector<int> vec1, std::vector<int> vec2) {
   size_t idx1 = 1;
   size_t idx2 = 1;
   std::vector<int> mergedVec(vec1.size() / 2 + vec2.size() / 2);
   return mergeElements(mergedVec, vec1, vec2, idx1, idx2, 2, 0);
 }
 
-std::vector<int> getEvenElements(std::vector<int> vec1, std::vector<int> vec2, int threads_count = 4) {
+std::vector<int> getEvenElements(std::vector<int> vec1, std::vector<int> vec2) {
   size_t idx1 = 0;
   size_t idx2 = 0;
   std::vector<int> mergedVec(vec1.size() / 2 + vec2.size() / 2 + vec1.size() % 2 + vec2.size() % 2);
   return mergeElements(mergedVec, vec1, vec2, idx1, idx2, 2, 1);
 }
 
-std::vector<int> mergeVectors(std::vector<int> vec1, std::vector<int> vec2, int threads_count = 4) {
+std::vector<int> mergeVectors(std::vector<int> vec1, std::vector<int> vec2) {
   size_t idx1 = 0;
   size_t idx2 = 0;
   std::vector<int> mergedVec(vec1.size() + vec2.size());
