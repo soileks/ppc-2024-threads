@@ -97,7 +97,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
 
   for (size_t i = 0; i < out.size(); ++i) {
     if (out[i] == test[i]) {
-        k++;
+      k++;
     }
   }
 
@@ -139,7 +139,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, inverse_matrix) {
 
   for (size_t i = 0; i < out.size(); ++i) {
     if (out[i] == identity[i]) {
-        k++;
+      k++;
     }
   }
 
@@ -180,7 +180,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, zero_matrix) {
 
   for (size_t i = 0; i < out.size(); ++i) {
     if (out[i] == 0.0) {
-        k++;
+      k++;
     }
   }
 
