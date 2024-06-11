@@ -6,6 +6,8 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include <thread>
+#include <atomic>
 
 #include "core/task/include/task.hpp"
 
@@ -30,5 +32,5 @@ class KozlovTaskSequential : public ppc::core::Task {
   double x1{}, x2{}, y1{}, y2{};
   uint64_t n;
   uint64_t m;
-  double res;
+  std::atomic<double> res;
 };
