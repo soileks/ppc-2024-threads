@@ -27,7 +27,6 @@ class SparseTBBMatrixMulti : public ppc::core::Task {
   Matrix matrix2;
   Matrix result;
   
- protected:
   void construct_ccs(Matrix& matrix, const double* data, int numRows, int numCols);
 };
 
