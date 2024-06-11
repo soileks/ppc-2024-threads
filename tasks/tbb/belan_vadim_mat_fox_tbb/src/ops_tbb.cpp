@@ -110,16 +110,15 @@ bool FoxBlockedParallel::run() {
   internal_order_test();
 
   tbb::parallel_for(tbb::blocked_range2d<int>(0, A.size(), block_size, 0, B[0].size(), block_size),
-    [&](const tbb::blocked_range2d<int>& r) {
-      for (int ii = r.rows().begin(); ii < r.rows().end(); ++ii) {
-        for (int jj = r.cols().begin(); jj < r.cols().end(); ++jj) {
-          for (std::vector<double>::size_type k = 0; k < A[0].size(); ++k) {
-            C[ii][jj] += A[ii][k] * B[k][jj];
-          }
-        }
-      }
-    }
-  );
+                    [&](const tbb::blocked_range2d<int>& r) {
+                      for (int ii = r.rows().begin(); ii < r.rows().end(); ++ii) {
+                        for (int jj = r.cols().begin(); jj < r.cols().end(); ++jj) {
+                          for (std::vector<double>::size_type k = 0; k < A[0].size(); ++k) {
+                            C[ii][jj] += A[ii][k] * B[k][jj];
+                          }
+                        }
+                      }
+                    });
 
   return true;
 }
