@@ -8,7 +8,6 @@
 #include <thread>
 #include <vector>
 
-
 #include "core/task/include/task.hpp"
 
 using std::vector;
