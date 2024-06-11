@@ -16,7 +16,8 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
   uint64_t height;
   std::shared_ptr<GaussFilterHorizontal> gaussFilterHorizontal;
 
-  void SetExpectedData(std::vector<uint8_t> data) { expectedData = data; }
+  // Передайте параметр по константной ссылке для копирования
+  void SetExpectedData(const std::vector<uint8_t>& data) { expectedData = data; }
 
   void SetUpWH(int width_, int height_) {
     width = width_;
@@ -49,7 +50,7 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
 
   void ValidateOutputData() { ASSERT_EQ(expectedData, outputData); }
 
-  std::shared_ptr<ppc::core::PerfAttr> SetUpPerfAttributes() {
+  static std::shared_ptr<ppc::core::PerfAttr> SetUpPerfAttributes() {
     auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
     perfAttr->num_running = 10;
     return perfAttr;
@@ -91,3 +92,4 @@ TEST_F(filatov_m_linear_image_filtering, test_task_run_with_blue_image) {
   RunPerfAnalysis(gaussFilterHorizontal);
   ValidateOutputData();
 }
+
