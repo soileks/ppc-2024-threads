@@ -10,8 +10,7 @@
 
 class KutarinASobel : public ppc::core::Task {
  public:
-  explicit KutarinASobel(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit KutarinASobel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

@@ -100,7 +100,7 @@ bool KutarinASobel::post_processing() {
     taskData->outputs_count[1] = height_;
 
     int* output_buffer = reinterpret_cast<int*>(taskData->outputs[0]);
-    if (!output_buffer) {
+    if (output_buffer == nullptr) {
       return false;
     }
 
@@ -117,8 +117,7 @@ bool KutarinASobel::post_processing() {
   return true;
 }
 
-void KutarinASobel ::generateSaltAndPepperNoise(std::vector<int>& image, int height, int width,
-                                                       float noise_ratio) {
+void KutarinASobel ::generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio) {
   int num_noise_pixels = static_cast<int>(height * width * noise_ratio);
   for (int i = 0; i < num_noise_pixels; ++i) {
     int x = rand() % width;
