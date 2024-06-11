@@ -42,8 +42,20 @@ bool GaussFilterHorizontal::validation_is_output_size_valid_second() {
 bool GaussFilterHorizontal::validation() {
   internal_order_test();
   bool isInputSizeValid = validation_is_input_size_valid();
+  if (!isInputSizeValid) {
+    std::cerr << "Error: incorrect input data size." << std::endl;
+  }
+
   bool isOutputSizeValidFirst = validation_is_output_size_valid_first();
+  if (!isOutputSizeValidFirst) {
+    std::cerr << "Error: incorrect output data size (first parameter)." << std::endl;
+  }
+
   bool isOutputSizeValidSecond = validation_is_output_size_valid_second();
+  if (!isOutputSizeValidSecond) {
+    std::cerr << "Error: incorrect output data size (second parameter)." << std::endl;
+  }
+
   bool isOutputSizeValid = isOutputSizeValidFirst && isOutputSizeValidSecond;
   return isInputSizeValid && isOutputSizeValid;
 }
