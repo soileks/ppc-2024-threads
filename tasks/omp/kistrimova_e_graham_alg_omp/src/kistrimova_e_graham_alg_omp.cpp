@@ -31,41 +31,53 @@ bool GrahamAlgTask::post_processing() {
   return true;
 }
 
-double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y.y - X.y) * (Z.x - Y.x); }
+double rotate(point X, point Y, point Z) {
+  return (Y.x - X.x) * (Z.y - Y.y) - (Y.y - X.y) * (Z.x - Y.x);
+}
+
+bool compare(point a, point b, point base) {
+  double rot = rotate(base, a, b);
+  if (rot == 0)
+    return (a.x - base.x) * (a.x - base.x) + (a.y - base.y) * (a.y - base.y) <
+           (b.x - base.x) * (b.x - base.x) + (b.y - base.y) * (b.y - base.y);
+  return rot > 0;
+}
 
 std::vector<point> graham(std::vector<point> points) {
   int n = points.size();
-  std::vector<int> R(n);
-#pragma omp parallel for
-  for (int i = 0; i < n; i++) R[i] = i;
+  if (n < 3) return points;
 
-#pragma omp parallel for
-  for (int i = 1; i < n; i++) {
-    if (points[R[i]].x < points[R[0]].x) {
+  int min_x_idx = 0;
+#pragma omp parallel for reduction(min:min_x_idx)
+  for (int i = 1; i < n; ++i) {
+    if (points[i].x < points[min_x_idx].x) {
+      min_x_idx = i;
+    }
+  }
+  std::swap(points[0], points[min_x_idx]);
+
+  point base = points[0];
+  std::sort(points.begin() + 1, points.end(), [base](point a, point b) { return compare(a, b, base); });
+
+  std::vector<point> hull;
+  hull.push_back(points[0]);
+  hull.push_back(points[1]);
+
+#pragma omp parallel
+  {
+    std::vector<point> private_hull;
+#pragma omp for nowait
+    for (int i = 2; i < n; ++i) {
+      while (private_hull.size() > 1 && rotate(private_hull[private_hull.size() - 2], private_hull.back(), points[i]) <= 0) { private_hull.pop_back(); }
+      private_hull.push_back(points[i]);
+    }
+
 #pragma omp critical
-      { std::swap(R[i], R[0]); }
-    }
+    hull.insert(hull.end(), private_hull.begin(), private_hull.end());
   }
 
-  for (int i = 2; i < n; i++) {
-    int j = i;
-    while (j > 1 && rotate(points[R[0]], points[R[j - 1]], points[R[j]]) < 0) {
-      std::swap(R[j], R[j - 1]);
-      j--;
-    }
-  }
+  std::sort(hull.begin(), hull.end(), [base](point a, point b) { return a.x < b.x || (a.x == b.x && a.y < b.y); });
+  hull.erase(unique(hull.begin(), hull.end(), [](point a, point b) { return a.x == b.x && a.y == b.y; }), hull.end());
 
-  std::vector<point> res{points[R[0]], points[R[1]]};
-  for (int i = 2; i < n; i++) {
-    while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) <= 0) {
-      if (res.size() > 2) {
-        res.pop_back();
-      } else {
-        break;
-      }
-    }
-    res.push_back(points[R[i]]);
-  }
-
-  return res;
+  return hull;
 }
