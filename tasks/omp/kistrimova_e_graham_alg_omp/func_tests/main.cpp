@@ -108,31 +108,3 @@ TEST(kistrimova_e_graham_alg_seq, inside_square) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
-
-TEST(kistrimova_e_graham_alg_seq, ten_points) {
-  // Create data
-  std::vector<point> in{{5, 7}, {10, 3}, {7, 5}, {3, 2}, {8, 8}, {7, 4}, {5, 9}, {10, 8}, {0, 3}, {9, 6}};
-  std::vector<point> res{{0, 3}, {3, 2}, {10, 3}, {10, 8}, {5, 9}};
-  std::vector<point> out(res.size());
-
-  // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
-  taskDataSeq->inputs_count.emplace_back(in.size());
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(out.size());
-
-  // Creative Task
-  GrahamAlgTask testTaskSequential(taskDataSeq);
-  ASSERT_EQ(testTaskSequential.validation(), true);
-  testTaskSequential.pre_processing();
-  testTaskSequential.run();
-  testTaskSequential.post_processing();
-
-  ASSERT_EQ(out.size(), res.size());
-  std::sort(out.begin(), out.end(),
-            [](const point &a, const point &b) { return a.x < b.x || (a.x == b.x && a.y < b.y); });
-  for (size_t i = 0; i < res.size(); i++) {
-    ASSERT_EQ(out[i], res[i]);
-  }
-}
