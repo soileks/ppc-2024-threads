@@ -109,7 +109,7 @@ TEST(kistrimova_e_graham_alg_seq, inside_square) {
   }
 }
 
-TEST(kistrimova_e_graham_alg_omp, simple_square) {
+TEST(kistrimova_e_graham_alg_seq, simple_square) {
   // Create data
   std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {0, 3}, {3, 0}};
   std::vector<point> res{{0, 0}, {3, 0}, {3, 3}, {0, 3}};
