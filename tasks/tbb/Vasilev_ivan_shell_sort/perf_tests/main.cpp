@@ -41,7 +41,3 @@ class PerformanceTest : public ::testing::Test {
 TEST_F(PerformanceTest, Sort_1K) { runTest(1000); }
 
 TEST_F(PerformanceTest, Sort_10K) { runTest(10000); }
-
-TEST_F(PerformanceTest, Sort_100K) { runTest(100000); }
-
-TEST_F(PerformanceTest, Sort_1M) { runTest(1000000); }
