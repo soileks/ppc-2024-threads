@@ -1,10 +1,10 @@
 // Copyright 2024 Kochetov Nikolay
 #include <gtest/gtest.h>
 
-#include <random>
-#include <vector>
-#include <string>
 #include <iostream>
+#include <random>
+#include <string>
+#include <vector>
 
 #include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
 
@@ -94,13 +94,11 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SinglePixel) {
 }
 
 TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_LargeImage) {
-  int image[36] = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22,
-                  24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46,
-                  48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70};
+  int image[36] = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34,
+                  36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70};
 
-  int output[36] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  int output[36] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   auto taskData = std::make_shared<ppc::core::TaskData>();
   taskData->inputs.emplace_back(reinterpret_cast<uint8_t*>(&image));
@@ -110,9 +108,8 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_LargeImage) {
   taskData->outputs_count.emplace_back(6);
   taskData->outputs_count.emplace_back(6);
 
-  int result[36] = {0, 0, 0, 0, 0, 0, 0, 14, 16, 18, 20, 0,
-                  0, 26, 28, 30, 32, 0, 0, 38, 40, 42, 44, 0,
-                  0, 50, 52, 54, 56, 0, 0, 0, 0, 0, 0, 0};
+  int result[36] = {0, 0, 0, 0, 0, 0, 0, 14, 16, 18, 20, 0, 0, 26, 28, 30, 32, 0,
+                  0, 38, 40, 42, 44, 0, 0, 50, 52, 54, 56, 0, 0, 0, 0, 0, 0, 0};
 
   GaussFilter gaussFilter(taskData);
   ASSERT_TRUE(gaussFilter.validation());

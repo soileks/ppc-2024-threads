@@ -1,11 +1,10 @@
 // Copyright 2024 Kochetov Nikolay
+#include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
+
 #include <gtest/gtest.h>
 
 #include <random>
 #include <vector>
-
-
-#include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
 
 
 int* GaussFilter::getImgId(int a, int b) { return &input[a * x + b]; }
@@ -61,9 +60,8 @@ bool GaussFilter::post_processing() {
 bool GaussFilter::validation() {
   internal_order_test();
 
-  return !taskData->inputs.empty() && !taskData->outputs.empty() &&
-        !taskData->inputs_count.empty() && !taskData->outputs_count.empty() &&
-        taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
-        taskData->outputs_count[1] == taskData->inputs_count[1] &&
-        taskData->outputs_count[0] >= 3 && taskData->outputs_count[1] >= 3;
+  return !taskData->inputs.empty() && !taskData->outputs.empty() && !taskData->inputs_count.empty() &&
+        !taskData->outputs_count.empty() && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
+        taskData->outputs_count[1] == taskData->inputs_count[1] && taskData->outputs_count[0] >= 3 &&
+        taskData->outputs_count[1] >= 3;
 }

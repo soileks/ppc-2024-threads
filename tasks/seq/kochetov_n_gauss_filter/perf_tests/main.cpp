@@ -1,9 +1,9 @@
 // Copyright 2024 Kochetov Nikolay
 #include <gtest/gtest.h>
 
+#include <chrono>
 #include <random>
 #include <vector>
-#include <chrono>
 
 #include "core/perf/include/perf.hpp"
 #include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
@@ -21,8 +21,7 @@ TEST(kochetov_n_gauss_filter_seq_perf, test_pipeline_run) {
   for (int i = 0; i < size * size; i++) {
     if (i < size || i % size == 0 || i > size * size - size || i % size == size - 1) {
       result[i] = 0;
-    }
-    else {
+    } else {
       result[i] = 255;
     }
   }
@@ -69,8 +68,7 @@ TEST(kochetov_n_gauss_filter_seq_perf, test_task_run) {
   for (int i = 0; i < size * size; i++) {
     if (i < size || i % size == 0 || i > size * size - size || i % size == size - 1) {
       result[i] = 0;
-    }
-    else {
+    } else {
       result[i] = 255;
     }
   }
