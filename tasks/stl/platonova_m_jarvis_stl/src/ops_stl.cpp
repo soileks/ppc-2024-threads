@@ -12,13 +12,16 @@ std::vector<Point> Jarvis(const std::vector<Point>& points) {
 
   auto minPoint = *std::min_element(points.begin(), points.end());
   std::vector<Point> convexHull = {minPoint};
-  Point prevPoint = minPoint, nextPoint;
+  Point prevPoint = minPoint;
+  Point nextPoint;
 
-  auto findNextPoint = [](const Point& currentPoint, const std::vector<Point>& points, int start, int end, Point& candidate) {
+  auto findNextPoint = [](const Point& currentPoint, const std::vector<Point>& points, int start, int end,
+                          Point& candidate) {
     for (int i = start; i < end; ++i) {
       const auto& point = points[i];
       if (point == currentPoint) continue;
-      double crossProduct = (point.y - currentPoint.y) * (candidate.x - currentPoint.x) - (point.x - currentPoint.x) * (candidate.y - currentPoint.y);
+      double crossProduct = (point.y - currentPoint.y) * (candidate.x - currentPoint.x) -
+                            (point.x - currentPoint.x) * (candidate.y - currentPoint.y);
       double distCurrentPoint = std::pow(point.x - currentPoint.x, 2) + std::pow(point.y - currentPoint.y, 2);
       double distCandidate = std::pow(candidate.x - currentPoint.x, 2) + std::pow(candidate.y - currentPoint.y, 2);
       if (crossProduct > 0 || (crossProduct == 0 && distCurrentPoint > distCandidate)) candidate = point;
@@ -43,7 +46,8 @@ std::vector<Point> Jarvis(const std::vector<Point>& points) {
     }
 
     for (const auto& candidate : candidates) {
-      double crossProduct = (candidate.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (candidate.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
+      double crossProduct = (candidate.y - prevPoint.y) * (nextPoint.x - prevPoint.x) -
+                            (candidate.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
       double distPrevPoint = std::pow(candidate.x - prevPoint.x, 2) + std::pow(candidate.y - prevPoint.y, 2);
       double distNextPoint = std::pow(nextPoint.x - prevPoint.x, 2) + std::pow(nextPoint.y - prevPoint.y, 2);
       if (crossProduct > 0 || (crossProduct == 0 && distPrevPoint > distNextPoint)) nextPoint = candidate;
