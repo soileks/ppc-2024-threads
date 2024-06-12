@@ -116,7 +116,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSeq);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTbb);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
