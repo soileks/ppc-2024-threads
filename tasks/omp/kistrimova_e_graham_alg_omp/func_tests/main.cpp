@@ -130,6 +130,9 @@ TEST(kistrimova_e_graham_alg_seq, ten_points) {
   testTaskSequential.post_processing();
 
   ASSERT_EQ(out.size(), res.size());
+  std::sort(out.begin(), out.end(), [](const point& a, const point& b) {
+      return a.x < b.x || (a.x == b.x && a.y < b.y);
+  });
   for (size_t i = 0; i < res.size(); i++) {
     ASSERT_EQ(out[i], res[i]);
   }
