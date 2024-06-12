@@ -22,7 +22,7 @@ std::vector<int> mergeElements(std::vector<int>& vec0, std::vector<int>& vec1, s
             mergedVec[idx] = vec1[idx1];
             idx1 += increment;
           }
-      } else {
+        } else {
           if (idx < mergedVec.size()) {
             mergedVec[idx] = vec2[idx2];
             idx2 += increment;
