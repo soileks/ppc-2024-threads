@@ -13,7 +13,7 @@ class SparseMatrixMultiTBB : public ppc::core::Task {
   bool run() override;
   bool post_processing() override;
 
-  private:
+ private:
   std::vector<double> values1{};
   std::vector<int> rows1{};
   std::vector<int> colPtr1{};
