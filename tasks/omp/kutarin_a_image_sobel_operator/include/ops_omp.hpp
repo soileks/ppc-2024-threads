@@ -1,31 +1,29 @@
 // Copyright 2024 Kutarin Alexander
 #pragma once
 
-#include <memory>
+#include <omp.h>
+
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "core/task/include/task.hpp"
 
-class SobelTaskParallel : public ppc::core::Task {
+class KutarinASobel : public ppc::core::Task {
  public:
-  explicit SobelTaskParallel(std::shared_ptr<ppc::core::TaskData> taskData_omp) : Task(std::move(taskData_omp)) {}
-  bool validation() override;
+  explicit KutarinASobel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
+  bool validation() override;
   bool run() override;
   bool post_processing() override;
 
- private:
-  std::vector<int> kernel_x = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
-
-  std::vector<int> kernel_y = {1, 2, 1, 0, 0, 0, -1, -2, -1};
+  int width_{0};
+  int height_{0};
 
   std::vector<int> sourceImage;
   std::vector<int> resultImage;
+  std::vector<int> kernel_x = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
+  std::vector<int> kernel_y = {1, 2, 1, 0, 0, 0, -1, -2, -1};
 
-  int width_;
-  int height_;
-
+  static void generateSaltAndPepperNoise(std::vector<int>& image, int height, int width, float noise_ratio);
   static int clamp(int value, int min, int max);
 };
