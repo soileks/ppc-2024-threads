@@ -3,23 +3,23 @@
 
 #include <cstdint>
 
-Color::Color() { R = G = B = 0; }
+filatov_stl::Color::Color() { R = G = B = 0; }
 
-ColorF::ColorF() { R = G = B = .0f; }
+filatov_stl::ColorF::ColorF() { R = G = B = .0f; }
 
-void GaussFilterHorizontal::initializeData() {
+void filatov_stl::GaussFilterHorizontal::initializeData() {
   input = taskData->inputs[0];
   output = taskData->outputs[0];
   width = taskData->inputs_count[0];
   height = taskData->inputs_count[1];
 }
 
-void GaussFilterHorizontal::copyInputToImage() {
+void filatov_stl::GaussFilterHorizontal::copyInputToImage() {
   image.resize(width * height * 3);
   std::memcpy(image.data(), input, width * height * 3);
 }
 
-bool GaussFilterHorizontal::pre_processing() {
+bool filatov_stl::GaussFilterHorizontal::pre_processing() {
   internal_order_test();
   initializeData();
   copyInputToImage();
@@ -27,19 +27,19 @@ bool GaussFilterHorizontal::pre_processing() {
   return true;
 }
 
-bool GaussFilterHorizontal::validation_is_input_size_valid() {
+bool filatov_stl::GaussFilterHorizontal::validation_is_input_size_valid() {
   return taskData->inputs_count[0] >= 3 && taskData->inputs_count[1] >= 3;
 }
 
-bool GaussFilterHorizontal::validation_is_output_size_valid_first() {
+bool filatov_stl::GaussFilterHorizontal::validation_is_output_size_valid_first() {
   return taskData->outputs_count[0] == taskData->inputs_count[0];
 }
 
-bool GaussFilterHorizontal::validation_is_output_size_valid_second() {
+bool filatov_stl::GaussFilterHorizontal::validation_is_output_size_valid_second() {
   return taskData->outputs_count[1] == taskData->inputs_count[1];
 }
 
-bool GaussFilterHorizontal::validation() {
+bool filatov_stl::GaussFilterHorizontal::validation() {
   internal_order_test();
   bool isInputSizeValid = validation_is_input_size_valid();
   if (!isInputSizeValid) {
@@ -60,23 +60,23 @@ bool GaussFilterHorizontal::validation() {
   return isInputSizeValid && isOutputSizeValid;
 }
 
-bool GaussFilterHorizontal::run() {
+bool filatov_stl::GaussFilterHorizontal::run() {
   internal_order_test();
   applyKernel();
   return true;
 }
 
-bool GaussFilterHorizontal::copyImageData() {
+bool filatov_stl::GaussFilterHorizontal::copyImageData() {
   std::memcpy(output, image.data(), width * height * 3);
   return true;
 }
 
-bool GaussFilterHorizontal::post_processing() {
+bool filatov_stl::GaussFilterHorizontal::post_processing() {
   internal_order_test();
   return copyImageData();
 }
 
-void GaussFilterHorizontal::calculateGaussianValues(float sigma, float* normalizationFactor) {
+void filatov_stl::GaussFilterHorizontal::calculateGaussianValues(float sigma, float* normalizationFactor) {
   int64_t halfSize = kSize * .5f;
   for (int64_t row = -halfSize; row <= halfSize; row++) {
     for (int64_t col = -halfSize; col <= halfSize; col++) {
@@ -87,7 +87,7 @@ void GaussFilterHorizontal::calculateGaussianValues(float sigma, float* normaliz
   }
 }
 
-void GaussFilterHorizontal::normalizeKernel(float normalizationFactor) {
+void filatov_stl::GaussFilterHorizontal::normalizeKernel(float normalizationFactor) {
   for (uint32_t row = 0; row < kSize; row++) {
     for (uint32_t col = 0; col < kSize; col++) {
       kernel[row][col] /= normalizationFactor;
@@ -95,13 +95,13 @@ void GaussFilterHorizontal::normalizeKernel(float normalizationFactor) {
   }
 }
 
-void GaussFilterHorizontal::makeKernel(float sigma) {
+void filatov_stl::GaussFilterHorizontal::makeKernel(float sigma) {
   float normalizationFactor = 0;
   calculateGaussianValues(sigma, &normalizationFactor);
   normalizeKernel(normalizationFactor);
 }
 
-void GaussFilterHorizontal::applyKernel() {
+void filatov_stl::GaussFilterHorizontal::applyKernel() {
   size_t num_threads = std::thread::hardware_concurrency();
   size_t part_size = image.size() / num_threads;
   std::vector<std::thread> threads;
@@ -117,7 +117,7 @@ void GaussFilterHorizontal::applyKernel() {
   }
 }
 
-void GaussFilterHorizontal::applyKernelPart(size_t start, size_t end) {
+void filatov_stl::GaussFilterHorizontal::applyKernelPart(size_t start, size_t end) {
   for (size_t index = start; index < end; ++index) {
     uint32_t i = index / width;
     uint32_t j = index % width;
@@ -125,19 +125,19 @@ void GaussFilterHorizontal::applyKernelPart(size_t start, size_t end) {
   }
 }
 
-void GaussFilterHorizontal::calculateSingleColorComponent(uint8_t neighborColor, float kernelValue,
-                                                          float* newColorComponent) {
+void filatov_stl::GaussFilterHorizontal::calculateSingleColorComponent(uint8_t neighborColor, float kernelValue,
+                                                                       float* newColorComponent) {
   *newColorComponent += neighborColor * kernelValue;
 }
 
-void GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l, int64_t halfSize,
-                                                      ColorF* color) {
+void filatov_stl::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l, int64_t halfSize,
+                                                                   ColorF* color) {
   calculateSingleColorComponent(neighborColor->R, kernel[k + halfSize][l + halfSize], &color->R);
   calculateSingleColorComponent(neighborColor->G, kernel[k + halfSize][l + halfSize], &color->G);
   calculateSingleColorComponent(neighborColor->B, kernel[k + halfSize][l + halfSize], &color->B);
 }
 
-void GaussFilterHorizontal::calculateColorComponentsForRow(int64_t l, size_t x, size_t y, ColorF* color) {
+void filatov_stl::GaussFilterHorizontal::calculateColorComponentsForRow(int64_t l, size_t x, size_t y, ColorF* color) {
   int64_t halfSize = kSize * .5f;
   for (int64_t k = -halfSize; k <= halfSize; k++) {
     auto idX = clamp<size_t>((x + k), 0, width - 1);
@@ -147,14 +147,14 @@ void GaussFilterHorizontal::calculateColorComponentsForRow(int64_t l, size_t x, 
   }
 }
 
-void GaussFilterHorizontal::calculateColorComponents(size_t x, size_t y, ColorF* color) {
+void filatov_stl::GaussFilterHorizontal::calculateColorComponents(size_t x, size_t y, ColorF* color) {
   int64_t halfSize = kSize * .5f;
   for (int64_t l = -halfSize; l <= halfSize; l++) {
     calculateColorComponentsForRow(l, x, y, color);
   }
 }
 
-Color GaussFilterHorizontal::calculateCeilColorF(ColorF preparedColor) {
+filatov_stl::Color filatov_stl::GaussFilterHorizontal::calculateCeilColorF(ColorF preparedColor) {
   Color resultColor;
   resultColor.R = (uint8_t)std::ceil(preparedColor.R);
   resultColor.G = (uint8_t)std::ceil(preparedColor.G);
@@ -162,13 +162,13 @@ Color GaussFilterHorizontal::calculateCeilColorF(ColorF preparedColor) {
   return resultColor;
 }
 
-Color GaussFilterHorizontal::calculateNewPixelColor(size_t x, size_t y) {
+filatov_stl::Color filatov_stl::GaussFilterHorizontal::calculateNewPixelColor(size_t x, size_t y) {
   ColorF preparedColor;
   calculateColorComponents(x, y, &preparedColor);
   return calculateCeilColorF(preparedColor);
 }
 
 template <typename T>
-T GaussFilterHorizontal::clamp(const T& val, const T& min, const T& max) {
+T filatov_stl::GaussFilterHorizontal::clamp(const T& val, const T& min, const T& max) {
   return std::max(min, std::min(val, max));
 }

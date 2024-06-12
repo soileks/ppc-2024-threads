@@ -5,7 +5,9 @@
 
 #include "stl/filatov_m_linear_image_filtering_stl/include/ops_stl.hpp"
 
-class filatov_m_linear_image_filtering : public ::testing::Test {
+using namespace filatov_stl;
+
+class filatov_m_linear_image_filtering_func_stl : public ::testing::Test {
  protected:
   std::shared_ptr<ppc::core::TaskData> taskData;
   std::vector<uint8_t> inputData;
@@ -55,7 +57,7 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
   void FillInputData(uint8_t value) { std::fill(inputData.begin(), inputData.end(), value); }
 };
 
-TEST_F(filatov_m_linear_image_filtering, white_image) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, white_image) {
   SetUpWH(32, 32);
   MySetUp();
   SetInputData(std::vector<uint8_t>(width * height * 3, 255));
@@ -64,7 +66,7 @@ TEST_F(filatov_m_linear_image_filtering, white_image) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, black_image) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, black_image) {
   SetUpWH(32, 32);
   MySetUp();
   SetInputData(std::vector<uint8_t>(width * height * 3, 0));
@@ -73,7 +75,7 @@ TEST_F(filatov_m_linear_image_filtering, black_image) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, 0x0_low_resolution_image_false) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, 0x0_low_resolution_image_false) {
   SetUpWH(0, 0);
   MySetUp();
   SetInputData(std::vector<uint8_t>(width * height * 3, 0));
@@ -82,7 +84,7 @@ TEST_F(filatov_m_linear_image_filtering, 0x0_low_resolution_image_false) {
   RunFilterAndCheck(false);
 }
 
-TEST_F(filatov_m_linear_image_filtering, 1x1_low_resolution_image_false) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, 1x1_low_resolution_image_false) {
   SetUpWH(1, 1);
   MySetUp();
   SetInputData(std::vector<uint8_t>(width * height * 3, 0));
@@ -91,7 +93,7 @@ TEST_F(filatov_m_linear_image_filtering, 1x1_low_resolution_image_false) {
   RunFilterAndCheck(false);
 }
 
-TEST_F(filatov_m_linear_image_filtering, 2x2_low_resolution_image_false) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, 2x2_low_resolution_image_false) {
   SetUpWH(2, 2);
   MySetUp();
   SetInputData(std::vector<uint8_t>(width * height * 3, 0));
@@ -100,7 +102,7 @@ TEST_F(filatov_m_linear_image_filtering, 2x2_low_resolution_image_false) {
   RunFilterAndCheck(false);
 }
 
-TEST_F(filatov_m_linear_image_filtering, 3x3_low_resolution_image_true) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, 3x3_low_resolution_image_true) {
   SetUpWH(3, 3);
   MySetUp();
   std::vector<uint8_t> customInputData = {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -113,7 +115,7 @@ TEST_F(filatov_m_linear_image_filtering, 3x3_low_resolution_image_true) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, 4x4_low_resolution_image_true) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, 4x4_low_resolution_image_true) {
   SetUpWH(4, 4);
   MySetUp();
   std::vector<uint8_t> customInputData = {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
@@ -126,7 +128,7 @@ TEST_F(filatov_m_linear_image_filtering, 4x4_low_resolution_image_true) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, big_image) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, big_image) {
   SetUpWH(512, 512);
   MySetUp();
   FillInputData(111);
@@ -135,7 +137,7 @@ TEST_F(filatov_m_linear_image_filtering, big_image) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, red_image) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, red_image) {
   SetUpWH(32, 32);
   MySetUp();
   FillInputData(0);
@@ -147,7 +149,7 @@ TEST_F(filatov_m_linear_image_filtering, red_image) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, green_image) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, green_image) {
   SetUpWH(32, 32);
   MySetUp();
   FillInputData(0);
@@ -159,7 +161,7 @@ TEST_F(filatov_m_linear_image_filtering, green_image) {
   RunFilterAndCheck(true);
 }
 
-TEST_F(filatov_m_linear_image_filtering, blue_image) {
+TEST_F(filatov_m_linear_image_filtering_func_stl, blue_image) {
   SetUpWH(32, 32);
   MySetUp();
   FillInputData(0);

@@ -10,6 +10,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace filatov_stl {
+
 using std::vector;
 
 struct Color {
@@ -57,3 +59,5 @@ class GaussFilterHorizontal : public ppc::core::Task {
   T clamp(const T& val, const T& min, const T& max);
   void applyKernelPart(size_t start, size_t end);
 };
+
+}  // namespace filatov_stl
