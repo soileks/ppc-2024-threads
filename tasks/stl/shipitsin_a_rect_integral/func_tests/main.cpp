@@ -11,7 +11,7 @@ TEST(shipitsin_a_rect_integral_stl, Test_x_sub_y_1) {
   int n = 100;
   Func f = shipitsin_flin;
 
-  std::vector<double> in = {0, 2, 0, 2};
+  std::vector<double> in = {0, 4, 0, 4};
   std::vector<double> out_seq(1, 0);
   std::vector<double> out_par(1, 0);
 
@@ -54,7 +54,7 @@ TEST(shipitsin_a_rect_integral_stl, Test_x_sub_y_2) {
   Func f = shipitsin_flin;
   int n = 100;
 
-  std::vector<double> in = {-4, 2, 4, 8};
+  std::vector<double> in = {-5, 3, 4, 9};
   std::vector<double> out_seq(1, 0);
   std::vector<double> out_par(1, 0);
 
@@ -97,7 +97,7 @@ TEST(shipitsin_a_rect_integral_stl, Test_x_mul_y) {
   Func f = shipitsin_fxy;
   int n = 100;
 
-  std::vector<double> in = {0, 2, 1, 2};
+  std::vector<double> in = {0, 4, 1, 4};
   std::vector<double> out_seq(1, 0);
   std::vector<double> out_par(1, 0);
 
@@ -140,7 +140,7 @@ TEST(shipitsin_a_rect_integral_stl, Test_y_sin_x) {
   Func f = shipitsin_fysinx;
   int n = 100;
 
-  std::vector<double> in = {-2, 2, 1, 2};
+  std::vector<double> in = {-2, 4, 1, 4};
   std::vector<double> out_seq(1, 0);
   std::vector<double> out_par(1, 0);
 
@@ -183,7 +183,7 @@ TEST(shipitsin_a_rect_integral_stl, Test_x_exp_y) {
   Func f = shipitsin_fxexpy;
   int n = 1000;
 
-  std::vector<double> in = {0, 4, 1, 2};
+  std::vector<double> in = {0, 5, 2, 4};
   std::vector<double> out_seq(1, 0);
   std::vector<double> out_par(1, 0);
 
