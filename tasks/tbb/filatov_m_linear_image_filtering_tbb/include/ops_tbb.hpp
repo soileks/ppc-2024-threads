@@ -28,7 +28,7 @@ struct ColorF {
 };
 
 class GaussFilterHorizontal : public ppc::core::Task {
-public:
+ public:
   explicit GaussFilterHorizontal(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   void initializeData();
@@ -41,7 +41,7 @@ public:
   bool post_processing() override;
   bool copyImageData();
 
-private:
+ private:
   uint8_t *input, *output;
   uint32_t width, height;
   vector<Color> image;
@@ -62,4 +62,4 @@ private:
   T clamp(const T& val, const T& min, const T& max);
 };
 
-}
+}  // namespace filatov_tbb

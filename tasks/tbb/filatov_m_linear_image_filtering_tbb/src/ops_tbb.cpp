@@ -100,12 +100,12 @@ void filatov_tbb::GaussFilterHorizontal::applyKernel() {
 }
 
 void filatov_tbb::GaussFilterHorizontal::calculateSingleColorComponent(uint8_t neighborColor, float kernelValue,
-                                                          float* newColorComponent) {
+                                                                       float* newColorComponent) {
   *newColorComponent += neighborColor * kernelValue;
 }
 
-void filatov_tbb::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l, int64_t halfSize,
-                                                      ColorF* color) {
+void filatov_tbb::GaussFilterHorizontal::calculateColorsComponents(Color* neighborColor, int64_t k, int64_t l,
+                                                                   int64_t halfSize, ColorF* color) {
   calculateSingleColorComponent(neighborColor->R, kernel[k + halfSize][l + halfSize], &color->R);
   calculateSingleColorComponent(neighborColor->G, kernel[k + halfSize][l + halfSize], &color->G);
   calculateSingleColorComponent(neighborColor->B, kernel[k + halfSize][l + halfSize], &color->B);
