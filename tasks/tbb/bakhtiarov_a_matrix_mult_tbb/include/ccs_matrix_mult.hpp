@@ -7,8 +7,7 @@
 
 class SparseMatrixMultiTBB : public ppc::core::Task {
  public:
-  explicit SparseMatrixMultiTBB(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit SparseMatrixMultiTBB(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -33,10 +32,9 @@ class SparseMatrixMultiTBB : public ppc::core::Task {
   int numCols3{};
 };
 
-class SparseMatrixMultiTBB : public ppc::core::Task {
+class SparseMatrixMultiTBBParallel : public ppc::core::Task {
  public:
-  explicit SparseMatrixMultiTBBParallel(std::shared_ptr<ppc::core::TaskData> taskData_)
-      : Task(std::move(taskData_)) {}
+  explicit SparseMatrixMultiTBBParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
