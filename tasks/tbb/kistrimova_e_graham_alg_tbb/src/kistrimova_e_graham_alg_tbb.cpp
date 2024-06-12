@@ -36,27 +36,35 @@ double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y
 std::vector<point> graham(std::vector<point> points) {
   int n = points.size();
   std::vector<int> R(n);
-  tbb::parallel_for(0, n, 1, [&R](int i) { R[i] = i; });
+  tbb::parallel_for(0, n, 1, [&](int i) { R[i] = i; });
 
-  tbb::parallel_for(1, n, 1, [&R, &points](int i) {
-    if (points[R[i]].x < points[R[0]].x) {
-      tbb::mutex mtx;
-      tbb::mutex::scoped_lock lock(mtx);
-      std::swap(R[i], R[0]);
+  int min_x_idx = tbb::parallel_reduce(
+    tbb::blocked_range<int>(1, n), 0,
+    [&](const tbb::blocked_range<int>& range, int init) {
+      for (int i = range.begin(); i != range.end(); ++i) {
+        if (points[R[i]].x < points[R[init]].x) {
+          init = i;
+        }
+      }
+      return init;
+    },
+    [](int idx1, int idx2) {
+      return idx1;
     }
+  );
+  std::swap(R[0], R[min_x_idx]);
+
+  tbb::parallel_sort(R.begin() + 1, R.end(), [&](int a, int b) {
+    return rotate(points[R[0]], points[a], points[b]) > 0;
   });
 
-  std::sort(R.begin() + 1, R.end(), [&points](int a, int b) { return rotate(points[0], points[a], points[b]) > 0; });
-
   std::vector<point> res{points[R[0]], points[R[1]]};
-  tbb::parallel_for(2, n, 1, [&res, &R, &points](int i) {
-    tbb::mutex mtx;
-    tbb::mutex::scoped_lock lock(mtx);
-    while (rotate(res[res.size() - 2], res[res.size() - 1], points[R[i]]) < 0 && res.size() > 1) {
+  for (int i = 2; i < n; i++) {
+    while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) <= 0) {
       res.pop_back();
     }
     res.push_back(points[R[i]]);
-  });
+  }
 
   return res;
 }
