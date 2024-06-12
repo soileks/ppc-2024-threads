@@ -20,6 +20,6 @@ class GaussFilter : public ppc::core::Task {
   int x, y;
   int* getImgId(int a, int b);
   int* getResId(int a, int b);
-  int clampData(int value, int min, int max);
+  static int clampData(int value, int min, int max);
   std::vector<std::vector<double>> kernel = {{1, 2, 1}, {2, 4, 2}, {1, 2, 1}};
 };
