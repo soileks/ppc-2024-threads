@@ -1,8 +1,8 @@
 // Copyright 2024 Kistrimova Ekaterina
-#include <thread>
-#include <mutex>
 #include <algorithm>
 #include <cmath>
+#include <mutex>
+#include <thread>
 
 #include "stl/kistrimova_e_graham_alg_stl/include/ops_stl.hpp"
 
@@ -36,7 +36,8 @@ bool GrahamAlgTask::post_processing() {
 
 double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y.y - X.y) * (Z.x - Y.x); }
 
-void compute_angles(std::vector<point>& points, std::vector<int>& R, int start, int end, const point& p0, std::vector<double>& angles) {
+void compute_angles(std::vector<point>& points, std::vector<int>& R, int start, int end, const point& p0,
+                    std::vector<double>& angles) {
   for (int i = start; i < end; ++i) {
     double dx = points[R[i]].x - p0.x;
     double dy = points[R[i]].y - p0.y;
@@ -49,10 +50,9 @@ std::vector<point> graham(std::vector<point> points) {
   std::vector<int> R(n);
   for (int i = 0; i < n; i++) R[i] = i;
 
-  auto p0_iter = std::min_element(points.begin(), points.end(),
-      [](const point& a, const point& b) {
-          return a.x < b.x || (a.x == b.x && a.y < b.y);
-      });
+  auto p0_iter = std::min_element(points.begin(), points.end(), [](const point& a, const point& b) {
+    return a.x < b.x || (a.x == b.x && a.y < b.y);
+  });
   std::swap(points[0], *p0_iter);
   std::swap(R[0], R[std::distance(points.begin(), p0_iter)]);
 
@@ -62,19 +62,16 @@ std::vector<point> graham(std::vector<point> points) {
   int chunk_size = n / num_threads;
 
   for (int i = 0; i < num_threads; ++i) {
-      int start = i * chunk_size;
-      int end = (i == num_threads - 1) ? n : (i + 1) * chunk_size;
-      threads[i] = std::thread(compute_angles, std::ref(points), std::ref(R), start, end, points[0], std::ref(angles));
+    int start = i * chunk_size;
+    int end = (i == num_threads - 1) ? n : (i + 1) * chunk_size;
+    threads[i] = std::thread(compute_angles, std::ref(points), std::ref(R), start, end, points[0], std::ref(angles));
   }
 
   for (auto& t : threads) {
-      t.join();
+    t.join();
   }
 
-  std::sort(R.begin() + 1, R.end(),
-      [&angles](int i, int j) {
-          return angles[i] < angles[j];
-      });
+  std::sort(R.begin() + 1, R.end(), [&angles](int i, int j) { return angles[i] < angles[j]; });
   std::vector<point> res{points[R[0]], points[R[1]]};
   for (int i = 2; i < n; i++) {
     while (rotate(res.end()[-2], res.end()[-1], points[R[i]]) <= 0) {
