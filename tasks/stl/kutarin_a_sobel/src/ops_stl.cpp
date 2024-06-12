@@ -1,10 +1,10 @@
 // Copyright 2024 Kutarin Alexander
 #include "stl/kutarin_a_sobel/include/ops_stl.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <random>
-#include <algorithm>
 #include <thread>
 #include <vector>
 

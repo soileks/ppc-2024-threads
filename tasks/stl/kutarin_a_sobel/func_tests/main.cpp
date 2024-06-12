@@ -1,11 +1,11 @@
 // Copyright 2024 Kutarin Alexander
 #include <gtest/gtest.h>
 
+#include <array>
 #include <cstring>
 #include <fstream>
 #include <random>
 #include <vector>
-#include <array>
 
 #include "stl/kutarin_a_sobel/include/ops_stl.hpp"
 

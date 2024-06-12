@@ -1,9 +1,9 @@
 // Copyright 2024 Kutarin Alexander
 #include <gtest/gtest.h>
 
+#include <chrono>
 #include <random>
 #include <vector>
-#include <chrono>
 
 #include "core/perf/include/perf.hpp"
 #include "stl/kutarin_a_sobel/include/ops_stl.hpp"
@@ -38,7 +38,9 @@ TEST(kutarin_a_sobel_stl, test_pipeline_run) {
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] { return std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count(); };
+  perfAttr->current_timer = [&] {
+    return std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -80,7 +82,9 @@ TEST(kutarin_a_sobel_stl, test_task_run) {
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
   const auto t0 = std::chrono::high_resolution_clock::now();
-  perfAttr->current_timer = [&] { return std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count(); };
+  perfAttr->current_timer = [&] {
+    return std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+  };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
