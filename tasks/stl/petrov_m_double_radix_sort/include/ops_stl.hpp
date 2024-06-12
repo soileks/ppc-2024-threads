@@ -29,7 +29,7 @@ class PetrovRadixSortDoubleSTL : public ppc::core::Task {
   static std::vector<double> PetrovRadixSort(const std::vector<double>& data1);
   static std::vector<std::vector<double>> PetrovSplitVector(const std::vector<double>& data, int numParts);
   static std::vector<double> PetrovMerge(const std::vector<double>& arr1, const std::vector<double>& arr2);
-  std::vector<double> PetrovRadixSortStl(const std::vector<double>& data, int numParts);
+  static std::vector<double> PetrovRadixSortStl(const std::vector<double>& data, int numParts);
   static std::vector<double> PetrovBinaryMergeTree(std::vector<std::vector<double>>& sortedVectors);
 };
 }  // namespace petrov_stl
