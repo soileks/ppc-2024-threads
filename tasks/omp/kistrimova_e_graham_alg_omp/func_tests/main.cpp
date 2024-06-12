@@ -108,3 +108,29 @@ TEST(kistrimova_e_graham_alg_seq, inside_square) {
     ASSERT_EQ(out[i], res[i]);
   }
 }
+
+TEST(kistrimova_e_graham_alg_omp, simple_square) {
+  // Create data
+  std::vector<point> in{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {0, 3}, {3, 0}};
+  std::vector<point> res{{0, 0}, {3, 0}, {3, 3}, {0, 3}};
+  std::vector<point> out(res.size());
+
+  // Create TaskData
+  std::shared_ptr<ppc::core::TaskData> taskDataOmp = std::make_shared<ppc::core::TaskData>();
+  taskDataOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(in.data()));
+  taskDataOmp->inputs_count.emplace_back(in.size());
+  taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataOmp->outputs_count.emplace_back(out.size());
+
+  // Create Task
+  GrahamAlgTask testTaskOmp(taskDataOmp);
+  ASSERT_EQ(testTaskOmp.validation(), true);
+  testTaskOmp.pre_processing();
+  testTaskOmp.run();
+  testTaskOmp.post_processing();
+
+  ASSERT_EQ(out.size(), res.size());
+  for (size_t i = 0; i < res.size(); i++) {
+    ASSERT_EQ(out[i], res[i]);
+  }
+}
