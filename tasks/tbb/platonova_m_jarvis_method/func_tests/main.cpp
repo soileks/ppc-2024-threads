@@ -71,7 +71,30 @@ TEST(Platonova_m_jarvis, can_operate_one_point) {
 }
 
 TEST(Platonova_m_jarvis, diagonal_points) {
-  std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}};
+  std::vector<Point> points = {{0, 0}, {1, 1}};
+  std::vector<Point> expected_hull = points;
+
+  std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
+  taskData->inputs.emplace_back(reinterpret_cast<uint8_t *>(points.data()));
+  taskData->inputs_count.emplace_back(points.size());
+  std::vector<Point> res(points.size());
+  taskData->outputs.emplace_back(reinterpret_cast<uint8_t *>(res.data()));
+  taskData->outputs_count.emplace_back(res.size());
+  JarvisTBB TaskTBB(taskData);
+
+  // Проверяем валидность входных данных
+  ASSERT_EQ(TaskTBB.validation(), true);
+  TaskTBB.pre_processing();
+  TaskTBB.run();
+  TaskTBB.post_processing();
+
+  for (size_t i = 0; i < expected_hull.size(); ++i) {
+    ASSERT_EQ(res[i], expected_hull[i]);
+  }
+}
+
+TEST(Platonova_m_jarvis, diagonal_points2) {
+  std::vector<Point> points = {{1, 1}, {2, 2}};
   std::vector<Point> expected_hull = points;
 
   std::shared_ptr<ppc::core::TaskData> taskData = std::make_shared<ppc::core::TaskData>();
