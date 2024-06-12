@@ -49,8 +49,10 @@ std::vector<point> graham(std::vector<point> points) {
         return init;
       },
       [](int idx1, int idx2) {
-        return (points[R[idx1]].x < points[R[idx2]].x || 
-              (points[R[idx1]].x == points[R[idx2]].x && points[R[idx1]].y < points[R[idx2]].y)) ? idx1 : idx2;
+        return (points[R[idx1]].x < points[R[idx2]].x ||
+                (points[R[idx1]].x == points[R[idx2]].x && points[R[idx1]].y < points[R[idx2]].y))
+                   ? idx1
+                   : idx2;
       });
   std::swap(R[0], R[min_x_idx]);
 
