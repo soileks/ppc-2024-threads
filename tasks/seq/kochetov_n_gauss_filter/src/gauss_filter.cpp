@@ -60,7 +60,7 @@ bool GaussFilter::validation() {
   internal_order_test();
 
   return !taskData->inputs.empty() && !taskData->outputs.empty() && !taskData->inputs_count.empty() &&
-          !taskData->outputs_count.empty() && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
-          taskData->outputs_count[1] == taskData->inputs_count[1] && taskData->outputs_count[0] >= 3 &&
-          taskData->outputs_count[1] >= 3;
+         !taskData->outputs_count.empty() && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
+         taskData->outputs_count[1] == taskData->inputs_count[1] && taskData->outputs_count[0] >= 3 &&
+         taskData->outputs_count[1] >= 3;
 }
