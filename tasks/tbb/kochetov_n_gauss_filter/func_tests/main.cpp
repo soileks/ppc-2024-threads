@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 
-#include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
+#include "tbb/kochetov_n_gauss_filter/include/gauss_filter.hpp"
 
-TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SmallImage) {
+TEST(kochetov_n_gauss_filter_tbb, Test_GaussFilter_SmallImage) {
   int image[9] = {255, 255, 255, 255, 255, 255, 255, 255, 255};
 
   int output[9] = {255, 255, 255, 255, 255, 255, 255, 255, 255};
@@ -33,7 +33,7 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SmallImage) {
   }
 }
 
-TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SmallImage2) {
+TEST(kochetov_n_gauss_filter_tbb, Test_GaussFilter_SmallImage2) {
   int image[9] = {1, 50, 3, 4, 4, 0, 7, 8, 98};
 
   int output[9] = {1, 50, 3, 4, 4, 0, 7, 8, 98};
@@ -58,7 +58,7 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SmallImage2) {
   }
 }
 
-TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_EmptyImage) {
+TEST(kochetov_n_gauss_filter_tbb, Test_GaussFilter_EmptyImage) {
   int* image = nullptr;
   int* output = nullptr;
 
@@ -74,7 +74,7 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_EmptyImage) {
   ASSERT_FALSE(gaussFilter.validation());
 }
 
-TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SinglePixel) {
+TEST(kochetov_n_gauss_filter_tbb, Test_GaussFilter_SinglePixel) {
   int image[1] = {128};
   int output[1] = {128};
 
@@ -93,7 +93,7 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_SinglePixel) {
   EXPECT_EQ(output[0], result[0]);
 }
 
-TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_LargeImage) {
+TEST(kochetov_n_gauss_filter_tbb, Test_GaussFilter_LargeImage) {
   int image[36] = {0,  2,  4,  6,  8,  10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34,
                    36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70};
 
@@ -121,7 +121,7 @@ TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_LargeImage) {
   }
 }
 
-TEST(kochetov_n_gauss_filter_seq, Test_GaussFilter_BorderEffect) {
+TEST(kochetov_n_gauss_filter_tbb, Test_GaussFilter_BorderEffect) {
   int image[9] = {255, 255, 255, 255, 0, 255, 255, 255, 255};
   int output[9] = {255, 255, 255, 255, 0, 255, 255, 255, 255};
 

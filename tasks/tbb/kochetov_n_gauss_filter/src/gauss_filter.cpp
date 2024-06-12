@@ -1,5 +1,5 @@
 // Copyright 2024 Kochetov Nikolay
-#include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
+#include "tbb/kochetov_n_gauss_filter/include/gauss_filter.hpp"
 
 #include <gtest/gtest.h>
 #include <tbb/tbb.h>

@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
+#include "tbb/kochetov_n_gauss_filter/include/gauss_filter.hpp"
 
-TEST(kochetov_n_gauss_filter_seq_perf, test_pipeline_run) {
+TEST(kochetov_n_gauss_filter_tbb_perf, test_pipeline_run) {
   int size = 1000;
   int* image = new int[size * size];
   for (int i = 0; i < size * size; i++) {
@@ -59,7 +59,7 @@ TEST(kochetov_n_gauss_filter_seq_perf, test_pipeline_run) {
   delete[] result;
 }
 
-TEST(kochetov_n_gauss_filter_seq_perf, test_task_run) {
+TEST(kochetov_n_gauss_filter_tbb_perf, test_task_run) {
   int size = 1000;
   int* image = new int[size * size];
   for (int i = 0; i < size * size; i++) {
