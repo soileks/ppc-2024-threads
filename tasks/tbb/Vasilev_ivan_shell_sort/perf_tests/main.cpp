@@ -8,7 +8,7 @@
 
 class PerformanceTest : public ::testing::Test {
  protected:
-  void runTest(int size) {
+  static void runTest(int size) {
     std::vector<int> arr = VasilevTaskTbb::generate_random_vector(size, 0, size);
     std::vector<int> rez(size);
 
