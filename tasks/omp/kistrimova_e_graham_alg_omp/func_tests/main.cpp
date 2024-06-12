@@ -122,7 +122,7 @@ TEST(kistrimova_e_graham_alg_seq, simple_square) {
   taskDataOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataOmp->outputs_count.emplace_back(out.size());
 
-  // Create Task
+  // Creative Task
   GrahamAlgTask testTaskOmp(taskDataOmp);
   ASSERT_EQ(testTaskOmp.validation(), true);
   testTaskOmp.pre_processing();
