@@ -80,4 +80,3 @@ TEST(Platonova_m_jarvis, test_task_run) {
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
-
