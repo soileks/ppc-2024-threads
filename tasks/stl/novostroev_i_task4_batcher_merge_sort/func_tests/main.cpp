@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_stl.hpp"
+#include "stl/novostroev_i_task4_batcher_merge_sort/include/ops_stl.hpp"
 
 TEST(novostroev_i_batcher_sort_func_stl, Test_size_10_stl) {
   const int count = 10;

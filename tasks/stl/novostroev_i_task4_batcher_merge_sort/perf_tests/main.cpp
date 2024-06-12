@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/novostroev_i_task3_batcher_merge_sort/include/ops_stl.hpp"
+#include "stl/novostroev_i_task4_batcher_merge_sort/include/ops_stl.hpp"
 
 TEST(novostroev_i_batcher_sort_perf_stl, test_pipeline_run) {
   std::vector<int> vect = RandomVector(1);
