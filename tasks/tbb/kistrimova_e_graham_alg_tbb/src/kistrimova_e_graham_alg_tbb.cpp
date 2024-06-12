@@ -36,9 +36,7 @@ double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y
 std::vector<point> graham(std::vector<point> points) {
   int n = points.size();
   std::vector<int> R(n);
-  tbb::parallel_for(0, n, 1, [&R](int i) {
-    R[i] = i;
-  });
+  tbb::parallel_for(0, n, 1, [&R](int i) { R[i] = i; });
 
   tbb::parallel_for(1, n, 1, [&R, &points](int i) {
     if (points[R[i]].x < points[R[0]].x) {
@@ -48,9 +46,7 @@ std::vector<point> graham(std::vector<point> points) {
     }
   });
 
-  std::sort(R.begin() + 1, R.end(), [&points](int a, int b) {
-    return rotate(points[0], points[a], points[b]) > 0;
-  });
+  std::sort(R.begin() + 1, R.end(), [&points](int a, int b) { return rotate(points[0], points[a], points[b]) > 0; });
 
   std::vector<point> res{points[R[0]], points[R[1]]};
   tbb::parallel_for(2, n, 1, [&res, &R, &points](int i) {
