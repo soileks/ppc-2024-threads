@@ -30,7 +30,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size) {
 
   // Create Task
   SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
-  ASSERT_EQ(sparseMatrixMultiTBB.validation(), true);
+  ASSERT_FALSE(sparseMatrixMultiTBB.validation());
 }
 
 TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
