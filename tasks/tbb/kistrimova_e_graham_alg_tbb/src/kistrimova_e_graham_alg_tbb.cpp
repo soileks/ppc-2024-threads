@@ -39,24 +39,20 @@ std::vector<point> graham(std::vector<point> points) {
   tbb::parallel_for(0, n, 1, [&](int i) { R[i] = i; });
 
   int min_x_idx = tbb::parallel_reduce(
-    tbb::blocked_range<int>(1, n), 0,
-    [&](const tbb::blocked_range<int>& range, int init) {
-      for (int i = range.begin(); i != range.end(); ++i) {
-        if (points[R[i]].x < points[R[init]].x) {
-          init = i;
+      tbb::blocked_range<int>(1, n), 0,
+      [&](const tbb::blocked_range<int>& range, int init) {
+        for (int i = range.begin(); i != range.end(); ++i) {
+          if (points[R[i]].x < points[R[init]].x) {
+            init = i;
+          }
         }
-      }
-      return init;
-    },
-    [](int idx1, int idx2) {
-      return idx1;
-    }
-  );
+        return init;
+      },
+      [](int idx1, int idx2) { return idx1; });
   std::swap(R[0], R[min_x_idx]);
 
-  tbb::parallel_sort(R.begin() + 1, R.end(), [&](int a, int b) {
-    return rotate(points[R[0]], points[a], points[b]) > 0;
-  });
+  tbb::parallel_sort(R.begin() + 1, R.end(),
+                     [&](int a, int b) { return rotate(points[R[0]], points[a], points[b]) > 0; });
 
   std::vector<point> res{points[R[0]], points[R[1]]};
   for (int i = 2; i < n; i++) {
