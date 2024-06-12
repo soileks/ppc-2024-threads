@@ -2,9 +2,6 @@
 #include <gtest/gtest.h>
 #include <oneapi/tbb.h>
 
-#include <memory>
-#include <vector>
-
 #include "core/perf/include/perf.hpp"
 #include "tbb/bakhtiarov_a_matrix_mult_tbb/include/ccs_matrix_mult.hpp"
 
@@ -12,9 +9,9 @@ using namespace std;
 
 TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   // Create data
-  size_t p = 500;
-  size_t q = 500;
-  size_t r = 500;
+  size_t z = 500;
+  size_t x = 500;
+  size_t c = 500;
   std::vector<double> lhs_in(p * q);
   for (size_t i = 0; i < p; ++i) {
     if (i % 4 == 0)
@@ -31,19 +28,19 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   std::vector<double> out(p * r);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(lhs_in.data()));
-  taskDataSeq->inputs_count.emplace_back(p);
-  taskDataSeq->inputs_count.emplace_back(q);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(rhs_in.data()));
-  taskDataSeq->inputs_count.emplace_back(q);
-  taskDataSeq->inputs_count.emplace_back(r);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(p);
-  taskDataSeq->outputs_count.emplace_back(r);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(lhs_in.data()));
+  taskDataTbb->inputs_count.emplace_back(p);
+  taskDataTbb->inputs_count.emplace_back(q);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(rhs_in.data()));
+  taskDataTbb->inputs_count.emplace_back(q);
+  taskDataTbb->inputs_count.emplace_back(r);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(p);
+  taskDataTbb->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SparseMatrixMultiTBB>(taskDataSeq);
+  auto testTaskTbb = std::make_shared<SparseMatrixMultiTBBParallel>(taskDataTbb);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -58,7 +55,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_pipeline_run) {
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSeq);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTbb);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < p; ++i) {
@@ -92,19 +89,19 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_task_run) {
   std::vector<double> out(p * r);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(lhs_in.data()));
-  taskDataSeq->inputs_count.emplace_back(p);
-  taskDataSeq->inputs_count.emplace_back(q);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(rhs_in.data()));
-  taskDataSeq->inputs_count.emplace_back(q);
-  taskDataSeq->inputs_count.emplace_back(r);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(p);
-  taskDataSeq->outputs_count.emplace_back(r);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(lhs_in.data()));
+  taskDataTbb->inputs_count.emplace_back(p);
+  taskDataTbb->inputs_count.emplace_back(q);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(rhs_in.data()));
+  taskDataTbb->inputs_count.emplace_back(q);
+  taskDataTbb->inputs_count.emplace_back(r);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(p);
+  taskDataTbb->outputs_count.emplace_back(r);
 
   // Create Task
-  auto testTaskSeq = std::make_shared<SparseMatrixMultiTBB>(taskDataSeq);
+  auto testTaskTbb = std::make_shared<SparseMatrixMultiTBBParallel>(taskDataTbb);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

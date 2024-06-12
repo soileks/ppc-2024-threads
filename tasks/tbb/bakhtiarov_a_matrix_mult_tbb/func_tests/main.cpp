@@ -1,12 +1,11 @@
 // Copyright 2024 Bakhtiarov Alexander
 #include <gtest/gtest.h>
 
-#include <memory>
 #include <vector>
 
 #include "tbb/bakhtiarov_a_matrix_mult_tbb/include/ccs_matrix_mult.hpp"
 
-TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes) {
+TEST(bakhtiarov_a_matrix_mult_tbb, test_size) {
   size_t n1 = 4;
   size_t m1 = 5;
   size_t n2 = 3;
@@ -14,29 +13,27 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes) {
 
   // Create data
   std::vector<double> in1(n1 * m1);
-
   std::vector<double> in2(n2 * m2);
-
   std::vector<double> out(n1 * m2);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
-  taskDataSeq->inputs_count.emplace_back(n1);
-  taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataSeq->inputs_count.emplace_back(n2);
-  taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(n1);
-  taskDataSeq->outputs_count.emplace_back(m2);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
+  taskDataTbb->inputs_count.emplace_back(n1);
+  taskDataTbb->inputs_count.emplace_back(m1);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
+  taskDataTbb->inputs_count.emplace_back(n2);
+  taskDataTbb->inputs_count.emplace_back(m2);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(n1);
+  taskDataTbb->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
   ASSERT_EQ(sparseMatrixMultiTBB.validation(), true);
 }
 
-TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes2) {
+TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
   size_t n1 = 4;
   size_t m1 = 4;
   size_t n2 = 4;
@@ -44,25 +41,23 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_sizes2) {
 
   // Create data
   std::vector<double> in1(n1 * m1);
-
   std::vector<double> in2(n2 * m2);
-
   std::vector<double> out(n1 * m2);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
-  taskDataSeq->inputs_count.emplace_back(n1);
-  taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataSeq->inputs_count.emplace_back(n2);
-  taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(n1);
-  taskDataSeq->outputs_count.emplace_back(m2);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
+  taskDataTbb->inputs_count.emplace_back(n1);
+  taskDataTbb->inputs_count.emplace_back(m1);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
+  taskDataTbb->inputs_count.emplace_back(n2);
+  taskDataTbb->inputs_count.emplace_back(m2);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(n1);
+  taskDataTbb->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
   ASSERT_FALSE(sparseMatrixMultiTBB.validation());
 }
 
@@ -79,19 +74,19 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
   std::vector<double> test{25, 0, 0, 40, 0, 25, 0, 30, 0, 0, 1, 0, 40, 30, 0, 100};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
-  taskDataSeq->inputs_count.emplace_back(n1);
-  taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataSeq->inputs_count.emplace_back(n2);
-  taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(n1);
-  taskDataSeq->outputs_count.emplace_back(m2);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
+  taskDataTbb->inputs_count.emplace_back(n1);
+  taskDataTbb->inputs_count.emplace_back(m1);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
+  taskDataTbb->inputs_count.emplace_back(n2);
+  taskDataTbb->inputs_count.emplace_back(m2);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(n1);
+  taskDataTbb->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
   sparseMatrixMultiTBB.validation();
   sparseMatrixMultiTBB.pre_processing();
   sparseMatrixMultiTBB.run();
@@ -121,19 +116,19 @@ TEST(bakhtiarov_a_matrix_mult_tbb, inverse_matrix) {
   std::vector<double> identity{1, 0, 0, 0, 1, 0, 0, 0, 1};
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
-  taskDataSeq->inputs_count.emplace_back(n1);
-  taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataSeq->inputs_count.emplace_back(n2);
-  taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(n1);
-  taskDataSeq->outputs_count.emplace_back(m2);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
+  taskDataTbb->inputs_count.emplace_back(n1);
+  taskDataTbb->inputs_count.emplace_back(m1);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
+  taskDataTbb->inputs_count.emplace_back(n2);
+  taskDataTbb->inputs_count.emplace_back(m2);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(n1);
+  taskDataTbb->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
   sparseMatrixMultiTBB.validation();
   sparseMatrixMultiTBB.pre_processing();
   sparseMatrixMultiTBB.run();
@@ -162,19 +157,19 @@ TEST(bakhtiarov_a_matrix_mult_tbb, zero_matrix) {
   std::vector<double> out(n1 * m2);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
-  taskDataSeq->inputs_count.emplace_back(n1);
-  taskDataSeq->inputs_count.emplace_back(m1);
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataSeq->inputs_count.emplace_back(n2);
-  taskDataSeq->inputs_count.emplace_back(m2);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
-  taskDataSeq->outputs_count.emplace_back(n1);
-  taskDataSeq->outputs_count.emplace_back(m2);
+  std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in1.data()));
+  taskDataTbb->inputs_count.emplace_back(n1);
+  taskDataTbb->inputs_count.emplace_back(m1);
+  taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
+  taskDataTbb->inputs_count.emplace_back(n2);
+  taskDataTbb->inputs_count.emplace_back(m2);
+  taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
+  taskDataTbb->outputs_count.emplace_back(n1);
+  taskDataTbb->outputs_count.emplace_back(m2);
 
   // Create Task
-  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataSeq);
+  SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
   sparseMatrixMultiTBB.validation();
   sparseMatrixMultiTBB.pre_processing();
   sparseMatrixMultiTBB.run();
