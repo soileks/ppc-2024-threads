@@ -64,8 +64,7 @@ void HoareSortTBB::parallel_hoare_sort(sortable_type* first_ptr, sortable_type c
   const int32_t K = 16;
   const uint32_t chank = (last_ptr - first_ptr) / K;
 
-#pragma omp parallel for
-  for (int32_t i = 0; i < K; i += 2) {
+  tbb::parallel_for(0, K, 2, [&](uint32_t i) {
     sortable_type* l1 = first_ptr + i * chank;
     sortable_type* r1 = l1 + chank;
     sortable_type* l2 = first_ptr + (i + 1) * chank;
@@ -73,7 +72,7 @@ void HoareSortTBB::parallel_hoare_sort(sortable_type* first_ptr, sortable_type c
     seq_hoare_sort(l1, r1);
     seq_hoare_sort(l2, r2);
     sort_bitonic_seguence(l1, r2);
-  }
+  });
 }
 
 void HoareSortTBB::seq_hoare_sort(sortable_type* first_ptr, sortable_type* last_ptr) {
