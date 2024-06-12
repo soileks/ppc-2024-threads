@@ -48,7 +48,7 @@ std::vector<point> graham(std::vector<point> points) {
         }
         return init;
       },
-      [](int idx1, int idx2) { return idx1; });
+      [](int idx1) { return idx1; });
   std::swap(R[0], R[min_x_idx]);
 
   tbb::parallel_sort(R.begin() + 1, R.end(),
