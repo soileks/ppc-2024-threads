@@ -40,7 +40,7 @@ std::vector<point> graham(std::vector<point> points) {
 
   int min_x_idx = tbb::parallel_reduce(
       tbb::blocked_range<int>(1, n), 0,
-      [&](const tbb::blocked_range<int>& range, int init) {
+      [&](const tbb::blocked_range<int>& range, int init) -> int {
         for (int i = range.begin(); i != range.end(); ++i) {
           if (points[R[i]].x < points[R[init]].x) {
             init = i;
@@ -48,7 +48,7 @@ std::vector<point> graham(std::vector<point> points) {
         }
         return init;
       },
-      [](int idx1, int idx2) {
+      [](int idx1, int idx2) -> int {
         return (points[R[idx1]].x < points[R[idx2]].x ||
                 (points[R[idx1]].x == points[R[idx2]].x && points[R[idx1]].y < points[R[idx2]].y))
                    ? idx1
