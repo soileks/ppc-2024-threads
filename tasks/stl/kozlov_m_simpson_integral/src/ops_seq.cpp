@@ -27,6 +27,7 @@ bool KozlovTaskSequential::run() {
   internal_order_test();
   double h_x = std::abs(x2 - x1) / n;
   double h_y = std::abs(y2 - y1) / m;
+  std::vector <double> RES(4);
   auto Int = [&, this](const uint32_t start, const uint32_t end) {
     double local_res = 0.0;
     for (uint64_t i = start; i <= end; i++) {
@@ -54,7 +55,7 @@ bool KozlovTaskSequential::run() {
         local_res += p * q * f(x, y);
       }
     }
-    res = res + local_res;
+    RES[start*4/n] = local_res;
   };
   std::thread th1(Int, 0, n / 4);
   std::thread th2(Int, n / 4 + 1, n / 2);
@@ -64,7 +65,7 @@ bool KozlovTaskSequential::run() {
   th2.join();
   th3.join();
   th4.join();
-  res = res * h_x * h_y / 9;
+  res = (RES[0] + RES[1] + RES[2] + RES[3]) * h_x * h_y / 9;
   return true;
 }
 bool KozlovTaskSequential::post_processing() {
