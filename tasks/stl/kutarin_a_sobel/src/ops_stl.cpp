@@ -65,9 +65,9 @@ bool KutarinASobel::run() {
   internal_order_test();
   try {
     std::vector<std::thread> threads;
-    threads.reserve(height_); // Предварительно выделите память
+    threads.reserve(height_);
     for (int j = 0; j < height_; ++j) {
-      threads.emplace_back([&, j]() { // Используйте emplace_back вместо push_back
+      threads.emplace_back([&, j]() {
         for (int i = 0; i < width_; ++i) {
           int resultX = 0;
           int resultY = 0;
