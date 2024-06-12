@@ -4,8 +4,8 @@
 #include <gtest/gtest.h>
 
 #include <mutex>
-#include <thread>
 #include <random>
+#include <thread>
 #include <vector>
 
 int* GaussFilter::getImgId(int a, int b) { return &input[a * x + b]; }
