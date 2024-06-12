@@ -33,16 +33,17 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size) {
   ASSERT_FALSE(sparseMatrixMultiTBB.validation());
 }
 
-TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
+TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
   size_t n1 = 4;
   size_t m1 = 4;
   size_t n2 = 4;
   size_t m2 = 4;
 
   // Create data
-  std::vector<double> in1(n1 * m1, 1.0);
-  std::vector<double> in2(n2 * m2, 1.0);
-  std::vector<double> out(n1 * m2, 0.0);
+  std::vector<double> in1{5, 0, 0, 0, 0, 0, 5, 0, 0, 1, 0, 0, 8, 0, 6, 0};
+  std::vector<double> in2{5, 0, 0, 8, 0, 0, 1, 0, 0, 5, 0, 6, 0, 0, 0, 0};
+  std::vector<double> out(n1 * m2);
+  std::vector<double> test{25, 0, 0, 40, 0, 25, 0, 30, 0, 0, 1, 0, 40, 30, 0, 100};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
@@ -50,7 +51,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
   taskDataTbb->inputs_count.emplace_back(n1);
   taskDataTbb->inputs_count.emplace_back(m1);
   taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataTbb->inputs_count.emplace_back(m1);
+  taskDataTbb->inputs_count.emplace_back(n2);
   taskDataTbb->inputs_count.emplace_back(m2);
   taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataTbb->outputs_count.emplace_back(n1);
@@ -58,11 +59,23 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
 
   // Create Task
   SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
+  sparseMatrixMultiTBB.validation();
+  sparseMatrixMultiTBB.pre_processing();
+  sparseMatrixMultiTBB.run();
+  sparseMatrixMultiTBB.post_processing();
 
-  ASSERT_FALSE(sparseMatrixMultiTBB.validation());
+  size_t k = 0;
+
+  for (size_t i = 0; i < out.size(); ++i) {
+    if (out[i] == test[i]) {
+      k++;
+    }
+  }
+
+  ASSERT_EQ(k, n1 * m2);
 }
 
-TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
+TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct2) {
   size_t n1 = 4;
   size_t m1 = 4;
   size_t n2 = 4;
