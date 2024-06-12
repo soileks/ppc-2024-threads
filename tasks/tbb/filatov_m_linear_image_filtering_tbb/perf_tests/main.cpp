@@ -6,7 +6,9 @@
 #include "core/perf/include/perf.hpp"
 #include "tbb/filatov_m_linear_image_filtering_tbb/include/ops_tbb.hpp"
 
-class filatov_m_linear_image_filtering : public ::testing::Test {
+using namespace filatov_tbb;
+
+class filatov_m_linear_image_filtering_perf_tbb : public ::testing::Test {
  protected:
   std::shared_ptr<ppc::core::TaskData> taskData;
   std::vector<uint8_t> inputData;
@@ -71,7 +73,7 @@ class filatov_m_linear_image_filtering : public ::testing::Test {
   }
 };
 
-TEST_F(filatov_m_linear_image_filtering, test_pipeline_run_with_red_image) {
+TEST_F(filatov_m_linear_image_filtering_perf_tbb, test_pipeline_run_with_red_image) {
   SetUpWH(512, 512);
   CommonSetUp();
   FillChannel(0, 111);
@@ -82,7 +84,7 @@ TEST_F(filatov_m_linear_image_filtering, test_pipeline_run_with_red_image) {
   ValidateOutputData();
 }
 
-TEST_F(filatov_m_linear_image_filtering, test_task_run_with_blue_image) {
+TEST_F(filatov_m_linear_image_filtering_perf_tbb, test_task_run_with_blue_image) {
   SetUpWH(512, 512);
   CommonSetUp();
   FillChannel(1, 255);
