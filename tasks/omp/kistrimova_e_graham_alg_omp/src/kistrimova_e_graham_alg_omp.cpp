@@ -31,9 +31,7 @@ bool GrahamAlgTask::post_processing() {
   return true;
 }
 
-double rotate(point X, point Y, point Z) {
-  return (Y.x - X.x) * (Z.y - Y.y) - (Y.y - X.y) * (Z.x - Y.x);
-}
+double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y.y - X.y) * (Z.x - Y.x); }
 
 bool compare(point a, point b, point base) {
   double rot = rotate(base, a, b);
@@ -48,7 +46,7 @@ std::vector<point> graham(std::vector<point> points) {
   if (n < 3) return points;
 
   int min_x_idx = 0;
-#pragma omp parallel for reduction(min:min_x_idx)
+#pragma omp parallel for reduction(min : min_x_idx)
   for (int i = 1; i < n; ++i) {
     if (points[i].x < points[min_x_idx].x) {
       min_x_idx = i;
@@ -68,7 +66,10 @@ std::vector<point> graham(std::vector<point> points) {
     std::vector<point> private_hull;
 #pragma omp for nowait
     for (int i = 2; i < n; ++i) {
-      while (private_hull.size() > 1 && rotate(private_hull[private_hull.size() - 2], private_hull.back(), points[i]) <= 0) { private_hull.pop_back(); }
+      while (private_hull.size() > 1 &&
+             rotate(private_hull[private_hull.size() - 2], private_hull.back(), points[i]) <= 0) {
+        private_hull.pop_back();
+      }
       private_hull.push_back(points[i]);
     }
 
