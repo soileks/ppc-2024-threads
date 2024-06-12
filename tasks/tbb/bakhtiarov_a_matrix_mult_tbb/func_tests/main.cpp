@@ -40,9 +40,9 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
   size_t m2 = 4;
 
   // Create data
-  std::vector<double> in1(n1 * m1);
-  std::vector<double> in2(n2 * m2);
-  std::vector<double> out(n1 * m2);
+  std::vector<double> in1(n1 * m1, 1.0);
+  std::vector<double> in2(n2 * m2, 1.0);
+  std::vector<double> out(n1 * m2, 0.0);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataTbb = std::make_shared<ppc::core::TaskData>();
@@ -50,7 +50,7 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
   taskDataTbb->inputs_count.emplace_back(n1);
   taskDataTbb->inputs_count.emplace_back(m1);
   taskDataTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(in2.data()));
-  taskDataTbb->inputs_count.emplace_back(n2);
+  taskDataTbb->inputs_count.emplace_back(m1);
   taskDataTbb->inputs_count.emplace_back(m2);
   taskDataTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataTbb->outputs_count.emplace_back(n1);
@@ -58,7 +58,8 @@ TEST(bakhtiarov_a_matrix_mult_tbb, test_size2) {
 
   // Create Task
   SparseMatrixMultiTBB sparseMatrixMultiTBB(taskDataTbb);
-  ASSERT_EQ(sparseMatrixMultiTBB.validation(), false);
+
+  ASSERT_FALSE(sparseMatrixMultiTBB.validation());
 }
 
 TEST(bakhtiarov_a_matrix_mult_tbb, test_multy_correct) {
