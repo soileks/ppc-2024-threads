@@ -1,16 +1,17 @@
 
 #pragma once
 
+#include <algorithm>
+#include <future>
+#include <iterator>
 #include<random>
 #include <thread>
 #include <vector>
-#include <future>
-#include <algorithm>
-#include <iterator>
+
 #include "core/task/include/task.hpp"
 
 using namespace std::chrono_literals;
-namespace petrov_stl{
+namespace petrov_stl {
 
 class PetrovRadixSortDoubleSTL : public ppc::core::Task {
  public:
