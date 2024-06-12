@@ -33,6 +33,7 @@ bool GrahamAlgTask::post_processing() {
 
 double rotate(point X, point Y, point Z) { return (Y.x - X.x) * (Z.y - Y.y) - (Y.y - X.y) * (Z.x - Y.x); }
 
+
 std::vector<point> graham(std::vector<point> points) {
   int n = points.size();
   std::vector<int> R(n);
