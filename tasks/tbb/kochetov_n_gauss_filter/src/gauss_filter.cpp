@@ -2,10 +2,10 @@
 #include "seq/kochetov_n_gauss_filter/include/gauss_filter.hpp"
 
 #include <gtest/gtest.h>
+#include <tbb/tbb.h>
 
 #include <random>
 #include <vector>
-#include <tbb/tbb.h>
 
 int* GaussFilter::getImgId(int a, int b) { return &input[a * x + b]; }
 
