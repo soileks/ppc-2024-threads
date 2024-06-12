@@ -133,24 +133,29 @@ std::vector<double> PetrovRadixSortDoubleSTL::PetrovBinaryMergeTree(std::vector<
   while (sortedVectors.size() > 1) {
     std::vector<std::vector<double>> mergedVectors;
     std::vector<std::future<std::vector<double>>> futures;
-    int vectorSize = static_cast<int>(sortedVectors.size()) - 1;
+    int vectorSize = static_cast<int>(sortedVectors.size());
 
-    // Creating asynchronous tasks for merging pairs of vectors
-    for (int i = 0; i < vectorSize; i += 2) {
-      futures.push_back(std::async(std::launch::async, &PetrovRadixSortDoubleSTL::PetrovMerge, this,
+    // Предварительное выделение памяти для futures
+    futures.reserve(vectorSize / 2);
+
+    // Создаем асинхронные задачи для слияния пар векторов
+    for (int i = 0; i < vectorSize - 1; i += 2) {
+      futures.push_back(std::async(std::launch::async, &PetrovRadixSortDoubleSTL::PetrovMerge,
                                    std::cref(sortedVectors[i]), std::cref(sortedVectors[i + 1])));
     }
 
-    // Collecting the results of completing tasks
+    // Собираем результаты выполнения задач
+    mergedVectors.reserve(futures.size());
     for (auto& future : futures) {
       mergedVectors.push_back(future.get());
     }
 
-    if (sortedVectors.size() % 2 != 0) {
+    // Если количество векторов нечетное, добавляем последний вектор в результат
+    if (vectorSize % 2 != 0) {
       mergedVectors.push_back(std::move(sortedVectors.back()));
     }
 
-    // Updating the list of sorted vectors for the next merge level
+    // Обновляем список отсортированных векторов для следующего уровня слияния
     sortedVectors.swap(mergedVectors);
   }
 
@@ -161,10 +166,11 @@ std::vector<double> PetrovRadixSortDoubleSTL::PetrovRadixSortStl(const std::vect
   std::vector<std::vector<double>> vectorsForParallel = PetrovSplitVector(data, numParts);
   std::vector<std::future<std::vector<double>>> futures;
   int vectorSize = static_cast<int>(vectorsForParallel.size());
+  futures.reserve(vectorSize);
 
   for (int i = 0; i < vectorSize; ++i) {
-    futures.push_back(std::async(std::launch::async, &PetrovRadixSortDoubleSTL::PetrovRadixSort, this,
-                                 std::cref(vectorsForParallel[i])));
+    futures.push_back(
+        std::async(std::launch::async, &PetrovRadixSortDoubleSTL::PetrovRadixSort, std::cref(vectorsForParallel[i])));
   }
 
   for (int i = 0; i < vectorSize; ++i) {

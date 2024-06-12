@@ -1,17 +1,16 @@
 
 #pragma once
 
-#include <algorithm>
-#include <future>
-#include <iterator>
-#include <random>
+#include<random>
 #include <thread>
 #include <vector>
-
+#include <future>
+#include <algorithm>
+#include <iterator>
 #include "core/task/include/task.hpp"
 
 using namespace std::chrono_literals;
-namespace petrov_stl {
+namespace petrov_stl{
 
 class PetrovRadixSortDoubleSTL : public ppc::core::Task {
  public:
@@ -26,9 +25,9 @@ class PetrovRadixSortDoubleSTL : public ppc::core::Task {
   std::vector<double> sort;
   static void PetrovCountSort(double* in, double* out, int len, int exp);
   static bool PetrovCountSortSigns(const double* in, double* out, int len);
-  std::vector<double> PetrovRadixSort(const std::vector<double>& data1);
+  static std::vector<double> PetrovRadixSort(const std::vector<double>& data1);
   static std::vector<std::vector<double>> PetrovSplitVector(const std::vector<double>& data, int numParts);
-  std::vector<double> PetrovMerge(const std::vector<double>& arr1, const std::vector<double>& arr2);
+  static std::vector<double> PetrovMerge(const std::vector<double>& arr1, const std::vector<double>& arr2);
   std::vector<double> PetrovRadixSortStl(const std::vector<double>& data, int numParts);
   std::vector<double> PetrovBinaryMergeTree(std::vector<std::vector<double>>& sortedVectors);
 };
