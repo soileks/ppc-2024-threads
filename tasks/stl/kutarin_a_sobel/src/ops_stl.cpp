@@ -65,8 +65,9 @@ bool KutarinASobel::run() {
   internal_order_test();
   try {
     std::vector<std::thread> threads;
+    threads.reserve(height_); // Предварительно выделите память
     for (int j = 0; j < height_; ++j) {
-      threads.push_back(std::thread([&, j]() {
+      threads.emplace_back([&, j]() { // Используйте emplace_back вместо push_back
         for (int i = 0; i < width_; ++i) {
           int resultX = 0;
           int resultY = 0;
@@ -79,7 +80,7 @@ bool KutarinASobel::run() {
           }
           resultImage[j * width_ + i] = clamp(static_cast<int>(sqrt(resultX * resultX + resultY * resultY)), 0, 255);
         }
-      }));
+      });
     }
     for (auto& thread : threads) {
       thread.join();
