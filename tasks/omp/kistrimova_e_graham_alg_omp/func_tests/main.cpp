@@ -122,7 +122,7 @@ TEST(kistrimova_e_graham_alg_seq, ten_points) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataSeq->outputs_count.emplace_back(out.size());
 
-  // Create Task
+  // Creative Task
   GrahamAlgTask testTaskSequential(taskDataSeq);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
