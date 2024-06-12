@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "tasks\tbb\Vasilev_ivan_shell_sort\include\ops_tbb.hpp"
+#include "tbb/Vasilev_ivan_shell_sort/include/ops_tbb.hpp"
 
 TEST(vasilev_i_sort_tbb, Sort_2) {
   std::vector<int> arr = {2, 1};
