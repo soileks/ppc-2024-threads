@@ -18,11 +18,11 @@ double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) 
   double res = 0.0;
   res = tbb::parallel_reduce(
       tbb::blocked_range<size_t>(0, aa.size()), 0.0,
-        [&](const tbb::blocked_range<size_t>& r, double local_res) -> double {
-          for (size_t i = r.begin(); i != r.end(); ++i) {
-              local_res += aa[i] * bb[i];
-          }
-          return local_res;
+      [&](const tbb::blocked_range<size_t> &r, double local_res) -> double {
+        for (size_t i = r.begin(); i != r.end(); ++i) {
+          local_res += aa[i] * bb[i];
+        }
+        return local_res;
       },
       std::plus<double>());
   return res;
@@ -30,7 +30,7 @@ double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) 
 
 std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n) {
   std::vector<double> res(n, 0.0);
-  tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int> &r) {
     for (int i = r.begin(); i != r.end(); ++i) {
       for (int j = 0; j < n; ++j) {
         res[i] += Aa[i * n + j] * xx[j];
@@ -51,13 +51,13 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
     std::vector<double> Ap = matrixVectorProduct(Aa, p, n);
     double alpha = dotProduct(r, r) / dotProduct(Ap, p);
 
-    tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& r) {
+    tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int> &r) {
       for (int i = r.begin(); i != r.end(); ++i) {
         res[i] += alpha * p[i];
       }
     });
 
-    tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& ra) {
+    tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int> &ra) {
       for (int i = ra.begin(); i != ra.end(); ++i) {
         r[i] = r_old[i] - alpha * Ap[i];
       }
@@ -68,7 +68,7 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
     }
     double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
 
-    tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& ra) {
+    tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int> &ra) {
       for (int i = ra.begin(); i != ra.end(); ++i) {
         p[i] = r[i] + beta * p[i];
       }
@@ -124,13 +124,13 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
                    double tol) {
   int n = bb.size();
   std::vector<double> Ax(n, 0.0);
-  tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int>& r) {
-      for (int i = r.begin(); i != r.end(); ++i) {
-        for (int j = 0; j < n; ++j) {
-          Ax[i] += Aa[i * n + j] * xx[j];
-        }
+  tbb::parallel_for(tbb::blocked_range<int>(0, n), [&](const tbb::blocked_range<int> &r) {
+    for (int i = r.begin(); i != r.end(); ++i) {
+      for (int j = 0; j < n; ++j) {
+        Ax[i] += Aa[i * n + j] * xx[j];
       }
-    });
+    }
+  });
   for (int i = 0; i < n; ++i) {
     if (std::abs(Ax[i] - bb[i]) > tol) {
       return false;
@@ -144,7 +144,7 @@ std::vector<double> genRandomVector(int size, int maxVal) {
   std::mt19937 gen(rd());
   std::uniform_real_distribution<> distrib(0, maxVal);
   std::vector<double> res(size);
-  tbb::parallel_for(tbb::blocked_range<int>(0, size), [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, size), [&](const tbb::blocked_range<int> &r) {
     for (int i = r.begin(); i != r.end(); ++i) {
       res[i] = distrib(gen);
     }
@@ -158,14 +158,14 @@ std::vector<double> genRandomMatrix(int size, int maxVal) {
   std::uniform_real_distribution<> distrib(0, maxVal);
   std::vector<double> matrix(size * size);
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, size), [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, size), [&](const tbb::blocked_range<int> &r) {
     for (int i = r.begin(); i != r.end(); ++i) {
       for (int j = i; j < size; ++j) {
         matrix[i * size + j] = distrib(gen);
       }
     }
   });
-  tbb::parallel_for(tbb::blocked_range<int>(0, size), [&](const tbb::blocked_range<int>& r) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, size), [&](const tbb::blocked_range<int> &r) {
     for (int i = r.begin(); i != r.end(); ++i) {
       for (int j = 0; j < i; ++j) {
         matrix[i * size + j] = matrix[j * size + i];
