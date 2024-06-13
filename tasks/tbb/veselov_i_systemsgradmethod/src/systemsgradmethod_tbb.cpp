@@ -17,9 +17,9 @@ namespace veselov_i_tbb {
 double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
   double res = 0.0;
   res = tbb::parallel_reduce(
-      tbb::blocked_range<size_t>(0, aa.size()), 0.0,
-      [&](const tbb::blocked_range<size_t> &r, double local_res) -> double {
-        for (size_t i = r.begin(); i != r.end(); ++i) {
+      tbb::blocked_range<int>(0, aa.size()), 0.0,
+      [&](const tbb::blocked_range<int> &r, double local_res) -> double {
+        for (int i = r.begin(); i != r.end(); ++i) {
           local_res += aa[i] * bb[i];
         }
         return local_res;
@@ -114,7 +114,7 @@ bool SystemsGradMethodTbb::run() {
 
 bool SystemsGradMethodTbb::post_processing() {
   internal_order_test();
-  for (size_t i = 0; i < x.size(); ++i) {
+  for (int i = 0; i < (int)x.size(); ++i) {
     reinterpret_cast<double *>(taskData->outputs[0])[i] = x[i];
   }
   return true;
