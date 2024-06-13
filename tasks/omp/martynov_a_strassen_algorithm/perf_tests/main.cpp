@@ -2,6 +2,7 @@
 // Copyright 2024 Martynov Aleksandr
 #include <gtest/gtest.h>
 #include <omp.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
@@ -29,13 +30,10 @@ TEST(martynov_a_strassen_alg_omp_perf, test_pipeline_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataSeq->outputs_count.emplace_back(result.size());
 
-  // Create Task 
   auto testTaskOmp = std::make_shared<Strssn_alg>(taskDataSeq);
-
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results
@@ -73,13 +71,10 @@ TEST(martynov_a_strassen_alg_omp_perf, test_task_run) {
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataSeq->outputs_count.emplace_back(result.size());
 
-  // Create Task
   auto testTaskOmp = std::make_shared<Strssn_alg>(taskDataSeq);
-
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto t0 = std::chrono::high_resolution_clock::now();
   perfAttr->current_timer = [&] { return omp_get_wtime(); };
 
   // Create and init perf results

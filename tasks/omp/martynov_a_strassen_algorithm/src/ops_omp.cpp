@@ -1,7 +1,9 @@
 
 // Copyright 2024 Martynov Aleksandr
 #include "omp/martynov_a_strassen_algorithm/include/ops_omp.hpp"
+
 #include <omp.h>
+
 #include <algorithm>
 #include <cmath>
 #include <thread>
@@ -112,22 +114,22 @@ std::vector<double> strassen(const std::vector<double>& a, const std::vector<dou
   std::vector<double> p6;
   std::vector<double> p7;
 #pragma omp parallel sections shared(p1, p2, p3, p4, p5, p6, p7)
-{
+  {
 #pragma omp section
-  p1 = strassen(sum_matrix(a11, a22), sum_matrix(b11, b22), size);
+    p1 = strassen(sum_matrix(a11, a22), sum_matrix(b11, b22), size);
 #pragma omp section
-  p2 = strassen(sum_matrix(a21, a22), b11, size);
+    p2 = strassen(sum_matrix(a21, a22), b11, size);
 #pragma omp section
-  p3 = strassen(a11, sub(b12, b22), size);
+    p3 = strassen(a11, sub(b12, b22), size);
 #pragma omp section
-  p4 = strassen(a22, sub(b21, b11), size);
+    p4 = strassen(a22, sub(b21, b11), size);
 #pragma omp section
-  p5 = strassen(sum_matrix(a11, a12), b22, size);
+    p5 = strassen(sum_matrix(a11, a12), b22, size);
 #pragma omp section
-  p6 = strassen(sub(a21, a11), sum_matrix(b11, b12), size);
+    p6 = strassen(sub(a21, a11), sum_matrix(b11, b12), size);
 #pragma omp section
-  p7 = strassen(sub(a12, a22), sum_matrix(b21, b22), size);
-}
+    p7 = strassen(sub(a12, a22), sum_matrix(b21, b22), size);
+  }
 
   std::vector<double> c11 = sum_matrix(sum_matrix(p1, p4), sub(p7, p5));
   std::vector<double> c12 = sum_matrix(p3, p5);
