@@ -40,29 +40,29 @@ double multiDimensionalIntegralTBB(const std::function<double(double, double)>& 
   double reslt = 0;
 
   reslt = tbb::parallel_reduce(
-    tbb::blocked_range2d<int>(0, nx, 0, ny), 0.0,
-    [&](const tbb::blocked_range2d<int> &r, double summ) {
-      for (int i = r.rows().begin(); i != r.rows().end(); ++i) {
-        for (int j = r.cols().begin(); j != r.cols().end(); ++j) {
-          double x1 = ax + i * stepx;
-          double x2 = ax + (i + 1) * stepx;
-          double y1 = ay + j * stepy;
-          double y2 = ay + (j + 1) * stepy;
+      tbb::blocked_range2d<int>(0, nx, 0, ny), 0.0,
+      [&](const tbb::blocked_range2d<int>& r, double summ) {
+        for (int i = r.rows().begin(); i != r.rows().end(); ++i) {
+          for (int j = r.cols().begin(); j != r.cols().end(); ++j) {
+            double x1 = ax + i * stepx;
+            double x2 = ax + (i + 1) * stepx;
+            double y1 = ay + j * stepy;
+            double y2 = ay + (j + 1) * stepy;
 
-          double fy1 = func(x1, y1);
-          double fy2 = func(x2, y1);
-          double fy3 = func(x1, y2);
-          double fy4 = func(x2, y2);
+            double fy1 = func(x1, y1);
+            double fy2 = func(x2, y1);
+            double fy3 = func(x1, y2);
+            double fy4 = func(x2, y2);
 
-          double area = ((x2 - x1) * (y2 - y1));
-          summ += area * (fy1 + fy2 + fy3 + fy4) / 4;
+            double area = ((x2 - x1) * (y2 - y1));
+            summ += area * (fy1 + fy2 + fy3 + fy4) / 4;
+          }
         }
-      }
-      return summ;
-    },
-    std::plus<>());
+        return summ;
+      },
+      std::plus<>());
 
-  return reslt; 
+  return reslt;
 }
 
 bool BozinTaskSequential::pre_processing() {
