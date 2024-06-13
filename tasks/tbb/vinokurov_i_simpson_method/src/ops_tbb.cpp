@@ -1,0 +1,80 @@
+// Copyright 2024 Vinokurov Ivan
+#include "tbb/vinokurov_i_simpson_method/include/ops_tbb.hpp"
+
+#include <cmath>
+#include <oneapi/tbb.h>
+#include <thread>
+
+using namespace std::chrono_literals;
+
+double fn_simpson(vinokurovIvanTBB::func _fn, double _x0, double _x1, double _y) {
+  return _fn(_x0, _y) + 4 * _fn((_x0 + _x1) / 2, _y) + _fn(_x1, _y);
+}
+
+double vinokurovIvanTBB::fn_linear(double _x, double _y) { return 9 * _x - _y; }
+
+double vinokurovIvanTBB::fn_exp(double _x, double _y) { return exp(_x - _y); }
+
+double vinokurovIvanTBB::fn_trig(double _x, double _y) { return sin(_x * _y); }
+
+double vinokurovIvanTBB::fn_mul(double _x, double _y) { return _x * _x * _y; }
+
+double vinokurovIvanTBB::fn_other(double _x, double _y) { return (_x + _y) * _y; }
+
+bool vinokurovIvanTBB::SimpsonMethodTBB::pre_processing() {
+  internal_order_test();
+  // Init value for input and output
+  auto* inputData = reinterpret_cast<int*>(taskData->inputs[0]);
+
+  a = inputData[0];
+  b = inputData[1];
+  c = inputData[2];
+  d = inputData[3];
+  n = inputData[4];
+
+  result = 0.0;
+
+  return true;
+}
+
+bool vinokurovIvanTBB::SimpsonMethodTBB::validation() {
+  internal_order_test();
+  // Check count elements of output
+  return taskData->inputs_count[0] == 5 && taskData->outputs_count[0] == 1;
+}
+
+bool vinokurovIvanTBB::SimpsonMethodTBB::run() {
+  internal_order_test();
+  double res{};
+  double part1 = static_cast<double>(b - a) / n;
+  double part2 = static_cast<double>(d - c) / n;
+
+  res = oneapi::tbb::parallel_reduce(
+      oneapi::tbb::blocked_range<int>(0, n), 
+      0.0,
+      [&](const tbb::blocked_range<int>& rng, double tmp) {
+        for (int i = rng.begin(); i != rng.end(); i++) {
+          double a1 = c + i * part2;
+          double a2 = c + (i + 1) * part2;
+          for (int j = 0; j < n; j++) {
+            double b1 = a + j * part1;
+            double b2 = a + (j + 1) * part1;
+            res += (part1 * part2 / 36) * (fn_simpson(fn, b1, b2, a1) + 4 * fn_simpson(fn, b1, b2, (a1 + a2) / 2) +
+                                           fn_simpson(fn, b1, b2, a2));
+          }
+        }
+        return tmp;
+      },
+      std::plus<>()
+      );
+
+  result = res;
+
+  return true;
+}
+
+bool vinokurovIvanTBB::SimpsonMethodTBB::post_processing() {
+  internal_order_test();
+  reinterpret_cast<int*>(taskData->outputs[0])[0] = result;
+  return true;
+}
