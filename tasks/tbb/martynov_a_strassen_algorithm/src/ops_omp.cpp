@@ -115,10 +115,8 @@ std::vector<double> strassen(const std::vector<double>& a, const std::vector<dou
 
   oneapi::tbb::parallel_invoke(
       [&] { p1 = strassen(sum_matrix(a11, a22), sum_matrix(b11, b22), size); },
-      [&] { p2 = strassen(sum_matrix(a21, a22), b11, size); },
-      [&] { p3 = strassen(a11, sub(b12, b22), size); },
-      [&] { p4 = strassen(a22, sub(b21, b11), size); },
-      [&] { p5 = strassen(sum_matrix(a11, a12), b22, size); },
+      [&] { p2 = strassen(sum_matrix(a21, a22), b11, size); }, [&] { p3 = strassen(a11, sub(b12, b22), size); },
+      [&] { p4 = strassen(a22, sub(b21, b11), size); }, [&] { p5 = strassen(sum_matrix(a11, a12), b22, size); },
       [&] { p6 = strassen(sub(a21, a11), sum_matrix(b11, b12), size); },
       [&] { p7 = strassen(sub(a12, a22), sum_matrix(b21, b22), size); });
 

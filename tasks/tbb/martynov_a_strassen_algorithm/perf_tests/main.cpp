@@ -29,10 +29,7 @@ TEST(martynov_a_strassen_alg_omp_perf, test_pipeline_run) {
   taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataTBB->outputs_count.emplace_back(result.size());
 
-  
-  // Create Task  
   auto testTaskTBB = std::make_shared<Strssn_alg>(taskDataSeq);
-
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
@@ -74,9 +71,7 @@ TEST(martynov_a_strassen_alg_omp_perf, test_task_run) {
   taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(result.data()));
   taskDataTBB->outputs_count.emplace_back(result.size());
 
-  // Create Task
   auto testTaskTBB = std::make_shared<Strssn_alg>(taskDataTBB);
-
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
