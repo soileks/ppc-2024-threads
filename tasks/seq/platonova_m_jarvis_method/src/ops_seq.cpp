@@ -62,7 +62,7 @@ bool JarvisSeq::validation() {
 
 bool JarvisSeq::run() {
   internal_order_test();
-  convexHullPoints = Jarvis(points);
+  convexHullPoints = JarvisSeq(points);
   return true;
 }
 
