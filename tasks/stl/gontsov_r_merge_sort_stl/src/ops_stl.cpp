@@ -1,7 +1,6 @@
 // Copyright 2024 Gontsov Roman
 #include "stl/gontsov_r_merge_sort_stl/include/ops_stl.hpp"
 
-
 #include <algorithm>
 #include <cmath>
 #include <iostream>
