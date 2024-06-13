@@ -5,13 +5,6 @@
 
 #include "tbb/gontsov_r_merge_sort_tbb/include/ops_tbb.hpp"
 
-void print(std::vector<int> in) {
-  for (int i : in) {
-    std::cout << i << ", ";
-  }
-  std::cout << std::endl;
-}
-
 TEST(Gontsov_R_Radix_Sort, can_create_task_successfully) {
   std::vector<int> in = {45, 12, 89, 33, 27, 150, 2, 58, 9, 66};
   std::vector<int> exp = {2, 9, 12, 27, 33, 45, 58, 66, 89, 150};
@@ -32,7 +25,6 @@ TEST(Gontsov_R_Radix_Sort, can_create_task_successfully) {
   ASSERT_TRUE(RadixTBBG.pre_processing());
   ASSERT_TRUE(RadixTBBG.run());
   ASSERT_TRUE(RadixTBBG.post_processing());
-  print(out2);
   for (size_t i = 0; i < out2.size(); i++) {
     ASSERT_EQ(out2[i], exp[i]);
   }
