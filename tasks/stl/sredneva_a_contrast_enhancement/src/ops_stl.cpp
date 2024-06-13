@@ -88,8 +88,8 @@ bool ContrastEnhancement_STL_Parallel::run() {
     return false;
   }
   const int num_max_threads = std::thread::hardware_concurrency();
-  int block = size / num_max_threads;
   std::vector<std::thread> thr(num_max_threads);
+  int block = size / num_max_threads;
   for (int i = 0; i < num_max_threads; i++) {
     int start = i * block;
     int end = (i + 1) * block;
