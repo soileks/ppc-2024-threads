@@ -33,4 +33,4 @@ class JarvisSeq : public ppc::core::Task {
   std::vector<Point> convexHullPoints;
 };
 
-std::vector<Point> Jarvis(const std::vector<Point>& points);
+std::vector<Point> JarvisSeq(const std::vector<Point>& points);
