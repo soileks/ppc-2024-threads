@@ -1,6 +1,5 @@
 // Copyright 2024 Gontsov Roman
 #include <gtest/gtest.h>
-#include <oneapi/tbb.h>
 
 #include <vector>
 
@@ -23,7 +22,7 @@ TEST(Gontsov_R_Radix_Sort, test_pipeline_run) {
   taskDataPar->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskParallel = std::make_shared<RadixTBBG>(taskDataPar);
+  auto testTaskParallel = std::make_shared<RadixSTLG>(taskDataPar);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -66,7 +65,7 @@ TEST(Gontsov_R_Radix_Sort, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskSequential = std::make_shared<RadixTBBG>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<RadixSTLG>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

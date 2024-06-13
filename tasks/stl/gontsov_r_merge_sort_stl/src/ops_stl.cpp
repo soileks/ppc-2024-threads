@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 #include <iostream>
 #include <mutex>
 #include <numeric>
@@ -108,7 +109,7 @@ bool RadixSeqG::post_processing() {
   return true;
 }
 
-bool RadixTBBG::pre_processing() {
+bool RadixSTLG::pre_processing() {
   internal_order_test();
   try {
     int size = static_cast<int>(taskData->inputs_count[0]);
@@ -120,7 +121,7 @@ bool RadixTBBG::pre_processing() {
   }
 }
 
-bool RadixTBBG::validation() {
+bool RadixSTLG::validation() {
   internal_order_test();
   return taskData->inputs_count.size() == 1 && taskData->outputs_count.size() == 1 && taskData->inputs.size() == 1 &&
          taskData->outputs.size() == 1 && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
@@ -128,41 +129,47 @@ bool RadixTBBG::validation() {
          taskData->outputs_count[0] >= 0;
 }
 
-bool RadixTBBG::run() {
-  internal_order_test();
-  try {
-    size_t resultSize = input_.size();
-    size_t num_threads = std::thread::hardware_concurrency();
-    std::vector<int> result(resultSize, 0);
-    std::mutex resultMutex;
-    auto thread_func = [&](size_t thread_idx) {
-      size_t chunk_size = (resultSize + num_threads - 1) / num_threads;
-      size_t start = thread_idx * chunk_size;
-      size_t end = std::min(start + chunk_size, resultSize);
-      std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + start, input_.begin() + end));
-      std::lock_guard<std::mutex> lock(resultMutex);
-      for (size_t i = start; i < end; ++i) {
-        result[i] = input_Local[i - start];
-      }
-    };
+bool RadixSTLG::run() {
+    internal_order_test();
+    try {
+        size_t resultSize = input_.size();
+        size_t num_threads = std::thread::hardware_concurrency();
+        std::vector<int> result;
+        std::mutex resultMutex;
 
-    std::vector<std::thread> threads;
-    for (size_t i = 0; i < num_threads; ++i) {
-      threads.emplace_back(thread_func, i);
+        auto worker = [&](size_t left, size_t right) {
+            std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
+            {
+                std::lock_guard<std::mutex> lock(resultMutex);
+                result = Merge(result, input_Local);
+            }
+        };
+
+        std::vector<std::thread> threads;
+        size_t blockSize = (resultSize + num_threads - 1) / num_threads;
+
+        for (size_t i = 0; i < num_threads; ++i) {
+            size_t left = i * blockSize;
+            size_t right = std::min(left + blockSize, resultSize);
+            if (left < right) {
+                threads.emplace_back(worker, left, right);
+            }
+        }
+
+        for (auto& thread : threads) {
+            if (thread.joinable()) {
+                thread.join();
+            }
+        }
+
+        input_ = result;
+        return true;
+    } catch (...) {
+        return false;
     }
-
-    for (auto& thread : threads) {
-      thread.join();
-    }
-
-    input_ = result;
-    return true;
-  } catch (...) {
-    return false;
-  }
 }
 
-bool RadixTBBG::post_processing() {
+bool RadixSTLG::post_processing() {
   internal_order_test();
   for (size_t i = 0; i < input_.size(); i++) {
     reinterpret_cast<int*>(taskData->outputs[0])[i] = input_[i];

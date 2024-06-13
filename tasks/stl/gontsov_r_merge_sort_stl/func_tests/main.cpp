@@ -18,13 +18,12 @@ TEST(Gontsov_R_Radix_Sort, can_create_task_successfully) {
   taskDataPar->inputs_count.emplace_back(in.size());
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(out2.data()));
   taskDataPar->outputs_count.emplace_back(out2.size());
-
   // Create Task
-  RadixTBBG RadixTBBG(taskDataPar);
-  ASSERT_EQ(RadixTBBG.validation(), true);
-  ASSERT_TRUE(RadixTBBG.pre_processing());
-  ASSERT_TRUE(RadixTBBG.run());
-  ASSERT_TRUE(RadixTBBG.post_processing());
+  RadixSTLG radixSTLG(taskDataPar);
+  radixSTLG.validation();
+  radixSTLG.pre_processing();
+  radixSTLG.run();
+  radixSTLG.post_processing();
   for (size_t i = 0; i < out2.size(); i++) {
     ASSERT_EQ(out2[i], exp[i]);
   }
@@ -45,11 +44,11 @@ TEST(Gontsov_R_Radix_Sort, test2) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixTBBG RadixTBBG(taskDataPar);
-  ASSERT_EQ(RadixTBBG.validation(), true);
-  ASSERT_TRUE(RadixTBBG.pre_processing());
-  ASSERT_TRUE(RadixTBBG.run());
-  ASSERT_TRUE(RadixTBBG.post_processing());
+  RadixSTLG radixSTLG(taskDataPar);
+  ASSERT_EQ(radixSTLG.validation(), true);
+  ASSERT_TRUE(radixSTLG.pre_processing());
+  ASSERT_TRUE(radixSTLG.run());
+  ASSERT_TRUE(radixSTLG.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
     ASSERT_EQ(out2[i], exp[i]);
@@ -71,11 +70,11 @@ TEST(Gontsov_R_Radix_Sort, test3) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixTBBG RadixTBBG(taskDataPar);
-  ASSERT_EQ(RadixTBBG.validation(), true);
-  ASSERT_TRUE(RadixTBBG.pre_processing());
-  ASSERT_TRUE(RadixTBBG.run());
-  ASSERT_TRUE(RadixTBBG.post_processing());
+  RadixSTLG radixSTLG(taskDataPar);
+  ASSERT_EQ(radixSTLG.validation(), true);
+  ASSERT_TRUE(radixSTLG.pre_processing());
+  ASSERT_TRUE(radixSTLG.run());
+  ASSERT_TRUE(radixSTLG.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
     ASSERT_EQ(out2[i], exp[i]);
@@ -97,11 +96,11 @@ TEST(Gontsov_R_Radix_Sort, test4) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixTBBG RadixTBBG(taskDataPar);
-  ASSERT_EQ(RadixTBBG.validation(), true);
-  ASSERT_TRUE(RadixTBBG.pre_processing());
-  ASSERT_TRUE(RadixTBBG.run());
-  ASSERT_TRUE(RadixTBBG.post_processing());
+  RadixSTLG radixSTLG(taskDataPar);
+  ASSERT_EQ(radixSTLG.validation(), true);
+  ASSERT_TRUE(radixSTLG.pre_processing());
+  ASSERT_TRUE(radixSTLG.run());
+  ASSERT_TRUE(radixSTLG.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
     ASSERT_EQ(out2[i], exp[i]);
@@ -123,11 +122,11 @@ TEST(Gontsov_R_Radix_Sort, test5) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixTBBG RadixTBBG(taskDataPar);
-  ASSERT_EQ(RadixTBBG.validation(), true);
-  ASSERT_TRUE(RadixTBBG.pre_processing());
-  ASSERT_TRUE(RadixTBBG.run());
-  ASSERT_TRUE(RadixTBBG.post_processing());
+  RadixSTLG radixSTLG(taskDataPar);
+  ASSERT_EQ(radixSTLG.validation(), true);
+  ASSERT_TRUE(radixSTLG.pre_processing());
+  ASSERT_TRUE(radixSTLG.run());
+  ASSERT_TRUE(radixSTLG.post_processing());
 
   for (size_t i = 0; i < out2.size(); i++) {
     ASSERT_EQ(out2[i], exp[i]);
