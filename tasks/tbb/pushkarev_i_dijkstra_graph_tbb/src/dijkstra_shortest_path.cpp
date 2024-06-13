@@ -61,7 +61,7 @@ bool pushkarev_tbb::DijkstraTaskTBB::run() {
 }
 
 void pushkarev_tbb::DijkstraTaskTBB::relaxVertex(size_t u, size_t v) {
-    if (distances_[v] > distances_[u] + graph[u][v]) {
+  if (distances_[v] > distances_[u] + graph[u][v]) {
     distances_[v] = distances_[u] + graph[u][v];
   }
 }
