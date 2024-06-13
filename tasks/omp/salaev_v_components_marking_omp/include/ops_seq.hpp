@@ -40,7 +40,7 @@ class ImageMarkingOmp : public ppc::core::Task {
   std::vector<std::vector<uint8_t>> source = {};
   std::vector<std::vector<uint32_t>> destination = {};
   uint32_t height{}, width{};
-  void resolve_labels(std::vector<int>& labels);
+  static void resolve_labels(std::vector<int>& labels);
 };
 
 }  // namespace SalaevOMP
