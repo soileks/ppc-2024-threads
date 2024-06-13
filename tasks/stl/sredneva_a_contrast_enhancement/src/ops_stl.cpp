@@ -80,7 +80,7 @@ bool ContrastEnhancement_STL_Parallel::validation() {
   return taskData->inputs_count[1] == taskData->outputs_count[0];
 }
 
-bool ContrastEnhancement_STL_Parallel::run() {  // надо изменить
+bool ContrastEnhancement_STL_Parallel::run() {
   internal_order_test();
   int size = n * m;
   std::vector<uint8_t> temp_res(size, 0);
