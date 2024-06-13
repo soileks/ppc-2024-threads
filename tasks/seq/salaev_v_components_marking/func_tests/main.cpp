@@ -10,11 +10,9 @@ TEST(salaev_v_components_marking_seq_functional, correct_input_data) {
   uint32_t height = 5;
   uint32_t width = 5;
   std::vector<uint32_t> dimensions = {height, width};
-  std::vector<uint8_t> input = {0, 1, 0, 1, 0, 1, 0, 1,
-      0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
+  std::vector<uint8_t> input = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
   std::vector<uint32_t> output(height * width, 0);
-  std::vector<uint32_t> expected = {0, 1, 0, 2, 0, 3, 0,
-      4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0};
+  std::vector<uint32_t> expected = {0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
