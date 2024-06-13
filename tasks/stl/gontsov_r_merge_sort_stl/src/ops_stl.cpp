@@ -130,43 +130,43 @@ bool RadixSTLG::validation() {
 }
 
 bool RadixSTLG::run() {
-    internal_order_test();
-    try {
-        size_t resultSize = input_.size();
-        size_t num_threads = std::thread::hardware_concurrency();
-        std::vector<int> result;
-        std::mutex resultMutex;
+  internal_order_test();
+  try {
+    size_t resultSize = input_.size();
+    size_t num_threads = std::thread::hardware_concurrency();
+    std::vector<int> result;
+    std::mutex resultMutex;
 
-        auto worker = [&](size_t left, size_t right) {
-            std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
-            {
-                std::lock_guard<std::mutex> lock(resultMutex);
-                result = Merge(result, input_Local);
-            }
-        };
+    auto worker = [&](size_t left, size_t right) {
+      std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
+      {
+        std::lock_guard<std::mutex> lock(resultMutex);
+        result = Merge(result, input_Local);
+      }
+    };
 
-        std::vector<std::thread> threads;
-        size_t blockSize = (resultSize + num_threads - 1) / num_threads;
+    std::vector<std::thread> threads;
+    size_t blockSize = (resultSize + num_threads - 1) / num_threads;
 
-        for (size_t i = 0; i < num_threads; ++i) {
-            size_t left = i * blockSize;
-            size_t right = std::min(left + blockSize, resultSize);
-            if (left < right) {
-                threads.emplace_back(worker, left, right);
-            }
-        }
-
-        for (auto& thread : threads) {
-            if (thread.joinable()) {
-                thread.join();
-            }
-        }
-
-        input_ = result;
-        return true;
-    } catch (...) {
-        return false;
+    for (size_t i = 0; i < num_threads; ++i) {
+      size_t left = i * blockSize;
+      size_t right = std::min(left + blockSize, resultSize);
+      if (left < right) {
+        threads.emplace_back(worker, left, right);
+      }
     }
+
+    for (auto& thread : threads) {
+      if (thread.joinable()) {
+        thread.join();
+      }
+    }
+
+    input_ = result;
+    return true;
+  } catch (...) {
+    return false;
+  }
 }
 
 bool RadixSTLG::post_processing() {
