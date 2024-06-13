@@ -1,8 +1,9 @@
 // Copyright 2024 Vinokurov Ivan
 #include "tbb/vinokurov_i_simpson_method/include/ops_tbb.hpp"
 
-#include <cmath>
 #include <oneapi/tbb.h>
+
+#include <cmath>
 #include <thread>
 
 using namespace std::chrono_literals;
@@ -50,8 +51,7 @@ bool vinokurovIvanTBB::SimpsonMethodTBB::run() {
   double part2 = static_cast<double>(d - c) / n;
 
   res = oneapi::tbb::parallel_reduce(
-      oneapi::tbb::blocked_range<int>(0, n), 
-      0.0,
+      oneapi::tbb::blocked_range<int>(0, n), 0.0,
       [&](const tbb::blocked_range<int>& rng, double tmp) {
         for (int i = rng.begin(); i != rng.end(); i++) {
           double a1 = c + i * part2;
@@ -65,8 +65,7 @@ bool vinokurovIvanTBB::SimpsonMethodTBB::run() {
         }
         return tmp;
       },
-      std::plus<>()
-      );
+      std::plus<>());
 
   result = res;
 

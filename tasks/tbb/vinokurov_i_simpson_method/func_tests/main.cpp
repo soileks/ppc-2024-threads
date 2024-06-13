@@ -1,7 +1,7 @@
 // Copyright 2024 Vinokurov Ivan
 #include <gtest/gtest.h>
-
 #include <oneapi/tbb.h>
+
 #include <vector>
 
 #include "tbb/vinokurov_i_simpson_method/include/ops_tbb.hpp"
