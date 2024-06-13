@@ -25,7 +25,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_tbb, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(1);
 
   // Create Task
-  auto dijkstraTask = std::make_shared<DijkstraTask>(taskDataSeq);
+  auto dijkstraTask = std::make_shared<DijkstraTaskTBB>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -71,7 +71,7 @@ TEST(pushkarev_i_dijkstra_shortest_path_tbb, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(1);
 
   // Create Task
-  auto dijkstraTask = std::make_shared<DijkstraTask>(taskDataSeq);
+  auto dijkstraTask = std::make_shared<DijkstraTaskTBB>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
