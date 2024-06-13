@@ -28,5 +28,5 @@ class SobelTaskStlVolodin : public ppc::core::Task {
 
   static int clamp(int value, int min, int max);
   void processPartOfImageVolodin(int startRow, int endRow);
-  void copyRange(int startIdx, int endIdx, const int *source, int *destination);
+  static void copyRange(int startIdx, int endIdx, const int *source, int *destination);
 };
