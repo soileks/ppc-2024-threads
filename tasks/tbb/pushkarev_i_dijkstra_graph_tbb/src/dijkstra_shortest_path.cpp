@@ -2,9 +2,10 @@
 
 #include "tbb/pushkarev_i_dijkstra_graph_tbb/include/dijkstra_shortest_path.hpp"
 
-#include <limits>
 #include <memory>
 #include <thread>
+
+const int max_int = 2147483647;
 
 bool DijkstraTaskTBB::pre_processing() {
   internal_order_test();
@@ -12,7 +13,7 @@ bool DijkstraTaskTBB::pre_processing() {
   source = *reinterpret_cast<int*>(taskData->inputs[1]);
   distances_ = *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]);
   for (size_t i = 0; i < distances_.size(); ++i) {
-    distances_[i] = std::numeric_limits<int>::max();
+    distances_[i] = max_int;
   }
   distances_[source] = 0;
   return true;
@@ -107,7 +108,7 @@ bool DijkstraTask::run() {
   internal_order_test();
   size_t n = distances_.size();
   for (size_t i = 0; i < n; i++) {
-    distances_[i] = std::numeric_limits<int>::max();
+    distances_[i] = max_int;
   }
   distances_[source] = 0;
   std::vector<bool> processed(n, false);
@@ -116,7 +117,7 @@ bool DijkstraTask::run() {
     size_t u = getMinDistanceVertex(processed);
     processed[u] = true;
     for (size_t v = 0; v < n; v++) {
-      if (!processed[v] && (graph[u][v] != 0) && (distances_[u] != std::numeric_limits<int>::max()) &&
+      if (!processed[v] && (graph[u][v] != 0) && (distances_[u] != max_int) &&
           distances_[u] + graph[u][v] < distances_[v]) {
         relaxVertex(u, v);
       }
