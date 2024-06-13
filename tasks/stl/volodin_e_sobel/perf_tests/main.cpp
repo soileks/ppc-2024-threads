@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/volodin_e_sobel/include/sobel.hpp"
+#include "stl/volodin_e_sobel/include/sobel.hpp"
 
-TEST(sequential_sobel_perf_test, test_pipeline_run) {
+TEST(volodin_e_sobel_stl, test_pipeline_run) {
   const int width = 2048;
   const int height = 2048;
 
@@ -22,15 +22,15 @@ TEST(sequential_sobel_perf_test, test_pipeline_run) {
 
   std::vector<int> outImage(height * width, 0);
 
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(inImage.data()));
-  taskDataSeq->inputs_count.emplace_back(width);
-  taskDataSeq->inputs_count.emplace_back(height);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(outImage.data()));
-  taskDataSeq->outputs_count.emplace_back(width);
-  taskDataSeq->outputs_count.emplace_back(height);
+  std::shared_ptr<ppc::core::TaskData> taskDataStl = std::make_shared<ppc::core::TaskData>();
+  taskDataStl->inputs.emplace_back(reinterpret_cast<uint8_t *>(inImage.data()));
+  taskDataStl->inputs_count.emplace_back(width);
+  taskDataStl->inputs_count.emplace_back(height);
+  taskDataStl->outputs.emplace_back(reinterpret_cast<uint8_t *>(outImage.data()));
+  taskDataStl->outputs_count.emplace_back(width);
+  taskDataStl->outputs_count.emplace_back(height);
 
-  auto sobelTaskSequential = std::make_shared<SobelTaskSequential>(taskDataSeq);
+  auto sobelTaskStl = std::make_shared<SobelTaskStlVolodin>(taskDataStl);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -46,12 +46,12 @@ TEST(sequential_sobel_perf_test, test_pipeline_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(sobelTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(sobelTaskStl);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
 
-TEST(sequential_sobel_perf_test, test_task_run) {
+TEST(volodin_e_sobel_stl, test_task_run) {
   const int width = 2048;
   const int height = 2048;
 
@@ -67,16 +67,16 @@ TEST(sequential_sobel_perf_test, test_task_run) {
   std::vector<int> outImage(height * width, 0);
 
   // Create TaskData
-  std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(inImage.data()));
-  taskDataSeq->inputs_count.emplace_back(width);
-  taskDataSeq->inputs_count.emplace_back(height);
-  taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(outImage.data()));
-  taskDataSeq->outputs_count.emplace_back(width);
-  taskDataSeq->outputs_count.emplace_back(height);
+  std::shared_ptr<ppc::core::TaskData> taskDataStl = std::make_shared<ppc::core::TaskData>();
+  taskDataStl->inputs.emplace_back(reinterpret_cast<uint8_t *>(inImage.data()));
+  taskDataStl->inputs_count.emplace_back(width);
+  taskDataStl->inputs_count.emplace_back(height);
+  taskDataStl->outputs.emplace_back(reinterpret_cast<uint8_t *>(outImage.data()));
+  taskDataStl->outputs_count.emplace_back(width);
+  taskDataStl->outputs_count.emplace_back(height);
 
   // Create Task
-  auto sobelTaskSequential = std::make_shared<SobelTaskSequential>(taskDataSeq);
+  auto sobelTaskStl = std::make_shared<SobelTaskStlVolodin>(taskDataStl);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -92,7 +92,7 @@ TEST(sequential_sobel_perf_test, test_task_run) {
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
   // Create Perf analyzer
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(sobelTaskSequential);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(sobelTaskStl);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
