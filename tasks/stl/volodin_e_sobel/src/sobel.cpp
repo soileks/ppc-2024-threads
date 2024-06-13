@@ -25,8 +25,8 @@ bool SobelTaskStlVolodin::pre_processing() {
     for (int t = 0; t < numThreads; ++t) {
       int startIdx = t * elementsPerThread;
       int endIdx = (t == numThreads - 1) ? (width_ * height_) : startIdx + elementsPerThread;
-      threads[t] = std::thread([this, startIdx, endIdx, capture0 = reinterpret_cast<int *>(taskData->inputs[0]),
-                                capture1 = sourceImage.data()] { copyRange(startIdx, endIdx, capture0, capture1); });
+      threads[t] = std::thread([startIdx, endIdx, capture0 = reinterpret_cast<int *>(taskData->inputs[0]),
+                                capture1 = sourceImage.data(), this] { copyRange(startIdx, endIdx, capture0, capture1); });
     }
 
     for (auto &thread : threads) {
@@ -49,7 +49,7 @@ bool SobelTaskStlVolodin::run() {
     for (int t = 0; t < numThreads; ++t) {
       int startRow = t * rowsPerThread;
       int endRow = (t == numThreads - 1) ? height_ : startRow + rowsPerThread;
-      threads[t] = std::thread([startRow, endRow] { processPartOfImageVolodin(startRow, endRow); });
+      threads[t] = std::thread([startRow, endRow, this] { processPartOfImageVolodin(startRow, endRow); });
     }
 
     for (auto &thread : threads) {
@@ -74,10 +74,10 @@ bool SobelTaskStlVolodin::post_processing() {
     for (int t = 0; t < numThreads; ++t) {
       int startIdx = t * elementsPerThread;
       int endIdx = (t == numThreads - 1) ? (width_ * height_) : startIdx + elementsPerThread;
-      threads[t] = std::thread([startIdx, endIdx, capture0 = resultImage.data(),
-                                capture1 = reinterpret_cast<int *>(taskData->outputs[0])] {
-        copyRange(startIdx, endIdx, capture0, capture1);
-      });
+      threads[t] = std::thread(
+          [startIdx, endIdx, capture0 = resultImage.data(), capture1 = reinterpret_cast<int *>(taskData->outputs[0]), this] {
+            copyRange(startIdx, endIdx, capture0, capture1);
+          });
     }
 
     for (auto &thread : threads) {
