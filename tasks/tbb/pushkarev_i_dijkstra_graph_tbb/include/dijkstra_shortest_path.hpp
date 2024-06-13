@@ -37,15 +37,7 @@ class DijkstraTaskTBB : public ppc::core::Task {
   size_t getMinDistanceVertexOMP(const std::vector<bool>& processed);
   void relaxVertex(size_t u, size_t v);
 
-  template <typename T>
-  T max(T a, T b) {
-    return (a > b) ? a : b;
-  }
-
-  template <typename T>
-  T min(T a, T b) {
-    return (a < b) ? a : b;
-  }
+  int min(int a, int b) { return (a < b) ? a : b; }
 };
 
 class DijkstraTask : public ppc::core::Task {
@@ -66,14 +58,6 @@ class DijkstraTask : public ppc::core::Task {
   size_t getMinDistanceVertex(const std::vector<bool>& processed);
   void relaxVertex(size_t u, size_t v);
 
-  template <typename T>
-  T max(T a, T b) {
-    return (a > b) ? a : b;
-  }
-
-  template <typename T>
-  T min(T a, T b) {
-    return (a < b) ? a : b;
-  }
+  int min(int a, int b) { return (a < b) ? a : b; }
 };
 }  // namespace pushkarev_tbb
