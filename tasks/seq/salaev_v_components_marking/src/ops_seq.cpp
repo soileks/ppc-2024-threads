@@ -88,7 +88,7 @@ bool ImageMarking::post_processing() {
   return true;
 }
 
-void ImageMarking::resolve_labels(std::vector<int> &labels) {
+static  void ImageMarking::resolve_labels(std::vector<int> &labels) {
   std::unordered_map<int, int> label_map;
   int new_label = 1;
   for (auto &label : labels) {
