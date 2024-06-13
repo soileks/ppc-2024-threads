@@ -66,7 +66,6 @@ TEST(platonova_m_jarvis_method, diagonal_points) {
   ASSERT_EQ(resHull[1], hull[1]);
 }
 
-
 TEST(platonova_m_jarvis_method, Duplicate_Points) {
   std::vector<Point> points = {{0, 0}, {1, 1}, {2, 2}, {0, 0}, {1, 1}, {2, 2}};
   std::vector<Point> hull = {{0, 0}, {1, 1}, {2, 2}};

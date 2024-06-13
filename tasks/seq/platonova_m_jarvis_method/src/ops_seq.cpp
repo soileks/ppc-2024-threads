@@ -11,9 +11,9 @@
 using namespace std::chrono_literals;
 
 int orientation(Point p, Point q, Point r) {
-    int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-    if (val == 0) return 0;
-    return (val > 0) ? -1 : 1;
+  int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+  if (val == 0) return 0;
+  return (val > 0) ? -1 : 1;
 }
 
 std::vector<Point> Jarvis(const std::vector<Point>& points) {
@@ -32,8 +32,8 @@ std::vector<Point> Jarvis(const std::vector<Point>& points) {
     hull.push_back(points[p]);
     q = (p + 1) % n;
     for (int i = 0; i < n; i++) {
-        if (orientation(points[p], points[i], points[q]) == 1)
-            q = i;
+      if (orientation(points[p], points[i], points[q]) == 1)
+          q = i;
     }
     p = q;
   } while (p != l);
