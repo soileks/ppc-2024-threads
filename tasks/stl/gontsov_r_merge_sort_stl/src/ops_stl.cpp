@@ -5,11 +5,11 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
-#include <numeric>
-#include <thread>
 #include <mutex>
+#include <numeric>
 #include <random>
 #include <string>
+#include <thread>
 #include <vector>
 
 using namespace std::chrono_literals;
@@ -133,42 +133,30 @@ bool RadixTBBG::run() {
   internal_order_test();
   try {
     size_t resultSize = input_.size();
-    size_t num_threads = std::thread::hardware_concurrency(); // Определяем число потоков, доступных системе
-    std::vector<int> result(resultSize, 0); // Инициализируем вектор результатов
-
-    // Мьютекс для синхронизации доступа к общему результату
+    size_t num_threads = std::thread::hardware_concurrency();
+    std::vector<int> result(resultSize, 0);
     std::mutex resultMutex;
-
-    // Функция, которая будет выполняться в каждом потоке
     auto thread_func = [&](size_t thread_idx) {
-      size_t chunk_size = (resultSize + num_threads - 1) / num_threads; // Размер порции данных для потока
+      size_t chunk_size = (resultSize + num_threads - 1) / num_threads;
       size_t start = thread_idx * chunk_size;
       size_t end = std::min(start + chunk_size, resultSize);
-
-      // Сортировка своей части данных
       std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + start, input_.begin() + end));
-
-      // Захват мьютекса перед обновлением общего результата
       std::lock_guard<std::mutex> lock(resultMutex);
-      
-      // Объединение результатов
       for (size_t i = start; i < end; ++i) {
         result[i] = input_Local[i - start];
       }
     };
 
-    // Создаем потоки и запускаем их
     std::vector<std::thread> threads;
     for (size_t i = 0; i < num_threads; ++i) {
       threads.emplace_back(thread_func, i);
     }
 
-    // Дожидаемся завершения всех потоков
     for (auto& thread : threads) {
       thread.join();
     }
 
-    input_ = result; // Присваиваем результаты входному вектору
+    input_ = result;
     return true;
   } catch (...) {
     return false;
