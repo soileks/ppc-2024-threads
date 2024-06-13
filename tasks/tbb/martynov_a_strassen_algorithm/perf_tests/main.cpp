@@ -3,7 +3,6 @@
 #include <omp.h>
 #include <tbb/tbb.h>
 
-
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
