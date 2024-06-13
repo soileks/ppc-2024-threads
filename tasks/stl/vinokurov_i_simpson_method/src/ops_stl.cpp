@@ -22,8 +22,8 @@ double vinokurovIvanSTL::fn_mul(double _x, double _y) { return _x * _x * _y; }
 
 double vinokurovIvanSTL::fn_other(double _x, double _y) { return (_x + _y) * _y; }
 
-void chunkCalc(vinokurovIvanSTL::func _fn, double _a, double _b, double _c, double _d, int _n,
-  int _begin, int _end, double& _result, std::mutex& _mtx) {
+void chunkCalc(vinokurovIvanSTL::func _fn, double _a, double _b, double _c, double _d, int _n, int _begin, int _end,
+               double& _result, std::mutex& _mtx) {
   double tmp = 0.0;
   double part1 = static_cast<double>(_b - _a) / _n;
   double part2 = static_cast<double>(_d - _c) / _n;
