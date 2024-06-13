@@ -27,7 +27,8 @@ std::vector<Point> Jarvis(const std::vector<Point>& points) {
     }
   }
 
-  int p = l, q;
+  int p = l;
+  int q;
   do {
     hull.push_back(points[p]);
     q = (p + 1) % n;
