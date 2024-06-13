@@ -82,7 +82,6 @@ bool DijkstraTaskTBB::post_processing() {
   return true;
 }
 
-
 bool DijkstraTask::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);

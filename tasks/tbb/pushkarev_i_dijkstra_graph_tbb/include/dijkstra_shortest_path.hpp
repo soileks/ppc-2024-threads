@@ -8,7 +8,6 @@
 
 #include "core/task/include/task.hpp"
 
-
 class DijkstraTaskTBB : public ppc::core::Task {
  public:
   explicit DijkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -20,7 +19,7 @@ class DijkstraTaskTBB : public ppc::core::Task {
   struct Node {
     int vertex;
     int cost;
-    Node(const int v=-1, const int c=-1) : vertex(v), cost(c) {}
+    Node(const int v = -1, const int c = -1) : vertex(v), cost(c) {}
     // bool operator>(Node const& n) const { return cost > n.cost; }
     // bool operator<(Node const& n) const { return cost < n.cost; }
     friend bool operator<(Node const& n1, Node const& n2) { return n1.cost < n2.cost; }
@@ -46,7 +45,6 @@ class DijkstraTaskTBB : public ppc::core::Task {
   //   std::cout<<"\n";
   // }
 };
-
 
 class DijkstraTask : public ppc::core::Task {
  public:
