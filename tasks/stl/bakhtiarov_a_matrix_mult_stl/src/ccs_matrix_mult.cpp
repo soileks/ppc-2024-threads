@@ -2,8 +2,12 @@
 
 #include "stl/bakhtiarov_a_matrix_mult_stl/include/ccs_matrix_mult.hpp"
 
-#include <vector>
+#include <algorithm>
 #include <chrono>
+#include <thread>
+#include <future>
+#include <numeric>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
@@ -73,18 +77,37 @@ bool SparseMatrixMultiSTL::run() {
   rows3.reserve(numCols2 * numRows1);
   colPtr3.reserve(numCols2 + 1);
 
-  for (int j = 0; j < numCols2; j++) {
-    for (int k = colPtr2[j]; k < colPtr2[j + 1]; k++) {
-      int column2 = j;
-      int row2 = rows2[k];
-      for (int l = colPtr1[row2]; l < colPtr1[row2 + 1]; l++) {
-        int row1 = rows1[l];
-        double val1 = values1[l];
-        double val2 = values2[k];
-        int index = row1 * numCols2 + column2;
-        result[index] += val1 * val2;
+  unsigned int num_threads = thread::hardware_concurrency();
+  if (num_threads == 0) {
+    num_threads = 2;
+  }
+
+  auto multiply_columns_range = [&](int start, int end) {
+    for (int j = start; j < end; ++j) {
+      for (int k = colPtr2[j]; k < colPtr2[j + 1]; k++) {
+        int column2 = j;
+        int row2 = rows2[k];
+        for (int l = colPtr1[row2]; l < colPtr1[row2 + 1]; l++) {
+          int row1 = rows1[l];
+          double val1 = values1[l];
+          double val2 = values2[k];
+          int index = row1 * numCols2 + column2;
+          result[index] += val1 * val2;
+        }
       }
     }
+  };
+
+  vector<thread> threads;
+  int cols_per_thread = numCols2 / num_threads;
+  for (unsigned int t = 0; t < num_threads; ++t) {
+    int start = t * cols_per_thread;
+    int end = (t == num_threads - 1) ? numCols2 : start + cols_per_thread;
+    threads.emplace_back(multiply_columns_range, start, end);
+  }
+
+  for (auto& thread : threads) {
+    thread.join();
   }
 
   for (int j = 0; j < numCols2; j++) {
@@ -97,6 +120,7 @@ bool SparseMatrixMultiSTL::run() {
       }
     }
   }
+
   colPtr3.push_back(values3.size());
 
   return true;

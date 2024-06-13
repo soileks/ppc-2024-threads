@@ -1,8 +1,12 @@
 // Copyright 2024 Bakhtiarov Alexander
 #include <gtest/gtest.h>
 
+#include <algorithm>
+#include <chrono>
+#include <thread>
+#include <future>
+#include <numeric>
 #include <vector>
-#include <memory>
 
 #include "stl/bakhtiarov_a_matrix_mult_stl/include/ccs_matrix_mult.hpp"
 

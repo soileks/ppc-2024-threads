@@ -1,8 +1,12 @@
 // Copyright 2024 Bakhtiarov Alexander
 #pragma once
 
+#include <algorithm>
+#include <chrono>
+#include <thread>
+#include <future>
+#include <numeric>
 #include <vector>
-#include <memory>
 
 #include "core/task/include/task.hpp"
 
