@@ -141,7 +141,8 @@ bool RadixTBBG::run() {
                       [&](const tbb::blocked_range<size_t>& r) {
                         size_t left = r.begin();
                         size_t right = r.end();
-                        std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
+                        std::vector<int> input_Local =
+                            radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
                         {
                           tbb::spin_mutex::scoped_lock lock(resultMutex);
                           result = Merge(result, input_Local);
