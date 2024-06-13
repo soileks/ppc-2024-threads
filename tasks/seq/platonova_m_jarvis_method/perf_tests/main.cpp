@@ -22,7 +22,7 @@ TEST(platonova_m_jarvis_method, test_pipeline_run) {
   taskDataSeq->outputs_count.emplace_back(resHull.size());
 
   // Create Task
-  auto testTaskSequential = std::make_shared<TestTaskSequentialJarvis>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<JarvisSeq>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -60,7 +60,7 @@ TEST(platonova_m_jarvis_method, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(resHull.size());
 
   // Create Task
-  auto testTaskSequential = std::make_shared<TestTaskSequentialJarvis>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<JarvisSeq>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

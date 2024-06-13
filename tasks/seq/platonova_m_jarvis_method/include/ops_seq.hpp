@@ -20,9 +20,9 @@ struct Point {
   }
 };
 
-class TestTaskSequentialJarvis : public ppc::core::Task {
+class JarvisSeq : public ppc::core::Task {
  public:
-  explicit TestTaskSequentialJarvis(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit JarvisSeq(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

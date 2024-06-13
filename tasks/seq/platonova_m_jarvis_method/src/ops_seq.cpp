@@ -5,44 +5,43 @@
 #include <cmath>
 #include <thread>
 #include <vector>
+#include <unordered_set>
+#include <limits>
 
 using namespace std::chrono_literals;
 
-std::vector<Point> Jarvis(const std::vector<Point>& Points) {
-  if (Points.size() < 3) return Points;
-
-  Point p0 = Points[0];
-  for (const auto& p : Points) {
-    if (p.x < p0.x || (p.x == p0.x && p.y < p0.y)) p0 = p;
-  }
-  std::vector<Point> convexHull = {p0};
-  Point prevPoint = p0;
-
-  while (true) {
-    Point nextPoint = Points[0];
-    for (const auto& point : Points) {
-      if (point == prevPoint) continue;
-
-      double crossProduct =
-          (point.y - prevPoint.y) * (nextPoint.x - prevPoint.x) - (point.x - prevPoint.x) * (nextPoint.y - prevPoint.y);
-
-      if (crossProduct > 0 || (crossProduct == 0 && ((point.x - prevPoint.x) * (point.x - prevPoint.x) +
-                                                     (point.y - prevPoint.y) * (point.y - prevPoint.y)) >
-                                                        ((nextPoint.x - prevPoint.x) * (nextPoint.x - prevPoint.x) +
-                                                         (nextPoint.y - prevPoint.y) * (nextPoint.y - prevPoint.y)))) {
-        nextPoint = point;
-      }
-    }
-
-    if (nextPoint == p0) break;
-    convexHull.push_back(nextPoint);
-    prevPoint = nextPoint;
-  }
-
-  return convexHull;
+int orientation(Point p, Point q, Point r) {
+    int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+    if (val == 0) return 0;
+    return (val > 0) ? -1 : 1;
 }
 
-bool TestTaskSequentialJarvis::pre_processing() {
+std::vector<Point> Jarvis(const std::vector<Point>& points) {
+  int n = points.size();
+  if (n < 3) return {};
+  std::vector<Point> hull;
+  int l = 0;
+  for (int i = 1; i < n; i++) {
+    if (points[i].x < points[l].x) {
+      l = i;
+    }
+  }
+
+  int p = l, q;
+  do {
+    hull.push_back(points[p]);
+    q = (p + 1) % n;
+    for (int i = 0; i < n; i++) {
+        if (orientation(points[p], points[i], points[q]) == 1)
+            q = i;
+    }
+    p = q;
+  } while (p != l);
+
+  return hull;
+}
+
+bool JarvisSeq::pre_processing() {
   internal_order_test();
   // Init value for input and output
   points.resize(taskData->inputs_count[0]);
@@ -51,7 +50,7 @@ bool TestTaskSequentialJarvis::pre_processing() {
   return true;
 }
 
-bool TestTaskSequentialJarvis::validation() {
+bool JarvisSeq::validation() {
   internal_order_test();
   if (taskData->inputs_count[0] == 0) {
     return false;
@@ -61,14 +60,13 @@ bool TestTaskSequentialJarvis::validation() {
   return std::unique(points.begin(), points.end()) == points.end();
 }
 
-bool TestTaskSequentialJarvis::run() {
+bool JarvisSeq::run() {
   internal_order_test();
   convexHullPoints = Jarvis(points);
-  std::this_thread::sleep_for(20ms);
   return true;
 }
 
-bool TestTaskSequentialJarvis::post_processing() {
+bool JarvisSeq::post_processing() {
   internal_order_test();
   auto* output_ptr = reinterpret_cast<Point*>(taskData->outputs[0]);
   std::copy_n(convexHullPoints.begin(), convexHullPoints.size(), output_ptr);
