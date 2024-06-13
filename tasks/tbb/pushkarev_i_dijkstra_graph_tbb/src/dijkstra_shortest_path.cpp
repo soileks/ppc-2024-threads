@@ -8,16 +8,6 @@
 
 const int max_int = 2147483647;
 
-template <typename T>
-T max(T a, T b) {
-  return (a > b) ? a : b;
-}
-
-template <typename T>
-T min(T a, T b) {
-  return (a < b) ? a : b;
-}
-
 bool DijkstraTaskTBB::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
