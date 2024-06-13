@@ -8,10 +8,6 @@
 
 const int max_int = 2147483647;
 
-int pushkarev_tbb::DijkstraTaskTBB::min(int _a, int _b) { return (_a < _b) ? _a : _b; }
-
-int pushkarev_tbb::DijkstraTask::min(int _a, int _b) { return (_a < _b) ? _a : _b; }
-
 bool pushkarev_tbb::DijkstraTaskTBB::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
@@ -65,7 +61,9 @@ bool pushkarev_tbb::DijkstraTaskTBB::run() {
 }
 
 void pushkarev_tbb::DijkstraTaskTBB::relaxVertex(size_t u, size_t v) {
-  distances_[v] = min(distances_[v], distances_[u] + graph[u][v]);
+    if (distances_[v] > distances_[u] + graph[u][v]) {
+    distances_[v] = distances_[u] + graph[u][v];
+  }
 }
 
 bool pushkarev_tbb::DijkstraTaskTBB::post_processing() {
@@ -138,5 +136,7 @@ size_t pushkarev_tbb::DijkstraTask::getMinDistanceVertex(const std::vector<bool>
 }
 
 void pushkarev_tbb::DijkstraTask::relaxVertex(size_t u, size_t v) {
-  distances_[v] = min(distances_[v], distances_[u] + graph[u][v]);
+  if (distances_[v] > distances_[u] + graph[u][v]) {
+    distances_[v] = distances_[u] + graph[u][v];
+  }
 }
