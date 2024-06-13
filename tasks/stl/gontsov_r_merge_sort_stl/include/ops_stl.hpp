@@ -1,5 +1,9 @@
 // Copyright 2024 Gontsov Roman
-#include <string>
+#include <algorithm>
+#include <chrono>
+#include <future>
+#include <numeric>
+#include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"
