@@ -1,4 +1,6 @@
 // Copyright 2024 Martynov Aleksandr
+#include "tbb/martynov_a_strassen_algorithm/include/ops_tbb.hpp"
+
 #include <tbb/tbb.h>
 
 #include <algorithm>
@@ -6,7 +8,6 @@
 #include <thread>
 #include <vector>
 
-#include "tbb/martynov_a_strassen_algorithm/include/ops_tbb.hpp"
 using namespace std::chrono_literals;
 
 inline int get_size(std::vector<double>& a) { return (int)(round(std::sqrt(a.size()))); }
