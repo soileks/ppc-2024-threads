@@ -8,6 +8,10 @@
 
 const int max_int = 2147483647;
 
+int pushkarev_tbb::DijkstraTaskTBB::min(int _a, int _b) { return (_a < _b) ? _a : _b; }
+
+int pushkarev_tbb::DijkstraTask::min(int _a, int _b) { return (_a < _b) ? _a : _b; }
+
 bool pushkarev_tbb::DijkstraTaskTBB::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
@@ -59,20 +63,6 @@ bool pushkarev_tbb::DijkstraTaskTBB::run() {
   }
   return true;
 }
-
-// size_t DijkstraTaskTBB::getMinDistanceVertex(const std::vector<bool>& processed) {
-//   size_t min_dist = std::numeric_limits<size_t>::max();
-//   size_t min_index = 0;
-//   tbb::parallel_for(tbb::blocked_range<size_t>(0, distances_.size()), [&](const tbb::blocked_range<size_t>& r) {
-//     for (size_t v = r.begin(); v != r.end(); ++v) {
-//       if (!processed[v] && distances_[v] <= min_dist) {
-//         min_dist = distances_[v];
-//         min_index = v;
-//       }
-//     }
-//   });
-//   return min_index;
-// }
 
 void pushkarev_tbb::DijkstraTaskTBB::relaxVertex(size_t u, size_t v) {
   distances_[v] = min(distances_[v], distances_[u] + graph[u][v]);
