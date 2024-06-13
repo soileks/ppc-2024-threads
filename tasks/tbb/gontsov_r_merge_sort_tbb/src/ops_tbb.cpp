@@ -139,14 +139,14 @@ bool RadixTBBG::run() {
 
     tbb::parallel_for(tbb::blocked_range<size_t>(0, resultSize, (resultSize + num_threads - 1) / num_threads),
                       [&](const tbb::blocked_range<size_t>& r) {
-      size_t left = r.begin();
-      size_t right = r.end();
-      std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
-      {
-        tbb::spin_mutex::scoped_lock lock(resultMutex);
-        result = Merge(result, input_Local);
-      }
-    });
+                        size_t left = r.begin();
+                        size_t right = r.end();
+                        std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
+                        {
+                          tbb::spin_mutex::scoped_lock lock(resultMutex);
+                          result = Merge(result, input_Local);
+                        }
+                      });
 
     input_ = result;
     return true;
