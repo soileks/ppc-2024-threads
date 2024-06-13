@@ -24,7 +24,7 @@ double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) 
         }
         return local_res;
       },
-      std::plus<double>());
+      std::plus<>());
   return res;
 }
 
