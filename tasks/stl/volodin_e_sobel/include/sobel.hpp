@@ -2,14 +2,15 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #include "core/task/include/task.hpp"
 
 class SobelTaskStlVolodin : public ppc::core::Task {
- public:
-  explicit SobelTaskStlVolodin(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+public:
+  explicit SobelTaskStlVolodin(std::shared_ptr<ppc::core::TaskData> taskData_)
+      : Task(std::move(taskData_)) {}
   bool validation() override;
   bool pre_processing() override;
   bool run() override;
@@ -28,5 +29,5 @@ private:
 
   static int clamp(int value, int min, int max);
   void processPartOfImageVolodin(int startRow, int endRow);
-  void copyRange(int startIdx, int endIdx, const int* source, int* destination);
+  void copyRange(int startIdx, int endIdx, const int *source, int *destination);
 };
