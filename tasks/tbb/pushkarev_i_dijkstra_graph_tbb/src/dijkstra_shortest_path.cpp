@@ -10,12 +10,12 @@ const int max_int = 2147483647;
 
 template <typename T>
 T max(T a, T b) {
-    return (a > b) ? a : b;
+  return (a > b) ? a : b;
 }
 
 template <typename T>
 T min(T a, T b) {
-    return (a < b) ? a : b;
+  return (a < b) ? a : b;
 }
 
 bool DijkstraTaskTBB::pre_processing() {
@@ -157,6 +157,4 @@ size_t DijkstraTask::getMinDistanceVertex(const std::vector<bool>& processed) {
   return min_index;
 }
 
-void DijkstraTask::relaxVertex(size_t u, size_t v) {
-  distances_[v] = min(distances_[v], distances_[u] + graph[u][v]);
-}
+void DijkstraTask::relaxVertex(size_t u, size_t v) { distances_[v] = min(distances_[v], distances_[u] + graph[u][v]); }
