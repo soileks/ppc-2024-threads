@@ -1,7 +1,8 @@
 // Copyright 2024 Martynov Aleksandr
 #include <gtest/gtest.h>
-#include <tbb/tbb.h>
 #include <omp.h>
+#include <tbb/tbb.h>
+
 
 #include <vector>
 
