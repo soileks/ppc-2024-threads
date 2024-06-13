@@ -63,7 +63,7 @@ TEST(martynov_a_strassen_alg_seq, multSecShtrassen_8x8) {
   taskDataTBB->outputs_count.emplace_back(result.size());
 
   // Create Task
-  Strssn_alg algorithm(taskDataSeq);
+  Strssn_alg algorithm(taskDataTBB);
   ASSERT_EQ(algorithm.validation(), true);
   algorithm.pre_processing();
   algorithm.run();
@@ -131,7 +131,7 @@ TEST(martynov_a_strassen_alg_seq, multSecShtrassen_32x32) {
   taskDataTBB->outputs_count.emplace_back(result.size());
 
   // Create Task
-  Strssn_alg algorithm(taskDataSeq);
+  Strssn_alg algorithm(taskDataTBB);
   ASSERT_EQ(algorithm.validation(), true);
   algorithm.pre_processing();
   algorithm.run();
