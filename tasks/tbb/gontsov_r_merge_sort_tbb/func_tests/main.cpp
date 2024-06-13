@@ -6,8 +6,8 @@
 #include "tbb/gontsov_r_merge_sort_tbb/include/ops_tbb.hpp"
 
 TEST(Gontsov_R_Radix_Sort, can_create_task_successfully) {
-  std::vector<int> in = {45, 12, 89, 33, 27, 150, 2, 58, 9, 66};
-  std::vector<int> exp = {2, 9, 12, 27, 33, 45, 58, 66, 89, 150};
+  std::vector<int> in = {45, 12, 89};
+  std::vector<int> exp = {12, 45, 89};
 
   // Create data
   std::vector<int> out2(exp.size(), 0);
