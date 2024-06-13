@@ -30,4 +30,4 @@ class SimpsonMethodSTL : public ppc::core::Task {
   double result{};
   func fn;
 };
-}  // namespace vinokurovIvanOMP
+}  // namespace vinokurovIvanSTL

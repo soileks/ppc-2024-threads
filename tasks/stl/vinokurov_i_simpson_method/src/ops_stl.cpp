@@ -2,9 +2,9 @@
 #include "stl/vinokurov_i_simpson_method/include/ops_stl.hpp"
 
 #include <cmath>
-#include <thread>
 #include <functional>
 #include <mutex>
+#include <thread>
 
 using namespace std::chrono_literals;
 
@@ -22,8 +22,8 @@ double vinokurovIvanSTL::fn_mul(double _x, double _y) { return _x * _x * _y; }
 
 double vinokurovIvanSTL::fn_other(double _x, double _y) { return (_x + _y) * _y; }
 
-void chunkCalc(vinokurovIvanSTL::func _fn, double _a, double _b, double _c, double _d, 
-    int _n, int _begin, int _end, double& _result, std::mutex& _mtx) {
+void chunkCalc(vinokurovIvanSTL::func _fn, double _a, double _b, double _c, double _d, int _n,
+  int _begin, int _end, double& _result, std::mutex& _mtx) {
   double tmp = 0.0;
   double part1 = static_cast<double>(_b - _a) / _n;
   double part2 = static_cast<double>(_d - _c) / _n;
@@ -37,8 +37,7 @@ void chunkCalc(vinokurovIvanSTL::func _fn, double _a, double _b, double _c, doub
       double b2 = _a + (j + 1) * part1;
 
       tmp += (part1 * part2 / 36) *
-             (fn_simpson(_fn, b1, b2, a1) + 4 * 
-              fn_simpson(_fn, b1, b2, (a1 + a2) / 2) + fn_simpson(_fn, b1, b2, a2));
+             (fn_simpson(_fn, b1, b2, a1) + 4 * fn_simpson(_fn, b1, b2, (a1 + a2) / 2) + fn_simpson(_fn, b1, b2, a2));
     }
   }
 
@@ -89,7 +88,7 @@ bool vinokurovIvanSTL::SimpsonMethodSTL::run() {
     threads.emplace_back(chunkCalc, fn, a, b, c, d, n, begin, end, std::ref(res), std::ref(threadMutex));
   }
 
-  for (auto& thread : threads) {  
+  for (auto& thread : threads) {
     thread.join();
   }
 
