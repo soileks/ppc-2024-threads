@@ -1,4 +1,4 @@
-// Copyright 2023 Nesterov Alexander
+// Copyright 2024 Gontsov Roman
 #include "tbb/gontsov_r_merge_sort_tbb/include/ops_tbb.hpp"
 
 #include <tbb/spin_mutex.h>
@@ -132,16 +132,18 @@ bool RadixTBBG::validation() {
 bool RadixTBBG::run() {
   internal_order_test();
   try {
+    size_t resultSize = input_.size();
+    size_t num_threads = tbb::this_task_arena::max_concurrency();
     std::vector<int> result;
-    int resultSize = input_.size();
+    tbb::spin_mutex resultMutex;
 
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, resultSize), [&](const tbb::blocked_range<size_t>& r) {
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, resultSize, (resultSize + num_threads - 1) / num_threads),
+                      [&](const tbb::blocked_range<size_t>& r) {
       size_t left = r.begin();
       size_t right = r.end();
       std::vector<int> input_Local = radixSort2(std::vector<int>(input_.begin() + left, input_.begin() + right));
-      tbb::spin_mutex mutex;
       {
-        tbb::spin_mutex::scoped_lock lock(mutex);
+        tbb::spin_mutex::scoped_lock lock(resultMutex);
         result = Merge(result, input_Local);
       }
     });

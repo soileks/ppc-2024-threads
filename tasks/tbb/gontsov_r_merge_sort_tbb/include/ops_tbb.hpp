@@ -1,5 +1,4 @@
 // Copyright 2024 Gontsov Roman
-
 #include <string>
 #include <vector>
 
