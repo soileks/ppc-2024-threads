@@ -16,7 +16,7 @@ int checkOrient(Point p, Point q, Point r) {
   return (val > 0) ? -1 : 1;
 }
 
-std::vector<Point> JarvisSeq(const std::vector<Point>& points) {
+std::vector<Point> JarvisSeqPlatonova(const std::vector<Point>& points) {
   int n = points.size();
   if (n < 3) return {};
   std::vector<Point> hull;
@@ -62,7 +62,7 @@ bool JarvisSeq::validation() {
 
 bool JarvisSeq::run() {
   internal_order_test();
-  convexHullPoints = JarvisSeq(points);
+  convexHullPoints = JarvisSeqPlatonova(points);
   return true;
 }
 
