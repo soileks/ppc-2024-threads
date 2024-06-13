@@ -3,9 +3,9 @@
 
 #include <algorithm>
 #include <chrono>
-#include <thread>
 #include <future>
 #include <numeric>
+#include <thread>
 #include <vector>
 
 #include "core/perf/include/perf.hpp"

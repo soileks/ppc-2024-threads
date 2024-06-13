@@ -4,9 +4,9 @@
 
 #include <algorithm>
 #include <chrono>
-#include <thread>
 #include <future>
 #include <numeric>
+#include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"

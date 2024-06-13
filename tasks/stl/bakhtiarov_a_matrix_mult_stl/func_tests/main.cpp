@@ -3,9 +3,9 @@
 
 #include <algorithm>
 #include <chrono>
-#include <thread>
 #include <future>
 #include <numeric>
+#include <thread>
 #include <vector>
 
 #include "stl/bakhtiarov_a_matrix_mult_stl/include/ccs_matrix_mult.hpp"
