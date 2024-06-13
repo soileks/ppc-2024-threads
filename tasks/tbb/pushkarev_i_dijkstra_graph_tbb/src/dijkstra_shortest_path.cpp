@@ -147,4 +147,6 @@ size_t pushkarev_tbb::DijkstraTask::getMinDistanceVertex(const std::vector<bool>
   return min_index;
 }
 
-void pushkarev_tbb::DijkstraTask::relaxVertex(size_t u, size_t v) { distances_[v] = min(distances_[v], distances_[u] + graph[u][v]); }
+void pushkarev_tbb::DijkstraTask::relaxVertex(size_t u, size_t v) {
+  distances_[v] = min(distances_[v], distances_[u] + graph[u][v]);
+}
