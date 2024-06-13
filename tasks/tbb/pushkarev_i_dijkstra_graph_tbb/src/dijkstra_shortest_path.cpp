@@ -8,7 +8,7 @@
 
 const int max_int = 2147483647;
 
-bool DijkstraTaskTBB::pre_processing() {
+bool pushkarev_tbb::DijkstraTaskTBB::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
   source = *reinterpret_cast<int*>(taskData->inputs[1]);
@@ -20,7 +20,7 @@ bool DijkstraTaskTBB::pre_processing() {
   return true;
 }
 
-bool DijkstraTaskTBB::validation() {
+bool pushkarev_tbb::DijkstraTaskTBB::validation() {
   internal_order_test();
   std::vector<std::vector<int>> tmp_graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
   for (size_t i = 0; i < tmp_graph.size(); i++) {
@@ -33,7 +33,7 @@ bool DijkstraTaskTBB::validation() {
   return true;
 }
 
-bool DijkstraTaskTBB::run() {
+bool pushkarev_tbb::DijkstraTaskTBB::run() {
   internal_order_test();
 
   int n = distances_.size();
@@ -74,17 +74,17 @@ bool DijkstraTaskTBB::run() {
 //   return min_index;
 // }
 
-void DijkstraTaskTBB::relaxVertex(size_t u, size_t v) {
+void pushkarev_tbb::DijkstraTaskTBB::relaxVertex(size_t u, size_t v) {
   distances_[v] = min(distances_[v], distances_[u] + graph[u][v]);
 }
 
-bool DijkstraTaskTBB::post_processing() {
+bool pushkarev_tbb::DijkstraTaskTBB::post_processing() {
   internal_order_test();
   *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]) = distances_;
   return true;
 }
 
-bool DijkstraTask::pre_processing() {
+bool pushkarev_tbb::DijkstraTask::pre_processing() {
   internal_order_test();
   graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
   source = *reinterpret_cast<int*>(taskData->inputs[1]);
@@ -92,7 +92,7 @@ bool DijkstraTask::pre_processing() {
   return true;
 }
 
-bool DijkstraTask::validation() {
+bool pushkarev_tbb::DijkstraTask::validation() {
   internal_order_test();
   std::vector<std::vector<int>> tmp_graph = *reinterpret_cast<std::vector<std::vector<int>>*>(taskData->inputs[0]);
   for (size_t i = 0; i < tmp_graph.size(); i++) {
@@ -105,7 +105,7 @@ bool DijkstraTask::validation() {
   return true;
 }
 
-bool DijkstraTask::run() {
+bool pushkarev_tbb::DijkstraTask::run() {
   internal_order_test();
   size_t n = distances_.size();
   for (size_t i = 0; i < n; i++) {
@@ -127,14 +127,14 @@ bool DijkstraTask::run() {
   return true;
 }
 
-bool DijkstraTask::post_processing() {
+bool pushkarev_tbb::DijkstraTask::post_processing() {
   internal_order_test();
 
   *reinterpret_cast<std::vector<int>*>(taskData->outputs[0]) = distances_;
   return true;
 }
 
-size_t DijkstraTask::getMinDistanceVertex(const std::vector<bool>& processed) {
+size_t pushkarev_tbb::DijkstraTask::getMinDistanceVertex(const std::vector<bool>& processed) {
   size_t min_dist = max_int;
   size_t min_index = 0;
 
@@ -147,4 +147,4 @@ size_t DijkstraTask::getMinDistanceVertex(const std::vector<bool>& processed) {
   return min_index;
 }
 
-void DijkstraTask::relaxVertex(size_t u, size_t v) { distances_[v] = min(distances_[v], distances_[u] + graph[u][v]); }
+void pushkarev_tbb::DijkstraTask::relaxVertex(size_t u, size_t v) { distances_[v] = min(distances_[v], distances_[u] + graph[u][v]); }

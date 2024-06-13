@@ -8,6 +8,8 @@
 
 #include "core/task/include/task.hpp"
 
+namespace pushkarev_tbb {
+
 class DijkstraTaskTBB : public ppc::core::Task {
  public:
   explicit DijkstraTaskTBB(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -34,7 +36,7 @@ class DijkstraTaskTBB : public ppc::core::Task {
   void initializeDistances();
   size_t getMinDistanceVertexOMP(const std::vector<bool>& processed);
   void relaxVertex(size_t u, size_t v);
-  
+
   template <typename T>
   T max(T a, T b) {
     return (a > b) ? a : b;
@@ -74,3 +76,4 @@ class DijkstraTask : public ppc::core::Task {
     return (a < b) ? a : b;
   }
 };
+}  // namespace pushkarev_tbb

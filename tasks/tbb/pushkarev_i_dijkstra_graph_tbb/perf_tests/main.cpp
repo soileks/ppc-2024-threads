@@ -6,6 +6,8 @@
 #include "core/perf/include/perf.hpp"
 #include "tbb/pushkarev_i_dijkstra_graph_tbb/include/dijkstra_shortest_path.hpp"
 
+using namespace pushkarev_tbb;
+
 TEST(pushkarev_i_dijkstra_shortest_path_tbb, test_pipeline_run) {
   const int count = 1000;
 

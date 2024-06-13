@@ -5,6 +5,8 @@
 
 #include "tbb/pushkarev_i_dijkstra_graph_tbb/include/dijkstra_shortest_path.hpp"
 
+using namespace pushkarev_tbb;
+
 TEST(pushkarev_i_dijkstra_shortest_path_tbb, Test_validation_fail) {
   const int count = 4;
 
