@@ -115,4 +115,3 @@ bool ContrastEnhancement_STL_Parallel::post_processing() {
   }
   return true;
 }
-
