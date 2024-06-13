@@ -15,40 +15,32 @@ using namespace std::chrono_literals;
 
 namespace veselov_i_tbb {
 double dotProduct(const std::vector<double> &aa, const std::vector<double> &bb) {
-  double result = 0.0;
-  /*result = tbb::parallel_reduce(
-    tbb::blocked_range<size_t>(0, aa.size()), 0.0,
-    [&](const tbb::blocked_range<int>& range, double local_res) {
-        for (int i = range.begin(); i != range.end(); ++i) {
-            local_res += aa[i] * bb[i];
-        }
-        return local_res;
-    },
-    std::plus<>());*/
-  tbb::parallel_for(tbb::blocked_range<int>(0, aa.size()),
-    [&](const tbb::blocked_range<int>& r) {
-      double local_result = 0.0;
-      for (int i = r.begin(); i != r.end(); ++i) {
-        local_result += aa[i] * bb[i];
-      }
-      result += local_result;
-    }
-  );
-  return result;
+  double res = 0.0;
+    res = tbb::parallel_reduce(
+        tbb::blocked_range<size_t>(0, aa.size()), 0.0,
+        [&](const tbb::blocked_range<size_t>& r, double local_res) -> double {
+            for (size_t i = r.begin(); i != r.end(); ++i) {
+                local_res += aa[i] * bb[i];
+            }
+            return local_res;
+        },
+        std::plus<double>()
+    );
+    return res;
 }
 
 std::vector<double> matrixVectorProduct(const std::vector<double> &Aa, const std::vector<double> &xx, int n) {
-  std::vector<double> result(n, 0.0);
+  std::vector<double> res(n, 0.0);
   tbb::parallel_for(tbb::blocked_range<int>(0, n),
     [&](const tbb::blocked_range<int>& r) {
       for (int i = r.begin(); i != r.end(); ++i) {
         for (int j = 0; j < n; ++j) {
-          result[i] += Aa[i * n + j] * xx[j];
+          res[i] += Aa[i * n + j] * xx[j];
         }
       }
     }
   );
-  return result;
+  return res;
 }
 
 std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vector<double> &bb, int n,
@@ -63,16 +55,16 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
     double alpha = dotProduct(r, r) / dotProduct(Ap, p);
 
     tbb::parallel_for(tbb::blocked_range<int>(0, n),
-      [&](const tbb::blocked_range<int>& range) {
-        for (int i = range.begin(); i != range.end(); ++i) {
+      [&](const tbb::blocked_range<int>& r) {
+        for (int i = r.begin(); i != r.end(); ++i) {
           res[i] += alpha * p[i];
         }
       }
     );
 
     tbb::parallel_for(tbb::blocked_range<int>(0, n),
-      [&](const tbb::blocked_range<int>& range) {
-        for (int i = range.begin(); i != range.end(); ++i) {
+      [&](const tbb::blocked_range<int>& ra) {
+        for (int i = ra.begin(); i != ra.end(); ++i) {
           r[i] = r_old[i] - alpha * Ap[i];
         }
       }
@@ -84,8 +76,8 @@ std::vector<double> SLEgradSolver(const std::vector<double> &Aa, const std::vect
     double beta = dotProduct(r, r) / dotProduct(r_old, r_old);
 
     tbb::parallel_for(tbb::blocked_range<int>(0, n),
-      [&](const tbb::blocked_range<int>& range) {
-        for (int i = range.begin(); i != range.end(); ++i) {
+      [&](const tbb::blocked_range<int>& ra) {
+        for (int i = ra.begin(); i != ra.end(); ++i) {
           p[i] = r[i] + beta * p[i];
         }
       }
@@ -159,27 +151,44 @@ bool checkSolution(const std::vector<double> &Aa, const std::vector<double> &bb,
 }
 
 std::vector<double> genRandomVector(int size, int maxVal) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<> distrib(0, maxVal);
   std::vector<double> res(size);
-  std::mt19937 gen(4140);
-  for (int i = 0; i < size; ++i) {
-    res[i] = static_cast<double>(gen() % maxVal + 1);
+  tbb::parallel_for(tbb::blocked_range<int>(0, size),
+    [&](const tbb::blocked_range<int>& r) {
+    for (int i = r.begin(); i != r.end(); ++i) {
+      res[i] = distrib(gen);
+    }
   }
+  );
   return res;
 }
 
 std::vector<double> genRandomMatrix(int size, int maxVal) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<> distrib(0, maxVal);
   std::vector<double> matrix(size * size);
-  std::mt19937 gen(4041);
-  for (int i = 0; i < size; ++i) {
-    for (int j = i; j < size; ++j) {
-      matrix[i * size + j] = static_cast<double>(gen() % maxVal + 1);
+
+  tbb::parallel_for(tbb::blocked_range<int>(0, size),
+    [&](const tbb::blocked_range<int>& r) {
+    for (int i = r.begin(); i != r.end(); ++i) {
+      for (int j = i; j < size; ++j) {
+        matrix[i * size + j] = distrib(gen);
+      }
     }
   }
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < i; ++j) {
-      matrix[i * size + j] = matrix[j * size + i];
+  );
+  tbb::parallel_for(tbb::blocked_range<int>(0, size),
+    [&](const tbb::blocked_range<int>& r) {
+    for (int i = r.begin(); i != r.end(); ++i) {
+      for (int j = 0; j < i; ++j) {
+        matrix[i * size + j] = matrix[j * size + i];
+      }
     }
   }
+  );
   return matrix;
 }
 }  // namespace veselov_i_tbb
