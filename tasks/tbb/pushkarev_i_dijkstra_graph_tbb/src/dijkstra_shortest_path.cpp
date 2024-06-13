@@ -2,6 +2,7 @@
 
 #include "tbb/pushkarev_i_dijkstra_graph_tbb/include/dijkstra_shortest_path.hpp"
 
+#include <algorithm>
 #include <memory>
 #include <thread>
 
