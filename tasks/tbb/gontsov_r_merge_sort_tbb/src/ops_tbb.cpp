@@ -1,16 +1,16 @@
 // Copyright 2023 Nesterov Alexander
 #include "tbb/gontsov_r_merge_sort_tbb/include/ops_tbb.hpp"
 
-#include <tbb/tbb.h>
 #include <tbb/spin_mutex.h>
+#include <tbb/tbb.h>
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <numeric>
 #include <random>
 #include <string>
 #include <vector>
-#include <cmath>
 
 using namespace std::chrono_literals;
 
@@ -19,7 +19,7 @@ std::vector<int> getRandomVector2(int sz) {
   std::mt19937 gen(dev());
   std::vector<int> vec(sz);
   for (int i = 0; i < sz; i++) {
-      vec[i] = gen() % 100 + 1;
+    vec[i] = gen() % 100 + 1;
   }
   return vec;
 }
@@ -27,14 +27,14 @@ std::vector<int> getRandomVector2(int sz) {
 std::vector<int> radixSort2(std::vector<int> vector) {
   std::vector<int> freq;
   for (int d = 0, maxElem = *max_element(vector.begin(), vector.end());
-      d <= (maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1); d++) {
+       d <= (maxElem == 0 ? 1 : static_cast<int>(log10(abs(maxElem))) + 1); d++) {
     std::vector<int> temp(vector.size());
     int div = static_cast<int>(pow(10, d));
     int min = vector[0] % (div * 10) / div;
     int max = min;
     for (const int num : vector) {
-        int curr = num % (div * 10) / div;
-        min = min < curr ? min : curr;
+      int curr = num % (div * 10) / div;
+      min = min < curr ? min : curr;
       max = max > curr ? max : curr;
     }
     freq.assign(max - min + 1, 0);
@@ -96,7 +96,7 @@ bool RadixSeqG::run() {
     }
     return true;
   } catch (...) {
-      return false;
+    return false;
   }
 }
 
@@ -104,7 +104,7 @@ bool RadixSeqG::post_processing() {
   internal_order_test();
   auto* outputs = reinterpret_cast<int*>(taskData->outputs[0]);
   for (size_t i = 0; i < input_.size(); i++) {
-      outputs[i] = input_[i];
+    outputs[i] = input_[i];
   }
   return true;
 }
@@ -124,9 +124,9 @@ bool RadixTBBG::pre_processing() {
 bool RadixTBBG::validation() {
   internal_order_test();
   return taskData->inputs_count.size() == 1 && taskData->outputs_count.size() == 1 && taskData->inputs.size() == 1 &&
-          taskData->outputs.size() == 1 && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
-          taskData->inputs_count[0] == taskData->outputs_count[0] && taskData->inputs_count[0] >= 0 &&
-          taskData->outputs_count[0] >= 0;
+         taskData->outputs.size() == 1 && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
+         taskData->inputs_count[0] == taskData->outputs_count[0] && taskData->inputs_count[0] >= 0 &&
+         taskData->outputs_count[0] >= 0;
 }
 
 bool RadixTBBG::run() {
