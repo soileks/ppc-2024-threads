@@ -3,10 +3,10 @@
 
 #include <algorithm>
 #include <cmath>
-#include <thread>
-#include <vector>
-#include <unordered_set>
 #include <limits>
+#include <thread>
+#include <unordered_set>
+#include <vector>
 
 using namespace std::chrono_literals;
 
@@ -32,8 +32,7 @@ std::vector<Point> Jarvis(const std::vector<Point>& points) {
     hull.push_back(points[p]);
     q = (p + 1) % n;
     for (int i = 0; i < n; i++) {
-      if (orientation(points[p], points[i], points[q]) == 1)
-          q = i;
+      if (orientation(points[p], points[i], points[q]) == 1) q = i;
     }
     p = q;
   } while (p != l);
