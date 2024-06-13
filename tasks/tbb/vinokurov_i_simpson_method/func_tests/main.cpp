@@ -40,7 +40,7 @@ TEST(vinokurov_i_simpson_method_tbb, test_linear) {
   ASSERT_LE(result - out[0], 0.01);
 }
 
-TEST(vinokurov_i_simpson_method_omp, test_exp) {
+TEST(vinokurov_i_simpson_method_tbb, test_exp) {
   const int a = 0;
   const int b = 10;
   const int c = 0;
@@ -71,7 +71,7 @@ TEST(vinokurov_i_simpson_method_omp, test_exp) {
   ASSERT_LE(result - out[0], 0.01);
 }
 
-TEST(vinokurov_i_simpson_method_omp, test_trig) {
+TEST(vinokurov_i_simpson_method_tbb, test_trig) {
   const int a = 6;
   const int b = 18;
   const int c = 6;
@@ -102,7 +102,7 @@ TEST(vinokurov_i_simpson_method_omp, test_trig) {
   ASSERT_LE(result - out[0], 0.01);
 }
 
-TEST(vinokurov_i_simpson_method_omp, test_mul) {
+TEST(vinokurov_i_simpson_method_tbb, test_mul) {
   const int a = 0;
   const int b = 10;
   const int c = 0;
@@ -133,7 +133,7 @@ TEST(vinokurov_i_simpson_method_omp, test_mul) {
   ASSERT_LE(result - out[0], 0.01);
 }
 
-TEST(vinokurov_i_simpson_method_omp, test_other) {
+TEST(vinokurov_i_simpson_method_tbb, test_other) {
   const int a = 0;
   const int b = 10;
   const int c = 0;
