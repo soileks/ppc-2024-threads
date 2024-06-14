@@ -1,12 +1,12 @@
-
 // Copyright 2024 Martynov Aleksandr
 #include <gtest/gtest.h>
 #include <omp.h>
+#include <tbb/tbb.h>
 
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/martynov_a_strassen_algorithm/include/ops_omp.hpp"
+#include "tbb/martynov_a_strassen_algorithm/include/ops_tbb.hpp"
 
 TEST(martynov_a_strassen_alg_omp_perf, test_pipeline_run) {
   const int n = 64;
@@ -34,7 +34,9 @@ TEST(martynov_a_strassen_alg_omp_perf, test_pipeline_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+
+  const auto t0 = oneapi::tbb::tick_count::now();
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
@@ -75,7 +77,8 @@ TEST(martynov_a_strassen_alg_omp_perf, test_task_run) {
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+  const auto t0 = oneapi::tbb::tick_count::now();
+  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - t0).seconds(); };
 
   // Create and init perf results
   auto perfResults = std::make_shared<ppc::core::PerfResults>();

@@ -1,11 +1,10 @@
-
 // Copyright 2024 Martynov Aleksandr
 
 #include <gtest/gtest.h>
 
 #include <vector>
 
-#include "omp/martynov_a_strassen_algorithm/include/ops_omp.hpp"
+#include "tbb/martynov_a_strassen_algorithm/include/ops_tbb.hpp"
 
 TEST(martynov_a_strassen_alg_seq, multSecShtrassen_4x4) {
   const int n = 4;

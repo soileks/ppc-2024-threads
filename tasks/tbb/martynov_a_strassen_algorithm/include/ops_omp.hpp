@@ -1,6 +1,6 @@
-
 // Copyright 2024 Martynov Aleksandr
 #pragma once
+
 #include <memory>
 #include <random>
 #include <string>
