@@ -1,6 +1,7 @@
 // Copyright 2024 Kokin Ivan
 #include <gtest/gtest.h>
 #include <oneapi/tbb.h>
+
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
