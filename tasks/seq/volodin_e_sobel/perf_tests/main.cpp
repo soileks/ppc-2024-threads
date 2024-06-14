@@ -8,8 +8,8 @@
 #include "seq/volodin_e_sobel/include/sobel.hpp"
 
 TEST(sequential_sobel_perf_test, test_pipeline_run) {
-  const int width = 512;
-  const int height = 512;
+  const int width = 2048;
+  const int height = 2048;
 
   std::vector<int> inImage(width * height, 0);
 
@@ -52,8 +52,8 @@ TEST(sequential_sobel_perf_test, test_pipeline_run) {
 }
 
 TEST(sequential_sobel_perf_test, test_task_run) {
-  const int width = 512;
-  const int height = 512;
+  const int width = 2048;
+  const int height = 2048;
 
   std::vector<int> inImage(width * height, 0);
 
