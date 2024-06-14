@@ -1,11 +1,13 @@
 // Copyright 2024 Loginov Maxim
+
 #pragma once
 
 #include <cmath>
 #include <random>
 
-namespace LoginovOmp {
+namespace LoginovTbb {
 struct LoginovPoint {
+ public:
   double x;
   double y;
 
@@ -15,7 +17,7 @@ struct LoginovPoint {
 
   LoginovPoint& operator=(const LoginovPoint& p2);
   bool operator==(const LoginovPoint& p2) const;
-  bool operator()(const LoginovPoint& p0, const LoginovPoint& p1) const;
+  bool operator()(LoginovPoint& p0, LoginovPoint& p1) const;
 
   double angle(const LoginovPoint& p) const;
   double Distance(const LoginovPoint& p) const;
@@ -23,4 +25,4 @@ struct LoginovPoint {
   int Compare(const LoginovPoint& pivot, const LoginovPoint& P) const;
   static LoginovPoint aRandomPoint(double min, double max);
 };
-}  // namespace LoginovOmp
+}  // namespace LoginovTbb

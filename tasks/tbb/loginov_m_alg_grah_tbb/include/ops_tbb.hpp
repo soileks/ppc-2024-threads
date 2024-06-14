@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <omp.h>
+#include <tbb/tbb.h>
 
 #include <algorithm>
 #include <stack>
@@ -11,7 +11,7 @@
 #include "core/task/include/task.hpp"
 #include "point.hpp"
 
-namespace LoginovOmp {
+namespace LoginovTbb {
 class LoginovGrahAlgSequential : public ppc::core::Task {
  public:
   explicit LoginovGrahAlgSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
@@ -24,9 +24,9 @@ class LoginovGrahAlgSequential : public ppc::core::Task {
   std::vector<LoginovPoint> pointsArr, minConvexHull;
 };
 
-class LoginovGrahAlgOmpParallel : public ppc::core::Task {
+class LoginovGrahAlgTbbParallel : public ppc::core::Task {
  public:
-  explicit LoginovGrahAlgOmpParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit LoginovGrahAlgTbbParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;
@@ -37,4 +37,4 @@ class LoginovGrahAlgOmpParallel : public ppc::core::Task {
 };
 
 std::vector<LoginovPoint> LoginovRandomPoints(double leftBorder, double rightBorder, size_t size);
-}  // namespace LoginovOmp
+}  // namespace LoginovTbb

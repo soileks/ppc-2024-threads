@@ -1,8 +1,10 @@
 // Copyright 2024 Loginov Maxim
 
-#include "omp/loginov_m_alg_grah_omp/include/ops_omp.hpp"
+#include "tbb/loginov_m_alg_grah_tbb/include/ops_tbb.hpp"
 
-namespace LoginovOmp {
+#include "tbb/parallel_sort.h"
+
+namespace LoginovTbb {
 
 // A search minimum point in point's array (min x, then min y)
 LoginovPoint LoginovMinPoint(const std::vector<LoginovPoint>& pointArr) {
@@ -37,7 +39,7 @@ LoginovPoint LoginovMinPoint(const std::vector<LoginovPoint>& pointArr) {
 }
 
 // Determining the number (index) of a point in the array
-int LoginovPointPositionSeq(const LoginovPoint& p, const std::vector<LoginovPoint>& pointArr) {
+int LoginovPointPosition(const LoginovPoint& p, const std::vector<LoginovPoint>& pointArr) {
   int pp = 0;
   int pArrSize = pointArr.size();
   for (int i = 0; i < pArrSize; ++i) {
@@ -50,7 +52,7 @@ int LoginovPointPositionSeq(const LoginovPoint& p, const std::vector<LoginovPoin
 }
 
 // Creating a minimum convex hull
-std::vector<LoginovPoint> LoginovMinConvexHull(std::vector<LoginovPoint> pointArr) {
+std::vector<LoginovPoint> LoginovMinPointConvexHull(std::vector<LoginovPoint> pointArr) {
   if (pointArr.size() < 3) return pointArr;
 
   std::vector<LoginovPoint> mch;
@@ -118,8 +120,8 @@ bool LoginovGrahAlgSequential::run() {
   if (pointsArr.empty()) return true;
 
   // Step 1: search the minimum point P0
-  LoginovPoint P0 = LoginovOmp::LoginovMinPoint(pointsArr);
-  int p0 = LoginovOmp::LoginovPointPositionSeq(P0, pointsArr);
+  LoginovPoint P0 = LoginovMinPoint(pointsArr);
+  int p0 = LoginovPointPosition(P0, pointsArr);
 
   // Step 2: sort all points except P0
   minConvexHull[0].swap(minConvexHull[p0]);
@@ -127,7 +129,7 @@ bool LoginovGrahAlgSequential::run() {
             [&P0](LoginovPoint& p1, LoginovPoint& p2) { return p1(P0, p2); });
 
   // Step 3: build a minimum convex hull
-  minConvexHull = LoginovOmp::LoginovMinConvexHull(minConvexHull);
+  minConvexHull = LoginovMinPointConvexHull(minConvexHull);
 
   return true;
 }
@@ -139,44 +141,14 @@ bool LoginovGrahAlgSequential::post_processing() {
   return true;
 }
 
-// Determining the number (index) of a point in the array
-int LoginovPointPositionOMP(const LoginovPoint& p, const std::vector<LoginovPoint>& pointArr) {
-  int pp = -1;
-  int pArrSize = pointArr.size();
-
-#pragma omp parallel for
-  for (int i = 0; i < pArrSize; ++i) {
-    if (pointArr[i].x == p.x && pointArr[i].y == p.y) {
-#pragma omp critical
-      {
-        if (pp == -1) pp = i;
-      }
-    }
-  }
-  return pp;
+// TBB Sort
+void LoginovSortTBB(std::vector<LoginovPoint>& points) {
+  LoginovPoint p0 = points[0];
+  tbb::parallel_sort(points.begin() + 1, points.end(),
+                     [&p0](LoginovPoint& p1, LoginovPoint& p2) { return p1(p0, p2); });
 }
 
-void LoginovSortOMP(std::vector<LoginovPoint>& vec, const LoginovPoint& P0) {
-  int num_threads = omp_get_max_threads();
-  size_t size = vec.size();
-
-#pragma omp parallel for num_threads(num_threads)
-  for (int i = 0; i < num_threads; ++i) {
-    size_t start = (size_t)i * size / num_threads;
-    size_t end = (size_t)(i + 1) * size / num_threads;
-    std::sort(vec.begin() + start, vec.begin() + end,
-              [P0](const LoginovPoint& p1, const LoginovPoint& p2) { return p1(P0, p2); });
-  }
-
-  for (int i = 1; i < num_threads; ++i) {
-    size_t start = (size_t)i * size / num_threads;
-    size_t end = (size_t)(i + 1) * size / num_threads;
-    std::inplace_merge(vec.begin(), vec.begin() + start, vec.begin() + end,
-                       [P0](const LoginovPoint& p1, const LoginovPoint& p2) { return p1(P0, p2); });
-  }
-}
-
-bool LoginovGrahAlgOmpParallel::pre_processing() {
+bool LoginovGrahAlgTbbParallel::pre_processing() {
   internal_order_test();
 
   // Init value for input and output
@@ -191,36 +163,33 @@ bool LoginovGrahAlgOmpParallel::pre_processing() {
   return true;
 }
 
-bool LoginovGrahAlgOmpParallel::validation() {
+bool LoginovGrahAlgTbbParallel::validation() {
   internal_order_test();
 
   // Check count elements of output
   return (taskData->outputs_count[0] <= taskData->inputs_count[0]);
 }
 
-bool LoginovGrahAlgOmpParallel::run() {
+bool LoginovGrahAlgTbbParallel::run() {
   internal_order_test();
 
   if (pointsArr.empty()) return true;
 
   // Step 1: search the minimum point P0
-  LoginovPoint P0 = LoginovOmp::LoginovMinPoint(pointsArr);
-  int p0 = LoginovOmp::LoginovPointPositionOMP(P0, pointsArr);
+  LoginovPoint P0 = LoginovMinPoint(pointsArr);
+  int p0 = LoginovPointPosition(P0, pointsArr);
 
   // Step 2: sort all points except P0
   minConvexHull[0].swap(minConvexHull[p0]);
-
-  minConvexHull.erase(minConvexHull.begin());
-  LoginovSortOMP(minConvexHull, P0);
-  minConvexHull.insert(minConvexHull.begin(), P0);
+  LoginovSortTBB(minConvexHull);
 
   // Step 3: build a minimum convex hull
-  minConvexHull = LoginovOmp::LoginovMinConvexHull(minConvexHull);
+  minConvexHull = LoginovMinPointConvexHull(minConvexHull);
 
   return true;
 }
 
-bool LoginovGrahAlgOmpParallel::post_processing() {
+bool LoginovGrahAlgTbbParallel::post_processing() {
   internal_order_test();
 
   std::copy(minConvexHull.begin(), minConvexHull.end(), reinterpret_cast<LoginovPoint*>(taskData->outputs[0]));
@@ -233,4 +202,4 @@ std::vector<LoginovPoint> LoginovRandomPoints(double leftBorder, double rightBor
   return arrPoints;
 }
 
-}  // namespace LoginovOmp
+}  // namespace LoginovTbb

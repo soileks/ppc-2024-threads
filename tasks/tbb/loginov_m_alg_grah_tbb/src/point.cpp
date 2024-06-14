@@ -1,43 +1,48 @@
 // Copyright 2024 Loginov Maxim
 
-#include "omp/loginov_m_alg_grah_omp/include/point.hpp"
+#include "tbb/loginov_m_alg_grah_tbb/include/point.hpp"
 
-LoginovOmp::LoginovPoint::LoginovPoint() {
+LoginovTbb::LoginovPoint::LoginovPoint() {
   x = 0;
   y = 0;
 }
 
-LoginovOmp::LoginovPoint::LoginovPoint(double X, double Y) {
+LoginovTbb::LoginovPoint::LoginovPoint(double X, double Y) {
   x = X;
   y = Y;
 }
 
-LoginovOmp::LoginovPoint::LoginovPoint(const LoginovOmp::LoginovPoint& p2) {
+LoginovTbb::LoginovPoint::LoginovPoint(const LoginovTbb::LoginovPoint& p2) {
   x = p2.x;
   y = p2.y;
 }
 
-LoginovOmp::LoginovPoint& LoginovOmp::LoginovPoint::operator=(const LoginovOmp::LoginovPoint& p2) {
+LoginovTbb::LoginovPoint& LoginovTbb::LoginovPoint::operator=(const LoginovTbb::LoginovPoint& p2) {
   if (this == &p2) return *this;
   x = p2.x;
   y = p2.y;
   return *this;
 }
 
-bool LoginovOmp::LoginovPoint::operator==(const LoginovOmp::LoginovPoint& p2) const {
+bool LoginovTbb::LoginovPoint::operator==(const LoginovTbb::LoginovPoint& p2) const {
   bool res = false;
   if (x == p2.x && y == p2.y) res = true;
   return res;
 }
 
-double LoginovOmp::LoginovPoint::angle(const LoginovOmp::LoginovPoint& p) const {
+void LoginovTbb::LoginovPoint::swap(LoginovTbb::LoginovPoint& p2) {
+  LoginovTbb::LoginovPoint tmp = (*this);
+  (*this) = p2;
+  p2 = tmp;
+}
+
+double LoginovTbb::LoginovPoint::angle(const LoginovPoint& p) const {
   double dx = p.x - x;
   double dy = p.y - y;
   return atan2(dy, dx);
 }
 
-bool LoginovOmp::LoginovPoint::operator()(const LoginovOmp::LoginovPoint& p0,
-                                          const LoginovOmp::LoginovPoint& p1) const {
+bool LoginovTbb::LoginovPoint::operator()(LoginovTbb::LoginovPoint& p0, LoginovTbb::LoginovPoint& p1) const {
   bool res = false;
   double angle1 = p0.angle((*this));
   double angle2 = p0.angle(p1);
@@ -50,17 +55,11 @@ bool LoginovOmp::LoginovPoint::operator()(const LoginovOmp::LoginovPoint& p0,
   return res;
 }
 
-double LoginovOmp::LoginovPoint::Distance(const LoginovOmp::LoginovPoint& p) const {
+double LoginovTbb::LoginovPoint::Distance(const LoginovTbb::LoginovPoint& p) const {
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }
 
-void LoginovOmp::LoginovPoint::swap(LoginovOmp::LoginovPoint& p2) {
-  LoginovOmp::LoginovPoint tmp = (*this);
-  (*this) = p2;
-  p2 = tmp;
-}
-
-int LoginovOmp::LoginovPoint::Compare(const LoginovOmp::LoginovPoint& pivot, const LoginovOmp::LoginovPoint& P) const {
+int LoginovTbb::LoginovPoint::Compare(const LoginovTbb::LoginovPoint& pivot, const LoginovTbb::LoginovPoint& P) const {
   int res = 0;  // ==
   double x1 = pivot.x - x;
   double y1 = pivot.y - y;
@@ -87,9 +86,10 @@ int LoginovOmp::LoginovPoint::Compare(const LoginovOmp::LoginovPoint& pivot, con
   return res;
 }
 
-LoginovOmp::LoginovPoint LoginovOmp::LoginovPoint::aRandomPoint(double min, double max) {
+LoginovTbb::LoginovPoint LoginovTbb::LoginovPoint::aRandomPoint(double min, double max) {
   std::random_device rd;
   std::default_random_engine gen{rd()};
   std::uniform_real_distribution<double> random(min, max);
-  return LoginovOmp::LoginovPoint(random(gen), random(gen));
+
+  return LoginovTbb::LoginovPoint(random(gen), random(gen));
 }
