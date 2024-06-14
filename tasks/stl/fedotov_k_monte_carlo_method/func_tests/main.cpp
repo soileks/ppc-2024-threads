@@ -1,7 +1,6 @@
 // Copyright 2024 Fedotov Kirill
 #include <gtest/gtest.h>
 
-
 #include <vector>
 
 #include "stl/fedotov_k_monte_carlo_method/include/ops_stl.hpp"

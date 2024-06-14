@@ -61,7 +61,6 @@ bool fedotov_stl::FedotovTaskSeq::run() {
   return true;
 }
 
-
 bool fedotov_stl::FedotovTaskSeq::post_processing() {
   internal_order_test();
   reinterpret_cast<double*>(taskData->outputs[0])[0] = integration_result;
