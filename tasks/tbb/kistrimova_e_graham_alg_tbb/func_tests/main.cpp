@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "omp/kistrimova_e_graham_alg_omp/include/ops_omp.hpp"
+#include "tbb/kistrimova_e_graham_alg_tbb/include/ops_tbb.hpp"
 
 TEST(kistrimova_e_graham_alg_seq, known_result) {
   // Create data
@@ -33,8 +33,8 @@ TEST(kistrimova_e_graham_alg_seq, known_result) {
 
 TEST(kistrimova_e_graham_alg_seq, min_data) {
   // Create data
-  std::vector<point> in{{8, 1}, {8, 5}, {6, 5}};
-  std::vector<point> res{{6, 5}, {8, 1}, {8, 5}};
+  std::vector<point> in{{0, 0}, {2, 0}, {1, 2}};
+  std::vector<point> res{{0, 0}, {2, 0}, {1, 2}};
   std::vector<point> out(res.size());
 
   // Create TaskData

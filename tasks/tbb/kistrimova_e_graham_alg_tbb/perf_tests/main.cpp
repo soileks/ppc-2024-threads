@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "omp/kistrimova_e_graham_alg_omp/include/ops_omp.hpp"
+#include "tbb/kistrimova_e_graham_alg_tbb/include/ops_tbb.hpp"
 
 TEST(kistrimova_e_graham_alg_seq_perf_test, test_pipeline_run) {
   // Create data
