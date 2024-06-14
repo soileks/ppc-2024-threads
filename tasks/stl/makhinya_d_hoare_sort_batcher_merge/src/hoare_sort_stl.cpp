@@ -48,13 +48,13 @@ void HoareSortSTL::sort_bitonic_seguence(sortable_type* first_ptr, sortable_type
   const int32_t len = last_ptr - first_ptr;
   for (int32_t k = 1; k < len; k <<= 1) {
     const uint32_t chank = len / k;
-    for(int i = 0; i < k; i++) {
+    for (int i = 0; i < k; i++) {
       sortable_type* l = first_ptr + i * chank;
       sortable_type* r = l + chank;
       if (_comp(*l, *r)) {
         std::swap(*r, *l);
       }
-    };
+    }
   }
 }
 
@@ -74,7 +74,7 @@ void HoareSortSTL::parallel_hoare_sort(sortable_type* first_ptr, sortable_type c
     sort_bitonic_seguence(l1, r2);
   }
 
-  for(int i = 0; i < K; ++i) {
+  for (int i = 0; i < K; ++i) {
     threads[i].join();
   }
 }
