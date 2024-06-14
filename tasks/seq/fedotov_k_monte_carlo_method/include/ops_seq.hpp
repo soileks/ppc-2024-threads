@@ -1,9 +1,9 @@
 // Copyright 2024 Fedotov Kirill
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 #include "core/task/include/task.hpp"
 
