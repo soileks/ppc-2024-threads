@@ -1,6 +1,7 @@
 // Copyright 2024 Savotina Valeria
 #pragma once
 
+#include <algorithm>
 #include <stack>
 #include <vector>
 
