@@ -2,7 +2,6 @@
 
 #include "stl/makhinya_d_hoare_sort_batcher_merge/include/hoare_sort_stl.hpp"
 
-
 bool HoareSortSTL::pre_processing() {
   internal_order_test();
   // Init value for input and output
