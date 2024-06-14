@@ -95,7 +95,7 @@ TEST(kokin_marking_component_bin_image_tbb, test_4) {
   taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataTBB->outputs_count.emplace_back(out.size());
 
-  imageMarkingOMP testTaskSequential(taskDataTBB);
+  imageMarkingTBB testTaskSequential(taskDataTBB);
   ASSERT_EQ(testTaskSequential.validation(), true);
   testTaskSequential.pre_processing();
   testTaskSequential.run();
