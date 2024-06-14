@@ -1,11 +1,12 @@
 // Copyright 2024 Vyunov Danila
 #include <gtest/gtest.h>
 #include <omp.h>
+#include <tbb/tbb.h>
 
 #include <algorithm>
 #include <vector>
 
-#include "./omp/vyunov_d_hoar_merge_sort_omp/include/hoar_merge.h"
+#include "./tbb/vyunov_d_hoar_merge_sort_tbb/include/hoar_merge.h"
 #include "core/perf/include/perf.hpp"
 
 TEST(vyunov_d_hoare_sort_omp, test_pipeline_run) {
@@ -25,27 +26,32 @@ TEST(vyunov_d_hoare_sort_omp, test_pipeline_run) {
   hoareSortSequential.run();
   hoareSortSequential.post_processing();
 
-  // OMP
-  std::vector<int> outputArrayOMP(inputArray.size());
+  // TBB
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOMP = std::make_shared<ppc::core::TaskData>();
-  hoareSortOMP->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOMP->inputs_count.emplace_back(inputArray.size());
-  hoareSortOMP->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOMP->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTBB = std::make_shared<ppc::core::TaskData>();
+  hoareSortTBB->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTBB->inputs_count.emplace_back(inputArray.size());
+  hoareSortTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTBB->outputs_count.emplace_back(inputArray.size());
 
-  auto hoareSortOMPParallel = std::make_shared<HoareSortOMP>(hoareSortOMP);
+  auto hoareSortTBBParallel = std::make_shared<HoareSortTBB>(hoareSortTBB);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(hoareSortOMPParallel);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(hoareSortTBBParallel);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }
 
 TEST(vyunov_d_hoare_sort_omp, test_task_run) {
@@ -65,25 +71,30 @@ TEST(vyunov_d_hoare_sort_omp, test_task_run) {
   hoareSortSequential.run();
   hoareSortSequential.post_processing();
 
-  // OMP
-  std::vector<int> outputArrayOMP(inputArray.size());
+  // TBB
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOMP = std::make_shared<ppc::core::TaskData>();
-  hoareSortOMP->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOMP->inputs_count.emplace_back(inputArray.size());
-  hoareSortOMP->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOMP->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTBB = std::make_shared<ppc::core::TaskData>();
+  hoareSortTBB->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTBB->inputs_count.emplace_back(inputArray.size());
+  hoareSortTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTBB->outputs_count.emplace_back(inputArray.size());
 
-  auto hoareSortOMPParallel = std::make_shared<HoareSortOMP>(hoareSortOMP);
+  auto hoareSortTBBParallel = std::make_shared<HoareSortTBB>(hoareSortTBB);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  perfAttr->current_timer = [&] { return omp_get_wtime(); };
+  const auto t0 = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_time_point = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(current_time_point - t0).count();
+    return static_cast<double>(duration) * 1e-9;
+  };
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(hoareSortOMPParallel);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(hoareSortTBBParallel);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }

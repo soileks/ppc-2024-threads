@@ -21,21 +21,21 @@ TEST(vyunov_d_hoare_sort_omp, Const_Array) {
   HoareSortSimpleSeq.pre_processing();
   HoareSortSimpleSeq.run();
   HoareSortSimpleSeq.post_processing();
-  std::vector<int> outputArrayOMP(inputArray.size());
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOmp = std::make_shared<ppc::core::TaskData>();
-  hoareSortOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOmp->inputs_count.emplace_back(inputArray.size());
-  hoareSortOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOmp->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTbb = std::make_shared<ppc::core::TaskData>();
+  hoareSortTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTbb->inputs_count.emplace_back(inputArray.size());
+  hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortOMP HoareSortOMP(hoareSortOmp);
-  ASSERT_TRUE(HoareSortOMP.validation());
-  HoareSortOMP.pre_processing();
-  HoareSortOMP.run();
-  HoareSortOMP.post_processing();
+  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  ASSERT_TRUE(HoareSortTBB.validation());
+  HoareSortTBB.pre_processing();
+  HoareSortTBB.run();
+  HoareSortTBB.post_processing();
 
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }
 
 TEST(vyunov_d_hoare_sort_omp, Random_Array_64) {
@@ -53,21 +53,21 @@ TEST(vyunov_d_hoare_sort_omp, Random_Array_64) {
   HoareSortSimpleSeq.pre_processing();
   HoareSortSimpleSeq.run();
   HoareSortSimpleSeq.post_processing();
-  std::vector<int> outputArrayOMP(inputArray.size());
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOmp = std::make_shared<ppc::core::TaskData>();
-  hoareSortOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOmp->inputs_count.emplace_back(inputArray.size());
-  hoareSortOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOmp->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTbb = std::make_shared<ppc::core::TaskData>();
+  hoareSortTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTbb->inputs_count.emplace_back(inputArray.size());
+  hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortOMP HoareSortOMP(hoareSortOmp);
-  ASSERT_TRUE(HoareSortOMP.validation());
-  HoareSortOMP.pre_processing();
-  HoareSortOMP.run();
-  HoareSortOMP.post_processing();
+  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  ASSERT_TRUE(HoareSortTBB.validation());
+  HoareSortTBB.pre_processing();
+  HoareSortTBB.run();
+  HoareSortTBB.post_processing();
 
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }
 
 TEST(vyunov_d_hoare_sort_omp, Random_Array_128) {
@@ -85,21 +85,21 @@ TEST(vyunov_d_hoare_sort_omp, Random_Array_128) {
   HoareSortSimpleSeq.pre_processing();
   HoareSortSimpleSeq.run();
   HoareSortSimpleSeq.post_processing();
-  std::vector<int> outputArrayOMP(inputArray.size());
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOmp = std::make_shared<ppc::core::TaskData>();
-  hoareSortOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOmp->inputs_count.emplace_back(inputArray.size());
-  hoareSortOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOmp->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTbb = std::make_shared<ppc::core::TaskData>();
+  hoareSortTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTbb->inputs_count.emplace_back(inputArray.size());
+  hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortOMP HoareSortOMP(hoareSortOmp);
-  ASSERT_TRUE(HoareSortOMP.validation());
-  HoareSortOMP.pre_processing();
-  HoareSortOMP.run();
-  HoareSortOMP.post_processing();
+  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  ASSERT_TRUE(HoareSortTBB.validation());
+  HoareSortTBB.pre_processing();
+  HoareSortTBB.run();
+  HoareSortTBB.post_processing();
 
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }
 
 TEST(vyunov_d_hoare_sort_omp, Single_Array) {
@@ -117,21 +117,21 @@ TEST(vyunov_d_hoare_sort_omp, Single_Array) {
   HoareSortSimpleSeq.pre_processing();
   HoareSortSimpleSeq.run();
   HoareSortSimpleSeq.post_processing();
-  std::vector<int> outputArrayOMP(inputArray.size());
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOmp = std::make_shared<ppc::core::TaskData>();
-  hoareSortOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOmp->inputs_count.emplace_back(inputArray.size());
-  hoareSortOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOmp->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTbb = std::make_shared<ppc::core::TaskData>();
+  hoareSortTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTbb->inputs_count.emplace_back(inputArray.size());
+  hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortOMP HoareSortOMP(hoareSortOmp);
-  ASSERT_TRUE(HoareSortOMP.validation());
-  HoareSortOMP.pre_processing();
-  HoareSortOMP.run();
-  HoareSortOMP.post_processing();
+  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  ASSERT_TRUE(HoareSortTBB.validation());
+  HoareSortTBB.pre_processing();
+  HoareSortTBB.run();
+  HoareSortTBB.post_processing();
 
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }
 
 TEST(vyunov_d_hoare_sort_omp, Empty_Array) {
@@ -149,19 +149,19 @@ TEST(vyunov_d_hoare_sort_omp, Empty_Array) {
   HoareSortSimpleSeq.pre_processing();
   HoareSortSimpleSeq.run();
   HoareSortSimpleSeq.post_processing();
-  std::vector<int> outputArrayOMP(inputArray.size());
+  std::vector<int> outputArrayTBB(inputArray.size());
 
-  std::shared_ptr<ppc::core::TaskData> hoareSortOmp = std::make_shared<ppc::core::TaskData>();
-  hoareSortOmp->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
-  hoareSortOmp->inputs_count.emplace_back(inputArray.size());
-  hoareSortOmp->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayOMP.data()));
-  hoareSortOmp->outputs_count.emplace_back(inputArray.size());
+  std::shared_ptr<ppc::core::TaskData> hoareSortTbb = std::make_shared<ppc::core::TaskData>();
+  hoareSortTbb->inputs.emplace_back(reinterpret_cast<uint8_t *>(inputArray.data()));
+  hoareSortTbb->inputs_count.emplace_back(inputArray.size());
+  hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
+  hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortOMP HoareSortOMP(hoareSortOmp);
-  ASSERT_TRUE(HoareSortOMP.validation());
-  HoareSortOMP.pre_processing();
-  HoareSortOMP.run();
-  HoareSortOMP.post_processing();
+  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  ASSERT_TRUE(HoareSortTBB.validation());
+  HoareSortTBB.pre_processing();
+  HoareSortTBB.run();
+  HoareSortTBB.post_processing();
 
-  ASSERT_EQ(outputArraySeq, outputArrayOMP);
+  ASSERT_EQ(outputArraySeq, outputArrayTBB);
 }

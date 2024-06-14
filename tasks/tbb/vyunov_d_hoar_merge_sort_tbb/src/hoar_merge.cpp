@@ -1,5 +1,5 @@
 // Copyright 2024 Vyunov Danila
-#include "omp/vyunov_d_hoar_merge_sort_omp/include/hoar_merge.h"
+#include "tbb/vyunov_d_hoar_merge_sort_tbb/include/hoar_merge.h"
 
 #include <algorithm>
 #include <iostream>
@@ -90,7 +90,7 @@ void HoarSort(std::vector<int> *arr, int first, int last) {
   if (first < right) HoarSort(&s, first, right);
 }
 
-bool HoareSortOMP::pre_processing() {
+bool HoareSortTBB::pre_processing() {
   try {
     internal_order_test();
     array.clear();
@@ -104,7 +104,7 @@ bool HoareSortOMP::pre_processing() {
   return true;
 }
 
-bool HoareSortOMP::validation() {
+bool HoareSortTBB::validation() {
   try {
     internal_order_test();
   } catch (...) {
@@ -113,7 +113,7 @@ bool HoareSortOMP::validation() {
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool HoareSortOMP::run() {
+bool HoareSortTBB::run() {
   try {
     internal_order_test();
     HoareSortParallel(array, 0, array.size() - 1);
@@ -123,7 +123,7 @@ bool HoareSortOMP::run() {
   return true;
 }
 
-bool HoareSortOMP::post_processing() {
+bool HoareSortTBB::post_processing() {
   try {
     internal_order_test();
     if (array.size() != taskData->outputs_count[0]) {
@@ -139,16 +139,19 @@ bool HoareSortOMP::post_processing() {
   return true;
 }
 
-void HoareSortOMP::HoareSortParallel(std::vector<int> &arr, size_t l, size_t r) {
+void HoareSortTBB::HoareSortParallel(std::vector<int> &arr, size_t l, size_t r) {
   if (arr.size() <= 1) return;
   int n = r - l + 1;
 
   for (int p = 1; p < n; p += p)
     for (int k = p; k > 0; k /= 2)
       for (int j = k % p; j + k < n; j += (k + k))
-#pragma omp parallel for
-        for (int i = 0; i < n - j - k; ++i)
-          if ((j + i) / (p + p) == (j + i + k) / (p + p)) {
-            if (arr[l + j + i] > arr[l + j + i + k]) std::swap(arr[l + j + i], arr[l + j + i + k]);
-          }
+        oneapi::tbb::parallel_for(oneapi::tbb::blocked_range<int>(0, n - j - k),
+                                  [&](oneapi::tbb::blocked_range<int> &R) {
+                                    for (int i = R.begin(); i < R.end(); ++i) {
+                                      if ((j + i) / (p + p) == (j + i + k) / (p + p))
+                                        if (arr[l + j + i] > arr[l + j + i + k])
+                                          std::swap(arr[l + j + i], arr[l + j + i + k]);
+                                    }
+                                  });
 }
