@@ -14,8 +14,13 @@ bool imageMarkingTBB::run() {
   std::list<uint32_t> vectr;
   std::vector<std::vector<uint32_t *>> maparr;
   maparr.resize(ht);
-  for (int i = 0; i < ht; ++i) maparr[i].resize(wh, nullptr);
-  for (int i = 0; i < wh; ++i) {
+
+  tbb::parallel_for(tbb::blocked_range<size_t>(0, ht), [&](const tbb::blocked_range<size_t> &r) {
+    for (size_t i = r.begin(); i != r.end(); ++i) {
+      maparr[i].resize(wh, nullptr);
+    }
+  });
+  for (size_t i = 0; i < wh; ++i) {
     if (src[0][i] == 0) {
       if (i == 0 || maparr[0][i - 1] == nullptr) {
         vectr.push_back(++scur);
@@ -24,7 +29,7 @@ bool imageMarkingTBB::run() {
         maparr[0][i] = maparr[0][i - 1];
     }
   }
-  for (int i = 1; i < ht; ++i) {
+  for (size_t i = 1; i < ht; ++i) {
     if (src[i][0] == 0) {
       if (maparr[i - 1][0] == nullptr) {
         vectr.push_back(++scur);
@@ -32,7 +37,7 @@ bool imageMarkingTBB::run() {
       } else
         maparr[i][0] = maparr[i - 1][0];
     }
-    for (int j = 1; j < wh; ++j) {
+    for (size_t j = 1; j < wh; ++j) {
       if (src[i][j] == 0) {
         if (maparr[i - 1][j] == maparr[i][j - 1]) {
           if (maparr[i - 1][j] == nullptr) {
@@ -65,10 +70,10 @@ bool imageMarkingTBB::run() {
     label = cnt;
   }
 
-  tbb::parallel_for(tbb::blocked_range2d<size_t>(0, height, 0, width), [&](const tbb::blocked_range2d<size_t> &r) {
+  tbb::parallel_for(tbb::blocked_range2d<size_t>(0, ht, 0, wh), [&](const tbb::blocked_range2d<size_t> &r) {
     for (size_t i = r.rows().begin(); i != r.rows().end(); ++i)
       for (size_t j = r.cols().begin(); j != r.cols().end(); ++j)
-        if (arr[i][j] != nullptr) destination[i][j] = *(arr[i][j]);
+        if (maparr[i][j] != nullptr) dest[i][j] = *(maparr[i][j]);
   });
   return true;
 }
@@ -80,8 +85,8 @@ bool imageMarkingTBB::pre_processing() {
   wh = reinterpret_cast<uint32_t *>(taskData->inputs[0])[1];  // init width
   src.resize(ht);
   dest.resize(ht);
-  for (int i = 0; i < ht; ++i) {
-    for (int j = 0; j < wh; ++j) {
+  for (size_t i = 0; i < ht; ++i) {
+    for (size_t j = 0; j < wh; ++j) {
       src[i].push_back(reinterpret_cast<uint8_t *>(taskData->inputs[1])[i * wh + j]);
       dest[i].resize(wh, 0);
     }
@@ -100,8 +105,8 @@ bool imageMarkingTBB::validation() {
 
 bool imageMarkingTBB::post_processing() {
   internal_order_test();
-  for (int i = 0; i < ht; ++i) {
-    for (int j = 0; j < wh; ++j) {
+  for (size_t i = 0; i < ht; ++i) {
+    for (size_t j = 0; j < wh; ++j) {
       reinterpret_cast<uint8_t *>(taskData->outputs[0])[i * wh + j] = dest[i][j];
     }
   }
