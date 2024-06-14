@@ -7,9 +7,9 @@
 #include <vector>
 
 #include "core/perf/include/perf.hpp"
-#include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
+#include "omp/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
-TEST(ryabkov_v_bat_sort_seq, test_pipeline_run) {
+TEST(ryabkov_v_bat_sort_omp, test_pipeline_run) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(1000000);
   std::vector<int> result(vect.size(), 0);
 
@@ -38,7 +38,7 @@ TEST(ryabkov_v_bat_sort_seq, test_pipeline_run) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(ryabkov_v_bat_sort_seq, test_task_run) {
+TEST(ryabkov_v_bat_sort_omp, test_task_run) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(1000000);
   std::vector<int> result(vect.size(), 0);
 

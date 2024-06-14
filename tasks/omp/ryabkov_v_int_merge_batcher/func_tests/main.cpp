@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "seq/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
+#include "omp/ryabkov_v_int_merge_batcher/include/int_merge_batcher.hpp"
 
 void run_test(const std::vector<int> &vect) {
   std::vector<int> result(vect.size(), 0);
@@ -22,27 +22,27 @@ void run_test(const std::vector<int> &vect) {
   ASSERT_TRUE(std::is_sorted(result.begin(), result.end()));
 }
 
-TEST(ryabkov_v_bat_sort_seq, Test1) {
+TEST(ryabkov_v_bat_sort_omp, Test1) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(10);  // generates a vector of size 10
   run_test(vect);
 }
 
-TEST(ryabkov_v_bat_sort_seq, Test2) {
+TEST(ryabkov_v_bat_sort_omp, Test2) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(30);  // generates a vector of size 30
   run_test(vect);
 }
 
-TEST(ryabkov_v_bat_sort_seq, Test3) {
+TEST(ryabkov_v_bat_sort_omp, Test3) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(40);  // generates a vector of size 40
   run_test(vect);
 }
 
-TEST(ryabkov_v_bat_sort_seq, Test4) {
+TEST(ryabkov_v_bat_sort_omp, Test4) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(50);  // generates a vector of size 50
   run_test(vect);
 }
 
-TEST(ryabkov_v_bat_sort_seq, Test5) {
+TEST(ryabkov_v_bat_sort_omp, Test5) {
   std::vector<int> vect = ryabkov_batcher::GetRandomVector(100);  // generates a vector of size 100
   run_test(vect);
 }

@@ -2,14 +2,18 @@
 
 #pragma once
 
+#include <omp.h>
+
 #include <algorithm>
 #include <chrono>
+#include <cmath>
+#include <iterator>
+#include <mutex>
 #include <random>
-#include <string>
-#include <thread>
 #include <vector>
 
 #include "core/task/include/task.hpp"
+
 namespace ryabkov_batcher {
 class SeqBatcher : public ppc::core::Task {
  public:
