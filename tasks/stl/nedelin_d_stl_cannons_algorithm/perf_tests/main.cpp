@@ -1,11 +1,10 @@
 // Copyright 2024 Nedelin Dmitry
 #include <gtest/gtest.h>
-#include <oneapi/tbb.h>
 
 #include "core/perf/include/perf.hpp"
-#include "tbb/nedelin_d_tbb_cannons_algorithm/include/ops_tbb.hpp"
+#include "stl/nedelin_d_stl_cannons_algorithm/include/ops_stl.hpp"
 
-TEST(tbb_nedelin_d_block_cannons_perf_test, test_pipeline_run) {
+TEST(nedelin_d_block_cannons_perf_test_stl, test_pipeline_run) {
   int n = 500;
   int m = 500;
 
@@ -27,16 +26,20 @@ TEST(tbb_nedelin_d_block_cannons_perf_test, test_pipeline_run) {
 
   std::vector<double> res = multiplyMtrx(in_mtrx_A, in_mtrx_B, n, m);
 
-  auto testTaskTBB = std::make_shared<TestTaskTBBParallelNedelinCannon>(taskDataSeq);
+  auto testTaskSTL = std::make_shared<TestTaskSTLParallelNedelinCannon>(taskDataSeq);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto zero_time_start = oneapi::tbb::tick_count::now();
-  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - zero_time_start).seconds(); };
+  const auto zero_time_start = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_timer = std::chrono::high_resolution_clock::now();
+    auto time_span = std::chrono::duration_cast<std::chrono::nanoseconds>(current_timer - zero_time_start).count();
+    return static_cast<double>(time_span) * 1e-9;
+  };
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 
@@ -45,7 +48,7 @@ TEST(tbb_nedelin_d_block_cannons_perf_test, test_pipeline_run) {
   }
 }
 
-TEST(tbb_nedelin_d_block_cannons_perf_test, test_task_run) {
+TEST(nedelin_d_block_cannons_perf_test_stl, test_task_run) {
   int n = 500;
   int m = 500;
 
@@ -67,16 +70,20 @@ TEST(tbb_nedelin_d_block_cannons_perf_test, test_task_run) {
 
   std::vector<double> res = multiplyMtrx(in_mtrx_A, in_mtrx_B, n, m);
 
-  auto testTaskTBB = std::make_shared<TestTaskTBBParallelNedelinCannon>(taskDataSeq);
+  auto testTaskSTL = std::make_shared<TestTaskSTLParallelNedelinCannon>(taskDataSeq);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
-  const auto zero_time_start = oneapi::tbb::tick_count::now();
-  perfAttr->current_timer = [&] { return (oneapi::tbb::tick_count::now() - zero_time_start).seconds(); };
+  const auto zero_time_start = std::chrono::high_resolution_clock::now();
+  perfAttr->current_timer = [&] {
+    auto current_timer = std::chrono::high_resolution_clock::now();
+    auto time_span = std::chrono::duration_cast<std::chrono::nanoseconds>(current_timer - zero_time_start).count();
+    return static_cast<double>(time_span) * 1e-9;
+  };
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskTBB);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSTL);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   for (size_t i = 0; i < res.size(); ++i) {
