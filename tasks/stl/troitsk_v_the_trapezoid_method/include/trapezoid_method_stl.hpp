@@ -29,8 +29,8 @@ class troitskTaskTBBSequential : public ppc::core::Task {
   int nx{}, ny{};
 };
 
-double trapezoidal_integralTR(const std::function<double(double, double)>& f, double lowerx, double upperx, double lowery,
-                            double uppery, int nx, int ny);
+double trapezoidal_integralTR(const std::function<double(double, double)>& f, double lowerx, double upperx,
+                              double lowery, double uppery, int nx, int ny);
 
 class troitskTaskSTL : public ppc::core::Task {
  public:
@@ -48,4 +48,4 @@ class troitskTaskSTL : public ppc::core::Task {
 };
 
 double trapezoidal_integralSTLTR(const std::function<double(double, double)>& f, double lowerx, double upperx,
-                               double lowery, double uppery, int nx, int ny);
+                                 double lowery, double uppery, int nx, int ny);

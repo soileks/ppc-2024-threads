@@ -1,8 +1,8 @@
 // Copyright 2024 Troitskiy Alexandr
 #include "stl/troitsk_v_the_trapezoid_method/include/trapezoid_method_stl.hpp"
 
-double trapezoidal_integralTR(const std::function<double(double, double)>& f, double lowerx, double upperx, double lowery,
-                            double uppery, int nx, int ny) {
+double trapezoidal_integralTR(const std::function<double(double, double)>& f, double lowerx, double upperx,
+                              double lowery, double uppery, int nx, int ny) {
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
   double sum = 0.5 * (f(lowerx, lowery) + f(upperx, uppery));
@@ -19,7 +19,7 @@ double trapezoidal_integralTR(const std::function<double(double, double)>& f, do
 }
 
 double trapezoidal_integralSTLTR(const std::function<double(double, double)>& f, double lowerx, double upperx,
-                               double lowery, double uppery, int nx, int ny) {
+                                 double lowery, double uppery, int nx, int ny) {
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
   double sum = 0.5 * (f(lowerx, lowery) + f(upperx, uppery));
