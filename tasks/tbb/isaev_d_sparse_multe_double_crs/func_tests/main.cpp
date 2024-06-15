@@ -329,7 +329,7 @@ TEST(isaev_d_sparse_multe_double_crs_tbb, Test5) {
   taskDataPar->outputs.emplace_back(reinterpret_cast<uint8_t *>(&c_par));
   taskDataPar->outputs_count.emplace_back(res.values.size());
 
-  // Create Task
+  // Create task
   IsaevTBB::SparseMultDoubleCRStbbParallel tbbTaskParallel(taskDataPar);
   ASSERT_EQ(tbbTaskParallel.validation(), true);
   tbbTaskParallel.pre_processing();
