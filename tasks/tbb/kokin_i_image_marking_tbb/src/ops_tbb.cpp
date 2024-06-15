@@ -7,7 +7,7 @@
 using namespace std::chrono_literals;
 
 bool imageMarkingTBB::run() {
-  // funcs run
+  // func_s run
   internal_order_test();
   // func for solution marking component in bin image
   uint32_t scur = 0;
