@@ -23,7 +23,7 @@ TEST(kokin_marking_component_bin_image_test_tbb, test_run) {
   taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataTBB->outputs_count.emplace_back(out.size());
 
-  auto taskDataTBB = std::make_shared<imageMarkingTBB>(taskDataTBB);
+  auto taskTestTBB = std::make_shared<imageMarkingTBB>(taskDataTBB);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 100;
@@ -32,7 +32,7 @@ TEST(kokin_marking_component_bin_image_test_tbb, test_run) {
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskDataTBB);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskTestTBB);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
 
@@ -55,7 +55,7 @@ TEST(kokin_marking_component_bin_image_test_tbb, test_task_run) {
   taskDataTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
   taskDataTBB->outputs_count.emplace_back(out.size());
 
-  auto taskDataTBB = std::make_shared<imageMarkingTBB>(taskDataTBB);
+  auto taskTestTBB = std::make_shared<imageMarkingTBB>(taskDataTBB);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
@@ -64,7 +64,7 @@ TEST(kokin_marking_component_bin_image_test_tbb, test_task_run) {
 
   auto perfResults = std::make_shared<ppc::core::PerfResults>();
 
-  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskDataTBB);
+  auto perfAnalyzer = std::make_shared<ppc::core::Perf>(taskTestTBB);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
   ASSERT_EQ(out, cmpt);
