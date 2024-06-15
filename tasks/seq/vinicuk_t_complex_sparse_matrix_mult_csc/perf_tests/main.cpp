@@ -7,38 +7,24 @@
 #include "seq/vinicuk_t_complex_sparse_matrix_mult_csc/include/csc_complex_matrix.hpp"
 #include "seq/vinicuk_t_complex_sparse_matrix_mult_csc/include/ops_seq.hpp"
 
-TEST(vinicuk_t_complex_sparse_matrix_mult_csc_seq, test_pipeline_run_dft384x384) {
-  size_t n = 500;
+TEST(vinicuk_t_complex_sparse_matrix_mult_csc_seq, test_pipeline_run_10000X10000) {
+  int n = 10000;
   CSCComplexMatrix mtrx_A(n, n);
-  CSCComplexMatrix mtrx_B(1, n);
-  CSCComplexMatrix mtrx_res(1, n);
+  CSCComplexMatrix mtrx_B(n, n);
+  CSCComplexMatrix mtrx_res(n, n);
   std::complex<double> a(2.0, 1.0);
 
-  int k = 1;
-  int p = 0;
-  for (size_t i = 0; i <= n; i++) {
-    mtrx_A.col_ptrs.push_back(p);
-    p += k;
-    k++;
+  for (int i = 0; i <= n; i++) {
+    mtrx_A.col_ptrs.push_back(i);
+    mtrx_B.col_ptrs.push_back(i);
   }
 
-  k = 1;
-  p = 0;
-  for (size_t i = 0; i < mtrx_A.col_ptrs[n]; i++) {
+  for (int i = 0; i < n; i++) {
+    mtrx_A.row_indexes.push_back(i);
     mtrx_A.values.emplace_back(a);
-    if (p >= k) {
-      p = 0;
-      k++;
-    }
-    mtrx_A.row_indexes.push_back(p);
-    p++;
-  }
-
-  mtrx_B.col_ptrs = {0, n};
-  for (size_t i = 0; i < n; i++) {
-    mtrx_B.values.emplace_back(a);
     mtrx_B.row_indexes.push_back(i);
-  }
+    mtrx_B.values.emplace_back(a);
+  };
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
@@ -68,39 +54,24 @@ TEST(vinicuk_t_complex_sparse_matrix_mult_csc_seq, test_pipeline_run_dft384x384)
   ppc::core::Perf::print_perf_statistic(perfResults);
 }
 
-TEST(vinicuk_t_complex_sparse_matrix_mult_csc_seq, test_task_run_dft384x384) {
-  size_t n = 500;
+TEST(vinicuk_t_complex_sparse_matrix_mult_csc_seq, test_task_run_10000x10000) {
+  int n = 10000;
   CSCComplexMatrix mtrx_A(n, n);
-  CSCComplexMatrix mtrx_B(1, n);
-  CSCComplexMatrix mtrx_res(1, n);
+  CSCComplexMatrix mtrx_B(n, n);
+  CSCComplexMatrix mtrx_res(n, n);
   std::complex<double> a(2.0, 1.0);
 
-  int k = 1;
-  int p = 0;
-  for (size_t i = 0; i <= n; i++) {
-    mtrx_A.col_ptrs.emplace_back(p);
-    p += k;
-    k++;
+  for (int i = 0; i <= n; i++) {
+    mtrx_A.col_ptrs.push_back(i);
+    mtrx_B.col_ptrs.push_back(i);
   }
-  // mtrx_A.col_ptrs = {0,1,3,6, 10, 15, 21};
 
-  k = 1;
-  p = 0;
-  for (size_t i = 0; i < mtrx_A.col_ptrs[n]; i++) {
+  for (int i = 0; i < n; i++) {
+    mtrx_A.row_indexes.push_back(i);
     mtrx_A.values.emplace_back(a);
-    if (p >= k) {
-      p = 0;
-      k++;
-    }
-    mtrx_A.row_indexes.push_back(p);
-    p++;
-  }
-
-  mtrx_B.col_ptrs = {0, n};
-  for (size_t i = 0; i < n; i++) {
-    mtrx_B.values.emplace_back(a);
     mtrx_B.row_indexes.push_back(i);
-  }
+    mtrx_B.values.emplace_back(a);
+  };
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
