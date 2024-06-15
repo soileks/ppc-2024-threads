@@ -29,7 +29,7 @@ TEST(vyunov_d_hoare_sort_omp, Const_Array) {
   hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  HoareSortTBBV HoareSortTBB(hoareSortTbb);
   ASSERT_TRUE(HoareSortTBB.validation());
   HoareSortTBB.pre_processing();
   HoareSortTBB.run();
@@ -61,7 +61,7 @@ TEST(vyunov_d_hoare_sort_omp, Random_Array_64) {
   hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  HoareSortTBBV HoareSortTBB(hoareSortTbb);
   ASSERT_TRUE(HoareSortTBB.validation());
   HoareSortTBB.pre_processing();
   HoareSortTBB.run();
@@ -93,7 +93,7 @@ TEST(vyunov_d_hoare_sort_omp, Random_Array_128) {
   hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  HoareSortTBBV HoareSortTBB(hoareSortTbb);
   ASSERT_TRUE(HoareSortTBB.validation());
   HoareSortTBB.pre_processing();
   HoareSortTBB.run();
@@ -125,7 +125,7 @@ TEST(vyunov_d_hoare_sort_omp, Single_Array) {
   hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  HoareSortTBBV HoareSortTBB(hoareSortTbb);
   ASSERT_TRUE(HoareSortTBB.validation());
   HoareSortTBB.pre_processing();
   HoareSortTBB.run();
@@ -157,7 +157,7 @@ TEST(vyunov_d_hoare_sort_omp, Empty_Array) {
   hoareSortTbb->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTbb->outputs_count.emplace_back(inputArray.size());
 
-  HoareSortTBB HoareSortTBB(hoareSortTbb);
+  HoareSortTBBV HoareSortTBB(hoareSortTbb);
   ASSERT_TRUE(HoareSortTBB.validation());
   HoareSortTBB.pre_processing();
   HoareSortTBB.run();

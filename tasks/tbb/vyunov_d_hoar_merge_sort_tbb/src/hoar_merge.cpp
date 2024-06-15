@@ -90,7 +90,7 @@ void HoarSort(std::vector<int> *arr, int first, int last) {
   if (first < right) HoarSort(&s, first, right);
 }
 
-bool HoareSortTBB::pre_processing() {
+bool HoareSortTBBV::pre_processing() {
   try {
     internal_order_test();
     array.clear();
@@ -104,7 +104,7 @@ bool HoareSortTBB::pre_processing() {
   return true;
 }
 
-bool HoareSortTBB::validation() {
+bool HoareSortTBBV::validation() {
   try {
     internal_order_test();
   } catch (...) {
@@ -113,7 +113,7 @@ bool HoareSortTBB::validation() {
   return taskData->inputs_count[0] == taskData->outputs_count[0];
 }
 
-bool HoareSortTBB::run() {
+bool HoareSortTBBV::run() {
   try {
     internal_order_test();
     HoareSortParallel(array, 0, array.size() - 1);
@@ -123,7 +123,7 @@ bool HoareSortTBB::run() {
   return true;
 }
 
-bool HoareSortTBB::post_processing() {
+bool HoareSortTBBV::post_processing() {
   try {
     internal_order_test();
     if (array.size() != taskData->outputs_count[0]) {
@@ -139,7 +139,7 @@ bool HoareSortTBB::post_processing() {
   return true;
 }
 
-void HoareSortTBB::HoareSortParallel(std::vector<int> &arr, size_t l, size_t r) {
+void HoareSortTBBV::HoareSortParallel(std::vector<int> &arr, size_t l, size_t r) {
   if (arr.size() <= 1) return;
   int n = r - l + 1;
 
