@@ -45,7 +45,11 @@ bool fedotov_tbb::FedotovTaskSeq::run() {
       local_integration_result += function(Coordinates_For_Integration1[0] + vysota1 * r, lmb);
     });
 
-    local_sum.fetch_add(local_integration_result * vysota1 * vysota2, std::memory_order_relaxed);
+    double current_sum = local_sum.load(std::memory_order_relaxed);
+    double new_sum;
+    do {
+      new_sum = current_sum + local_integration_result * vysota1 * vysota2;
+    } while (!local_sum.compare_exchange_weak(current_sum, new_sum, std::memory_order_relaxed));
   });
 
   integration_result = local_sum.load(std::memory_order_relaxed);
