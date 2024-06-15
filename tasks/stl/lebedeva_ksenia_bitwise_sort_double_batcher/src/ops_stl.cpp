@@ -79,6 +79,7 @@ void sortPartSeq(std::vector<std::vector<double>> &parts, std::vector<double> &v
 std::vector<double> radixSortWithBatcherSeq(std::vector<double> vec) {
   uint64_t mask = static_cast<uint64_t>(1) << (sizeDouble * 8 - 1);
   std::vector<double> positive;
+  
   std::vector<double> negative;
 
   for (auto &i : vec) {
