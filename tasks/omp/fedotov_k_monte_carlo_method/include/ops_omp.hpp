@@ -27,5 +27,5 @@ class FedotovTaskSeq : public ppc::core::Task {
 
   int part_of_integrate;
   double integration_result;
-};
+}; 
 }  // namespace fedotov_omp
