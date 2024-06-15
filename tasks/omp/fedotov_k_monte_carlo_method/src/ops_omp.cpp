@@ -36,7 +36,7 @@ bool fedotov_omp::FedotovTaskSeq::run() {
 
   double local_integration_result = 0.0;
 
-#pragma omp parallel for reduction(+:local_integration_result) schedule(static)
+#pragma omp parallel for reduction(+ : local_integration_result) schedule(static)
   for (int k = 0; k < part_of_integrate; ++k) {
     double lmb = Coordinates_For_Integration2[0] + vysota2 * k;
     for (int r = 0; r < part_of_integrate; ++r) {
