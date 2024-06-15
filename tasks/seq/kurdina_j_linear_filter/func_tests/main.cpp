@@ -77,10 +77,10 @@ TEST(kurdina_j_linear_filter_seq, Image_3) {
   std::vector<uint8_t> gauss_kernel = {1, 1, 1, 1, 1, 1, 1, 1, 1};
 
   // Create data
-  std::vector<uint8_t> in = {1, 0, 1, 0, 1, 0, 1, 0, 1};
+  std::vector<uint8_t> in = {1, 0, 2, 0, 3, 0, 4, 0, 5};
   std::vector<int> size_m = {n, m};
   std::vector<uint8_t> out(n * m);
-  std::vector<uint8_t> result = {5, 13, 31, 26, 78, 155, 134, 255, 255};
+  std::vector<uint8_t> result = {7, 9, 11, 13, 15, 17, 19, 21, 23};
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();

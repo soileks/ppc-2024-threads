@@ -1,49 +1,77 @@
 // Copyright 2024 Prokofev Kirill
 #include "seq/prokofev_k_convexHullForBinImage/include/ops_seq.hpp"
 
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+#include <set>
 #include <thread>
 
 using namespace std::chrono_literals;
 
-bool BinaryImageConvexHullSeq::pre_processing() {
+bool prokofev_k_covexHull_Seq::BinaryImageConvexHullSeq::pre_processing() {
   internal_order_test();
-  width = taskData->inputs_count[0];
-  height = taskData->inputs_count[1];
-  img = reinterpret_cast<decltype(img)>(taskData->inputs[0]);
-  img_ = *img;
-  res = {};
+  try {
+    auto* input = reinterpret_cast<int*>(taskData->inputs[0]);
+    width = taskData->inputs_count[0];
+    height = taskData->inputs_count[1];
+    resSize = taskData->inputs_count[2];
+    img.resize(height * width);
+    for (int i = 0; i < width * height; i++) {
+      img[i] = input[i];
+    }
+    res.resize(resSize);
+  } catch (std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return false;
+  }
   return true;
 }
 
-bool BinaryImageConvexHullSeq::validation() {
+bool prokofev_k_covexHull_Seq::BinaryImageConvexHullSeq::validation() {
   internal_order_test();
-  return taskData->inputs_count.size() == 2 && taskData->inputs_count[0] > 0 && taskData->inputs_count[1] > 0;
+  return taskData->inputs_count.size() == 3 && taskData->inputs_count[0] > 0 && taskData->inputs_count[1] > 0 &&
+         taskData->inputs_count[2] > 0 && taskData->inputs[0] != nullptr;
 }
 
-bool BinaryImageConvexHullSeq::run() {
+bool prokofev_k_covexHull_Seq::BinaryImageConvexHullSeq::run() {
   internal_order_test();
-  std::vector<int> local_image = FindComponents(img_, width, height);
-  int count_components = FindCountComponents(local_image);
-  for (int i = 1; i <= count_components; ++i) {
-    std::vector<int> points = RemoveExtraPoints(local_image, width, height, i);
-    std::vector<int> ch = GrahamAlgorithm(points);
-    for (size_t j = 0; j < ch.size(); ++j) {
-      res.emplace_back(ch[j]);
+  try {
+    std::vector<int> local_image = FindComponents(img, width, height);
+    int count_components = FindCountComponents(local_image);
+    int k = 0;
+    for (int i = 1; i <= count_components; ++i) {
+      std::vector<int> points = RemoveExtraPoints(local_image, width, height, i);
+      std::vector<int> ch = GrahamAlgorithm(points);
+      for (size_t j = 0; j < ch.size(); ++j) {
+        res[k] = ch[j];
+        k++;
+      }
+      res[k] = -1;
+      k++;
     }
-    res.emplace_back(-1);
+  } catch (std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return false;
   }
 
   return true;
 }
 
-bool BinaryImageConvexHullSeq::post_processing() {
+bool prokofev_k_covexHull_Seq::BinaryImageConvexHullSeq::post_processing() {
   internal_order_test();
-  std::copy(res.begin(), res.end(), reinterpret_cast<int*>(taskData->outputs[0]));
+  try {
+    std::memcpy(reinterpret_cast<int*>(taskData->outputs[0]), res.data(), res.size() * sizeof(int));
+  } catch (std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return false;
+  }
   return true;
 }
 
-void floodFill(std::vector<int>* image, int height, int width, int yStart, int xStart, int label) {
-  std::queue<Point> tasks;
+void prokofev_k_covexHull_Seq::FloodFill(std::vector<int>* image, int height, int width, int yStart, int xStart,
+                                         int label) {
+  std::queue<prokofev_k_covexHull_Seq::Point> tasks;
   tasks.emplace(xStart, yStart);
   while (!tasks.empty()) {
     int x = tasks.front().x;
@@ -63,18 +91,13 @@ void floodFill(std::vector<int>* image, int height, int width, int yStart, int x
   }
 }
 
-std::vector<int> FindComponents(const std::vector<std::vector<int>>& image, int width, int height) {
-  std::vector<int> image_with_components(width * height);
-  for (int i = 0; i < height; ++i) {
-    for (int j = 0; j < width; ++j) {
-      image_with_components[i * width + j] = image[i][j];
-    }
-  }
+std::vector<int> prokofev_k_covexHull_Seq::FindComponents(const std::vector<int>& image, int width, int height) {
+  std::vector<int> image_with_components = image;
   int label = 2;
   for (int i = 0; i < height; ++i) {
     for (int j = 0; j < width; ++j) {
       if (image_with_components[i * width + j] == 1) {
-        floodFill(&image_with_components, height, width, i, j, label);
+        prokofev_k_covexHull_Seq::FloodFill(&image_with_components, height, width, i, j, label);
         ++label;
       }
     }
@@ -89,17 +112,17 @@ std::vector<int> FindComponents(const std::vector<std::vector<int>>& image, int 
   return image_with_components;
 }
 
-int FindCountComponents(const std::vector<int>& image) {
-  int count_components = 0;
+int prokofev_k_covexHull_Seq::FindCountComponents(const std::vector<int>& image) {
+  std::set<int> labels;
   for (size_t i = 0; i < image.size(); ++i) {
-    if (image[i] > count_components) {
-      count_components = image[i];
+    if (image[i] != 0) {
+      labels.insert(image[i]);
     }
   }
-  return count_components;
+  return labels.size();
 }
 
-int FindCountPointsInComponent(const std::vector<int>& image) {
+int prokofev_k_covexHull_Seq::FindCountPointsInComponent(const std::vector<int>& image) {
   int count_points = 0;
   for (size_t i = 0; i < image.size(); ++i) {
     if (image[i] != 0) {
@@ -109,7 +132,8 @@ int FindCountPointsInComponent(const std::vector<int>& image) {
   return count_points;
 }
 
-std::vector<int> RemoveExtraPoints(const std::vector<int>& image, int width, int height, int label) {
+std::vector<int> prokofev_k_covexHull_Seq::RemoveExtraPoints(const std::vector<int>& image, int width, int height,
+                                                             int label) {
   std::vector<int> local_image(image);
   for (int i = 0; i < height; ++i) {
     for (int j = 0; j < width; ++j) {
@@ -146,7 +170,7 @@ std::vector<int> RemoveExtraPoints(const std::vector<int>& image, int width, int
       }
     }
   }
-  int size = FindCountPointsInComponent(local_image);
+  int size = prokofev_k_covexHull_Seq::FindCountPointsInComponent(local_image);
   std::vector<int> points(size * 2);
   int k = 0;
   for (int i = 0; i < height; ++i) {
@@ -162,9 +186,11 @@ std::vector<int> RemoveExtraPoints(const std::vector<int>& image, int width, int
   return points;
 }
 
-int Cross(int x1, int y1, int x2, int y2, int x3, int y3) { return ((x2 - x1) * (y3 - y2) - (x3 - x2) * (y2 - y1)); }
+int prokofev_k_covexHull_Seq::Cross(int x1, int y1, int x2, int y2, int x3, int y3) {
+  return ((x2 - x1) * (y3 - y2) - (x3 - x2) * (y2 - y1));
+}
 
-void Sort(std::vector<int>* points, int xMin, int yMin) {
+void prokofev_k_covexHull_Seq::Sort(std::vector<int>* points, int xMin, int yMin) {
   int size = points->size() / 2;
   for (int i = 1; i < size; ++i) {
     int j = i;
@@ -181,7 +207,7 @@ void Sort(std::vector<int>* points, int xMin, int yMin) {
   }
 }
 
-std::vector<int> GrahamAlgorithm(std::vector<int> points) {
+std::vector<int> prokofev_k_covexHull_Seq::GrahamAlgorithm(std::vector<int> points) {
   std::vector<int> result;
   int num_points = points.size() / 2;
   if (num_points > 1) {
@@ -203,7 +229,7 @@ std::vector<int> GrahamAlgorithm(std::vector<int> points) {
     points[num_points * 2 - 1] = temp;
     points.pop_back();
     points.pop_back();
-    Sort(&points, x_min, y_min);
+    prokofev_k_covexHull_Seq::Sort(&points, x_min, y_min);
     result.emplace_back(x_min);
     result.emplace_back(y_min);
     result.emplace_back(points[0]);
@@ -217,13 +243,13 @@ std::vector<int> GrahamAlgorithm(std::vector<int> points) {
       int x3 = points[i];
       int y3 = points[i + 1];
 
-      int rot = Cross(x1, y1, x2, y2, x3, y3);
+      int rot = prokofev_k_covexHull_Seq::Cross(x1, y1, x2, y2, x3, y3);
       if (rot == 0) {
         result[result_size - 2] = x3;
         result[result_size - 1] = y3;
       } else if (rot < 0) {
-        while (Cross(result[(result.size()) - 4], result[(result.size()) - 3], result[(result.size()) - 2],
-                     result[(result.size()) - 1], x3, y3) < 0)
+        while (prokofev_k_covexHull_Seq::Cross(result[(result.size()) - 4], result[(result.size()) - 3],
+                                               result[(result.size()) - 2], result[(result.size()) - 1], x3, y3) < 0)
           result.pop_back(), result.pop_back();
         result.emplace_back(x3);
         result.emplace_back(y3);
@@ -238,4 +264,33 @@ std::vector<int> GrahamAlgorithm(std::vector<int> points) {
     result[1] = points[1];
   }
   return result;
+}
+
+std::vector<int> prokofev_k_covexHull_Seq::ConvertImageToVector(std::vector<std::vector<int>> notVecImg, int width,
+                                                                int height) {
+  std::vector<int> newImg(width * height);
+  for (int i = 0; i < height; ++i) {
+    for (int j = 0; j < width; ++j) {
+      newImg[i * width + j] = notVecImg[i][j];
+    }
+  }
+  return newImg;
+}
+
+std::vector<int> prokofev_k_covexHull_Seq::GenerateImgForPerfTests(int componentCount) {
+  int width = 8;
+  int height = 8;
+  std::vector<int> nullRow = {0, 0, 0, 0, 0, 0, 0, 0};
+  std::vector<int> row = {0, 0, 1, 1, 1, 1, 0, 0};
+  std::vector<std::vector<int>> notVecImg(height * componentCount + componentCount);
+  for (int i = 0; i < componentCount; i++) {
+    for (int j = 0; j < height + 1; j++) {
+      if (j != 8) {
+        notVecImg[i * (height + 1) + j] = row;
+      } else {
+        notVecImg[i * (height + 1) + j] = nullRow;
+      }
+    }
+  }
+  return prokofev_k_covexHull_Seq::ConvertImageToVector(notVecImg, width, notVecImg.size());
 }

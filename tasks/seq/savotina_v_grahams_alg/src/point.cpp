@@ -29,6 +29,25 @@ bool SavotinaPoint::operator==(const SavotinaPoint& p2) const {
   return res;
 }
 
+double SavotinaPoint::angle(const SavotinaPoint& p) const {
+  double dx = p.x - x;
+  double dy = p.y - y;
+  return atan2(dy, dx);
+}
+
+bool SavotinaPoint::operator()(SavotinaPoint& p0, SavotinaPoint& p1) const {
+  bool res = false;
+  double angle1 = p0.angle((*this));
+  double angle2 = p0.angle(p1);
+
+  if (angle1 < angle2)
+    res = true;
+  else if (angle1 == angle2)
+    res = (*this).Distance(p0) < p1.Distance(p0);
+
+  return res;
+}
+
 double SavotinaPoint::Distance(const SavotinaPoint& p) const {
   return sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 }

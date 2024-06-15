@@ -8,16 +8,16 @@
 #include "seq/khodyrev_f_convex_hull/include/ops_seq.hpp"
 
 TEST(khodyrev_f_convex_null_seq, test_pipeline_run) {
-  int height_in = 13000;
-  int width_in = 1000;
-  int height_out = 13000;
-  int width_out = 1000;
-  std::vector<int> in(13000000, 0);
+  int height_in = 14000;
+  int width_in = 2000;
+  int height_out = 14000;
+  int width_out = 2000;
+  std::vector<int> in(28000000, 0);
   in[0] = 1;
   in[1] = 1;
   std::vector<int> out(height_out * width_out, 0);
 
-  std::vector<int> true_result(13000000, 0);
+  std::vector<int> true_result(28000000, 0);
   true_result[0] = 1;
   true_result[1] = 1;
 
@@ -53,16 +53,16 @@ TEST(khodyrev_f_convex_null_seq, test_pipeline_run) {
 }
 
 TEST(khodyrev_f_convex_null_seq, test_task_run) {
-  int height_in = 13000;
-  int width_in = 1000;
-  int height_out = 13000;
-  int width_out = 1000;
-  std::vector<int> in(13000000, 0);
+  int height_in = 14000;
+  int width_in = 2000;
+  int height_out = 14000;
+  int width_out = 2000;
+  std::vector<int> in(28000000, 0);
   in[0] = 1;
   in[1] = 1;
   std::vector<int> out(height_out * width_out, 0);
 
-  std::vector<int> true_result(13000000, 0);
+  std::vector<int> true_result(28000000, 0);
   true_result[0] = 1;
   true_result[1] = 1;
 

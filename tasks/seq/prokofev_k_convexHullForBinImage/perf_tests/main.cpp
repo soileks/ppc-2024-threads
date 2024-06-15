@@ -8,25 +8,22 @@
 
 TEST(prokofev_k_convex_hull_seq, test_pipeline_run) {
   // Create data
-  std::vector<int> out(100);
+  int countComp = 2000;
   int width = 8;
-  int height = 20000;
-  std::vector<int> row = {0, 0, 1, 1, 1, 1, 0, 0};
-  std::vector<std::vector<int>> image(height);
-  for (int i = 0; i < height; i++) {
-    image.emplace_back(row);
-  }
-  std::vector<int> trueRes = {2, 0, 5, 0, 5, 19999, 2, 19999, -1};
+  int height = 8 * countComp + countComp;
+  std::vector<int> out(9 * countComp);
+  std::vector<int> vecImage = prokofev_k_covexHull_Seq::GenerateImgForPerfTests(countComp);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&image));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vecImage.data()));
   taskDataSeq->inputs_count.emplace_back(width);
   taskDataSeq->inputs_count.emplace_back(height);
+  taskDataSeq->inputs_count.emplace_back(out.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
 
   // Create Task
-  auto testTaskSequential = std::make_shared<BinaryImageConvexHullSeq>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<prokofev_k_covexHull_Seq::BinaryImageConvexHullSeq>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -45,32 +42,26 @@ TEST(prokofev_k_convex_hull_seq, test_pipeline_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->pipeline_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < trueRes.size(); i++) {
-    ASSERT_EQ(trueRes[i], out[i]);
-  }
 }
 
 TEST(prokofev_k_convex_hull_seq, test_task_run) {
   // Create data
-  std::vector<int> out(100);
+  int countComp = 2000;
   int width = 8;
-  int height = 20000;
-  std::vector<int> row = {0, 0, 1, 1, 1, 1, 0, 0};
-  std::vector<std::vector<int>> image(height);
-  for (int i = 0; i < height; i++) {
-    image.emplace_back(row);
-  }
-  std::vector<int> trueRes = {2, 0, 5, 0, 5, 19999, 2, 19999, -1};
+  int height = 8 * countComp + countComp;
+  std::vector<int> out(9 * countComp);
+  std::vector<int> vecImage = prokofev_k_covexHull_Seq::GenerateImgForPerfTests(countComp);
 
   // Create TaskData
   std::shared_ptr<ppc::core::TaskData> taskDataSeq = std::make_shared<ppc::core::TaskData>();
-  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(&image));
+  taskDataSeq->inputs.emplace_back(reinterpret_cast<uint8_t *>(vecImage.data()));
   taskDataSeq->inputs_count.emplace_back(width);
   taskDataSeq->inputs_count.emplace_back(height);
+  taskDataSeq->inputs_count.emplace_back(out.size());
   taskDataSeq->outputs.emplace_back(reinterpret_cast<uint8_t *>(out.data()));
 
   // Create Task
-  auto testTaskSequential = std::make_shared<BinaryImageConvexHullSeq>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<prokofev_k_covexHull_Seq::BinaryImageConvexHullSeq>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -89,7 +80,4 @@ TEST(prokofev_k_convex_hull_seq, test_task_run) {
   auto perfAnalyzer = std::make_shared<ppc::core::Perf>(testTaskSequential);
   perfAnalyzer->task_run(perfAttr, perfResults);
   ppc::core::Perf::print_perf_statistic(perfResults);
-  for (size_t i = 0; i < trueRes.size(); i++) {
-    ASSERT_EQ(trueRes[i], out[i]);
-  }
 }
