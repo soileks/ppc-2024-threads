@@ -1,5 +1,6 @@
 // Copyright 2024 Fedotov Kirill
 #include "tbb/fedotov_k_monte_carlo_method/include/ops_tbb.hpp"
+
 #include <oneapi/tbb.h>
 
 #include <cmath>
@@ -50,7 +51,6 @@ bool fedotov_tbb::FedotovTaskSeq::run() {
 
   return true;
 }
-
 
 bool fedotov_tbb::FedotovTaskSeq::post_processing() {
   internal_order_test();
