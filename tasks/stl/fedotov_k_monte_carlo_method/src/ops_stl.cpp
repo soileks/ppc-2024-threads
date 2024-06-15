@@ -16,7 +16,7 @@ bool fedotov_stl::FedotovTaskSeq::pre_processing() {
   Coordinates_For_Integration1[1] = reinterpret_cast<double*>(taskData->inputs[0])[1];
   function = reinterpret_cast<double (*)(double, double)>(taskData->inputs[2]);
 
-  part_of_integrate = 10000;
+  part_of_integrate = 1000;
   integration_result = 0.0;
   return true;
 }
