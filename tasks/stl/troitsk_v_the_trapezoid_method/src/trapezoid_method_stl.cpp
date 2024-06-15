@@ -1,7 +1,7 @@
 // Copyright 2024 Troitskiy Alexandr
 #include "stl/troitsk_v_the_trapezoid_method/include/trapezoid_method_stl.hpp"
 
-double trapezoidal_integral(const std::function<double(double, double)>& f, double lowerx, double upperx, double lowery,
+double trapezoidal_integralTR(const std::function<double(double, double)>& f, double lowerx, double upperx, double lowery,
                             double uppery, int nx, int ny) {
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
@@ -18,7 +18,7 @@ double trapezoidal_integral(const std::function<double(double, double)>& f, doub
   return hx * hy * sum;
 }
 
-double trapezoidal_integralSTL(const std::function<double(double, double)>& f, double lowerx, double upperx,
+double trapezoidal_integralSTLTR(const std::function<double(double, double)>& f, double lowerx, double upperx,
                                double lowery, double uppery, int nx, int ny) {
   double hx = (upperx - lowerx) / nx;
   double hy = (uppery - lowery) / ny;
@@ -79,7 +79,7 @@ bool troitskTaskTBBSequential::validation() {
 bool troitskTaskTBBSequential::run() {
   try {
     internal_order_test();
-    res = trapezoidal_integral(f, lowerx, upperx, lowery, uppery, nx, ny);
+    res = trapezoidal_integralTR(f, lowerx, upperx, lowery, uppery, nx, ny);
   } catch (...) {
     return false;
   }
@@ -117,7 +117,7 @@ bool troitskTaskSTL::validation() {
 bool troitskTaskSTL::run() {
   try {
     internal_order_test();
-    res = trapezoidal_integral(f, lowerx, upperx, lowery, uppery, nx, ny);
+    res = trapezoidal_integralTR(f, lowerx, upperx, lowery, uppery, nx, ny);
   } catch (...) {
     return false;
   }
