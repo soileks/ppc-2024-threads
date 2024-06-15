@@ -211,7 +211,6 @@ std::vector<double> randomVector(int size, double min, double max) {
   std::random_device rd;
   std::default_random_engine gen{rd()};
   std::uniform_real_distribution<double> random(min, max);
-
   std::vector<double> randVec(size);
 
   for (double &value : randVec) value = random(gen);
