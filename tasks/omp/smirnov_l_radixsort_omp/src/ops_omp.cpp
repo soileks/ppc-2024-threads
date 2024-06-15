@@ -108,7 +108,7 @@ bool RadixSortOMPSequential::post_processing() {
 
 // Parallel //
 
-bool RadixSortOMPParallel::validation() {
+bool RadixSortOMPParallelS::validation() {
   internal_order_test();
 
   if (taskData->inputs_count.size() != 1 || taskData->outputs_count.size() != 1 || taskData->inputs.size() != 1 ||
@@ -131,7 +131,7 @@ bool RadixSortOMPParallel::validation() {
   return true;
 }
 
-bool RadixSortOMPParallel::pre_processing() {
+bool RadixSortOMPParallelS::pre_processing() {
   internal_order_test();
   try {
     int size = static_cast<int>(taskData->inputs_count[0]);
@@ -195,7 +195,7 @@ std::vector<int> mergeListsSmirn(const std::vector<int>& firstVector, const std:
   return result;
 }
 
-bool RadixSortOMPParallel::run() {
+bool RadixSortOMPParallelS::run() {
   internal_order_test();
   try {
     std::vector<int> resultVector;
@@ -233,7 +233,7 @@ bool RadixSortOMPParallel::run() {
   }
 }
 
-bool RadixSortOMPParallel::post_processing() {
+bool RadixSortOMPParallelS::post_processing() {
   internal_order_test();
   for (size_t i = 0; i < workVector.size(); i++) {
     reinterpret_cast<int*>(taskData->outputs[0])[i] = workVector[i];

@@ -52,7 +52,7 @@ std::vector<int> Merge(const std::vector<int>& firstVector, const std::vector<in
   return result;
 }
 
-bool RadixSortOMPSequential::pre_processing() {
+bool RadixSortOMPSequential_G::pre_processing() {
   internal_order_test();
   try {
     input_ = std::vector(reinterpret_cast<int*>(taskData->inputs[0]),
@@ -63,7 +63,7 @@ bool RadixSortOMPSequential::pre_processing() {
   }
 }
 
-bool RadixSortOMPSequential::validation() {
+bool RadixSortOMPSequential_G::validation() {
   internal_order_test();
   return taskData->inputs_count.size() == 1 && taskData->outputs_count.size() == 1 && taskData->inputs.size() == 1 &&
          taskData->outputs.size() == 1 && taskData->inputs[0] != nullptr && taskData->outputs[0] != nullptr &&
@@ -71,7 +71,7 @@ bool RadixSortOMPSequential::validation() {
          taskData->outputs_count[0] >= 0;
 }
 
-bool RadixSortOMPSequential::run() {
+bool RadixSortOMPSequential_G::run() {
   internal_order_test();
   try {
     std::vector<int> freq;
@@ -99,7 +99,7 @@ bool RadixSortOMPSequential::run() {
   }
 }
 
-bool RadixSortOMPSequential::post_processing() {
+bool RadixSortOMPSequential_G::post_processing() {
   internal_order_test();
   auto* outputs = reinterpret_cast<int*>(taskData->outputs[0]);
   for (size_t i = 0; i < input_.size(); i++) {
