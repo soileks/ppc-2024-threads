@@ -35,7 +35,7 @@ TEST(vyunov_d_hoare_sort_omp, test_pipeline_run) {
   hoareSortTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTBB->outputs_count.emplace_back(inputArray.size());
 
-  auto hoareSortTBBParallel = std::make_shared<HoareSortTBB>(hoareSortTBB);
+  auto hoareSortTBBParallel = std::make_shared<HoareSortTBBV>(hoareSortTBB);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;
@@ -80,7 +80,7 @@ TEST(vyunov_d_hoare_sort_omp, test_task_run) {
   hoareSortTBB->outputs.emplace_back(reinterpret_cast<uint8_t *>(outputArrayTBB.data()));
   hoareSortTBB->outputs_count.emplace_back(inputArray.size());
 
-  auto hoareSortTBBParallel = std::make_shared<HoareSortTBB>(hoareSortTBB);
+  auto hoareSortTBBParallel = std::make_shared<HoareSortTBBV>(hoareSortTBB);
 
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
   perfAttr->num_running = 10;

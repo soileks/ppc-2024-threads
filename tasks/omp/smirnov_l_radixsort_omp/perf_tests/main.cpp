@@ -23,7 +23,7 @@ TEST(Smirnov_L_Radix_Sort_Test, test_pipeline_run) {
   taskDataPar->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskParallel = std::make_shared<RadixSortOMPParallel>(taskDataPar);
+  auto testTaskParallel = std::make_shared<RadixSortOMPParallelS>(taskDataPar);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();
@@ -66,7 +66,7 @@ TEST(Smirnov_L_Radix_Sort_Test, test_task_run) {
   taskDataSeq->outputs_count.emplace_back(out.size());
 
   // Create Task
-  auto testTaskSequential = std::make_shared<RadixSortOMPParallel>(taskDataSeq);
+  auto testTaskSequential = std::make_shared<RadixSortOMPParallelS>(taskDataSeq);
 
   // Create Perf attributes
   auto perfAttr = std::make_shared<ppc::core::PerfAttr>();

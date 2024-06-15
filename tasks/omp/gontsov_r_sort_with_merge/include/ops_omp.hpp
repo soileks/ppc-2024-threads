@@ -8,9 +8,9 @@
 
 std::vector<int> getRandomVector2(int sz);
 
-class RadixSortOMPSequential : public ppc::core::Task {
+class RadixSortOMPSequential_G : public ppc::core::Task {
  public:
-  explicit RadixSortOMPSequential(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit RadixSortOMPSequential_G(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

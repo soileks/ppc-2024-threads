@@ -21,9 +21,9 @@ class RadixSortOMPSequential : public ppc::core::Task {
   std::vector<int> workVector;
 };
 
-class RadixSortOMPParallel : public ppc::core::Task {
+class RadixSortOMPParallelS : public ppc::core::Task {
  public:
-  explicit RadixSortOMPParallel(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
+  explicit RadixSortOMPParallelS(std::shared_ptr<ppc::core::TaskData> taskData_) : Task(std::move(taskData_)) {}
   bool pre_processing() override;
   bool validation() override;
   bool run() override;

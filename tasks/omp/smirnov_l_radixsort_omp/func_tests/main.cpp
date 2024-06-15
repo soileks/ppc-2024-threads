@@ -20,7 +20,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_One_OMP_Sm) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixSortOMPParallel radixSortOMPParallel(taskDataPar);
+  RadixSortOMPParallelS radixSortOMPParallel(taskDataPar);
   ASSERT_EQ(radixSortOMPParallel.validation(), true);
   ASSERT_TRUE(radixSortOMPParallel.pre_processing());
   ASSERT_TRUE(radixSortOMPParallel.run());
@@ -46,7 +46,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Two_OMP_Sm) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixSortOMPParallel radixSortOMPParallel(taskDataPar);
+  RadixSortOMPParallelS radixSortOMPParallel(taskDataPar);
   ASSERT_EQ(radixSortOMPParallel.validation(), true);
   ASSERT_TRUE(radixSortOMPParallel.pre_processing());
   ASSERT_TRUE(radixSortOMPParallel.run());
@@ -72,7 +72,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Three_OMP_Sm) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixSortOMPParallel radixSortOMPParallel(taskDataPar);
+  RadixSortOMPParallelS radixSortOMPParallel(taskDataPar);
   ASSERT_EQ(radixSortOMPParallel.validation(), true);
   ASSERT_TRUE(radixSortOMPParallel.pre_processing());
   ASSERT_TRUE(radixSortOMPParallel.run());
@@ -98,7 +98,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Four_OMP_Sm) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixSortOMPParallel radixSortOMPParallel(taskDataPar);
+  RadixSortOMPParallelS radixSortOMPParallel(taskDataPar);
   ASSERT_EQ(radixSortOMPParallel.validation(), true);
   ASSERT_TRUE(radixSortOMPParallel.pre_processing());
   ASSERT_TRUE(radixSortOMPParallel.run());
@@ -124,7 +124,7 @@ TEST(Smirnov_L_Radix_Sort_Test_OMP, Test_Cor_Work_Real_Five_OMP_Sm) {
   taskDataPar->outputs_count.emplace_back(out2.size());
 
   // Create Task
-  RadixSortOMPParallel radixSortOMPParallel(taskDataPar);
+  RadixSortOMPParallelS radixSortOMPParallel(taskDataPar);
   ASSERT_EQ(radixSortOMPParallel.validation(), true);
   ASSERT_TRUE(radixSortOMPParallel.pre_processing());
   ASSERT_TRUE(radixSortOMPParallel.run());
