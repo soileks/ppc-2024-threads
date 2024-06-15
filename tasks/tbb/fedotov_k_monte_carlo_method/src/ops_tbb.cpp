@@ -2,7 +2,7 @@
 #include "tbb/fedotov_k_monte_carlo_method/include/ops_tbb.hpp"
 
 #include <oneapi/tbb.h>
-
+#include <atomic>
 #include <cmath>
 #include <thread>
 
@@ -36,18 +36,18 @@ bool fedotov_tbb::FedotovTaskSeq::run() {
 
   std::atomic<double> local_sum(0.0);
 
-  // Parallelize the outer loop with TBB
   tbb::parallel_for(0, part_of_integrate, [&](int k) {
     double lmb = Coordinates_For_Integration2[0] + vysota2 * k;
     double local_integration_result = 0.0;
-    // Parallelize the inner loop with TBB
+
     tbb::parallel_for(0, part_of_integrate, [&](int r) {
       local_integration_result += function(Coordinates_For_Integration1[0] + vysota1 * r, lmb);
     });
-    local_sum += local_integration_result * vysota1 * vysota2;
+
+    local_sum.fetch_add(local_integration_result * vysota1 * vysota2, std::memory_order_relaxed);
   });
 
-  integration_result = local_sum;
+  integration_result = local_sum.load(std::memory_order_relaxed);
 
   return true;
 }
